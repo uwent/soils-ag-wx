@@ -1,7 +1,10 @@
 set :application, 'soils_ag_wx'
-set :repo_url, 'https://github.com/RickWayne/soils_ag_wx.git'
+set :repo_url, 'https://github.com/adorableio/soils_ag_wx.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+branch = ENV['BRANCH'] || 'master'
+
+set :branch, branch
 
 # set :deploy_to, '/var/www/my_app'
 # set :scm, :git
@@ -16,6 +19,10 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 # set :keep_releases, 5
+
+# rbenv
+set :rbenv_type, :user
+set :rbenv_ruby, '2.2.4'
 
 namespace :deploy do
 

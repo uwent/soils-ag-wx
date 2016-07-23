@@ -1,14 +1,14 @@
-set :stage, :production
-set :deploy_to, "/home/asig/sites/soils_ag_wx"
+#set :stage, :production
+set :deploy_to, "/home/deploy/soils_ag_wx"
 
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
-role :app, %w{asig@144.92.93.171}
-role :web, %w{asig@144.92.93.171}
-role :db,  %w{asig@144.92.93.171}
+role :app, %w{deploy@agweather.cals.wisc.edu:216}
+role :web, %w{deploy@agweather.cals.wisc.edu:216}
+role :db,  %w{deploy@agweather.cals.wisc.edu:216}
 
 # Extended Server Syntax
 # ======================

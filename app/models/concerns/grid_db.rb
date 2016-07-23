@@ -1,6 +1,7 @@
 module GridDB
   MIN_LATITUDE = 42.0 # FIXME: Should derive this from the Grid file, really
   STEP = 0.4 # FIXME: Likewise!
+
   require 'agwx_grids'
   # Using http://stackoverflow.com/questions/10692961/inheriting-class-methods-from-mixins
   # Since I want to mix in both class and instance methods with one module
@@ -14,6 +15,14 @@ module GridDB
 
   module ClassMethods
     include AgwxGrids
+
+    def evapotranspirations_url
+      "#{Endpoint::BASE_URL}/evapotranspirations"
+    end
+
+    def weather_url
+      "#{Endpoint::BASE_URL}/weather"
+    end
     
     def longitude_cols
       self.column_names.select { |cn| cn =~ /w[\d]{3}/ }.sort { |a, b| b <=> a } # e.g. 'w980' before 'w976'
@@ -29,13 +38,15 @@ module GridDB
       MIN_LATITUDE + STEP * Grid.nearest(latitude,MIN_LATITUDE,STEP)
     end
     
-    def daily_series(start_date,end_date,longitude,latitude)
-      longitude *= -1 if longitude > 0
-      self.where(
-        '"date" >= ? and "date" <= ? and latitude = ?',start_date,end_date,nearest_latitude(latitude)
-        ).inject({}) { |hash,rec| hash.merge({rec["date"] => rec[longitude_col(longitude)]}) }
+    def daily_series(start_date, end_date, long, lat)
+      long *= -1 if long < 0
+
+      url = "#{self.base_url}?lat=#{lat}&long=#{long}&start_date=#{start_date}&end_date=#{end_date}"
+      response = HTTParty.get(url, { timeout: 5 })
+      body = JSON.parse(response.body)
+      body.map { |h| [h['date'], h[self.endpoint_attribute_name]] }.to_h
     end
-    
+
     def date_for(year,doy)
       Date.civil(year,1,1) + doy - 1
     end
