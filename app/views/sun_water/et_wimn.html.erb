@@ -32,11 +32,6 @@
 <p>Note: You can click on the map below to set the latitude and longitude.</p>
 <%= render partial: "partials/grid_selector" %>
 <p/>
-<h4>Get ETs automatically by email!</h4>
-<p>Just enter your email address to sign up (or to manage your subscriptions)</p>
-<%= form_tag controller: 'subscribers', action: :show do %>
-  Email :&nbsp;<%= text_field_tag 'subscriber[email]'%>
-<% end %>
 <br/ >
 <img src="<%= @map_image %>"  alt="Yesterday's ET Estimates" usemap="#latlong" />
   <P> <a href="/soils-agwx-assets/uwex_agwx/sun_water/yestWIMNet.asc"> Download yesterday's entire grid of data in ASCII Format</a><br>
