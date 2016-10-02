@@ -10,8 +10,6 @@
     <%= do_welcome.html_safe %>
 <% end %>
 
-
-
 <div class='subscribers'>
   <% if @subscriber.errors.any? %>
     <div id="error_explanation">
@@ -24,8 +22,7 @@
   <br />
   <br />
   <h2>Validate your account</h2>
-  To ensure you are the owner of this email address, we have sent you a validation code. Please enter the validation code you were sent in order to change the
-subscriptions.
+  To ensure you are the owner of this email address, we have sent a validation code to your email address. Please enter the validation code you were sent in order manage your subscriptions.
 <br />
 <br />
 <%= form_tag validate_subscriber_path(@subscriber) do %>

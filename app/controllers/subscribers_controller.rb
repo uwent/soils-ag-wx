@@ -38,9 +38,11 @@ class SubscribersController < ApplicationController
       render action: "new"
     else
       if @subscriber.save
+        SubscriptionMailer.confirm(@subscriber).deliver
         # send email
         # add to session
-        redirect_to @subscriber, notice: 'Subscriber was successfully created.'
+        redirect_to confirm_notice_subscriber_path(@subscriber),
+                    notice: 'Subscriber was successfully created.'
       else
         render action: "new"
       end
@@ -52,7 +54,8 @@ class SubscribersController < ApplicationController
     validation_code = params[:validation_code]
     #check the validation code....
     if @subscriber.is_validation_token_old?
-      @subscriber.errors.add(:validation_code, "is too old. We've sent a new one.")
+      @subscriber.generate_validation_token
+      @subscriber.errors.add(:validation_code, "is too old. We've sent a new one. Check your email.")
       render
     elsif !@subscriber.validation_token_valid?(validation_code)
       @subscriber.errors.add(:validation_code, "is incorrect.")
@@ -65,14 +68,32 @@ class SubscribersController < ApplicationController
   end
 
   def confirm_notice
+    @subscriber = Subscriber.find(params[:id])
   end
 
-  def resend_confirmaion
+  def resend_confirmation
+    @subscriber = Subscriber.find(params[:id])
+    respond_to do |format|
+      if @subscriber
+        SubscriptionMailer.confirm(@subscriber).deliver
+        format.json { render json: { message: "Resent" } }
+      else
+        format.json { render json: { message: "Error" } }
+      end
+    end
   end
 
   def confirm
+    passed_token = params[:token]
+    @subscriber = Subscriber.find(params[:id])
+    if @subscriber.confirm!(passed_token)
+      add_to_session(@subscriber.id)
+      render :manage
+    else
+      redirect_to confirm_notice_subscriber_path(@subcriber)
+    end
   end
-  
+
   private
     def subscriber_params
       params.require(:subscriber).permit(:name, :email, :confirmed)
@@ -81,4 +102,4 @@ class SubscribersController < ApplicationController
     def add_to_session(id)
       session[:subscriber] = id
     end
-end
+end    

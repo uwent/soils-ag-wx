@@ -1,0 +1,5 @@
+Dear <%= @subscriber.name %>,<br/>
+
+<p>Someone has requested to manage your email subscriptions. To ensure that you are the one intiating this request, we are sending you a validation code. Please enter the code: <span style="font-size: larger"><%= @subscriber.validation_token %></span> in the form. This code will be valid for one hour.
+<p>
+<p>Please do not reply to this email.</p>

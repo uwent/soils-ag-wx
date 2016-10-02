@@ -56,6 +56,8 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
   gem 'capistrano-rbenv', "~> 2.0"
+  gem 'letter_opener'
+  gem 'letter_opener_web'
 end
 
 # Use debugger
