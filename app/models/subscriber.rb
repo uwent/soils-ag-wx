@@ -1,9 +1,9 @@
 class Subscriber < ActiveRecord::Base
+  before_create :set_confirmation_token
   has_many :subscriptions
   has_many :products, :through => :subscriptions
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
-  
   
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/
@@ -15,18 +15,38 @@ class Subscriber < ActiveRecord::Base
   end
   
   def self.email_find(email)
-    self.where("lower(email) = ?",email.downcase).first
+    self.where("lower(email) = ?", email.downcase).first
   end
   
-  def send_subscriptions(start_date=Date.today-1,finish_date=Date.today-1)
+  def send_subscriptions(start_date = Date.today-1, finish_date = Date.today-1)
   end
   
-  def has_confirmed
-    begin
-      DateTime.parse confirmed
-      true
-    rescue Exception => e
-      false
+  def is_confirmed?
+    !self.confirmed_at.nil?
+  end
+
+  def generate_validation_token
+    if self.validation_created_at.nil? || 
+        self.validation_created_at + 1.hour > Time.current
+      self.validation_token = 17
+      self.validation_created_at = Time.current
+      self.save!
+      # send it validateion code to the subscriber
     end
   end
+
+  def is_validation_token_old?
+    self.validation_created_at + 1.hour <= Time.current 
+  end
+
+  def validation_token_valid?(validation_code)
+    self.validation_token == validation_code
+  end
+
+  private
+    def set_confirmation_token
+      f = rand
+      f.to_s =~ /0\.(.+)$/
+      self.confirmation_token = $1
+    end
 end

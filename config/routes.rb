@@ -79,13 +79,6 @@ SoilsAgWx::Application.routes.draw do
   get "sun_water/grid_ets"
   match "/sun_water/get_grid", to: "sun_water#get_grid", via: [:get, :post]
   match "/sun_water", to: "sun_water#index", via: [:get, :post]
-  get "subscribers/send_emails/:id" => "subscribers#send_emails"
-  post "subscribers/send_special"
-  get "subscribers/confirm/:id" => "subscribers#confirm"
-  get "subscribers/show/:email" => "subscribers#show"
-  post "subscribers/show"
-  post "subscribers/new"
-  resources :subscribers
   
   get "weather/index"
   get "weather/hyd"
@@ -118,9 +111,18 @@ SoilsAgWx::Application.routes.draw do
 
   resources :products
 
-  resources :subscriptions
-
-  resources :subscribers
+  resources :subscribers, only: [:index, :new, :create] do
+    collection do 
+      post :manage
+      get :manage
+    end
+    member do
+      post :validate
+      get :confirm
+      get :confirm_notice
+      post :resend_confirmation
+    end
+  end
 
   resources :blogs
 

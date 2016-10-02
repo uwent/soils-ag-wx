@@ -1,0 +1,21 @@
+<% content_for :title do %>
+  <%= title %>
+<% end %>
+
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag "style" -%>
+<% end %>
+
+<% content_for :welcome do %>
+    <%= do_welcome.html_safe %>
+<% end %>
+
+<div class='subscribers'>
+  <br />
+  <h2>Confirm your account</h2>
+  <p>We have sent you a confirmation email. Please click the link in to email 
+to confirm your account.</p>
+  <br />
+  If you need the confirmation code resent: 
+</div>
+  

@@ -1,0 +1,27 @@
+<% content_for :title do %>
+  <%= title %>
+<% end %>
+
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag "style" -%>
+<% end %>
+
+<% content_for :welcome do %>
+    <%= do_welcome.html_safe %>
+<% end %>
+
+<div class="content">
+  <h2>Register for Automated Weather Product Emails</h2>
+  <p>The "Register" button below takes you to a form where you can enter your name and email address so that our automatically-emailed products can find you. Once you're known to our database, you can sign up for products to be delivered to you daily, at whatever lat/long locations you desire.</p>
+
+  <p>After you register, the system will send you an email containing a link which you can click to confirm that you're really you, and that you really want to start receiving automated emails.</p>
+
+  <%= button_to "Register", new_subscriber_url, method: :get %>
+  <br />
+  <h2>Already Registered?</h2>
+  <%= form_tag("/subscribers/manage") do %>
+    <%= label_tag(:email_address, "Please enter your email address to manage your subscriptions: ") %>
+    <%= text_field_tag(:email_address) %>
+    <%= submit_tag("Search") %>
+  <% end %>
+</div>

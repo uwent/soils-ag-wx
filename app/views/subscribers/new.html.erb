@@ -1,0 +1,46 @@
+<% content_for :title do %>
+  <%= title %>
+<% end %>
+
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag "style" -%>
+<% end %>
+
+<% content_for :welcome do %>
+    <%= do_welcome.html_safe %>
+<% end %>
+
+
+<div class='container'>
+  <% unless @subscriber.email.blank? || @subscriber.errors.any? %>
+    Subscriber not found. Would you like to enroll?
+  <% end %>
+  <br />
+  <br />
+  Please enter your name and email address to enroll as a subscriber. You will receive an automated email asking you to confirm your enrollment; once you've been confirmed, you can subscribe to our products at as many locations as you would like.<br />
+  <br />
+  <% if @subscriber.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@subscriber.errors.count, "error") %> prohibited this mark from being saved:</h2>
+      
+      <ul>
+        <% @subscriber.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <br />
+  <br />
+  <%= form_for @subscriber do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <br />
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+    
+    <br />
+    <br />
+    <%= f.submit "Register Subscriber" %>
+  <% end %>
+</div>
