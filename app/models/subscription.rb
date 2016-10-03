@@ -56,4 +56,8 @@ class Subscription < ActiveRecord::Base
     end
     report
   end
+
+  def as_json(options={})
+    { id: id, name: name, latitude: latitude, longitude: longitude }
+  end
 end

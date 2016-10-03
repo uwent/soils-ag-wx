@@ -8,8 +8,6 @@ class SubscribersController < ApplicationController
     if !session[:subscriber].nil?
       @subscriber = Subscriber.find(session[:subscriber])
       render
-      # try to find the email in the subscribers 
-      #    if there, ask them for a validation key
     elsif params[:email_address].nil? 
       redirect_to subscribers_path
     elsif @subscriber = Subscriber.email_find(params[:email_address])
@@ -20,7 +18,6 @@ class SubscribersController < ApplicationController
         render :confirm_notice
       end
     else
-      #    else, goto create
       @email_address = params[:email_address]
       redirect_to new_subscriber_path(email: @email_address)
     end
@@ -92,6 +89,32 @@ class SubscribersController < ApplicationController
     else
       redirect_to confirm_notice_subscriber_path(@subcriber)
     end
+  end
+
+  def add_subscription
+    @subscriber = Subscriber.find(params[:id])
+    site_name = params[:site_name]
+    lat = params[:latitude]
+    long = params[:longitude]
+    product = Product.find(3)
+    respond_to do |format| 
+      subscription = Subscription.new(name: site_name, 
+                                       latitude: lat, 
+                                       longitude: long,
+                                       product_id: product.id)
+                                              
+      @subscriber.subscriptions << subscription
+      format.json { render json: subscription }
+    end
+  end
+
+  def remove_subscription
+    @subscriber = Subscriber.find(params[:id])
+    subscription_id = params[:subscription_id]
+    @subscriber.subscriptions.where(id: subscription_id).first.delete
+    respond_to do |format| 
+      format.json { render json: {message: "success"} }
+    end    
   end
 
   private

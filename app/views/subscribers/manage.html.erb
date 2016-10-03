@@ -9,5 +9,48 @@
 <% content_for :welcome do %>
     <%= do_welcome.html_safe %>
 <% end %>
+<input type="hidden" id="subscriber_id" value="<%= @subscriber.id %>">
+<input type="hidden" id="add_url" value="<%= url_for add_subscription_subscriber_path(@subscriber.id) %>">
+<input type="hidden" id="remove_url" value="<%= url_for remove_subscription_subscriber_path(@subscriber.id) %>">
+<input type="hidden" id="sub_count" value="<%= @subscriber.subscriptions.count %>">
+<div class="subscriber">
+  <b>Name: </b><%= @subscriber.name %> <b>Email: </b><%= @subscriber.email %>
+  <br />
+  <br />
+  <br />
+  <h2>How To Subscribe</h2>
+  <p>You can enter your own unique site identification, longitude and latitude  for up to 15 sites below.</p>
+  <p>Note that longitude values must be entered as negative numbers. </p>
+  <p>Enter latitude and longitude values below in degrees and decimal degrees rounded to the nearest 0.1°.</p>
+  <p>To convert Latitude and Longitude values from degrees, minutes and seconds (DMS) to decimal degrees simply divide minutes by 60 and seconds by 3600, add the two values together and append them back on to the whole degree number.<br/>
+    <b>Example</b><br />
+    Convert -89° 30' 45" longitude to decimal degrees.  The decimal portion equals (30'/60) + (45"/3600) =  0.5125, which when appended to the degree whole number equals -89.5125 and gets rounded to  -89.5°. 
+    </p>
+</div>
 
-Hello, <%= @subscriber.name %>
+<table>
+  <thead>
+    <tr>
+      <th>Site Name</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @subscriber.subscriptions.each do |subscription| %>
+      <tr>
+        <td><%= subscription.name %></td>
+        <td><%= subscription.latitude %></td>
+        <td><%= subscription.longitude %></td>
+        <td><%= image_tag("cross.png", class:'delete-cross', data: { subscription_id: subscription.id }) %>
+      </tr>
+    <% end %>
+    <tr id="add-controls">
+      <td><input type=text name="site_name" id="site_name"/></td>
+      <td><input type=text name="latitude" id="latitude"/></td>
+      <td><input type=text name="longitude" id="longitude"/></td>
+      <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 5 ? "disabled" : ""%>> Add</button></td>
+    </tr>
+  </tbody>
+</table>

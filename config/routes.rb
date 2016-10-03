@@ -121,6 +121,8 @@ SoilsAgWx::Application.routes.draw do
       get :confirm
       get :confirm_notice
       post :resend_confirmation
+      post :add_subscription
+      post :remove_subscription
     end
   end
 
