@@ -13,6 +13,8 @@
 <input type="hidden" id="add_url" value="<%= url_for add_subscription_subscriber_path(@subscriber.id) %>">
 <input type="hidden" id="remove_url" value="<%= url_for remove_subscription_subscriber_path(@subscriber.id) %>">
 <input type="hidden" id="sub_count" value="<%= @subscriber.subscriptions.count %>">
+<input type="hidden" id="delete-cross" value="<%= image_path("cross.png") %>">
+
 <div class="subscriber">
   <b>Name: </b><%= @subscriber.name %> <b>Email: </b><%= @subscriber.email %>
   <br />

@@ -7,7 +7,12 @@ class SubscribersController < ApplicationController
     # is there a subscriber in the session? If so they have already validated.
     if !session[:subscriber].nil?
       @subscriber = Subscriber.find(session[:subscriber])
-      render
+      if params[:email_address] && params[:email_address] != @subscriber.email
+        remove_from_session
+        redirect_to manage_subscribers_path(email_address: params[:email_address])
+      else
+        render
+      end
     elsif params[:email_address].nil? 
       redirect_to subscribers_path
     elsif @subscriber = Subscriber.email_find(params[:email_address])
@@ -124,5 +129,9 @@ class SubscribersController < ApplicationController
 
     def add_to_session(id)
       session[:subscriber] = id
+    end
+
+    def remove_from_session
+      session.delete(:subscriber)
     end
 end    

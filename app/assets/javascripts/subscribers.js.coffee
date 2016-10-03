@@ -33,10 +33,11 @@ $ ->
 
   add_to_table = (sub) ->
     control_row = $('#add-controls')
+    cross_icon = $('#delete-cross').val()
     new_row = "<tr><td>" + sub.name + "</td>" +
       "<td>" + sub.latitude + "</td>" +
       "<td>" + sub.longitude + "</td>" +
-      "<td><img class='delete-cross' data-subscription-id='" + sub.id + "' src='/assets/cross.png'></td>"
+      "<td><img class='delete-cross' data-subscription-id='" + sub.id + "' src='" + cross_icon + "'></td>"
     $(new_row).insertBefore(control_row)
     sub_count = sub_count + 1
     if sub_count >= 15
