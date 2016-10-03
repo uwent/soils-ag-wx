@@ -39,7 +39,7 @@ $ ->
       "<td><img class='delete-cross' data-subscription-id='" + sub.id + "' src='/assets/cross.png'></td>"
     $(new_row).insertBefore(control_row)
     sub_count = sub_count + 1
-    if sub_count >= 5
+    if sub_count >= 15
       $('#submit_site').prop('disabled', true)
 
   erase_inputs = ->

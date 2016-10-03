@@ -24,6 +24,7 @@ SoilsAgWx::Application.configure do
   
   # While sendmail is less configurable than the default smtp, it works on our server
   config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.default_url_options = {host: 'agweather.cals.wisc.edu'}
   
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier

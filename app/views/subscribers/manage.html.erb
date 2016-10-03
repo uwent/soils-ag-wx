@@ -50,7 +50,7 @@
       <td><input type=text name="site_name" id="site_name"/></td>
       <td><input type=text name="latitude" id="latitude"/></td>
       <td><input type=text name="longitude" id="longitude"/></td>
-      <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 5 ? "disabled" : ""%>> Add</button></td>
+      <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 15 ? "disabled" : ""%>> Add</button></td>
     </tr>
   </tbody>
 </table>
