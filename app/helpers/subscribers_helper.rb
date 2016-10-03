@@ -1,6 +1,6 @@
 module SubscribersHelper
   def title
-    "Automated Weather Product Subscriptions"
+    "Automated Daily ET Values"
   end
 
   def do_welcome
