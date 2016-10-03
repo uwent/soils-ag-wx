@@ -86,7 +86,6 @@ $ ->
   $('table').on 'click', '.delete-cross', (event) ->
     sub_id = $(event.target).data('subscription-id')
     parent_row = $(event.target).closest('tr')
-    alert("ARB: "+ sub_id)
     $.ajax
       type: 'POST'
       url: $('#remove_url').val()
