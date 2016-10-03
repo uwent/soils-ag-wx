@@ -96,7 +96,7 @@ class SubscribersController < ApplicationController
     site_name = params[:site_name]
     lat = params[:latitude]
     long = params[:longitude]
-    product = Product.find(3)
+    product = Product.where(name: 'Evapotranspiration').first
     respond_to do |format| 
       subscription = Subscription.new(name: site_name, 
                                        latitude: lat, 
