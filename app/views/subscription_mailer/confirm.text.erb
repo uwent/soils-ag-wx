@@ -1,3 +1,9 @@
-SubscriptionMailer#confirm
+Dear <%= @subscriber.name%>,
 
-<%= @greeting %>, find me in app/views/app/views/subscription_mailer/confirm.text.erb
+The following email has been sent to you from the UWEX Ag. Weather Data Site to confirm your request to register as a subscriber to the site’s automated daily ET data service.  If you initiated this request simply click on the subscription registration link below to continue the registration process.
+
+Once you are registered, you will be able to enter your site names and locations (latitude and longitude) for which you want daily ET data.
+
+If you did not initiate a registration request to the UWEX Ag Weather data service simply delete this email now.
+
+<%= @url %>
