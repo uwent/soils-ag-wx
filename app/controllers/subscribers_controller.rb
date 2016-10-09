@@ -1,6 +1,7 @@
 class SubscribersController < ApplicationController
   
   def index
+    remove_from_session
   end
 
   def manage
@@ -41,8 +42,6 @@ class SubscribersController < ApplicationController
     else
       if @subscriber.save
         SubscriptionMailer.confirm(@subscriber).deliver
-        # send email
-        # add to session
         redirect_to confirm_notice_subscriber_path(@subscriber),
                     notice: 'Subscriber was successfully created.'
       else

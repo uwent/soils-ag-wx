@@ -37,7 +37,7 @@ $ ->
     new_row = "<tr><td>" + sub.name + "</td>" +
       "<td>" + sub.latitude + "</td>" +
       "<td>" + sub.longitude + "</td>" +
-      "<td><img class='delete-cross' data-subscription-id='" + sub.id + "' src='" + cross_icon + "'></td>"
+      "<td class='delete-site' data-subscription-id=" + sub.id + "><span>Delete Site</span> <img class='delete-cross' src='" + cross_icon + "'></td>"
     $(new_row).insertBefore(control_row)
     sub_count = sub_count + 1
     if sub_count >= 15
@@ -83,8 +83,8 @@ $ ->
         add_to_table(data)
         erase_inputs()
         
-  $('table').on 'click', '.delete-cross', (event) ->
-    sub_id = $(event.target).data('subscription-id')
+  $('table').on 'click', '.delete-site', (event) ->
+    sub_id = $(event.target).closest('td').data('subscription-id')
     parent_row = $(event.target).closest('tr')
     $.ajax
       type: 'POST'

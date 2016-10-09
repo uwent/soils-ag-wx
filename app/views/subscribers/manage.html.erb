@@ -24,7 +24,8 @@
   <p>You can enter your own unique site identification, longitude and latitude  for up to 15 sites below.</p>
   <p>Note that longitude values must be entered as negative numbers. </p>
   <p>Enter latitude and longitude values below in degrees and decimal degrees rounded to the nearest 0.1°.</p>
-  <p>To convert Latitude and Longitude values from degrees, minutes and seconds (DMS) to decimal degrees simply divide minutes by 60 and seconds by 3600, add the two values together and append them back on to the whole degree number.<br/>
+  <p>To convert latitude and longitude values from degrees, minutes and seconds (DMS) to decimal degrees simply divide minutes by 60 and seconds by 3600, add the two values together and append them back on to the whole degree number.<br/>
+    <br />
     <b>Example</b><br />
     Convert -89° 30' 45" longitude to decimal degrees.  The decimal portion equals (30'/60) + (45"/3600) =  0.5125, which when appended to the degree whole number equals -89.5125 and gets rounded to  -89.5°. 
     </p>
@@ -45,7 +46,7 @@
         <td><%= subscription.name %></td>
         <td><%= subscription.latitude %></td>
         <td><%= subscription.longitude %></td>
-        <td><%= image_tag("cross.png", class:'delete-cross', data: { subscription_id: subscription.id }) %>
+        <td class='delete-site' data-subscription-id=<%= subscription.id %>><span>Delete Site</span> <%= image_tag("cross.png", class:'delete-cross') %></td>
       </tr>
     <% end %>
     <tr id="add-controls">
