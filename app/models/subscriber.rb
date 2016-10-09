@@ -36,13 +36,10 @@ class Subscriber < ActiveRecord::Base
   end
 
   def generate_validation_token
-    if self.validation_created_at.nil? ||
-        self.validation_created_at + 1.hour <= Time.current
-      self.validation_token = random_code[0..5]
-      self.validation_created_at = Time.current
-      self.save!
-      SubscriptionMailer.validation(self).deliver
-    end
+    self.validation_token = random_code[0..5]
+    self.validation_created_at = Time.current
+    self.save!
+    SubscriptionMailer.validation(self).deliver
   end
 
   def is_validation_token_old?
