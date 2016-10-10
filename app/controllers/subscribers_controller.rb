@@ -121,6 +121,12 @@ class SubscribersController < ApplicationController
     end    
   end
 
+  def unsubscribe
+    @subscriber = Subscriber.find(params[:id])
+    et_product = Product.where(name: "Evapotranspiration").first
+    @subscriber.subscriptions.where(product: et_product).delete_all
+  end
+
   private
     def subscriber_params
       params.require(:subscriber).permit(:name, :email, :confirmed)
@@ -134,3 +140,5 @@ class SubscribersController < ApplicationController
       session.delete(:subscriber)
     end
 end    
+
+

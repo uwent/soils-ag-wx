@@ -41,7 +41,8 @@
     </tr>
   </thead>
   <tbody>
-    <% @subscriber.subscriptions.each do |subscription| %>
+    <% et_product = Product.where(name: 'EvTapotranspiration').first %>
+    <% @subscriber.subscriptions.where(product: et_product).each do |subscription| %>
       <tr>
         <td><%= subscription.name %></td>
         <td><%= subscription.latitude %></td>
@@ -57,3 +58,6 @@
     </tr>
   </tbody>
 </table>
+<br />
+<br />
+<%= link_to "<button>Finish</button>".html_safe, subscribers_path %>
