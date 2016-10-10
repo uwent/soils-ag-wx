@@ -13,11 +13,12 @@ class SubscriptionMailer < ActionMailer::Base
     mail to: subscriber.email, subject: 'UWEX Ag Weather subscription validation code'
   end
 
-  def product_report(subscriber,start_date,end_date,sent_at=Time.now,subscriptions=subscriber.subscriptions)
+  def daily_mail(subscriber, date, values)
     @subscriber = subscriber
-    @report = Subscription.make_report(subscriptions,start_date,end_date)
+    @values = values
+    @date = date
     @greeting = "Hi"
-    mail to: @subscriber.email
+    mail to: @subscriber.email, subject: 'AGWX ET Mailer Report'
   end
 
   def special(subscriber,mesg_text='')

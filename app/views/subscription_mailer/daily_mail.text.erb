@@ -1,0 +1,17 @@
+THIS EMAIL WAS SENT BY THE UW EXTENSION AG. WEATHER AUTOMATED MAILER, DO NOT REPLY.
+
+Daily evapotranspiration (ET) data for <%= @subscriber.name %>.
+
+The daily ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.
+
+
+Site Id                      Lat/Long  ET Value
+-------------------------  ----------  --------
+<% @values.each do |sub| %>
+<%= sprintf("%-25s  %.1f/%.1f  %.3f", sub[:site_name],sub[:longitude], sub[:latitude],  sub[:value]) %>
+<% end %>
+
+
+If you no longer wish to receive daily ET emails, please copy this url to your browser (<%= unsubscribe_subscriber_url(@subscriber) %>) to be removed.
+
+Note that ET emails will not be sent from November 15th through April 1st of each year.

@@ -50,9 +50,28 @@ class Subscriber < ActiveRecord::Base
     self.validation_token == validation_code
   end
 
+  def self.send_daily_mail
+    et_product = Product.where(name: 'Evapotranspiration').first
+    #    date = Date.yesterday
+    date = Date.parse('2016-4-11')
+    return if (date.yday < et_product.default_doy_start || 
+               date.yday > et_product.default_doy_end)
+    Subscriber.all.each do |subscriber| 
+      subs = subscriber.subscriptions.where(product: et_product).map do |sub| 
+        { 
+          site_name: sub.name,
+          latitude: sub.latitude,
+          longitude: sub.longitude,
+          value: Endpoint.get_et_value(date, sub.latitude, sub.longitude * -1)
+        }
+      end.select { |val| val[:value] > 0 }
+      SubscriptionMailer.daily_mail(subscriber, date, subs).deliver if subs.length > 0
+    end
+  end
+
   private
     def set_confirmation_token
-      self.confirmation_token = random_code
+     self.confirmation_token = random_code
     end
 
     def random_code
