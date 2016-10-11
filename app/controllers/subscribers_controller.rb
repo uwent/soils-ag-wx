@@ -123,8 +123,13 @@ class SubscribersController < ApplicationController
 
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
-    et_product = Product.where(name: "Evapotranspiration").first
-    @subscriber.subscriptions.where(product: et_product).delete_all
+    token = params[:token]
+    @unsubscribed = false
+    if token == @subscriber.confirmation_token
+      et_product = Product.where(name: "Evapotranspiration").first
+      @subscriber.subscriptions.where(product: et_product).delete_all
+      @unsubscribed = true
+    end
   end
 
   private
