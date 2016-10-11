@@ -52,8 +52,7 @@ class Subscriber < ActiveRecord::Base
 
   def self.send_daily_mail
     et_product = Product.where(name: 'Evapotranspiration').first
-    #    date = Date.yesterday
-    date = Date.parse('2016-4-11')
+    date = Date.today - 1.day
     return if (date.yday < et_product.default_doy_start || 
                date.yday > et_product.default_doy_end)
     Subscriber.all.each do |subscriber| 
