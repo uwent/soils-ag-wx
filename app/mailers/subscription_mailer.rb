@@ -1,5 +1,5 @@
 class SubscriptionMailer < ActionMailer::Base
-  default from: "do-not-reply@wisc.edu"
+  default from: "noreply@cals.wisc.edu"
 
   def confirm(subscriber)
     @subscriber = subscriber
