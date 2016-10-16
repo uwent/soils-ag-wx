@@ -116,6 +116,7 @@ SoilsAgWx::Application.routes.draw do
       post :manage
       get :manage
       get :logout
+      get :admin
     end
     member do
       post :validate

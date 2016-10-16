@@ -18,46 +18,48 @@
 <div class="subscriber">
   <b>Name: </b><%= @subscriber.name %> <b>Email: </b><%= @subscriber.email %>
   <br />
+  <%= link_to "<button>Admin</button>".html_safe, admin_subscribers_path if @subscriber.admin? %>
   <br />
   <br />
   <h2>How To Subscribe</h2>
   <p>You can enter your own unique site identification, longitude and latitude  for up to 15 sites below.</p>
   <p>Note that longitude values must be entered as negative numbers. </p>
   <p>Enter latitude and longitude values below in degrees and decimal degrees rounded to the nearest 0.1°.</p>
-  <p>To convert latitude and longitude values from degrees, minutes and seconds (DMS) to decimal degrees simply divide minutes by 60 and seconds by 3600, add the two values together and append them back on to the whole degree number.<br/>
-    <br />
-    <b>Example</b><br />
-    Convert -89° 30' 45" longitude to decimal degrees.  The decimal portion equals (30'/60) + (45"/3600) =  0.5125, which when appended to the degree whole number equals -89.5125 and gets rounded to  -89.5°. 
-    </p>
-</div>
-
-<table>
-  <thead>
-    <tr>
-      <th>Site Name</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% et_product = Product.where(name: 'Evapotranspiration').first %>
-    <% @subscriber.subscriptions.where(product: et_product).each do |subscription| %>
+  <p>To convert latitude and longitude values from degrees, minutes and seconds (DMS) to decimal degrees simply divide minutes by 60 and seconds by 3600, add the two values together and append them back on to the whole degree number.</p>
+  <p><b>Example</b><br />
+  Convert -89° 30' 45" longitude to decimal degrees.  The decimal portion equals (30'/60) + (45"/3600) =  0.5125, which when appended to the degree whole number equals -89.5125 and gets rounded to  -89.5°. 
+  </p>
+  <p>
+    To save your input data be sure to press the “Add” button after entering each line, including after the last line.
+  </p>
+  <table>
+    <thead>
       <tr>
-        <td><%= subscription.name %></td>
-        <td><%= subscription.latitude %></td>
-        <td><%= subscription.longitude %></td>
-        <td class='delete-site' data-subscription-id=<%= subscription.id %>><span>Delete Site</span> <%= image_tag("cross.png", class:'delete-cross') %></td>
+        <th>Site Name</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th></th>
       </tr>
-    <% end %>
-    <tr id="add-controls">
-      <td><input type=text name="site_name" id="site_name" maxlength="25" size="25"/></td>
-      <td><input type=text name="latitude" id="latitude" size="6"/></td>
-      <td><input type=text name="longitude" id="longitude" size="6"/></td>
-      <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 15 ? "disabled" : ""%>> Add</button></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<br />
-<%= link_to "<button>Finish</button>".html_safe, logout_subscribers_path %>
+    </thead>
+    <tbody>
+      <% et_product = Product.where(name: 'Evapotranspiration').first %>
+      <% @subscriber.subscriptions.where(product: et_product).each do |subscription| %>
+        <tr>
+          <td><%= subscription.name %></td>
+          <td><%= subscription.latitude %></td>
+          <td><%= subscription.longitude %></td>
+          <td class='delete-site' data-subscription-id=<%= subscription.id %>><span>Delete Site</span> <%= image_tag("cross.png", class:'delete-cross') %></td>
+        </tr>
+      <% end %>
+      <tr id="add-controls">
+        <td><input type=text name="site_name" id="site_name" maxlength="25" size="25"/></td>
+        <td><input type=text name="latitude" id="latitude" size="6"/></td>
+        <td><input type=text name="longitude" id="longitude" size="6"/></td>
+        <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 15 ? "disabled" : ""%>> Add</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <br />
+  <%= link_to "<button>Finish</button>".html_safe, logout_subscribers_path %>
+</div>

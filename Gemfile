@@ -39,6 +39,7 @@ gem 'jbuilder', '~> 1.2'
 # Use HTTParty for connecting to new backend
 gem 'httparty'
 
+gem 'will_paginate'
 gem 'whenever'
 
 group :doc do

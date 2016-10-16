@@ -144,6 +144,7 @@ class SubscribersController < ApplicationController
 
   def admin
 
+    @subscribers = Subscriber.order(:email).paginate(page: params[:page])
   end
 
   private
