@@ -132,6 +132,11 @@ class SubscribersController < ApplicationController
     end
   end
 
+  def logout
+    remove_from_session
+    redirect_to sun_water_et_wimn_path
+  end
+
   private
     def subscriber_params
       params.require(:subscriber).permit(:name, :email, :confirmed)
