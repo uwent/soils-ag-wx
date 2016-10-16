@@ -1,20 +1,23 @@
 class SubscribersController < ApplicationController
-  
+  before_action :get_subscriber_from_session, only: [:manage,
+                                                     :add_subscription,
+                                                     :remove_subscription]
+
+
   def index
     remove_from_session
   end
 
   def manage
     # is there a subscriber in the session? If so they have already validated.
-    if !session[:subscriber].nil?
-      @subscriber = Subscriber.find(session[:subscriber])
+    if !@subscriber.nil?
       if params[:email_address] && params[:email_address] != @subscriber.email
         remove_from_session
         redirect_to manage_subscribers_path(email_address: params[:email_address])
       else
         render
       end
-    elsif params[:email_address].nil? 
+    elsif params[:email_address].nil?
       redirect_to subscribers_path
     elsif @subscriber = Subscriber.email_find(params[:email_address])
       if @subscriber.is_confirmed?
@@ -27,7 +30,7 @@ class SubscribersController < ApplicationController
       @email_address = params[:email_address]
       redirect_to new_subscriber_path(email: @email_address)
     end
-  end  
+  end
 
   def new
     @subscriber = Subscriber.new(email: params[:email])
@@ -96,29 +99,31 @@ class SubscribersController < ApplicationController
   end
 
   def add_subscription
-    @subscriber = Subscriber.find(params[:id])
+    return render json: {message: "error"} if @subscriber.nil?
+
     site_name = params[:site_name]
     lat = params[:latitude]
     long = params[:longitude]
     product = Product.where(name: 'Evapotranspiration').first
-    respond_to do |format| 
-      subscription = Subscription.new(name: site_name, 
-                                       latitude: lat, 
+    respond_to do |format|
+      subscription = Subscription.new(name: site_name,
+                                       latitude: lat,
                                        longitude: long,
                                        product_id: product.id)
-                                              
+
       @subscriber.subscriptions << subscription
       format.json { render json: subscription }
     end
   end
 
   def remove_subscription
-    @subscriber = Subscriber.find(params[:id])
+    return render json: {message: "error"} if @subscriber.nil?
+
     subscription_id = params[:subscription_id]
     @subscriber.subscriptions.where(id: subscription_id).first.delete
-    respond_to do |format| 
+    respond_to do |format|
       format.json { render json: {message: "success"} }
-    end    
+    end
   end
 
   def unsubscribe
@@ -137,6 +142,10 @@ class SubscribersController < ApplicationController
     redirect_to sun_water_et_wimn_path
   end
 
+  def admin
+
+  end
+
   private
     def subscriber_params
       params.require(:subscriber).permit(:name, :email, :confirmed)
@@ -149,6 +158,8 @@ class SubscribersController < ApplicationController
     def remove_from_session
       session.delete(:subscriber)
     end
-end    
 
-
+    def get_subscriber_from_session
+      @subscriber = Subscriber.where(id: session[:subscriber]).first
+    end
+end

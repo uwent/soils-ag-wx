@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161002144420) do
+ActiveRecord::Schema.define(version: 20161016143053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20161002144420) do
     t.datetime "confirmed_at"
     t.string   "validation_token"
     t.datetime "validation_created_at"
+    t.boolean  "admin",                 default: false
   end
 
   create_table "subscriptions", force: true do |t|

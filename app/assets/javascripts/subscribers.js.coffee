@@ -80,8 +80,9 @@ $ ->
         latitude: parseFloat(lat).toFixed(1)
         longitude: parseFloat(long).toFixed(1)
       success: (data) ->
-        add_to_table(data)
-        erase_inputs()
+        if (data.id)
+          add_to_table(data)
+          erase_inputs()
         
   $('table').on 'click', '.delete-site', (event) ->
     sub_id = $(event.target).closest('td').data('subscription-id')
@@ -92,6 +93,7 @@ $ ->
       data:
         subscription_id: sub_id
       success: (data) ->
-        parent_row.fadeOut(1000, =>
-          $(this).remove())
+        if (data.message != 'Error')
+          parent_row.fadeOut(1000, =>
+            $(this).remove())
         $('#submit_site').prop('disabled', false)
