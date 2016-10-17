@@ -18,16 +18,20 @@
       <tr>
         <th width="40%">Name</th>
         <th width="40%">Email</th>
-        <th width="20%" align="right">Locations</th>
+        <th width="10%" align="right">Locations</th>
+        <th width="10%" align="right"></th>
       </tr>
     </thead>
     <tbody>
       <% @subscribers.each do |sub| %>
         <tr>
-          <td><%= sub.name %></td>
-          <td><%= sub.email %></td>
+          <td><%= best_in_place sub, :name, :as => :input %></td>
+          <td><%= best_in_place sub, :email, :as => :input %></td>
           <td align="right"><%= sub.subscriptions.count %></td>
-        </tr>
+          <td>
+            <%= link_to "<button>Locations</button>".html_safe, manage_subscribers_path(to_edit_id: sub.id) %>
+          </td>
+      </tr>
       <% end %>
     </tbody>
   </table>

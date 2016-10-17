@@ -109,9 +109,9 @@ SoilsAgWx::Application.routes.draw do
 
   resources :wi_mn_dets
 
-  resources :products
+  #resources :products
 
-  resources :subscribers, only: [:index, :new, :create] do
+  resources :subscribers, only: [:index, :new, :create, :edit, :update] do
     collection do 
       post :manage
       get :manage

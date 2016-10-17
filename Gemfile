@@ -40,6 +40,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'httparty'
 
 gem 'will_paginate'
+gem 'best_in_place'
 gem 'whenever'
 
 group :doc do

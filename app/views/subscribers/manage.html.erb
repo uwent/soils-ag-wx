@@ -18,7 +18,6 @@
 <div class="subscriber">
   <b>Name: </b><%= @subscriber.name %> <b>Email: </b><%= @subscriber.email %>
   <br />
-  <%= link_to "<button>Admin</button>".html_safe, admin_subscribers_path if @subscriber.admin? %>
   <br />
   <br />
   <h2>How To Subscribe</h2>
@@ -61,5 +60,6 @@
   </table>
   <br />
   <br />
+  <%= link_to "<button>Admin</button>".html_safe, admin_subscribers_path if @admin %>
   <%= link_to "<button>Finish</button>".html_safe, logout_subscribers_path %>
 </div>

@@ -1,5 +1,5 @@
 class SubscribersController < ApplicationController
-  before_action :get_subscriber_from_session, only: [:manage,
+  before_action :get_subscriber_from_session, only: [:manage, :update, :admin,
                                                      :add_subscription,
                                                      :remove_subscription]
 
@@ -15,6 +15,11 @@ class SubscribersController < ApplicationController
         remove_from_session
         redirect_to manage_subscribers_path(email_address: params[:email_address])
       else
+        @admin = @subscriber.admin?
+        if @subscriber.admin? && params[:to_edit_id]
+          @subscriber = Subscriber.find(params[:to_edit_id])
+        end
+
         render
       end
     elsif params[:email_address].nil?
@@ -101,6 +106,10 @@ class SubscribersController < ApplicationController
   def add_subscription
     return render json: {message: "error"} if @subscriber.nil?
 
+    if @subscriber.admin? && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
+
     site_name = params[:site_name]
     lat = params[:latitude]
     long = params[:longitude]
@@ -119,6 +128,9 @@ class SubscribersController < ApplicationController
   def remove_subscription
     return render json: {message: "error"} if @subscriber.nil?
 
+    if @subscriber.admin? && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
     subscription_id = params[:subscription_id]
     @subscriber.subscriptions.where(id: subscription_id).first.delete
     respond_to do |format|
@@ -143,8 +155,20 @@ class SubscribersController < ApplicationController
   end
 
   def admin
+    return redirect_to subscribers_path if @subscriber.nil?
+    return redirect_to manage_subscribers_path unless @subscriber.admin?
+    
+    @subscribers = Subscriber.order(:email).paginate(page: params[:page], per_page: 20)
+  end
 
-    @subscribers = Subscriber.order(:email).paginate(page: params[:page])
+  def update
+    return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
+    
+    subr = Subscriber.find(params[:id])
+    subr.update_attributes(subscriber_params)
+    respond_to do |format|
+      format.json { render json: {message: "success"} }
+    end
   end
 
   private

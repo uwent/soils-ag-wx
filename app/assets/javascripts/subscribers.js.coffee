@@ -2,6 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
+  $(".best_in_place").best_in_place()
+
+
   sub_count = 0
   if $('#sub_count').length > 0
     sub_count = parseInt($('#sub_count').val()) 
@@ -47,7 +50,7 @@ $ ->
     $('#site_name').val("")
     $('#latitude').val("")
     $('#longitude').val("")
-    
+
   # =====================================================================
   # Clicked to resend the confirmation email
   # =====================================================================
@@ -64,6 +67,7 @@ $ ->
   # submit adding a subscription
   # =====================================================================
   $('#submit_site').click (event) ->
+    subscriber_id = $('#subscriber_id').val()
     site_name = $('#site_name').val()
     lat = $('#latitude').val()
     long = $('#longitude').val()
@@ -79,6 +83,7 @@ $ ->
         site_name: site_name
         latitude: parseFloat(lat).toFixed(1)
         longitude: parseFloat(long).toFixed(1)
+        to_edit_id: subscriber_id
       success: (data) ->
         if (data.id)
           add_to_table(data)
@@ -87,13 +92,16 @@ $ ->
   $('table').on 'click', '.delete-site', (event) ->
     sub_id = $(event.target).closest('td').data('subscription-id')
     parent_row = $(event.target).closest('tr')
+    subscriber_id = $('#subscriber_id').val()
     $.ajax
       type: 'POST'
       url: $('#remove_url').val()
       data:
         subscription_id: sub_id
+        to_edit_id: subscriber_id
       success: (data) ->
         if (data.message != 'Error')
           parent_row.fadeOut(1000, =>
             $(this).remove())
         $('#submit_site').prop('disabled', false)
+
