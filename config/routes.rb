@@ -111,7 +111,7 @@ SoilsAgWx::Application.routes.draw do
 
   #resources :products
 
-  resources :subscribers, only: [:index, :new, :create, :edit, :update] do
+  resources :subscribers, only: [:index, :new, :create, :edit, :update, :destroy] do
     collection do 
       post :manage
       get :manage

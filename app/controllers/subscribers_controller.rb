@@ -1,5 +1,6 @@
 class SubscribersController < ApplicationController
   before_action :get_subscriber_from_session, only: [:manage, :update, :admin,
+                                                     :destroy,
                                                      :add_subscription,
                                                      :remove_subscription]
 
@@ -168,6 +169,16 @@ class SubscribersController < ApplicationController
     subr.update_attributes(subscriber_params)
     respond_to do |format|
       format.json { render json: {message: "success"} }
+    end
+  end
+
+  def destroy
+    return redirect_to subscribers_path if @subscriber.nil? || !@subscriber.admin?
+    subr = Subscriber.find(params[:id])
+    subr.subscriptions.each { |s| s.delete }
+    subr.destroy
+    respond_to do |format|
+      format.html { redirect_to admin_subscribers_path }
     end
   end
 
