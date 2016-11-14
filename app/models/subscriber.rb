@@ -54,7 +54,7 @@ class Subscriber < ActiveRecord::Base
     et_product = Product.where(name: 'Evapotranspiration').first
     date = Date.today - 1.day
     return if (date.yday < et_product.default_doy_start || 
-               date.yday > et_product.default_doy_end)
+               date.yday >= et_product.default_doy_end)
     Subscriber.all.each do |subscriber| 
       subs = subscriber.subscriptions.where(product: et_product).map do |sub| 
         { 
