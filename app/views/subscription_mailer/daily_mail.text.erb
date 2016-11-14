@@ -5,8 +5,8 @@ Daily evapotranspiration (ET) data for <%= @subscriber.name %>.
 The daily ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.
 
 
-Site Id                      Lat/Long  ET Value
--------------------------  ----------  --------
+Site Id                      Lat/Long  ET Value (in/day)
+-------------------------  ----------  -----------------
 <% @values.each do |sub| %>
 <%= sprintf("%-25s  %.1f/%.1f  %.3f", sub[:site_name],sub[:latitude], sub[:longitude],  sub[:value]) %>
 <% end %>
