@@ -68,6 +68,14 @@ class Subscriber < ActiveRecord::Base
     end
   end
 
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+      Subscriber.all.order(:email).each do |subscriber|
+        csv << [subscriber.email]
+      end
+    end
+  end
+
   private
     def set_confirmation_token
      self.confirmation_token = random_code

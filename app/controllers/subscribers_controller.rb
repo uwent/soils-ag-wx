@@ -2,7 +2,8 @@ class SubscribersController < ApplicationController
   before_action :get_subscriber_from_session, only: [:manage, :update, :admin,
                                                      :destroy,
                                                      :add_subscription,
-                                                     :remove_subscription]
+                                                     :remove_subscription,
+                                                     :export_emails]
 
 
   def index
@@ -158,13 +159,22 @@ class SubscribersController < ApplicationController
   def admin
     return redirect_to subscribers_path if @subscriber.nil?
     return redirect_to manage_subscribers_path unless @subscriber.admin?
-    
+
     @subscribers = Subscriber.order(:email).paginate(page: params[:page], per_page: 20)
+  end
+
+  def export_emails
+    return redirect_to subscribers_path if @subscriber.nil?
+    return redirect_to manage_subscribers_path unless @subscriber.admin?
+
+    respond_to do |format|
+      format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv"}
+    end
   end
 
   def update
     return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
-    
+
     subr = Subscriber.find(params[:id])
     subr.update_attributes(subscriber_params)
     respond_to do |format|
