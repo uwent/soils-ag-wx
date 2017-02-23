@@ -9,12 +9,12 @@ module AwonHelper
     END
     str.html_safe
   end
-  
+
   def station_selector_section
     <<-END
     <select name="stnid" SIZE=4 id="station_selector">
-      <option value="4781" SELECTED>4781 1985-01-01 to present Arlington</option>
-      <option value="4751">4751 1985-01-01 to present Hancock&nbsp;</option>
+      <option value="4781" SELECTED>4781 1985-01-01 to 2017-02-21 Arlington</option>
+      <option value="4751">4751 1985-01-01 to 2017-02-21 Hancock&nbsp;</option>
       <option value="4773">4773 1989-1998, 2001-10-17 to 2013-03-13 Spring Green&nbsp;</option>
       <option value="4756">4756 2005-12-09 to 2006-07-24 Marshfield&nbsp;</option>
       <option value="4731">4731 1985-01-01 1998-10-03 Antigo&nbsp;</option>
@@ -42,12 +42,12 @@ module AwonHelper
     </select>
     END
   end
-  
+
   def status_boldness(stn)
     boldness = (stn.status ? 'bold' : 'normal')
     "<span style='font-weight: #{boldness}'>"
   end
-  
+
   def col_format(rec,col)
     val = rec.send(col[0])
     if val.class == Date || val.class == DateTime
@@ -59,7 +59,7 @@ module AwonHelper
       "<td>#{h(val)}</td>".html_safe
     end
   end
-  
+
   def check_boxes(attr_human_readables)
     ii = -1
     attr_human_readables.each do |ahr|
