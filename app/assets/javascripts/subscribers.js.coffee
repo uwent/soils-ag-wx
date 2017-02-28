@@ -7,31 +7,31 @@ $ ->
 
   sub_count = 0
   if $('#sub_count').length > 0
-    sub_count = parseInt($('#sub_count').val()) 
-  
+    sub_count = parseInt($('#sub_count').val())
+
   validate_lat = (lat) ->
-    if !$.isNumeric(lat) 
+    if !$.isNumeric(lat)
       return false
     lat_num = parseFloat(lat)
-    return (lat_num >= 42.0 && lat_num <= 50.0)
+    return (lat_num >= 42.0 && lat_num <= 47.1)
 
   validate_name = (site_name) ->
     return $.trim(site_name)
 
   validate_long = (long) ->
-    if !$.isNumeric(long) 
+    if !$.isNumeric(long)
       return false
     long_num = parseFloat(long)
-    return (long_num >= -98.0 && long_num <= -86.0)
+    return (long_num >= -93.1 && long_num <= -86.8)
 
   validate = (site_name, lat, long) ->
     validations = []
     if !validate_name(site_name)
       validations.push("Invalid site name.")
     if !validate_lat(lat)
-      validations.push("Invalid latitude. Must be a number between 42.0 and 50.0")
+      validations.push("Invalid latitude. Must be a number between 42.0 and 47.1")
     if !validate_long(long)
-      validations.push("Invalid longitude. Must be a number between -86.0 and -98.0")
+      validations.push("Invalid longitude. Must be a number between -86.8 and -93.1")
     return validations
 
   add_to_table = (sub) ->
@@ -62,7 +62,7 @@ $ ->
         alert("We have resent the confirmation. Check your email.")
       .error ->
         alert("ERROR: We were unable to resend your confirmation.")
-  
+
   # =====================================================================
   # submit adding a subscription
   # =====================================================================
@@ -71,7 +71,7 @@ $ ->
     site_name = $('#site_name').val()
     lat = $('#latitude').val()
     long = $('#longitude').val()
-    valid = validate(site_name, lat, long) 
+    valid = validate(site_name, lat, long)
     if (valid.length > 0)
       alert(valid.join("\n"))
       return false
@@ -88,7 +88,7 @@ $ ->
         if (data.id)
           add_to_table(data)
           erase_inputs()
-        
+
   $('table').on 'click', '.delete-site', (event) ->
     sub_id = $(event.target).closest('td').data('subscription-id')
     parent_row = $(event.target).closest('tr')
@@ -104,4 +104,3 @@ $ ->
           parent_row.fadeOut(1000, =>
             $(this).remove())
         $('#submit_site').prop('disabled', false)
-
