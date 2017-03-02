@@ -9,7 +9,7 @@ module WeatherHelper
   def hyd_link_for(date,text=date.mday)
     year = date.year
     if date <= Date.today
-      link_to text, "#{HYD_ASSET_PATH}/#{year}/Hyd.filename(date)}"
+      link_to text, "#{HYD_ASSET_PATH}/#{year}/#{Hyd.filename(date)}"
     else
       text.to_s
     end
