@@ -9,7 +9,7 @@ class Hyd < ActiveRecord::Base
   end
 
   def self.filename(date)
-    "opu#{date.year}#{date.yday}"
+    "opu#{date.year}#{'%03d' % date.yday}"
   end
 
   def self.get_data(version=1)
