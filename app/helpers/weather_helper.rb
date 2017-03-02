@@ -1,16 +1,15 @@
 module WeatherHelper
   include AgwxGrids
-  HYD_ASSET_PATH='http://agwx.soils.wisc.edu/soils-agwx-assets/uwex_agwx/hyd'
+  HYD_ASSET_PATH='/hyd'
   def todays_hyd_link
     yesterday = 1.days.ago
     hyd_link_for(yesterday,"Yesterday's report")
   end
-  
+
   def hyd_link_for(date,text=date.mday)
     year = date.year
-    doy = date.yday
     if date <= Date.today
-      link_to text, "#{HYD_ASSET_PATH}/#{year}/opu#{year}#{sprintf("%03d",doy)}"
+      link_to text, "#{HYD_ASSET_PATH}/#{year}/Hyd.filename(date)}"
     else
       text.to_s
     end
@@ -28,7 +27,7 @@ module WeatherHelper
       "<td>&nbsp;</td>"
     end
   end
-  
+
   def hyd_week(date)
     wday = 0
     res = "<tr>"
@@ -53,30 +52,30 @@ module WeatherHelper
     end
     [res+"</tr>",date+wday]
   end
-  
+
   def hyd_month_row(date)
     <<-END
     <tr><th colspan="7" align="center">#{date.strftime("%B")}</th></tr>
     <tr><th>S</th><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>Sa</th></tr>
     END
   end
-  
+
   def hyd_new_month(date)
     <<-END
     </table></td><td style='padding:10px'><table>
     #{hyd_month_row(date)}
     END
   end
-  
+
   # FIXME: Magic Numbers!
   def latitudes
     (42.0..50.0).step(0.4).collect {|lat| [lat,lat] }
   end
-  
+
   def longitudes
     (-98.0..-86.0).step(0.4).collect {|longi| [longi,longi]}
   end
-  
+
   def calendar_grid_color(mday,column,today=Date.today)
     if mday == today.mday && column + 1 == today.month
       "aqua"
@@ -86,7 +85,7 @@ module WeatherHelper
       "light-grey"
     end
   end
-  
+
   def webcam_archive_link(thumb,full)
     tts = thumb.timestamp
     fts = full.timestamp

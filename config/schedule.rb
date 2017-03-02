@@ -28,3 +28,10 @@ every :day, at: '6:40am' do
   runner "Subscriber.send_daily_mail"
 end
 
+every "00,15,30,45 9,10,11 * * *" do
+  runner "Hyd.load_file"
+end
+
+every "00 13,15,17,19,21 * * *" do
+  runner "Hyd.load_file"
+end
