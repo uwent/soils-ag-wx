@@ -203,6 +203,15 @@ td.delete-site {
   }
 }
 
+.awon-notice {
+  float: right;
+  width: 40%;
+
+  .title {
+    font-weight: bold;
+    font-size: 150%;
+  }
+}
 .apple_pagination {
   background: #f1f1f1;
   border: 1px solid #e5e5e5;
@@ -260,3 +269,4 @@ td.delete-site {
     margin-right: 1em; }
   .flickr_pagination .next_page {
     margin-left: 1em; }
+

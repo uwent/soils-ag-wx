@@ -52,6 +52,17 @@
   <%= render :partial => 'awon_check_boxes', :locals => {:report_type => @report_type, :ahrs => @ahrs} %>
 </div>
 <p/>
+<div class="awon-notice">
+  <span class="title">Important Notice</span>
+  <p>After the dates shown above, data from Arlington and Hancock will be available via the <a href='http://enviroweather.msu.edu'>Michigan State University Enviroweather Service</a>.
+  </p>
+  <p>
+    Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.
+  </p>
+  <p>
+    Data collected and recovered prior to the end date above are archived and available here.
+  </p>
+</div>
 <table>
   <tr><td>From: </td><td><%= select_date Time.now - 8.days, prefix: 'start_date', start_year: 1985 %></td></tr>
   <tr><td>To: </td><td><%= select_date Time.now - 1.day, prefix: 'end_date', start_year: 1985 %></td></tr>
