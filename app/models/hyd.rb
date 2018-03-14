@@ -16,7 +16,9 @@ class Hyd < ActiveRecord::Base
     server = 'forecast.weather.gov'
     url = sprintf('/product.php?site=NWS&issuedby=MKX&product=HYD&format=TXT&version=%0d&glossary=0',version.to_i)
 
-    res = Net::HTTP.get(server,url)
+    uri = URI("https://#{server}#{url}")
+    res = Net::HTTP.get(uri)
+
     if res
       preface,body = res.split(/\<pre .*>/)
       if body
