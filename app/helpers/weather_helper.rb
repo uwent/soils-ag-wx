@@ -69,11 +69,11 @@ module WeatherHelper
 
   # FIXME: Magic Numbers!
   def latitudes
-    (42.0..50.0).step(0.4).collect {|lat| [lat,lat] }
+    (42.0..47.1).step(0.3).collect {|lat| [lat.round(1),lat.round(1)] }
   end
 
   def longitudes
-    (-98.0..-86.0).step(0.4).collect {|longi| [longi,longi]}
+    (-93.1..-86.8).step(0.3).collect {|longi| [longi.round(1),longi.round(1)]}
   end
 
   def calendar_grid_color(mday,column,today=Date.today)
