@@ -41,8 +41,9 @@
 
 <div class="fineline"></div>
 <h2>Irrigation Scheduling</h2>
-<p>An <%= link_to 'online irrigation scheduler application', "http://wisp.cals.wisc.edu/" %> is available for your use. We also have an <%= link_to "irrigation scheduling spreadsheet", 'WI_Irrigation_Scheduler.xls' %> is available which uses these models to implement an allowable-depletion balance. This replaces the old ADCosmET.xls spreadsheet, and was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science. The documentation for the spreadsheet is available <%= link_to "here", 'WIS_Quick_Guide.pdf' %>.</p>
-
+<p>
+    An online irrigation scheduling application is available along with an irrigation scheduling spreadsheet and documentation to calculate the allowable-depletion balance. These tools are available at the <a href='https://fyi.uwex.edu/cropirrigation/wisconsin-irrigation-scheduling-program-wisp/'>UW Extension, Understanding Crop Irrigation</a> web site. The spreadsheet replaces the old ADCosmET.xls spreadsheet, and was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science.
+</p>
 <div class="fineline"></div>
 <h2>Cranberry Consumptive Use Estimates</h2>
 <p><%= link_to "This calculator", :controller => 'cranberry'%> allows cranberry growers to estimate the monthly consumptive water use of their beds. The estimate is based on the research of Bland et al. (1996, Agric. and Forest Meteorol. 81:1-12), which demonstrated well-watered cranberry ET to be just slightly higher than the "equilibrium ET." Values supplied here are derived from the University of Wisconsin-Madison estimation of the Priestley-Taylor <%= link_to 'potential evapotranspiration', :controller => 'sun_water', :action => :et_wimn %>, corrected following Bland et al. (1996)</p>
