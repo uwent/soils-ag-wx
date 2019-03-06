@@ -9,7 +9,7 @@
      :style => "float:right; margin-left: 1em; margin-right: 0.5em"}%>
   <!-- <p><a href="http://www.uwex.edu/">University of Wisconsin Extension</a> and the <a href="http://soils.wisc.edu/">
     UW Soil Science Department</a> hope you'll find useful information here.</p> -->
-	<p>If you're looking for the old WI/MN Extension site, you're in the right place; we've migrated 
+	<p>If you're looking for the old WI Extension site, you're in the right place; we've migrated
 	  our products. For ET and insolation, see <%= link_to 'Sun/Water', :controller => :sun_water %>;
 	   for degree days, see <%= link_to 'Thermal Models', :controller => :thermal_models %>.</p>
   <p>We offer these data so that growers and other stakeholders in our agricultural landscape
@@ -23,14 +23,13 @@
 <!-- content for remainder of page -->
 
 <%= image_tag "weather.jpg", {:width => "109",  :height => "115", :alt => "Weather Pic", :class => "left"} %>
-<h2><%= link_to "Weather (and Web Cam)", :controller => "weather"%></h2>
+<h2><%= link_to "Weather", :controller => "weather"%></h2>
 <p>We archive <%= link_to 'NWS HYD reports', controller: 'weather', action: :hyd %>, daily weather 
   summaries throughout Wisconsin 1995-present. Our 
   <%= link_to "automated weather stations", :controller => 'awon', :action => :index %>, offer a continuous
   hourly record at Hancock and Arlington back to 1985. We integrate hourly
   observations at airports all over the Upper Midwest to provide 
-  <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>. Finally, there's the
-  ever-popular <%= link_to "Web cam", :controller => 'weather', :action => :webcam %> atop our building.
+  <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.
 </p>
 <p>&nbsp;</p><br/><br/>
 <div class="fineline"></div>
