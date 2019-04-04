@@ -6,9 +6,9 @@ set :deploy_to, "/home/deploy/soils_ag_wx"
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
-role :app, %w{deploy@agweather.cals.wisc.edu:216}
-role :web, %w{deploy@agweather.cals.wisc.edu:216}
-role :db,  %w{deploy@agweather.cals.wisc.edu:216}
+role :app, %w{deploy@ec2-34-217-17-64.us-west-2.compute.amazonaws.com:216}
+role :web, %w{deploy@ec2-34-217-17-64.us-west-2.compute.amazonaws.com:216}
+role :db,  %w{deploy@ec2-34-217-17-64.us-west-2.compute.amazonaws.com:216}
 
 # Extended Server Syntax
 # ======================
