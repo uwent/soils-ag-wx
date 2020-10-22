@@ -6,13 +6,8 @@ class SunWaterControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get insol_east_us" do
-    get :insol_east_us
-    assert_response :success
-  end
-
-  test "should get insol_west_us" do
-    get :insol_west_us
+  test "should get insol_us" do
+    get :insol_us
     assert_response :success
   end
 

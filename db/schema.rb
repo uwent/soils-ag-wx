@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "asos_data", force: true do |t|
+  create_table "asos_data", force: :cascade do |t|
     t.date     "date"
     t.time     "nominal_time"
     t.time     "actual_time"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "asos_stations", force: true do |t|
+  create_table "asos_stations", force: :cascade do |t|
     t.string   "stnid"
     t.string   "state"
     t.string   "name"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "awon_field_descrips", force: true do |t|
+  create_table "awon_field_descrips", force: :cascade do |t|
     t.integer  "rec_id"
     t.integer  "column_num"
     t.string   "field_name"
@@ -53,14 +53,14 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "awon_record_types", force: true do |t|
+  create_table "awon_record_types", force: :cascade do |t|
     t.integer  "rec_id"
     t.string   "rec_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "awon_stations", force: true do |t|
+  create_table "awon_stations", force: :cascade do |t|
     t.integer  "stnid"
     t.string   "name"
     t.string   "abbrev"
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "blogs", force: true do |t|
+  create_table "blogs", force: :cascade do |t|
     t.date     "date"
     t.text     "content"
     t.string   "tags",       array: true
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "degree_day_stations", force: true do |t|
+  create_table "degree_day_stations", force: :cascade do |t|
     t.string   "abbrev"
     t.string   "name"
     t.float    "latitude"
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.integer  "region_id"
   end
 
-  create_table "hyds", force: true do |t|
+  create_table "hyds", force: :cascade do |t|
     t.date     "date"
     t.string   "stn"
     t.string   "county"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "products", force: true do |t|
+  create_table "products", force: :cascade do |t|
     t.string   "name"
     t.string   "data_table_name"
     t.string   "type"
@@ -122,14 +122,14 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.integer  "default_doy_end"
   end
 
-  create_table "regions", force: true do |t|
+  create_table "regions", force: :cascade do |t|
     t.string   "name"
     t.string   "abbrev"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "subscribers", force: true do |t|
+  create_table "subscribers", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.string   "confirmation_token"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.boolean  "admin",                 default: false
   end
 
-  create_table "subscriptions", force: true do |t|
+  create_table "subscriptions", force: :cascade do |t|
     t.string   "name"
     t.integer  "subscriber_id"
     t.float    "latitude"
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.boolean  "enabled",       default: true
   end
 
-  create_table "t401s", force: true do |t|
+  create_table "t401s", force: :cascade do |t|
     t.integer  "awon_station_id"
     t.date     "date"
     t.integer  "time"
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "t403s", force: true do |t|
+  create_table "t403s", force: :cascade do |t|
     t.integer  "awon_station_id"
     t.date     "date"
     t.integer  "time"
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "t406s", force: true do |t|
+  create_table "t406s", force: :cascade do |t|
     t.integer  "awon_station_id"
     t.date     "date"
     t.integer  "time"
@@ -211,7 +211,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "t411s", force: true do |t|
+  create_table "t411s", force: :cascade do |t|
     t.integer  "awon_station_id"
     t.date     "date"
     t.integer  "time"
@@ -251,7 +251,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "t412s", force: true do |t|
+  create_table "t412s", force: :cascade do |t|
     t.integer  "awon_station_id"
     t.date     "date"
     t.integer  "time"
@@ -275,7 +275,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "webcam_images", force: true do |t|
+  create_table "webcam_images", force: :cascade do |t|
     t.datetime "timestamp"
     t.string   "fname"
     t.string   "sequence_fname"
@@ -284,7 +284,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "wi_mn_d_ave_t_airs", force: true do |t|
+  create_table "wi_mn_d_ave_t_airs", force: :cascade do |t|
     t.date     "date"
     t.time     "time"
     t.float    "latitude"
@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "wi_mn_d_ave_vaprs", force: true do |t|
+  create_table "wi_mn_d_ave_vaprs", force: :cascade do |t|
     t.date     "date"
     t.time     "time"
     t.float    "latitude"
@@ -362,7 +362,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "wi_mn_d_max_t_airs", force: true do |t|
+  create_table "wi_mn_d_max_t_airs", force: :cascade do |t|
     t.date     "date"
     t.time     "time"
     t.float    "latitude"
@@ -401,7 +401,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "wi_mn_d_min_t_airs", force: true do |t|
+  create_table "wi_mn_d_min_t_airs", force: :cascade do |t|
     t.date     "date"
     t.time     "time"
     t.float    "latitude"
@@ -440,7 +440,7 @@ ActiveRecord::Schema.define(version: 20161016143053) do
     t.datetime "updated_at"
   end
 
-  create_table "wi_mn_dets", force: true do |t|
+  create_table "wi_mn_dets", force: :cascade do |t|
     t.date     "date"
     t.time     "time"
     t.float    "latitude"

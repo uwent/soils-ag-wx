@@ -1,15 +1,17 @@
 require 'test_helper'
 
 class AwonControllerTest < ActionController::TestCase
+
   test "should get awon_check_boxes" do
     get :awon_check_boxes
     assert_response :success
   end
 
-  test "should get select_data" do
-    get :select_data
-    assert_response :success
-  end
+# TODO test private method
+  # test "should get select_data" do
+  #   get :select_data
+  #   assert_response :success
+  # end
 
   test "should get station_info" do
     get :station_info

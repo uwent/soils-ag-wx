@@ -1,12 +1,12 @@
 class WiMnDetsController < ApplicationController
   before_action :set_wi_mn_det, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate, only: [:create, :update, :delete]
-  
+
   include GridController
 
   # GET /wi_mn_dets
   # GET /wi_mn_dets.json
-  
+
   def grid_classes
     GRID_CLASSES.reject { |key,val| key != 'ET' }
   end

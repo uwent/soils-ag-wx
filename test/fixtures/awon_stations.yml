@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  stnid: 1
+  stnid: 4751
   name: MyString
   abbrev: MyString
   county: MyString
@@ -17,7 +17,7 @@ one:
   has_404: false
 
 two:
-  stnid: 1
+  stnid: 4781
   name: MyString
   abbrev: MyString
   county: MyString

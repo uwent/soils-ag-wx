@@ -47,9 +47,10 @@ class AsosDataController < ApplicationController
 
   # PATCH/PUT /asos_data/1
   # PATCH/PUT /asos_data/1.json
+  # pass asos_station params, this probably wasn't working before -BB 10/21
   def update
     respond_to do |format|
-      if @asos_datum.update(asos_datum_params)
+      if @asos_datum.update(asos_datum_params(asos_station))
         format.html { redirect_to @asos_datum, notice: 'Asos datum was successfully updated.' }
         format.json { head :no_content }
       else
@@ -82,13 +83,14 @@ class AsosDataController < ApplicationController
     mins = ((ts % 10000) - secs) / 100
     Time.new(dt.year,dt.month,dt.day,hours,mins,secs)
   end
-  
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def asos_datum_params(asos_station)
     p = params.require(:asos_datum).permit(
       :date, :nominal_time, :actual_time, :asos_station_id, :t_dew, :t_air, :windspeed, :pressure, :precip, :wind_dir
     )
     # Date might come in as an actual date during normal editing, or YYYYDDD from McIDAS intake
+    # Second whencase is most likely never hit, code was written incorrectly, -BB 10/20
     case p[:date]
     # ASOS intake
     when /([\d]{4})([\d]+)$/
@@ -98,17 +100,17 @@ class AsosDataController < ApplicationController
       p[:actual_time] = time_from_date_and_timestamp(dt,p[:actual_time])
     # normal update or create
     when /([\d]{4})-([\d]{2})-([\d]{2})$/
-      p[:date] = Date.parse [:date]
+      p[:date] = Date.parse p[:date]
     else
       raise "Invalid date #{p[:date].inspect}"
     end
     p[:asos_station_id] ||= asos_station[:id]
     p
   end
-  
+
   def asos_station
     p = params.require(:asos_station).permit(:stnid,:latitude,:longitude)
     AsosStation.find_by_stnid(p[:stnid]) || AsosStation.create!(p)
   end
-  
+
 end

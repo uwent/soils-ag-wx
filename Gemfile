@@ -1,50 +1,28 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
-
-# Use Postgres
 gem 'pg', '~> 0.15'
-
 # Use MySQL for sucking old data off Molly
 #gem 'mysql'
-
 # Use agwx_grids for uploading data from text grids to database
 gem 'agwx_grids', '>= 0.0.6'
-
 # Use agwx_biophys for degree days and the like
 gem 'agwx_biophys'
-
-# Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
-
-# Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.0.4'
 gem 'jquery-ui-rails', '~> 4.1.1'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
-
-# Use HTTParty for connecting to new backend
 gem 'httparty'
-
 gem 'will_paginate'
 gem 'best_in_place'
 gem 'whenever'
+gem 'pry-rails'
 
 group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 

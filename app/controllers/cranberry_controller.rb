@@ -1,12 +1,12 @@
 class CranberryController < ApplicationController
   before_filter :set_title
-  
+
   def index
   end
-  
+
   def summary
     unless params[:latitude] && params[:longitude]
-      redirect_to :index
+      redirect_to :cranberry_index
       return
     end
     @latitude = params[:latitude].to_f
@@ -25,7 +25,7 @@ class CranberryController < ApplicationController
       end
     end
   end
-  
+
   private
   def set_title
     @title = "Cranberry Consumptive Use Estimates"

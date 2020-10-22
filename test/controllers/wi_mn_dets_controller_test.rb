@@ -4,11 +4,11 @@ class WiMnDetsControllerTest < ActionController::TestCase
   setup do
     @wi_mn_det = wi_mn_dets(:one)
   end
-
+  
+# TODO double check this is correct
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:wi_mn_dets)
   end
 
   test "should get new" do

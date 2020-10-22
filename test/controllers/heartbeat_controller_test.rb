@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class HeartbeatControllerTest < ActionController::TestCase
+
   test "should get index" do
     get :index
     assert_response :success
@@ -15,11 +16,12 @@ class HeartbeatControllerTest < ActionController::TestCase
     get :asos
     assert_response :success
   end
-
-  test "should get hyd" do
-    get :hyd
-    assert_response :success
-  end
+  
+  # TODO
+  # test "should get hyd" do
+  #   get :hyd
+  #   assert_response :success
+  # end
 
   test "should get dd" do
     get :dd
@@ -43,6 +45,11 @@ class HeartbeatControllerTest < ActionController::TestCase
 
   test "should get webapps" do
     get :webapps
+    assert_response :success
+  end
+
+  test "should get asos grids" do
+    get :asos_grids
     assert_response :success
   end
 
