@@ -3,8 +3,6 @@ class AsosDataController < ApplicationController
   before_filter :authenticate, only: [:create, :update, :delete]
   before_action :set_asos_datum, only: [:show, :edit, :update, :destroy]
 
-  # GET /asos_data
-  # GET /asos_data.json
   def index
     case params.require(:asos_station_id)
     when /^([\d]+)$/
@@ -15,22 +13,6 @@ class AsosDataController < ApplicationController
     @asos_data = AsosDatum.where(asos_station_id: asos_station_id)
   end
 
-  # GET /asos_data/1
-  # GET /asos_data/1.json
-  def show
-  end
-
-  # GET /asos_data/new
-  def new
-    @asos_datum = AsosDatum.new
-  end
-
-  # GET /asos_data/1/edit
-  def edit
-  end
-
-  # POST /asos_data
-  # POST /asos_data.json
   def create
     @asos_datum = AsosDatum.new(asos_datum_params(asos_station))
 
@@ -45,8 +27,6 @@ class AsosDataController < ApplicationController
     end
   end
 
-  # PATCH/PUT /asos_data/1
-  # PATCH/PUT /asos_data/1.json
   # pass asos_station params, this probably wasn't working before -BB 10/21
   def update
     respond_to do |format|
@@ -60,8 +40,7 @@ class AsosDataController < ApplicationController
     end
   end
 
-  # DELETE /asos_data/1
-  # DELETE /asos_data/1.json
+
   def destroy
     @asos_datum.destroy
     respond_to do |format|

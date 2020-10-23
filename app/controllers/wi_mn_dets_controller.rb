@@ -4,8 +4,6 @@ class WiMnDetsController < ApplicationController
 
   include GridController
 
-  # GET /wi_mn_dets
-  # GET /wi_mn_dets.json
 
   def grid_classes
     GRID_CLASSES.reject { |key,val| key != 'ET' }
@@ -14,22 +12,10 @@ class WiMnDetsController < ApplicationController
     @grid_classes = grid_classes
   end
 
-  # GET /wi_mn_dets/1
-  # GET /wi_mn_dets/1.json
-  def show
-  end
-
-  # GET /wi_mn_dets/new
   def new
     @wi_mn_det = WiMnDet.new
   end
 
-  # GET /wi_mn_dets/1/edit
-  def edit
-  end
-
-  # POST /wi_mn_dets
-  # POST /wi_mn_dets.json
   def create
     @wi_mn_det = WiMnDet.new(wi_mn_det_params)
 
@@ -44,8 +30,6 @@ class WiMnDetsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /wi_mn_dets/1
-  # PATCH/PUT /wi_mn_dets/1.json
   def update
     respond_to do |format|
       if @wi_mn_det.update(wi_mn_det_params)
@@ -58,8 +42,6 @@ class WiMnDetsController < ApplicationController
     end
   end
 
-  # DELETE /wi_mn_dets/1
-  # DELETE /wi_mn_dets/1.json
   def destroy
     @wi_mn_det.destroy
     respond_to do |format|

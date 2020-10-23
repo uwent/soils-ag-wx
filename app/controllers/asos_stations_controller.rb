@@ -1,30 +1,16 @@
 class AsosStationsController < ApplicationController
   before_action :set_asos_station, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate, only: [:create, :update, :delete]
-  
 
-  # GET /asos_stations
-  # GET /asos_stations.json
+
   def index
     @asos_stations = AsosStation.all
   end
 
-  # GET /asos_stations/1
-  # GET /asos_stations/1.json
-  def show
-  end
-
-  # GET /asos_stations/new
   def new
     @asos_station = AsosStation.new
   end
 
-  # GET /asos_stations/1/edit
-  def edit
-  end
-
-  # POST /asos_stations
-  # POST /asos_stations.json
   def create
     @asos_station = AsosStation.new(asos_station_params)
 
@@ -39,8 +25,6 @@ class AsosStationsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /asos_stations/1
-  # PATCH/PUT /asos_stations/1.json
   def update
     respond_to do |format|
       if @asos_station.update(asos_station_params)
@@ -53,8 +37,6 @@ class AsosStationsController < ApplicationController
     end
   end
 
-  # DELETE /asos_stations/1
-  # DELETE /asos_stations/1.json
   def destroy
     @asos_station.destroy
     respond_to do |format|

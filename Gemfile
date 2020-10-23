@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.10'
 gem 'pg', '~> 0.15'
-# Use MySQL for sucking old data off Molly
-#gem 'mysql'
 # Use agwx_grids for uploading data from text grids to database
 gem 'agwx_grids', '>= 0.0.6'
 # Use agwx_biophys for degree days and the like
@@ -26,13 +24,6 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
 group :development do
   gem 'capistrano', "~> 3.4"
   gem 'capistrano-rails'
@@ -41,6 +32,3 @@ group :development do
   gem 'letter_opener'
   gem 'letter_opener_web'
 end
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]

@@ -67,15 +67,27 @@ class ThermalModelsController < ApplicationController
   def frost_map
   end
 
+  def oak_wilt
+  end
+
+  def set_start_date_end_date(params)
+    if params[:model_type] === "oak_wilt"
+      p = params[:grid_date]
+      @start_date = Date.civil(p["end_date(1i)"].to_i,1,1)
+      @end_date = Date.civil(p["end_date(1i)"].to_i,p["end_date(2i)"].to_i,p["end_date(3i)"].to_i)
+    else
+      @start_date,@end_date = parse_dates(params['grid_date'])
+    end
+  end
+
   def get_dds
     @method = params[:method]
-    @start_date,@end_date = parse_dates(params['grid_date'])
-
+    @method = params[:method]
     @latitude = params[:latitude].to_f
     @longitude = params[:longitude].to_f * -1.0
     @base_temp = params[:base_temp].to_f
     @upper_temp = params[:upper_temp] == 'None' ? nil: params[:upper_temp].to_f
-
+    set_start_date_end_date(params)
     url = "#{Endpoint::BASE_URL}/degree_days?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base_temp=#{@base_temp}"
     url += "&upper_temp=#{@upper_temp}" unless @upper_temp.nil?
     response = HTTParty.get(url, { timeout: 5 })
