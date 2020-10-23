@@ -1,15 +1,31 @@
-<%= form_tag action: :get_dds, class: "form__oak_wilt" do %>
-<%= select_tag :latitude, options_for_select(latitudes) %> <label for="latitude"> Latitude</label>
-<%= select_tag :longitude, options_for_select(longitudes) %><label for="longitude"> West longitude</label><br/>
-<input type="hidden" name="method" value="Modified"/>
-<input type="hidden" name="model_type" value="oak_wilt" />
-<%= date_select :grid_date, :start_date, start_year: 2000, default: Date.civil(Date.today.year,1,1), disabled: true %> Biofix (start) date<br/>
-<%= date_select :grid_date, :end_date, start_year: 2000, default: 1.day.ago, end_year: Time.now.year %> End date<br/>
-<%= text_field_tag  :base_temp, 41, disabled: true %> Lower threshold temperature (Degrees F):<br/>
-<input type="hidden" name="base_temp" value="41" />
-<%= text_field_tag  :upper_temp, 'None', disabled: true %> Upper threshold (F)<br/>
-<input type="hidden" name="upper_temp" value="None" />
-<%= check_box_tag :seven_day %> Report only last 7 days of accumulated values<br/>
-<%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'csv' %> Download as CSV&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON<br/>
-<%= submit_tag "Get Data Series "%>
+<%= form_tag({action: :get_dds}, {class: "form__oak_wilt"}) do %>
+  <div class="form-row">
+    <label for="latitude">Latitude</label>
+    <%= select_tag :latitude, options_for_select(latitudes) %>
+  </div>
+  <div class="form-row">
+    <label for="longitude">West longitude</label>
+    <%= select_tag :longitude, options_for_select(longitudes) %>
+  </div>
+  <!-- <div class="form-row">
+    <%# <%= date_select :grid_date, :start_date, start_year: 2000, default: Date.civil(Date.today.year,1,1), disabled: true %> Biofix (start) date<br/> %>
+  </div> -->
+  <div class="form-row">
+  <label for="end_date">End Date</label>
+  <div>
+    <%= date_select :grid_date, :end_date, start_year: 2000, default: 1.day.ago, end_year: Time.now.year %>
+  </div>
+  </div>
+  <!-- <div class="form-row">
+    <%# <%= text_field_tag  :base_temp, 41, disabled: true %> Lower threshold temperature (Degrees F):<br/> %>
+    <%# <%= text_field_tag  :upper_temp, 'None', disabled: true %> Upper threshold (F)<br/> %>
+  </div> -->
+  <div class="format-row">
+    <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'csv' %> Download as CSV&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON<br/>
+  </div>
+  <input type="hidden" name="method" value="Modified"/>
+  <input type="hidden" name="model_type" value="oak_wilt" />
+  <input type="hidden" name="base_temp" value="41" />
+  <input type="hidden" name="upper_temp" value="None" />
+  <%= submit_tag("Get Data Series", class: "button")%>
 <% end %>
