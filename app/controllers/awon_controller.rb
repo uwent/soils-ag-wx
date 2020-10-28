@@ -87,12 +87,12 @@ class AwonController < ApplicationController
       format.html do
         text = @db_class.csv_header(use_abbrevs,@ahrs) + "<br/>"
         text += @results.collect { |rec| rec.to_csv(@ahrs) }.join("<br/>")
-        render :text => text
+        render plain: text
       end
       format.csv do
         text = @db_class.csv_header(use_abbrevs,@ahrs)
         text += @results.collect { |rec| rec.to_csv(@ahrs) }.join("")
-        render :text => text
+        render plain: text
       end
     end
 

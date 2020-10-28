@@ -1,6 +1,4 @@
-class SubscriptionMailer < ActionMailer::Base
-  default from: "cals-it-admin@cals.wisc.edu"
-
+class SubscriptionMailer < ApplicationMailer
   def confirm(subscriber)
     @subscriber = subscriber
     @url = confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token)

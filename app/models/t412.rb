@@ -1,4 +1,4 @@
-class T412 < ActiveRecord::Base
+class T412 < ApplicationRecord
   include Reportable
   include Assessable
   belongs_to :awon_station

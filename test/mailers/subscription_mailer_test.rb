@@ -10,7 +10,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   AGO_ET = 0.9
   AGO_REGEXP = /,0\.9<br\/>/
   DAYS_AGO = 10
-
+#
 #   def setup
 #     @etgrid = Product.create! name: 'ET', data_table_name: 'wi_mn_dets', type: 'GridProduct', subscribable: true
 #     @rick = Subscriber.create! name: RICK, email: RICKS_EMAIL, confirmation_token: Subscriber.confirmation_number
@@ -24,7 +24,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 #   def days_back(ii)
 #     Date.today - (ii+1)
 #   end
-#
+# #
 #   test "confirm" do
 #     mail = SubscriptionMailer.confirm(@rick)
 #     assert_equal 'Please confirm your email address for your UWEX Ag Weather product subscriptions', mail.subject
@@ -33,7 +33,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 #     assert_equal [SENDER_EMAIL], mail.from
 #     assert_match "Hi Rick Wayne,\r\n\r\n", mail.body.encoded
 #   end
-#
+
 #   test "product_report" do
 #     mail = SubscriptionMailer.product_report(@rick,Date.today - 7, Date.today - 1)
 #     assert_equal "Product report", mail.subject

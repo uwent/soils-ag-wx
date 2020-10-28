@@ -1,2 +1,2 @@
-class AwonFieldDescrip < ActiveRecord::Base
+class AwonFieldDescrip < ApplicationRecord
 end

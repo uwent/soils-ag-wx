@@ -7,12 +7,6 @@ class AwonControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-# TODO test private method
-  # test "should get select_data" do
-  #   get :select_data
-  #   assert_response :success
-  # end
-
   test "should get station_info" do
     get :station_info
     assert_response :success
@@ -29,6 +23,7 @@ class AwonControllerTest < ActionController::TestCase
   end
 
   test "should get blog" do
+    blogs(:one)
     get :blog
     assert_response :success
   end

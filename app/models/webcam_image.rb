@@ -1,6 +1,6 @@
 WEBCAM_THUMB = 1
 WEBCAM_FULL = 2
-class WebcamImage < ActiveRecord::Base
+class WebcamImage < ApplicationRecord
   include UtcDates
   DFORMAT = "%Y_%m_%d_%H_%M_%S"
 

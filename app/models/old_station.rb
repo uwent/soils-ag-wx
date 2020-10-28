@@ -1,4 +1,4 @@
-class OldStation < ActiveRecord::Base
+class OldStation < ApplicationRecord
   establish_connection adapter: 'mysql',
     host: '127.0.0.1',
     username: 'wayne',

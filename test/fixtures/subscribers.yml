@@ -3,9 +3,9 @@
 one:
   name: MyString
   email: MyString
-  confirmation_token: MyString
+  confirmed_at: MyString
 
 two:
   name: MyString
   email: MyString
-  confirmation_token: MyString
+  confirmed_at: MyString

@@ -1,4 +1,4 @@
-class Subscriber < ActiveRecord::Base
+class Subscriber < ApplicationRecord
   before_create :set_confirmation_token
   has_many :subscriptions
   has_many :products, :through => :subscriptions

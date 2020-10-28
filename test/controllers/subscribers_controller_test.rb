@@ -4,7 +4,7 @@ class SubscribersControllerTest < ActionController::TestCase
   setup do
     @subscriber = subscribers(:one)
   end
-  # TODO
+
   test "should get index" do
     get :index
     assert_response :success
@@ -16,30 +16,30 @@ class SubscribersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  # test "should create subscriber" do
-  #   assert_difference('Subscriber.count') do
-  #     post :create, subscriber: { confirmation_token: @subscriber.confirmation_token, email: @subscriber.email, name: @subscriber.name }
-  #   end
-  #
-  #   assert_redirected_to subscriber_path(assigns(:subscriber))
-  # end
+  test "should create subscriber" do
+    assert_difference('Subscriber.count') do
+      post :create, params: { subscriber: { confirmed_at: '2020-10-10', email: 'new_user@example.com', name: 'New User' } }
+    end
 
-  # TODO potentially remove, view exists, but route does not, not sure if functional, or needed, note from 4 years ago - "emails still needed"
-  # test "should show subscriber" do
-  #   get :show, id: @subscriber
-  #   assert_response :success
-  # end
+    assert_redirected_to confirm_notice_subscriber_path(assigns(:subscriber))
+  end
 
-  # test "should update subscriber" do
-  #   patch :update, id: @subscriber, subscriber: { confirmation_token: @subscriber.confirmation_token, email: @subscriber.email, name: @subscriber.name}
-  #   assert_redirected_to subscriber_path(assigns(:subscriber))
-  # end
+  test "should update subscriber" do
+    admin = subscribers(:two)
+    admin.update!(admin: true)
+    session[:subscriber] = admin.id
+    patch :update, params: { id: @subscriber, format: :json, subscriber: { confirmed_at: @subscriber.confirmed_at, email: @subscriber.email, name: @subscriber.name } }
+    assert_response :success
+  end
 
-  # test "should destroy subscriber" do
-  #   assert_difference('Subscriber.count', -1) do
-  #     delete :destroy, id: @subscriber
-  #   end
-  #
-  #   assert_redirected_to subscribers_path
-  # end
+  test "should destroy subscriber" do
+    admin = subscribers(:two)
+    admin.update!(admin: true)
+    session[:subscriber] = admin.id
+    assert_difference('Subscriber.count', -1) do
+      delete :destroy, params: { id: @subscriber }
+    end
+
+    assert_redirected_to admin_subscribers_path
+  end
 end

@@ -1,4 +1,4 @@
-class T406 < ActiveRecord::Base
+class T406 < ApplicationRecord
   include Reportable
   include Assessable
   

@@ -1,4 +1,4 @@
-class OldGrid < ActiveRecord::Base
+class OldGrid < ApplicationRecord
   def self.connect(old_table_name)
     establish_connection adapter: 'mysql',
       host: '127.0.0.1',

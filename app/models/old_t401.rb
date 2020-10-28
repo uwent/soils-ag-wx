@@ -1,4 +1,4 @@
-class OldT401 < ActiveRecord::Base
+class OldT401 < ApplicationRecord
     establish_connection adapter: 'mysql',
       host: '127.0.0.1',
       username: 'wayne',

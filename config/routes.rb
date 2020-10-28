@@ -1,4 +1,4 @@
-SoilsAgWx::Application.routes.draw do
+Rails.application.routes.draw do
 
   get "heartbeat/index"
   get "heartbeat/awon"
@@ -76,8 +76,6 @@ SoilsAgWx::Application.routes.draw do
   get "navigation/index"
   get "navigation/about"
   get "t411s/last"
-
-  resources :hyds
 
 
   resources :subscribers, only: [:index, :new, :create, :edit, :update, :destroy] do

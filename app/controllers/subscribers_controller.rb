@@ -194,7 +194,7 @@ class SubscribersController < ApplicationController
 
   private
     def subscriber_params
-      params.require(:subscriber).permit(:name, :email, :confirmed)
+      params.require(:subscriber).permit(:name, :email, :confirmed_at)
     end
 
     def add_to_session(id)

@@ -1,4 +1,4 @@
-class T401 < ActiveRecord::Base
+class T401 < ApplicationRecord
   include Reportable
   
   belongs_to :awon_station
