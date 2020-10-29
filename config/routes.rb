@@ -11,8 +11,6 @@ Rails.application.routes.draw do
   get "heartbeat/webapps"
   get "heartbeat/asos_grids"
   match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
-  get "cranberry/index"
-  get "cranberry/summary"
   get "awon/awon_check_boxes"
   get "awon/select_data"
   get "awon/station_info"

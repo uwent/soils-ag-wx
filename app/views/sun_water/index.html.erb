@@ -11,7 +11,6 @@
     <p><%= link_to "US Insolation", :action => :insol_us %></p>
     <p>ET <%= link_to "WI/MN", :action => :et_wimn %></p>
     <p><a href="http://wisp.cals.wisc.edu/">Online Irrigation Scheduler</a></p>
-    <p><%= link_to "Cranberry ETs", :controller => 'cranberry'%></p>
 <% end %>
 
 <!-- Content for remainder of stuff -->
@@ -45,9 +44,5 @@
     An online irrigation scheduling application is available along with an irrigation scheduling spreadsheet and documentation to calculate the allowable-depletion balance. These tools are available at the <a href='https://fyi.uwex.edu/cropirrigation/wisconsin-irrigation-scheduling-program-wisp/'>UW Extension, Understanding Crop Irrigation</a> web site. The spreadsheet replaces the old ADCosmET.xls spreadsheet, and was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science.
 </p>
 <div class="fineline"></div>
-<h2>Cranberry Consumptive Use Estimates</h2>
-<p><%= link_to "This calculator", :controller => 'cranberry'%> allows cranberry growers to estimate the monthly consumptive water use of their beds. The estimate is based on the research of Bland et al. (1996, Agric. and Forest Meteorol. 81:1-12), which demonstrated well-watered cranberry ET to be just slightly higher than the "equilibrium ET." Values supplied here are derived from the University of Wisconsin-Madison estimation of the Priestley-Taylor <%= link_to 'potential evapotranspiration', :controller => 'sun_water', :action => :et_wimn %>, corrected following Bland et al. (1996)</p>
-
-<div class="fineline"></div>
 <h2>Theory Behind the Models</h2>
-<p>For more details on the science behind these products, see Diak et al, "<%= link_to "Agricultural Management Decision Aids Driven by Real-Time Satellite Data", "diakEtal1998.pdf" %>", <span style="font-style: italic">Bulletin of the American Meteorological Society</span> 79 (1998): 1345-1355.</p>
+<p>For more details on the science behind these products, see Diak et al, "Agricultural Management Decision Aids Driven by Real-Time Satellite Data", <span style="font-style: italic">Bulletin of the American Meteorological Society</span> 79 (1998): 1345-1355.</p>
