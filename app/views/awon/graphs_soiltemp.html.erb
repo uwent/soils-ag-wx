@@ -3,11 +3,12 @@
 <% end %>
 
 <% content_for :welcome do %>
-    <%= do_welcome %>
+    <%= do_welcome.html_safe %>
 <% end %>
 
 <h2>AWON Station Soil Temperatures</h2>
 <p>From date shown to present. Hancock is 4751, Arena/Spring Green is 4773, Arlington 4781.</p>
+<!-- TODO: images don't exist, replace content or remove page  -->
 <a href="http://andi.soils.wisc.edu:3000/awon/show_soil_temps?depth=5&size=big">
   <IMG src="http://andi.soils.wisc.edu:3000/awon/show_soil_temps?depth=5"/>
 </a>

@@ -22,11 +22,19 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
+  # While sendmail is less configurable than the default smtp, it works on our server
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.default_url_options = {host: 'agweather.cals.wisc.edu'}
+
   # Compress CSS using a preprocessor.
+    config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
+
+  # Generate digests for assets URLs.
+  config.assets.digest = true
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
@@ -36,6 +44,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
+  # Version of your assets, change this if you want to expire all your assets.
+  config.assets.version = '1.0'
   config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain.
@@ -72,9 +82,6 @@ Rails.application.configure do
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
-
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'

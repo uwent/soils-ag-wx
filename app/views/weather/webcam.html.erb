@@ -3,10 +3,6 @@
  <%= @title %>
 <% end %>
 
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag 'jquery.ui.datepicker' %>
-<% end %>
-
 <% content_for :welcome do %>
 <h2><%= @title %></h2>
   <h4>Fall</h4>
@@ -26,7 +22,7 @@
 <H3 align="center">It's the Soil Science Web Cam!</h3>
 
 <P ALIGN=CENTER>
-  <%= link_to image_tag('webcam/fullsize.jpg', width: 550, height: 420), 
+  <%= link_to image_tag('webcam/fullsize.jpg', width: 550, height: 420),
               'http://agwx.soils.wisc.edu/soils-agwx-assets/uwex_agwx/images/webcam/fullsize.jpg' %>
 </P>
 <H4>The View from Up Here:</H4>
@@ -41,12 +37,12 @@ the right across the lake, you can pick out the water tower on
 Governor's Island (though his actual mansion is out of sight to
 the right). The camera (a brand-new <A HREF="http://www.axis.com/products/cam_p1344/">Axis P1344 HD
 Web Camera</A>, for the technically inclined) is facing just a
-little west of due north. 
+little west of due north.
 </P>
 <P>We hope that you will join us here often, to watch
 the sailboats sail, the clouds billow by, the sun rise and set,
 and the seasons in motion. A little slice of spiritual
-tranquility, brought to you by Soil Science. 
+tranquility, brought to you by Soil Science.
 </P>
 <H4><a name="archive"/></a>Picture Archives</H4>
 <P>In late August 2004, we started keeping an
@@ -54,7 +50,7 @@ archive of images from the&nbsp; webcam. A small (176x144)
 &quot;halfsize&quot; image is saved every five minutes, and a
 larger &quot;hugesize&quot; one (704x576) every hour. Images are
 recorded from 0300 to 2159 local time in the summer, 0600 to 1859
-local during the fall and spring. In April 2011, we started archiving the 
+local during the fall and spring. In April 2011, we started archiving the
 larger images every five minutes as well.
 </P>
 
@@ -81,7 +77,7 @@ King Hall', action: :kinghall %> business?</H4>
 <H4>Want our picture on your web page?</H4>
 <P>It's easy. We'd appreciate it if you attributed the image:
 &quot;Courtesy UW-Madison Soil Sciences&quot; would be lovely.
-Just include one of the following tags in your HTML: 
+Just include one of the following tags in your HTML:
 </P>
 <PRE>&lt;IMG SRC=&quot;http://agwx.soils.wisc.edu/soils-agwx-assets/uwex_agwx/images/webcam/fullsize.jpg&quot;&gt;
 

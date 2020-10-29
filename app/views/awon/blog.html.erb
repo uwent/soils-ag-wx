@@ -3,8 +3,8 @@
 <% end %>
 
 <% content_for :welcome do %>
-    <%= do_welcome %>
-  <% end %>
+    <%= do_welcome.html_safe %>
+<% end %>
 
 <h2>Weather Station Updates</h2>
 <% if @blogs && @blogs.size > 0 %>

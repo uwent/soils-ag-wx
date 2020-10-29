@@ -83,7 +83,6 @@ class ThermalModelsController < ApplicationController
 
   def get_dds
     @method = params[:method]
-    @method = params[:method]
     @latitude = params[:latitude].to_f
     @longitude = params[:longitude].to_f * -1.0
     @base_temp = params[:base_temp].to_f
@@ -103,10 +102,10 @@ class ThermalModelsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.csv { render text: to_csv(@data,params[:method]) }
+      format.csv { render plain: to_csv(@data, params[:method]) }
       format.json do
         hash = {title: 'Degree Days',method: @method, latitude: @latitude, longitude: @longitude, start_date: @start_date, end_date: @end_date}
-        render text: @data
+        render plain: @data
       end
     end
   end

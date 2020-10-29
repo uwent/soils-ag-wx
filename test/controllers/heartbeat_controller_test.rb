@@ -20,9 +20,8 @@ class HeartbeatControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  # TODO
   # test "should get hyd" do
-      # assigns(:hyd_res) { [] }
+  #     assigns(:hyd_res) { [] }
   #   get :hyd
   #   assert_response :success
   # end

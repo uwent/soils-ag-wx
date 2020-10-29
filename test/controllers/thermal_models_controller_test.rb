@@ -122,7 +122,8 @@ class ThermalModelsControllerTest < ActionController::TestCase
       WiMnDMaxTAir.create! date: date, latitude: LATITUDE, LONG_SYM => (doy.to_f / 10.0) + 2.0
     end
   end
-# TODO, response.body not right - BB 10/21
+
+# TODO, broken on prod, response.body not right - BB 10/21
   # test "rising-temp DDs should inflect above zero on April 3" do
   #   create_rising_temperatures
   #   assert_in_delta(9.3, WiMnDMinTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
@@ -153,7 +154,8 @@ class ThermalModelsControllerTest < ActionController::TestCase
       WiMnDMaxTAir.create! date: date, latitude: LATITUDE, LONG_SYM => 13.333 # 56.0 F
     end
   end
-
+  
+  # TODO, broken on prod, response.body not right - BB 10/21
   # test "accumulation of same temperature adds up correctly" do
   #   create_stable_temperatures
   #   get :get_dds,

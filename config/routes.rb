@@ -97,6 +97,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :hyds, only: [:index, :show]
+
   match "/navigation", to: "navigation#index", via: [:get, :post]
   root to: 'navigation#index'
 
