@@ -176,7 +176,7 @@ class SubscribersController < ApplicationController
     return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
 
     subr = Subscriber.find(params[:id])
-    subr.update_attributes(subscriber_params)
+    subr.update(subscriber_params)
     respond_to do |format|
       format.json { render json: {message: "success"} }
     end
