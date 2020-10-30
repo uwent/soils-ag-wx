@@ -96,6 +96,11 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get oak_wilt" do
+    get :oak_wilt
+    assert_response :success
+  end
+
   test "should get get_dds" do
     [:json, :csv, :html].each do |format|
       get :get_dds,
@@ -154,7 +159,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
       WiMnDMaxTAir.create! date: date, latitude: LATITUDE, LONG_SYM => 13.333 # 56.0 F
     end
   end
-  
+
   # TODO, broken on prod, response.body not right - BB 10/21
   # test "accumulation of same temperature adds up correctly" do
   #   create_stable_temperatures

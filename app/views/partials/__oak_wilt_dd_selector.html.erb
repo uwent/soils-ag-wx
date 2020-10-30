@@ -7,19 +7,12 @@
     <label for="longitude">West longitude</label>
     <%= select_tag :longitude, options_for_select(longitudes) %>
   </div>
-  <!-- <div class="form-row">
-    <%# <%= date_select :grid_date, :start_date, start_year: 2000, default: Date.civil(Date.today.year,1,1), disabled: true %> Biofix (start) date<br/> %>
-  </div> -->
   <div class="form-row">
   <label for="end_date">End Date</label>
   <div>
     <%= date_select :grid_date, :end_date, start_year: 2000, default: 1.day.ago, end_year: Time.now.year %>
   </div>
   </div>
-  <!-- <div class="form-row">
-    <%# <%= text_field_tag  :base_temp, 41, disabled: true %> Lower threshold temperature (Degrees F):<br/> %>
-    <%# <%= text_field_tag  :upper_temp, 'None', disabled: true %> Upper threshold (F)<br/> %>
-  </div> -->
   <div class="format-row">
     <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'csv' %> Download as CSV&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON<br/>
   </div>
