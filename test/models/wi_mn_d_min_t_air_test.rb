@@ -11,17 +11,18 @@ class WiMnDMinTAirTest < ActiveSupport::TestCase
     assert_equal('w980', WiMnDAveTAir.longitude_col(-97.9))
   end
 
-  # TODO feature not currently working on prod, known issue -BB 10/21
-  # test  "daily series works" do
-  #   # Some off-boundary numbers
-  #   assert(series = WiMnDMinTAir.daily_series('2020-09-20','2020-10-20',-97.1,44.5))
-  #   assert_equal(Hash, series.class)
-  #   assert_equal(Date, series.keys.first.class)
-  #   assert_equal(Float, series[series.keys.first].class,series.inspect)
-  #   assert_equal(10,series.size)
-  #   # Now one just one off from the corner so it's easy to populate the assertions
-  #   assert(series = WiMnDMinTAir.daily_series('2020-09-20','2020-10-20',-97.6,42.4))
-  #   assert_equal(10,series.size)
-  #   assert_equal(16.26, series[Date.civil(2002,5,30)])
-  # end
+  test "daily series works" do
+    # Some off-boundary numbers
+    # TODO feature not currently working on prod, skip tests until feature is removed or fixed  -BB 11/2
+    skip()
+    assert(series = WiMnDMinTAir.daily_series('2020-09-20','2020-10-20',-97.1,44.5))
+    assert_equal(Hash, series.class)
+    skip assert_equal(Date, series.keys.first.class)
+    assert_equal(Float, series[series.keys.first].class,series.inspect)
+    assert_equal(10,series.size)
+    # # Now one just one off from the corner so it's easy to populate the assertions
+    assert(series = WiMnDMinTAir.daily_series('2020-09-20','2020-10-20',-97.6,42.4))
+    assert_equal(10,series.size)
+    assert_equal(16.26, series[Date.civil(2002,5,30)])
+  end
 end

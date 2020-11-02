@@ -128,26 +128,27 @@ class ThermalModelsControllerTest < ActionController::TestCase
     end
   end
 
-# TODO, broken on prod, response.body not right - BB 10/21
-  # test "rising-temp DDs should inflect above zero on April 3" do
-  #   create_rising_temperatures
-  #   assert_in_delta(9.3, WiMnDMinTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
-  #   assert_in_delta(11.3, WiMnDMaxTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
-  #   get :get_dds,
-  #     grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
-  #     "end_date(1i)" => YEAR, "end_date(2i)" => 6, "end_date(3i)" => 29},
-  #     method: 'Simple', base_temp: BASE,
-  #     latitude: LATITUDE, longitude: LONGI, format: :csv
-  #   assert_response :success
-  #   assert_equal(N_DAYS, WiMnDMinTAir.count,WiMnDMinTAir.all.collect do |grid|
-  #     {date: grid.date, latitude: grid.latitude, LONG_SYM => grid[LONG_SYM], 'max' => WiMnDMaxTAir.where(date: grid.date, latitude: LATITUDE).first[LONG_SYM]}
-  #   end.join("\n"))
-  #   lines = response.body.split("\n")
-  #   assert_equal N_DAYS+1, lines.count, "Should return a header line and N_DAYS (#{N_DAYS}) DD lines"
-  #   # Simple method should get above zero at DOY 93: ((9.3 + 11.3) / 2.0) - 10 == 0.3 C, rounds to 1 F
-  #   (1..92).each { |doy| assert lines[doy] =~ /,0.0$/, "unexpected nonzero DD in line for DOY #{doy}: #{lines[doy]}"  }
-  #   (93..N_DAYS).each { |doy| assert lines[doy] !~ /,0.0$/, "unexpected zero DD in line DOY #{doy}: #{lines[doy]}"  }
-  # end
+  test "rising-temp DDs should inflect above zero on April 3" do
+    # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
+    skip()
+    create_rising_temperatures
+    assert_in_delta(9.3, WiMnDMinTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
+    assert_in_delta(11.3, WiMnDMaxTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
+    get :get_dds,
+      grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
+      "end_date(1i)" => YEAR, "end_date(2i)" => 6, "end_date(3i)" => 29},
+      method: 'Simple', base_temp: BASE,
+      latitude: LATITUDE, longitude: LONGI, format: :csv
+    assert_response :success
+    assert_equal(N_DAYS, WiMnDMinTAir.count,WiMnDMinTAir.all.collect do |grid|
+      {date: grid.date, latitude: grid.latitude, LONG_SYM => grid[LONG_SYM], 'max' => WiMnDMaxTAir.where(date: grid.date, latitude: LATITUDE).first[LONG_SYM]}
+    end.join("\n"))
+    lines = response.body.split("\n")
+    assert_equal N_DAYS+1, lines.count, "Should return a header line and N_DAYS (#{N_DAYS}) DD lines"
+    # Simple method should get above zero at DOY 93: ((9.3 + 11.3) / 2.0) - 10 == 0.3 C, rounds to 1 F
+    (1..92).each { |doy| assert lines[doy] =~ /,0.0$/, "unexpected nonzero DD in line for DOY #{doy}: #{lines[doy]}"  }
+    (93..N_DAYS).each { |doy| assert lines[doy] !~ /,0.0$/, "unexpected zero DD in line DOY #{doy}: #{lines[doy]}"  }
+  end
 
   def create_stable_temperatures
     WiMnDMinTAir.delete_all
@@ -160,20 +161,21 @@ class ThermalModelsControllerTest < ActionController::TestCase
     end
   end
 
-  # TODO, broken on prod, response.body not right - BB 10/21
-  # test "accumulation of same temperature adds up correctly" do
-  #   create_stable_temperatures
-  #   get :get_dds,
-  #     grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
-  #     "end_date(1i)" => YEAR, "end_date(2i)" => 6, "end_date(3i)" => 29},
-  #     method: 'Simple', base_temp: BASE,
-  #     latitude: LATITUDE, longitude: LONGI, format: :csv
-  #   lines = response.body.split("\n")[1..-1] # skip the header line
-  #   assert(lines[0] =~ /,5.0$/,lines[0])
-  #   accum = N_DAYS * 5.0
-  #   last_dd = lines[-1].split(",")[-1].to_f
-  #   assert_in_delta(accum, last_dd, 2 ** -20)
-  # end
+  test "accumulation of same temperature adds up correctly" do
+    # TODO feature not currently working on prod, skip tests until feature is removed or fixed  -BB 11/2
+    skip()
+    create_stable_temperatures
+    get :get_dds,
+      grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
+      "end_date(1i)" => YEAR, "end_date(2i)" => 6, "end_date(3i)" => 29},
+      method: 'Simple', base_temp: BASE,
+      latitude: LATITUDE, longitude: LONGI, format: :csv
+    lines = response.body.split("\n")[1..-1] # skip the header line
+    assert(lines[0] =~ /,5.0$/,lines[0])
+    accum = N_DAYS * 5.0
+    last_dd = lines[-1].split(",")[-1].to_f
+    assert_in_delta(accum, last_dd, 2 ** -20)
+  end
 
   def create_stable_with_missing_day
     create_stable_temperatures
@@ -183,20 +185,22 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_equal(N_DAYS-1, WiMnDMaxTAir.count)
   end
 
-  # test "same-temp accumulation works when one day is missing" do
-  #   create_stable_with_missing_day
-  #   get :get_dds,
-  #     grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
-  #     "end_date(1i)" => YEAR, "end_date(2i)" => 6, "end_date(3i)" => 29},
-  #     method: 'Simple', base_temp: BASE,
-  #     latitude: LATITUDE, longitude: LONGI, format: :csv
-  #   lines = response.body.split("\n")[1..-1] # skip the header line
-  #   assert(lines[0] =~ /,5.0$/,lines[0])
-  #   # One day missing, so one less accumulation of 5.0
-  #   accum = (N_DAYS - 1) * 5.0
-  #   last_dd = lines[-1].split(",")[-1].to_f
-  #   assert_in_delta(accum, last_dd, 2 ** -20)
-  # end
+  test "same-temp accumulation works when one day is missing" do
+    skip()
+    # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
+    create_stable_with_missing_day
+    get :get_dds,
+      grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
+      "end_date(1i)" => YEAR, "end_date(2i)" => 6, "end_date(3i)" => 29},
+      method: 'Simple', base_temp: BASE,
+      latitude: LATITUDE, longitude: LONGI, format: :csv
+    lines = response.body.split("\n")[1..-1] # skip the header line
+    assert(lines[0] =~ /,5.0$/,lines[0])
+    # One day missing, so one less accumulation of 5.0
+    accum = (N_DAYS - 1) * 5.0
+    last_dd = lines[-1].split(",")[-1].to_f
+    assert_in_delta(accum, last_dd, 2 ** -20)
+  end
 
   def format_for(arg)
     @controller.send :format_for, arg
@@ -250,39 +254,40 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_equal(expected, strip_year_if_current(last_year))
   end
 
-# feature currently not working on production, BB 10/22
-  # test "permalink" do
-  #   today_str = Date.today.strftime("%m/%d/%Y")
-  #   yesterday_str = (Date.today - 1).strftime("%m/%d/%Y")
-  #   params = {
-  #     "utf8"=>"✓", "authenticity_token"=>"7kGTwOe88ix4w72X8jeYIybxL20uIjwhqYyZEA8F3G8=",
-  #     "locations"=>["16"], "commit"=>"Get Degree-Day Data",
-  #     "method_params"=> {
-  #       "3"=>{"method"=>"Simple", "base_temp"=>"40.0", "start_date"=>"01/01/2014", "end_date"=>today_str},
-  #       "4"=>{"method"=>"Simple", "base_temp"=>"40.0", "start_date"=>"01/01/2014", "end_date"=>yesterday_str}
-  #     }
-  #   }
-  #   perma_params = @controller.send :permalink, params
-  #   assert_equal(Hash, perma_params.class)
-  #   assert(perma_params.keys.size > 0)
-  #   # permalink() should delete all of these keys
-  #   assert_nil(perma_params["utf8"])
-  #   assert_nil(perma_params["authenticity_token"])
-  #   assert_nil(perma_params["commit"])
-  #   # structure should still be correct
-  #   assert(mp3 = perma_params["method_params"]["3"])
-  #   assert_equal(Hash,mp3.class)
-  #   assert_equal("Simple", mp3["method"])
-  #   # start dates should have their year redacted
-  #   assert_nil(mp3["start_date"] =~ /[\d]{2}\/[\d]{2}\/[\d]{4}$/)
-  #   assert_equal(0,mp3["start_date"] =~ /[\d]{2}\/[\d]{2}$/,"start date for '3' should have been two-digit month/year")
-  #   # end_date for "3" should be gone, since it's today's date
-  #   assert_nil(mp3["end_date"])
-  #   # "4" should still have a date, but its year should have been redacted
-  #   mp4end = perma_params["method_params"]["4"]["end_date"]
-  #   assert_nil(mp4end =~ /[\d]{2}\/[\d]{2}\/[\d]{4}$/)
-  #   assert_equal(0,mp4end =~ /[\d]{2}\/[\d]{2}$/,"end date for '4' should have been two-digit month/year")
-  # end
+  test "permalink" do
+    today_str = Date.today.strftime("%m/%d/%Y")
+    yesterday_str = (Date.today - 1).strftime("%m/%d/%Y")
+    params = {
+      "utf8"=>"✓", "authenticity_token"=>"7kGTwOe88ix4w72X8jeYIybxL20uIjwhqYyZEA8F3G8=",
+      "locations"=>["16"], "commit"=>"Get Degree-Day Data",
+      "method_params"=> {
+        "3"=>{"method"=>"Simple", "base_temp"=>"40.0", "start_date"=>"01/01/2014", "end_date"=>today_str},
+        "4"=>{"method"=>"Simple", "base_temp"=>"40.0", "start_date"=>"01/01/2014", "end_date"=>yesterday_str}
+      }
+    }
+    perma_params = @controller.send :permalink, params
+    # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
+    skip()
+    assert_equal(Hash, perma_params.class)
+    assert(perma_params.keys.size > 0)
+    # permalink() should delete all of these keys
+    assert_nil(perma_params["utf8"])
+    assert_nil(perma_params["authenticity_token"])
+    assert_nil(perma_params["commit"])
+    # structure should still be correct
+    assert(mp3 = perma_params["method_params"]["3"])
+    assert_equal(Hash,mp3.class)
+    assert_equal("Simple", mp3["method"])
+    # start dates should have their year redacted
+    assert_nil(mp3["start_date"] =~ /[\d]{2}\/[\d]{2}\/[\d]{4}$/)
+    assert_equal(0,mp3["start_date"] =~ /[\d]{2}\/[\d]{2}$/,"start date for '3' should have been two-digit month/year")
+    # end_date for "3" should be gone, since it's today's date
+    assert_nil(mp3["end_date"])
+    # "4" should still have a date, but its year should have been redacted
+    mp4end = perma_params["method_params"]["4"]["end_date"]
+    assert_nil(mp4end =~ /[\d]{2}\/[\d]{2}\/[\d]{4}$/)
+    assert_equal(0,mp4end =~ /[\d]{2}\/[\d]{2}$/,"end date for '4' should have been two-digit month/year")
+  end
 
   # HAK HAK HAAAAK! This merely duplicates the method in the controller, 'cause I couldn't figure out how to call it.
   def group_by(hash)
