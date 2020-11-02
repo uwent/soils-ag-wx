@@ -1,4 +1,4 @@
-class WiMnDAveVapr < ActiveRecord::Base
+class WiMnDAveVapr < ApplicationRecord
   include GridDB
   include Assessable
 

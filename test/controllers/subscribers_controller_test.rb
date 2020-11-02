@@ -8,7 +8,7 @@ class SubscribersControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:subscribers)
+    assert_nil assigns(:subscribers)
   end
 
   test "should get new" do
@@ -18,32 +18,28 @@ class SubscribersControllerTest < ActionController::TestCase
 
   test "should create subscriber" do
     assert_difference('Subscriber.count') do
-      post :create, subscriber: { confirmed: @subscriber.confirmed, email: @subscriber.email, name: @subscriber.name }
+      post :create, params: { subscriber: { confirmed_at: '2020-10-10', email: 'new_user@example.com', name: 'New User' } }
     end
 
-    assert_redirected_to subscriber_path(assigns(:subscriber))
-  end
-
-  test "should show subscriber" do
-    get :show, id: @subscriber
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, id: @subscriber
-    assert_response :success
+    assert_redirected_to confirm_notice_subscriber_path(assigns(:subscriber))
   end
 
   test "should update subscriber" do
-    patch :update, id: @subscriber, subscriber: { confirmed: @subscriber.confirmed, email: @subscriber.email, name: @subscriber.name }
-    assert_redirected_to subscriber_path(assigns(:subscriber))
+    admin = subscribers(:two)
+    admin.update!(admin: true)
+    session[:subscriber] = admin.id
+    patch :update, params: { id: @subscriber, format: :json, subscriber: { confirmed_at: @subscriber.confirmed_at, email: @subscriber.email, name: @subscriber.name } }
+    assert_response :success
   end
 
   test "should destroy subscriber" do
+    admin = subscribers(:two)
+    admin.update!(admin: true)
+    session[:subscriber] = admin.id
     assert_difference('Subscriber.count', -1) do
-      delete :destroy, id: @subscriber
+      delete :destroy, params: { id: @subscriber }
     end
 
-    assert_redirected_to subscribers_path
+    assert_redirected_to admin_subscribers_path
   end
 end

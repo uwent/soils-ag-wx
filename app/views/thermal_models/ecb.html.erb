@@ -1,25 +1,14 @@
 <% @title = "European Corn Borer Development" %>
-<% content_for :title do
-     @title
-   end %>
-
 <% content_for :welcome do %>
   <%= image_tag "thermal.png",{:width => "231", :height => "156", :alt => "Hot Sun"} %>
   <h2>European Corn Borer</h2>
 <% end %>
 
 <h2><%= @title %></h2>
-
-<center> 
-  <%= ddgif_image_link "WIMNDDModB50_1.png","Yesterday's European Corn Borer DD Map" %>
-</center>
-<p> 
-<%= ddgif_url 'Download the Image in Black and White', "WIMNDDModB50_1_bw.png" %> 
-
-
-Development of European corn borer can be estimated using a 
+<div class="fineline"/></div>
+Development of European corn borer can be estimated using a
 <%= link_to "Modified base 50 F degree-day calculation", :action => :degree_days %>.
-For this pest the degree-day summation is started well before the growing season.  
+For this pest the degree-day summation is started well before the growing season.
 Critical values for European corn borers are listed in the table below
 (data from J.W. Apple, Department of Entomology, University of
 Wisconsin-Madison).
@@ -28,7 +17,7 @@ Wisconsin-Madison).
 <TABLE BORDER=5 CELLPADDING=5>
 <TR><TH>Development Stage <TH>Accumulated Degree Days
 <TR><TH COLSPAN=2><EM>First Generation</EM>
-<TR><TD>First spring moth<TD>                          374     
+<TR><TD>First spring moth<TD>                          374
 
 <TR><TD>First eggs <TD>                                450
 <TR><TD>Peak spring moths <TD>                         631
@@ -42,8 +31,3 @@ Wisconsin-Madison).
 <TR><TD>Second generation treatment period <TD>         1550-2100
 </TABLE>
 </CENTER>
-   
-<P>
-<HR>
-
-<P>

@@ -1,4 +1,4 @@
-class OldAsosStation < ActiveRecord::Base
+class OldAsosStation < ApplicationRecord
   establish_connection adapter: 'mysql',
     host: '127.0.0.1',
     username: 'wayne',

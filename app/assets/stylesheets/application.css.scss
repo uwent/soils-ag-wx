@@ -1,8 +1,12 @@
+// *= require_tree .
+// *= require_self
+
 html, body, ul, li, h1, h2, h3, h4 {
 	margin: 0px;
 	padding: 0px;
 	list-style: none;
 }
+
 h2{
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 17px;
@@ -81,7 +85,7 @@ h1 {
 	position: absolute;
 	top: 43px;
 	left: 360px;
-	
+
 }
 #nav  a {
 	background-image: url(asset-path('menu_unselected.png'));
@@ -114,7 +118,7 @@ h1 {
 /*	width: 120px;*/
 	width: 231px;
 	padding-left: 13px;
-	
+
 }
 #welcome a {
 	color: #F2F7F8;
@@ -269,4 +273,3 @@ td.delete-site {
     margin-right: 1em; }
   .flickr_pagination .next_page {
     margin-left: 1em; }
-

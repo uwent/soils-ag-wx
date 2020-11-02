@@ -1,4 +1,4 @@
-class Hyd < ActiveRecord::Base
+class Hyd < ApplicationRecord
   include Assessable
 
   OUTPUT_BASE_DIR = "/home/deploy/hyd"

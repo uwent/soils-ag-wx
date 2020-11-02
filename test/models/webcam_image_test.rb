@@ -1,42 +1,42 @@
 require 'test_helper'
 
 class WebcamImageTest < ActiveSupport::TestCase
-  
+
   def check_dt_for_date(date,expected_hour)
     dt = WebcamImage.utc_midnight_for_local_date(date)
     ex_dt = DateTime.new(date.year,date.month,date.day,expected_hour,0,0,'0000')
     assert_equal(ex_dt, dt)
   end
-  
+
   test "can call utc_midnight_for_local_date" do
     assert(dt = WebcamImage.utc_midnight_for_local_date)
-    assert_equal(DateTime, dt.class)
+    assert_equal(Time, dt.class)
   end
-  
+
   test "utc_midnight works for DST" do
     check_dt_for_date(Date.new(2014,5,28),5)
   end
-  
+
   test "utc_midnight works for standard time" do
     check_dt_for_date(Date.new(2014,11,30),6)
   end
-  
+
   test "utc_midnight works transistioning from standard to dst" do
     check_dt_for_date(Date.new(2014,3,9),6)
     check_dt_for_date(Date.new(2014,3,10),5)
   end
-  
+
   test "utc_midnight works going back to standard" do
     check_dt_for_date(Date.new(2014,11,2),5)
     check_dt_for_date(Date.new(2014,11,3,),6)
   end
-  
+
   def make_image(day,hour,minute,second,included)
     ts = DateTime.new(2014,5,day,hour,minute,second,'-0500') # May is DST around these here parts
     fname = included ? "included #{day}-#{hour}" : "excluded #{day}-#{hour}-#{minute}-#{second}"
     WebcamImage.create! fname: fname, timestamp: ts, size: WEBCAM_THUMB
   end
-  
+
   test "query gets the correct things" do
     WebcamImage.delete_all
     # one second after midnight day before

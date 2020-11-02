@@ -2,9 +2,9 @@ require 'net/http'
 RRAF_IMAGE_URL = '/geoserver/wms?LAYERS=mmas%3Arf_map_0&STYLES=&SRS=EPSG%3A900913&FORMAT=image%2Fpng&TILED=false&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&_OLSALT=0.4195735566318035&BBOX=-10224913.932187,5547486.0678125,-9911827.864375,5860572.135625&WIDTH=256&HEIGHT=256
 '
 MADISON_POPUP_URL = '/geoserver/wms?REQUEST=GetFeatureInfo&EXCEPTIONS=application%2Fvnd.ogc.se_xml&BBOX=-10480441.927412%2C5205663.525481%2C-9608448.308856%2C5988378.695012&X=435&Y=537&INFO_FORMAT=text%2Fplain&QUERY_LAYERS=mmas%3Arf_map_0&FEATURE_COUNT=50&Layers=mmas%3Arf_map_0&Styles=&Srs=EPSG%3A900913&WIDTH=713&HEIGHT=640&format=image%2Fpng'
+
 class HeartbeatController < ApplicationController
   def index
-    # @sections = ['awon','asos','hyd','dd','et','insol','ping','webapps']
     @sections = ['awon','asos','webapps','et','asos_grids']
     @rraf_image_url = RRAF_IMAGE_URL
     @madison_popup_url = MADISON_POPUP_URL
@@ -40,9 +40,9 @@ class HeartbeatController < ApplicationController
     @et_res = {'44.0,-92.0' => WiMnDet.hasYesterday(['latitude = ? and w920 is not null',44.0],Date.today - 1)}
     render partial: 'et'
   end
-  
+
   def asos_grids
-    @asos_grid_res = 
+    @asos_grid_res =
       [WiMnDAveTAir,WiMnDMinTAir,WiMnDMaxTAir,WiMnDAveVapr].inject({}) do |hash,grid_class|
         hash.merge( {grid_class.to_s => grid_class.hasYesterday(['latitude = ? and w920 is not null',44.0],Date.today - 1)} )
       end
@@ -91,5 +91,5 @@ class HeartbeatController < ApplicationController
     end
     render partial: 'webapps'
   end
-  
+
 end

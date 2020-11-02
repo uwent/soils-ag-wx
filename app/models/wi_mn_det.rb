@@ -1,4 +1,4 @@
-class WiMnDet < ActiveRecord::Base
+class WiMnDet < ApplicationRecord
   include GridDB
   include Assessable
 

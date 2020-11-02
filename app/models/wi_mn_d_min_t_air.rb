@@ -1,4 +1,4 @@
-class WiMnDMinTAir < ActiveRecord::Base
+class WiMnDMinTAir < ApplicationRecord
   include GridDB
   include Assessable
 

@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  stnid: MyString
+  stnid: KAIG
   state: MyString
   name: MyString
   stn_type: MyString

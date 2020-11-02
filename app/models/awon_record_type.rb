@@ -1,2 +1,2 @@
-class AwonRecordType < ActiveRecord::Base
+class AwonRecordType < ApplicationRecord
 end

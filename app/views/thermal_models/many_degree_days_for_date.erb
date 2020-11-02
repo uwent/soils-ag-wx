@@ -2,10 +2,6 @@
  Degree Day Calculator
 <% end %>
 
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag 'jquery.ui.datepicker' %>
-<% end %>
-
 <% content_for :header_script do %>
   var NUM_INITIAL_PARAM_SETS = 6;
   var DISABLED_COLOR = "color:#B0B0B0";
@@ -15,7 +11,7 @@
   start_date = new Date(year,0,1);
   end_date = new Date();
   end_date.setDate(today.getDate() - 1);
-  
+
   // set up the date pickers for a param set
   function set_up_datepickers(set_number) {
     jquery_selector = '#' + 'method_params\\[' + set_number + '\\]\\[start_date\\]';
@@ -64,9 +60,9 @@
       // alert(selector);
       $( selector ).prop('disabled',true);
       $( selector ).val(null);
-      
+
       $( selector.replace('input','label').replace('upper_temp','upper_temp_label') ).fadeTo(200,0.2);
-      
+
     } else {
       if (method == 'Modified' || method == 'Sine') {
         $( selector ).prop('disabled',false);
@@ -77,7 +73,7 @@
         alert('Illegal method (not "Simple, Sine, or Modified"), please alert the website administrator.');
       }
     }
-    
+
   }
   function set_up_elements() {
     // Select all the locations by default
@@ -116,7 +112,7 @@
 <%= form_tag action: :get_dds_many_locations do %>
 <div id="all_param_sets">
     <div id='param_set_1'>
-      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_1');", title: 'Remove this degree-day set', 
+      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_1');", title: 'Remove this degree-day set',
         align: 'middle', style: 'margin-bottom: 0.5em'%>
       <select name="method_params[1][method]" onchange="set_upper_thresh(this);">
         <option value="Simple">Simple</option>
@@ -130,7 +126,7 @@
     </div>
 
     <div id='param_set_2'>
-      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_2');", title: 'Remove this degree-day set', 
+      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_2');", title: 'Remove this degree-day set',
         align: 'middle', style: 'margin-bottom: 0.5em'%>
       <select name="method_params[2][method]" onchange="set_upper_thresh(this);">
         <option value="Simple">Simple</option>
@@ -144,7 +140,7 @@
       <br/>
     </div>
     <div id='param_set_3'>
-      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_3');", title: 'Remove this degree-day set', 
+      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_3');", title: 'Remove this degree-day set',
         align: 'middle', style: 'margin-bottom: 0.5em'%>
       <select name="method_params[3][method]" onchange="set_upper_thresh(this);">
         <option value="Simple" selected="1">Simple</option>
@@ -157,7 +153,7 @@
       To <input size="10"  id="method_params[3][end_date]" name="method_params[3][end_date]"/>&nbsp;
     </div>
     <div id='param_set_4'>
-      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_4');", title: 'Remove this degree-day set', 
+      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_4');", title: 'Remove this degree-day set',
         align: 'middle', style: 'margin-bottom: 0.5em'%>
       <select name="method_params[4][method]" onchange="set_upper_thresh(this);">
         <option value="Simple">Simple</option>
@@ -170,7 +166,7 @@
       To <input size="10"  id="method_params[4][end_date]" name="method_params[4][end_date]"/>&nbsp;
     </div>
     <div id='param_set_5'>
-      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_5');", title: 'Remove this degree-day set', 
+      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_5');", title: 'Remove this degree-day set',
         align: 'middle', style: 'margin-bottom: 0.5em'%>
       <select name="method_params[5][method]" onchange="set_upper_thresh(this);">
         <option value="Simple" selected="1">Simple</option>
@@ -183,7 +179,7 @@
       To <input size="10"  id="method_params[5][end_date]" name="method_params[5][end_date]"/>&nbsp;
     </div>
     <div id='param_set_6'>
-      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_6');", title: 'Remove this degree-day set', 
+      <%= image_tag 'delete_button.png', onclick: "remove_this('param_set_6');", title: 'Remove this degree-day set',
         align: 'middle', style: 'margin-bottom: 0.5em'%>
       <select name="method_params[6][method]" onchange="set_upper_thresh(this);">
         <option value="Simple" selected="1">Simple</option>
@@ -195,7 +191,7 @@
       From <input size="10"  id="method_params[6][start_date]" name="method_params[6][start_date]"/>&nbsp;
       To <input size="10"  id="method_params[6][end_date]" name="method_params[6][end_date]"/>&nbsp;
     </div>
-    
+
   </div>
   <%= image_tag 'add_button.png', onclick: "add_param_set();", title: 'Add another degree-day set', align: 'middle'%>
   <br/>

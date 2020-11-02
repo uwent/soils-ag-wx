@@ -1,68 +1,42 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.10'
-
-# Use Postgres
+gem 'railties', '6.0.3.2'
+gem 'rails', '6.0.3.2'
+gem 'activesupport'
 gem 'pg', '~> 0.15'
-
-# Use MySQL for sucking old data off Molly
-#gem 'mysql'
-
 # Use agwx_grids for uploading data from text grids to database
 gem 'agwx_grids', '>= 0.0.6'
-
 # Use agwx_biophys for degree days and the like
 gem 'agwx_biophys'
-
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
-
-# Use Uglifier as compressor for JavaScript assets
+gem 'sass-rails', '~> 6.0.0'
 gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'coffee-rails', '~>5.0.0'
 gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 3.0.4'
-gem 'jquery-ui-rails', '~> 4.1.1'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
-
-# Use HTTParty for connecting to new backend
-gem 'httparty'
-
-gem 'will_paginate'
-gem 'best_in_place'
-gem 'whenever'
+gem 'jquery-rails', '~> 4.4.0'
+gem 'jquery-ui-rails', '~> 6.0.1'
+gem 'rails-ujs', '0.1.0'
+gem 'turbolinks', '~> 5.2'
+gem 'jbuilder', '~> 2.10'
+gem 'httparty', '0.18.1'
+gem 'will_paginate', '~> 3.3'
+gem 'best_in_place', '~> 3.1'
+gem 'whenever', '~> 1.0'
 
 group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
 group :development do
-  gem 'capistrano', "~> 3.4"
-  gem 'capistrano-rails'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rbenv', "~> 2.0"
-  gem 'letter_opener'
-  gem 'letter_opener_web'
+  gem 'capistrano', '~> 3.4'
+  gem 'capistrano-rails', '~> 1.6'
+  gem 'capistrano-bundler', '~> 2.0'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'letter_opener', '~> 1.7'
+  gem 'letter_opener_web', '~> 1.4'
+  gem 'pry-rails'
+  gem 'listen'
 end
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
+group :test do
+  gem 'rails-controller-testing', '~> 1.0'
+end

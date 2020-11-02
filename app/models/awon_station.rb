@@ -1,4 +1,4 @@
-class AwonStation < ActiveRecord::Base
+class AwonStation < ApplicationRecord
   has_many :t401s
   has_many :t403s
   has_many :t406s

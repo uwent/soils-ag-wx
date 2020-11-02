@@ -1,13 +1,9 @@
 require 'test_helper'
 
 class AwonControllerTest < ActionController::TestCase
+
   test "should get awon_check_boxes" do
     get :awon_check_boxes
-    assert_response :success
-  end
-
-  test "should get select_data" do
-    get :select_data
     assert_response :success
   end
 
@@ -27,6 +23,7 @@ class AwonControllerTest < ActionController::TestCase
   end
 
   test "should get blog" do
+    blogs(:one)
     get :blog
     assert_response :success
   end

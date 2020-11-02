@@ -23,24 +23,23 @@ module GridDB
     def weather_url
       "#{Endpoint::BASE_URL}/weather"
     end
-    
+
     def longitude_cols
       self.column_names.select { |cn| cn =~ /w[\d]{3}/ }.sort { |a, b| b <=> a } # e.g. 'w980' before 'w976'
     end
-    
+
     def longitude_col(longitude)
       l_cols = longitude_cols
       westmost = -1 * (l_cols[0].sub('w','').to_f) / 10.0 # 98.0
       l_cols[Grid.nearest(longitude,westmost,STEP)]
     end
-    
+
     def nearest_latitude(latitude)
       MIN_LATITUDE + STEP * Grid.nearest(latitude,MIN_LATITUDE,STEP)
     end
-    
+
     def daily_series(start_date, end_date, long, lat)
       long *= -1 if long < 0
-
       url = "#{self.base_url}?lat=#{lat}&long=#{long}&start_date=#{start_date}&end_date=#{end_date}"
       response = HTTParty.get(url, { timeout: 5 })
       body = JSON.parse(response.body)

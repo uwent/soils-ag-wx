@@ -1,7 +1,4 @@
-SoilsAgWx::Application.routes.draw do
-  resources :regions
-
-  resources :degree_day_stations
+Rails.application.routes.draw do
 
   get "heartbeat/index"
   get "heartbeat/awon"
@@ -14,26 +11,6 @@ SoilsAgWx::Application.routes.draw do
   get "heartbeat/webapps"
   get "heartbeat/asos_grids"
   match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
-  resources :hyds
-
-  resources :wi_mn_d_ave_vaprs
-
-  resources :asos_stations
-
-  resources :asos_data
-
-  resources :wi_mn_d_min_t_airs
-
-  resources :wi_mn_d_max_t_airs
-
-  resources :wi_mn_d_ave_t_airs
-
-  resources :awon_record_types
-
-  resources :awon_field_descrips
-  
-  get "cranberry/index"
-  get "cranberry/summary"
   get "awon/awon_check_boxes"
   get "awon/select_data"
   get "awon/station_info"
@@ -64,6 +41,7 @@ SoilsAgWx::Application.routes.draw do
   get "thermal_models/remaining_dds"
   get "thermal_models/remaining_dd_map_for"
   get "thermal_models/frost_map"
+  get "thermal_models/oak_wilt"
   get "thermal_models/many_degree_days_for_date"
   post "thermal_models/get_dds_many_locations"
   get "thermal_models/get_dds_many_locations"
@@ -79,7 +57,6 @@ SoilsAgWx::Application.routes.draw do
   get "sun_water/grid_ets"
   match "/sun_water/get_grid", to: "sun_water#get_grid", via: [:get, :post]
   match "/sun_water", to: "sun_water#index", via: [:get, :post]
-  
   get "weather/index"
   get "weather/hyd"
   get "weather/awon"
@@ -96,23 +73,11 @@ SoilsAgWx::Application.routes.draw do
   post "thermal_models/get_dds"
   get "navigation/index"
   get "navigation/about"
-  match "/navigation", to: "navigation#index", via: [:get, :post]
-  resources :t401s
+  get "t411s/last"
 
-  resources :t406s
-
-  resources :t403s
-
-  resources :t412s
-
-  resources :awon_stations
-
-  resources :wi_mn_dets
-
-  #resources :products
 
   resources :subscribers, only: [:index, :new, :create, :edit, :update, :destroy] do
-    collection do 
+    collection do
       post :manage
       get :manage
       get :logout
@@ -130,69 +95,13 @@ SoilsAgWx::Application.routes.draw do
     end
   end
 
-  resources :blogs
+  resources :hyds, only: [:index, :show]
 
-  get "t411s/last"
-  resources :t411s
-  
+  match "/navigation", to: "navigation#index", via: [:get, :post]
   root to: 'navigation#index'
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-  
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end
