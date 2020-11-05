@@ -41,7 +41,6 @@ Rails.application.routes.draw do
   get "thermal_models/remaining_dd_map_for"
   get "thermal_models/frost_map"
   get "thermal_models/oak_wilt"
-  get "thermal_models/all_oak_wilt_dds"
   get "thermal_models/many_degree_days_for_date"
   post "thermal_models/get_dds_many_locations"
   get "thermal_models/get_dds_many_locations"

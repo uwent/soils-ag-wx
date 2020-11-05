@@ -4,7 +4,6 @@ require 'agwx_biophys'
 class ThermalModelsController < ApplicationController
   include GridController
   include AgwxBiophys::DegreeDays
-  helper_method :define_recommendation_senario
 
   skip_before_action :verify_authenticity_token, only: :get_dds
 
@@ -14,7 +13,6 @@ class ThermalModelsController < ApplicationController
   def degree_days
     @dd_methods = %w(Average Modified Sine)
   end
-
 
   def corn
   end
@@ -74,7 +72,6 @@ class ThermalModelsController < ApplicationController
     response = HTTParty.get(set_dd_url(params), { timeout: 5 })
     body = JSON.parse(response.body)
     @data = body.map { |h| [h['date'], h['value']] }.to_h
-    # @senario = define_recommendation_senario(@data.values.last, @end_date)
   end
 
   def get_dds

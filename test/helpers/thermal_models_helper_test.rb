@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ThermalModelsHelperTest < ActionView::TestCase
-
   test "should return senario a" do
     assert_equal("senario_a", define_senario(128, "2020-07-15".to_date))
     assert_equal("senario_a", define_senario(0, "2020-07-15".to_date))
