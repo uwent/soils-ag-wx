@@ -16,12 +16,13 @@ module ThermalModelsHelper
     july_15 = date_string.to_date
     case
     when dd_value < 128.3 && end_date <= july_15 then return "senario_a"
-    when 215.8 > dd_value && dd_value >= 128.3 && end_date <= july_15 then return "senario_b"
-    when 354.2 > dd_value && dd_value >= 215.8 && end_date <= july_15 then return "senario_c"
-    when 507.2 > dd_value && dd_value >= 354.2 && end_date <= july_15 then return "senario_d"
-    when 206.7 > dd_value && dd_value >= 507.2 && end_date <= july_15 then return "senario_e"
-    when dd_value >= 1206.7 && end_date <= july_15 then return "senario_f"
-    when dd_value >= 1206.7 && end_date > july_15 then return "senario_g"
+    when 215.8 > dd_value && dd_value >= 128.3 && end_date <= july_15 then "senario_b"
+    when 354.2 > dd_value && dd_value >= 215.8 && end_date <= july_15 then "senario_c"
+    when 507.2 > dd_value && dd_value >= 354.2 && end_date <= july_15 then "senario_d"
+    when 1206.7 > dd_value && dd_value >= 507.2 && end_date <= july_15 then "senario_e"
+    when dd_value >= 1206.7 && end_date <= july_15 then "senario_f"
+    when dd_value >= 1206.7 && end_date > july_15 then "senario_g"
+    else nil 
     end
   end
 
