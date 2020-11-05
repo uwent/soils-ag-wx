@@ -14,13 +14,11 @@ class ThermalModelsController < ApplicationController
     @dd_methods = %w(Average Modified Sine)
   end
 
+
   def corn
   end
 
   def corn_dev
-  end
-
-  def cranberry
   end
 
   def ecb
@@ -71,29 +69,17 @@ class ThermalModelsController < ApplicationController
   def oak_wilt
   end
 
-  def set_start_date_end_date(params)
-    if params[:model_type] === "oak_wilt"
-      p = params[:grid_date]
-      @start_date = Date.civil(p["end_date(1i)"].to_i,1,1)
-      @end_date = Date.civil(p["end_date(1i)"].to_i,p["end_date(2i)"].to_i,p["end_date(3i)"].to_i)
-    else
-      @start_date,@end_date = parse_dates(params['grid_date'])
-    end
-  end
-
-  def get_dds
-    @method = params[:method]
-    @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f * -1.0
-    @base_temp = params[:base_temp].to_f
-    @upper_temp = params[:upper_temp] == 'None' ? nil: params[:upper_temp].to_f
-    set_start_date_end_date(params)
-    url = "#{Endpoint::BASE_URL}/degree_days?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base_temp=#{@base_temp}"
-    url += "&upper_temp=#{@upper_temp}" unless @upper_temp.nil?
-    response = HTTParty.get(url, { timeout: 5 })
+  def get_oak_wilt_dd
+    response = HTTParty.get(set_dd_url(params), { timeout: 5 })
     body = JSON.parse(response.body)
     @data = body.map { |h| [h['date'], h['value']] }.to_h
+  end
 
+
+  def get_dds
+    response = HTTParty.get(set_dd_url(params), { timeout: 5 })
+    body = JSON.parse(response.body)
+    @data = body.map { |h| [h['date'], h['value']] }.to_h
     @param = "#{@method} method DDs#{@base_temp ? ' Base temp ' + sprintf("%0.1f",@base_temp) : ''}#{@upper_temp ? ' Upper temp ' + sprintf("%0.1f",@upper_temp) : ''} "
     if params[:seven_day]
       if (all_dates = @data.keys.sort) && all_dates.size > 6
@@ -275,6 +261,28 @@ class ThermalModelsController < ApplicationController
       mins: WiMnDMinTAir.daily_series(start_date,end_date,longitude,latitude),
       maxes: WiMnDMaxTAir.daily_series(start_date,end_date,longitude,latitude),
     }
+  end
+
+  def set_start_date_end_date(params)
+    if params[:model_type] === "oak_wilt"
+      p = params[:grid_date]
+      @start_date = Date.civil(p["end_date(1i)"].to_i,1,1)
+      @end_date = Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i,p["end_date(3i)"].to_i)
+    else
+      @start_date, @end_date = parse_dates(params['grid_date'])
+    end
+  end
+
+  def set_dd_url(params)
+    @method = params[:method]
+    @latitude = params[:latitude].to_f
+    @longitude = params[:longitude].to_f * -1.0
+    @base_temp = params[:base_temp].to_f
+    @upper_temp = params[:upper_temp] == 'None' ? nil: params[:upper_temp].to_f
+    set_start_date_end_date(params)
+    url = "#{Endpoint::BASE_URL}/degree_days?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base_temp=#{@base_temp}"
+    url += "&upper_temp=#{@upper_temp}" unless @upper_temp.nil?
+    return url
   end
 
 end

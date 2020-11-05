@@ -1,0 +1,21 @@
+<% @title="Oak Wilt Degree Day"%>
+<% content_for :title do %>
+ <%= @title %>
+<% end %>
+
+<% content_for :welcome do %>
+  <%= image_tag "ow_leaves.jpg",{:width => "231", :height => "180", :alt => "Oak Wilt"} %>
+  <h2><%= @title %></h2>
+  <p></p>
+<% end %>
+
+<p>The Cumulative Degree Day from January 1,  <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %> is <%= @data.values.last %> degree days.</p>
+<% if @data.values.last > 128.3 %>
+  <p>It is estimated that at least 5% of one of the major oak wilt vectors that emerges earlier than the other have already emerged.</p>
+<% else %>
+  <p>It is estimated that approximately 5% of one of the major oak wilt vectors that emerges earlier than the other have not emerged as of the date yet.</p>
+<% end %>
+<a href="#" onclick="displayAllDds()">View all Degree Days for this date range</a>
+<div id="oak-wilt-list" style="display:none">
+  <%= render partial: "partials/all_oak_wilt_dds", :locals => {data: @data, end_date: @end_date}%>
+</div>

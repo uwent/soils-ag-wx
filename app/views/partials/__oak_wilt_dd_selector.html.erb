@@ -1,4 +1,4 @@
-<%= form_tag({action: :get_dds}, {class: "form__oak_wilt"}) do %>
+<%= form_tag({action: :get_oak_wilt_dd}, {class: "form__oak_wilt"}) do %>
   <div class="form-row">
     <label for="latitude">Latitude</label>
     <%= select_tag :latitude, options_for_select(latitudes) %>
@@ -14,12 +14,9 @@
     <%= date_select :grid_date, :end_date, start_year: 2000, default: 1.day.ago, end_year: Time.now.year %>
   </div>
   </div>
-  <div class="format-row">
-    <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'csv' %> Download as CSV&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON<br/>
-  </div>
-  <input type="hidden" name="method" value="Modified"/>
-  <input type="hidden" name="model_type" value="oak_wilt" />
+  <input type="hidden" name="model_type" value="oak_wilt"/>
+  <input type="hidden" name="method" value="Sine"/>
   <input type="hidden" name="base_temp" value="41" />
   <input type="hidden" name="upper_temp" value="None" />
-  <%= submit_tag("Get Data Series", class: "button")%>
+  <%= submit_tag("Compute Oak Wilt Risk", class: "button")%>
 <% end %>
