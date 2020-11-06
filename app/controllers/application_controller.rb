@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
   def set_tab_selected
     selects = {
       :awon => :weather,
+      :cranberry => :sun_water,
       :drought => :drought,
       :navigation => :about,
       :products => :subscriptions,
