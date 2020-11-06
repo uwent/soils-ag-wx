@@ -42,5 +42,6 @@ role :db,  %w{deploy@dev.agweather.cals.wisc.edu:216}
 #     # password: 'please use keys'
 #   }
 # setting per server overrides global ssh_options
+set :rails_env, 'production'
 
 # fetch(:default_env).merge!(rails_env: :staging)
