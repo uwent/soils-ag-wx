@@ -21,6 +21,8 @@ gem 'httparty', '0.18.1'
 gem 'will_paginate', '~> 3.3'
 gem 'best_in_place', '~> 3.1'
 gem 'whenever', '~> 1.0'
+gem 'ed25519'
+gem 'bcrypt_pbkdf'
 
 group :doc do
   gem 'sdoc', require: false
