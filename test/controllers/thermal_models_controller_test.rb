@@ -81,11 +81,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get remaining_dds" do
-    get :remaining_dds
-    assert_response :success
-  end
-
   test "should get remaining_dd_map_for" do
     get :remaining_dd_map_for
     assert_response :success
@@ -109,6 +104,14 @@ class ThermalModelsControllerTest < ActionController::TestCase
         method: 'Simple', latitude: 44.2, longitude: -89.2, format: format }
       assert_response :success
     end
+  end
+
+  test "should get get_oak_wilt_dd" do
+    get :get_dds,
+      params: { grid_date: {"start_date(1i)" => 2011, "start_date(2i)" => 1, "start_date(3i)" => 1,
+      "end_date(1i)" => 2011, "end_date(2i)" => 1, "end_date(3i)" => 1},
+      method: 'Sine', latitude: 44.2, longitude: -89.2}
+    assert_response :success
   end
 
   LONG_SYM = :w860
