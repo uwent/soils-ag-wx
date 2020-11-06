@@ -70,8 +70,8 @@ class ThermalModelsController < ApplicationController
 
   def get_oak_wilt_dd
     response = HTTParty.get(set_dd_url(params), { timeout: 5 })
-    body = JSON.parse(response.body)
-    @data = body.map { |h| [h['date'], h['value']] }.to_h
+    body = JSON.parse(response.body).map { |h| [h['date'], h['value']] }.to_h
+    @data = body.select { |k, _| k.to_s <= @end_date.to_s }
   end
 
   def get_dds
