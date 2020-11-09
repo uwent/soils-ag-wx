@@ -1,5 +1,5 @@
 class WiMnDMaxTAir < ApplicationRecord
-  include GridDB
+  include GridDb
   include Assessable
 
   def self.date_sym

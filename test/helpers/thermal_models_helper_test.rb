@@ -29,10 +29,8 @@ class ThermalModelsHelperTest < ActionView::TestCase
   test "should return senario g" do
     assert_equal("senario_g", define_senario(1206.7, "2020-07-16".to_date))
     assert_equal("senario_g", define_senario(1206.7, "2015-07-16".to_date))
-  end
-  test "should not return senario" do
-    assert_nil(define_senario(1206.6, "2020-07-16".to_date))
-    assert_nil(define_senario(128, "2020-07-16".to_date))
-    assert_nil(define_senario(75, "2015-07-16".to_date))
+    assert_equal("senario_g", define_senario(1206.6, "2020-07-16".to_date))
+    assert_equal("senario_g", define_senario(128, "2020-07-16".to_date))
+    assert_equal("senario_g", define_senario(75, "2015-07-16".to_date))
   end
 end

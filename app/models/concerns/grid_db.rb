@@ -1,4 +1,4 @@
-module GridDB
+module GridDb
   MIN_LATITUDE = 42.0 # FIXME: Should derive this from the Grid file, really
   STEP = 0.4 # FIXME: Likewise!
 

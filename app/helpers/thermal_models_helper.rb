@@ -21,8 +21,7 @@ module ThermalModelsHelper
     when 507.2 > dd_value && dd_value >= 354.2 && end_date <= july_15 then "senario_d"
     when 1206.7 > dd_value && dd_value >= 507.2 && end_date <= july_15 then "senario_e"
     when dd_value >= 1206.7 && end_date <= july_15 then "senario_f"
-    when dd_value >= 1206.7 && end_date > july_15 then "senario_g"
-    else nil 
+    when end_date > july_15 then "senario_g"
     end
   end
 
