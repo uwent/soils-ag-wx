@@ -10,7 +10,7 @@
 <% end %>
 <% if @data.length > 0 %>
   <% @senario=define_senario(@data.values.last, @end_date) %>
-  <h3>The Cumulative Degree Day from January 1,  <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %> is <b><%= @data.values.last %></b> degree days.</h3>
+  <h3>The cumulative degree days from January 1,  <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %> is <b><%= @data.values.last %></b> Celsius degree days.</h3>
   <br/>
   <% if @senario %>
     <%= render partial: "partials/threshold_recommendations/#{@senario}" %>
