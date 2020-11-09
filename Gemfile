@@ -21,8 +21,8 @@ gem 'httparty', '0.18.1'
 gem 'will_paginate', '~> 3.3'
 gem 'best_in_place', '~> 3.1'
 gem 'whenever', '~> 1.0'
-gem 'ed25519'
-gem 'bcrypt_pbkdf'
+# gem 'ed25519'
+# gem 'bcrypt_pbkdf'
 
 group :doc do
   gem 'sdoc', require: false
@@ -30,8 +30,8 @@ end
 
 group :development do
   gem 'capistrano', '~> 3.4'
-  gem 'capistrano-rails', '~> 1.6'
-  gem 'capistrano-bundler', '~> 2.0'
+  gem 'capistrano-rails', '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
   gem 'capistrano-rbenv', '~> 2.0'
   gem 'letter_opener', '~> 1.7'
   gem 'letter_opener_web', '~> 1.4'

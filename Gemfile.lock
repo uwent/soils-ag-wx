@@ -62,7 +62,6 @@ GEM
     agwx_grids (0.0.6)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    bcrypt_pbkdf (1.0.1)
     best_in_place (3.1.1)
       actionpack (>= 3.2)
       railties (>= 3.2)
@@ -72,7 +71,7 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 1.9.0)
-    capistrano-bundler (2.0.1)
+    capistrano-bundler (1.6.0)
       capistrano (~> 3.1)
     capistrano-rails (1.6.1)
       capistrano (~> 3.1)
@@ -91,7 +90,6 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
-    ed25519 (1.2.4)
     erubi (1.9.0)
     execjs (2.7.0)
     ffi (1.13.1)
@@ -118,7 +116,7 @@ GEM
       actionmailer (>= 3.2)
       letter_opener (~> 1.0)
       railties (>= 3.2)
-    libv8 (3.16.14.19-x86_64-darwin-17)
+    libv8 (3.16.14.19)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -242,14 +240,12 @@ DEPENDENCIES
   activesupport
   agwx_biophys
   agwx_grids (>= 0.0.6)
-  bcrypt_pbkdf
   best_in_place (~> 3.1)
   capistrano (~> 3.4)
-  capistrano-bundler (~> 2.0)
-  capistrano-rails (~> 1.6)
+  capistrano-bundler (~> 1.1)
+  capistrano-rails (~> 1.1)
   capistrano-rbenv (~> 2.0)
   coffee-rails (~> 5.0.0)
-  ed25519
   httparty (= 0.18.1)
   jbuilder (~> 2.10)
   jquery-rails (~> 4.4.0)
