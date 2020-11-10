@@ -1,8 +1,9 @@
-set :application, 'soils_ag_wx'
-set :repo_url, 'https://github.com/adorableio/soils_ag_wx.git'
-
+lock '3.14.1'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 branch = ENV['BRANCH'] || 'master'
+
+set :application, 'soils_ag_wx'
+set :repo_url, 'https://github.com/adorableio/soils_ag_wx.git'
 
 set :branch, branch
 
