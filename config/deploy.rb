@@ -7,6 +7,7 @@ branch = ENV['BRANCH'] || 'master'
 set :branch, branch
 
 # set :deploy_to, '/var/www/my_app'
+set :deploy_to, "/home/deploy/soils_ag_wx"
 # set :scm, :git
 
 # set :format, :pretty
