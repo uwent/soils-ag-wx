@@ -1,5 +1,5 @@
 class OldT406 < ApplicationRecord
-  establish_connection adapter: 'mysql',
+  establish_connection adapter: 'mysql2',
     host: '127.0.0.1',
     username: 'wayne',
     password: 'agem.Data',
@@ -28,5 +28,5 @@ class OldT406 < ApplicationRecord
       ["HhAvTDew","Average Dew Temperature (Deg C)"]
     ]
   end
-  
+
 end
