@@ -1,15 +1,15 @@
 class OldAsos < ApplicationRecord
-  establish_connection adapter: 'mysql',
+  establish_connection adapter: 'mysql2',
     host: '127.0.0.1',
     username: 'wayne',
     password: 'agem.Data',
     database: 'asos'
   self.table_name = "asosData"
-  
+
   def self.time_for(date,time)
     Time.utc(date.year,date.month,date.day,time.hour,time.min,time.sec)
   end
-  
+
   def self.translate
     return unless (d = first["Date"])
     start_year = d.year
@@ -29,5 +29,5 @@ class OldAsos < ApplicationRecord
       end
     end
   end
-  
+
 end

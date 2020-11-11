@@ -4,7 +4,7 @@ gem 'railties', '6.0.3.2'
 gem 'rails', '6.0.3.2'
 gem 'activesupport'
 gem 'pg', '~> 0.15'
-gem 'mysql'
+gem 'mysql2'
 # Use agwx_grids for uploading data from text grids to database
 gem 'agwx_grids', '>= 0.0.6'
 # Use agwx_biophys for degree days and the like

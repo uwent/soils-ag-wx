@@ -1,6 +1,6 @@
 class OldGrid < ApplicationRecord
   def self.connect(old_table_name)
-    establish_connection adapter: 'mysql',
+    establish_connection adapter: 'mysql2',
       host: '127.0.0.1',
       username: 'wayne',
       password: 'agem.Data',

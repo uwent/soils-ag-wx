@@ -1,5 +1,5 @@
 class OldT401 < ApplicationRecord
-    establish_connection adapter: 'mysql',
+    establish_connection adapter: 'mysql2',
       host: '127.0.0.1',
       username: 'wayne',
       password: 'agem.Data',
@@ -8,7 +8,7 @@ class OldT401 < ApplicationRecord
     self.table_name = "t_#{$1}"
 
     include Reportable
-  
+
   def self.attr_human_readables
     [
       ["stnid","Station Number"],
