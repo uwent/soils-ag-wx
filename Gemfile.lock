@@ -138,7 +138,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.14.2)
     multi_xml (0.6.0)
-    mysql2 (0.5.3)
+    mysql (2.9.1)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
@@ -258,7 +258,7 @@ DEPENDENCIES
   letter_opener (~> 1.7)
   letter_opener_web (~> 1.4)
   listen
-  mysql2
+  mysql
   pg (~> 0.15)
   pry-rails
   rails (= 6.0.3.2)
