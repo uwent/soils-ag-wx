@@ -30,8 +30,6 @@ Rails.application.routes.draw do
   get "thermal_models/corn_stalk_borer"
   get "thermal_models/potato"
   get "thermal_models/tree"
-  get "thermal_models/gypsy"
-  get "thermal_models/gypsyinfo"
   get "thermal_models/scm"
   get "thermal_models/wiDDs"
   get "thermal_models/wiDDs_csv"
@@ -41,7 +39,6 @@ Rails.application.routes.draw do
   get "thermal_models/remaining_dd_map_for"
   get "thermal_models/frost_map"
   get "thermal_models/oak_wilt"
-  get "thermal_models/many_degree_days_for_date"
   post "thermal_models/get_dds_many_locations"
   get "thermal_models/get_dds_many_locations"
   match "/thermal_models", to: "thermal_models#index", via: [:get, :post]

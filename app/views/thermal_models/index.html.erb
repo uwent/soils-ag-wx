@@ -22,13 +22,6 @@
 <br/>
 <div class=", {}, fineline"></div>
 
-<%= image_tag "degree_day_table.png", {:width => "75", :height => "75", :alt => "Degree-day table", :class => "left"} %>
-<h2><%= link_to "Multiway Degree Day Calculator", {:controller => "thermal_models", :action => :many_degree_days_for_date } %></h2>
-<p>Calculate degree days for multiple sets of parameters (i.e. method and temperatures) and up to 24 locations at once.</p>
-<br/>
-<br/>
-<div class=", {}, fineline"></div>
-
 <%= image_tag "oak_wilt.jpg", {:width => "75", :height => "75", :alt => "Oak Wilt Larvae", :class => "left"} %>
 <h2><%= link_to "Oak Wilt Vector Emergence Thermal Model", :action => :oak_wilt %></h2>
 <p>Degree-day information on oak wilt development.</p>
@@ -68,6 +61,4 @@
 <%= image_tag "tree.png", {:width => "75", :height => "75", :alt => "tree", :class => "left"} %>
 <h2>Gypsy Moth</h2>
 <p>We use a Base 50F degree-day model to predict the development of <%= link_to "many tree pests", :action => :tree%>.</p>
-<p>In addition, we also provide results from the
-   <%= link_to 'GMPHEN gypsy-moth phenology model', :action => :gypsy %>.</p>
 <div class=", {}, fineline"></div>
