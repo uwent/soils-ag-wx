@@ -21,7 +21,7 @@
 <% end %>
 <p>These weather data are maximum and minimum air temperature and precipitation, for the previous 24 hours, observed at about 7 am. The observations are made by a group of about 60 volunteers, who immediately transmit them to the National Weather Service Forecast Office in Sullivan, WI. Meteorologists there collect the readings and make them available on the Weather Service's computer system. We retrieve the data from McIDAS, a system created and maintained by the Space Science and Engineering Center of the University of Wisconsin-Madison. Until December 2003, the reports were referred to by the NWS as "OPU", for "Other Public Products"; they are now officially "HYD", for "hydrometeorological data".</p>
 <p>Some of the observers providing these measurements are part of the National Weather Service's Cooperative Observation Program, and their data will be included in long-term records. Other observers are not official members of the Cooperative Program, and use their own equipment. Thus, averages published in the "Climate of Wisconsin" (about 8 months from now) may not agree with those derived from the daily summaries here.</p>
-<p>Note that HYD reports are for the 24 hours preceding the date and time on which they are issued. So the January 2 report has 
+<p>Note that HYD reports are for the 24 hours preceding the date and time on which they are issued. So the January 2 report has
   January 1's weather, and so on.</p>
 
 <% date = start_date = Date.civil(@year,1,1) %>
@@ -30,7 +30,7 @@
 <% end_date = [Date.civil(@year + 1, 1, 1),Date.today].min %>
 <% options = options_for_select((1997..Date.today.year),@year) %>
 <%= select_tag "year", options, {onchange: "changeYear(this);"} %>
-<table>
+<table class="calendar-table">
   <tr valign="top"> <!-- First row of 6 months -->
     <td style='padding:10px'>
       <table>
@@ -57,7 +57,7 @@
               <% end %>
               <% date = new_date %>
             <% end %>
-        </table>    
+        </table>
     </tr>
   <% end %>
 </table>

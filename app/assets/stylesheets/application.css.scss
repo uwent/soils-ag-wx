@@ -191,6 +191,15 @@ table {
   border-collapse: collapse;
 }
 
+.calendar-table {
+	font-size: 11px;
+}
+
+.table-scroll-wrapper {
+	overflow-x: scroll;
+	margin: 1rem;
+}
+
 
 .field_with_errors {
   color: red;
