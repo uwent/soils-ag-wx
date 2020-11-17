@@ -22,7 +22,7 @@
 	<%= yield :stylesheet -%>
 	<%= yield :scripts -%>
   <%= stylesheet_link_tag 'application' %>
-	
+
 </head>
 
 <body onload="init(window.location.href);">
@@ -33,7 +33,7 @@
     <!-- link_to "Drought", {:controller => "drought"}, {:selected => @tab_selected[:drought]} -->
     <%= link_to "Weather", {:controller => "weather"}, {:selected => @tab_selected[:weather]} %>
     <%= link_to "Sun/Water", {:controller => "sun_water"}, {:selected => @tab_selected[:sun_water]} %>
-    <%= link_to "Thermal Models", {:controller => "thermal_models"}, {:selected => @tab_selected[:thermal_models]} %>        
+    <%= link_to "Thermal Models", {:controller => "thermal_models"}, {:selected => @tab_selected[:thermal_models]} %>
     <%= link_to "About Us", {:controller => "navigation", :action => :about}, {:selected => @tab_selected[:about]} %>
  	</div>
 	<div id="body">
@@ -52,7 +52,7 @@
 	</div>
 	<div id="footer">
 	  <%= yield :footer %>
-		<p>Copyright ©2010 University of Wisconsin. All rights reserved</p>
+		<p>Copyright ©2020 University of Wisconsin. All rights reserved</p>
 	</div>
 </div>
 
