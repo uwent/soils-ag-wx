@@ -1,22 +1,27 @@
 <%= form_tag({action: :get_oak_wilt_dd}, {class: "form__oak_wilt"}) do %>
+  <p class="directions">Choose the drop down Latitude and West longitude menu values that are the closest to your location.</p>
   <div class="form-row">
     <label for="latitude">Latitude</label>
     <%= select_tag :latitude, options_for_select(latitudes) %>
   </div>
   <div class="form-row">
-    <label for="longitude">West longitude</label>
+    <label for="longitude">West Longitude</label>
     <%= select_tag :longitude, options_for_select(longitudes) %>
-    <a href="https://www.lifewire.com/latitude-longitude-coordinates-google-maps-1683398" target="_blank" class="helper-link">How to find coordinates from Google Maps</a>
+    <a href="https://support.google.com/maps/answer/18539?co=GENIE.Platform%3DDesktop&hl=en&oco=1" target="_blank" class="helper-link">How to find coordinates from Google Maps</a>
   </div>
   <div class="form-row">
-  <label for="end_date">End Date</label>
-  <div>
-    <%= date_select :grid_date, :end_date, start_year: 2000, default: 1.day.ago, end_year: Time.now.year %>
-  </div>
+    <label id="end-date" for="end_date">Date of Interest</label>
+    <div onChange="validateDate()">
+      <%= date_select :grid_date, :end_date, start_year: 2016, default: 1.day.ago, end_year: Time.now.year %>
+    </div>
+    <div id="date-warning" style="display:none;">
+      <p>Date of interest must be prior to the current date.<p>
+    </div>
+    <p class="disclaimer">Note: Date of interest must be prior to the current date. The degree day data in this system is available only up to the day before the current date for computation.</p>
   </div>
   <input type="hidden" name="model_type" value="oak_wilt"/>
   <input type="hidden" name="method" value="Sine"/>
   <input type="hidden" name="base_temp" value="41" />
   <input type="hidden" name="upper_temp" value="None" />
-  <%= submit_tag("Predict Oak Wilt Vector Emergence Status", class: "button")%>
+  <%= submit_tag("Compute Estimated Oak Wilt Vector Emergence Status", class: "button", id: "submit")%>
 <% end %>

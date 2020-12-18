@@ -54,3 +54,26 @@
   display: flex;
   flex-direction: flex-end;
 }
+
+.larger-font {
+  font-size: 1.17em;
+}
+
+.map-image {
+  max-height: 25rem;
+}
+
+.directions {
+  font-size: 14px;
+}
+
+.disclaimer {
+  font-style: italic;
+  font-size: 12px;
+  margin: 5px;
+}
+
+#date-warning p {
+  margin: 0 5px;
+  color: red;
+}
