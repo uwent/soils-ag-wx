@@ -23,7 +23,7 @@
   <a href="#" onclick="displayAllDds()">View all Degree Days for this date range</a> |
   <%= render partial: "partials/download_csv", :locals => {data: @data}%> |
   <%= link_to 'Back', :back %>
-  <div id="oak-wilt-list" style="display:none" data-dd="<%=@data%>">
+  <div id="oak-wilt-list" style="display:none">
     <%= render partial: "partials/all_oak_wilt_dds", :locals => {data: @data, end_date: @end_date}%>
   </div>
 <% else %>
