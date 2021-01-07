@@ -74,6 +74,13 @@ class ThermalModelsController < ApplicationController
     @data = body.select { |k, _| k.to_s <= @end_date.to_s }
   end
 
+  def download_csv
+    data = JSON.parse params[:dd_data].gsub('=>', ":")
+    respond_to do |format|
+      format.csv { render plain: to_csv(data, "Sine") }
+    end
+  end
+
   def get_dds
     response = HTTParty.get(set_dd_url(params), { timeout: 5 })
     body = JSON.parse(response.body)

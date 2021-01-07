@@ -96,6 +96,14 @@ class ThermalModelsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should download csv file' do
+    [:csv].each do |format|
+      get :download_csv,
+        params: { dd_data: "{\"2020-09-28\"=>12, \"2020-09-29\"=>27, \"2020-09-30\"=>44}", format: format }
+        assert_response :success
+    end
+  end
+
   test "should get get_oak_wilt_dd" do
     get :get_dds,
       params: { grid_date: {"start_date(1i)" => 2011, "start_date(2i)" => 1, "start_date(3i)" => 1,

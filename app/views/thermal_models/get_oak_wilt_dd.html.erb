@@ -21,9 +21,9 @@
     <%= render partial: "partials/threshold_recommendations/#{@scenario}" %>
   <% end %>
   <a href="#" onclick="displayAllDds()">View all Degree Days for this date range</a> |
-  <%= link_to 'To download data as CSV and JSON', thermal_models_degree_days_path %> |
+  <%= render partial: "partials/download_csv", :locals => {data: @data}%> |
   <%= link_to 'Back', :back %>
-  <div id="oak-wilt-list" style="display:none">
+  <div id="oak-wilt-list" style="display:none" data-dd="<%=@data%>">
     <%= render partial: "partials/all_oak_wilt_dds", :locals => {data: @data, end_date: @end_date}%>
   </div>
 <% else %>

@@ -24,5 +24,4 @@ module ThermalModelsHelper
     when end_date > july_15 then "scenario_g"
     end
   end
-
 end

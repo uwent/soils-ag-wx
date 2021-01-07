@@ -9,6 +9,21 @@
   margin-bottom: 1rem;
 }
 
+.link {
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: #383425;
+}
+
+.link:hover {
+  cursor: pointer;
+}
+
+.form__download_csv {
+  display: inline;
+}
+
 .form-row {
   margin-bottom: 1rem;
   display: flex;

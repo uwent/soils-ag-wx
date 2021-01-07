@@ -12,7 +12,7 @@
   <div class="form-row">
     <label id="end-date" for="end_date">Date of Interest</label>
     <div onChange="validateDate()">
-      <%= date_select :grid_date, :end_date, start_year: 2016, default: 1.day.ago, end_year: Time.now.year %>
+      <%= date_select :grid_date, :end_date, start_year: 2017, default: 1.day.ago, end_year: Time.now.year %>
     </div>
     <div id="date-warning" style="display:none;">
       <p>Date of interest must be prior to the current date.<p>
