@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   post "wi_mn_dets/get_grid"
   post "thermal_models/get_dds"
   post "thermal_models/get_oak_wilt_dd"
+  post "thermal_models/download_csv"
   get "navigation/index"
   get "navigation/about"
   get "t411s/last"
