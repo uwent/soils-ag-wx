@@ -20,7 +20,7 @@ Rails version `6.0.3.2`
 4. run the server!
 `bundle exec rails server`
 
-5. [ag-weather](https://github.com/adorableio/ag-weather) is set up and running on port 8080
+5. [ag-weather](https://github.com/uwent/ag-weather) is set up and running on port 8080
 
 ## Running Tests
 ```bash

@@ -3,7 +3,7 @@ lock '3.14.1'
 branch = ENV['BRANCH'] || 'master'
 
 set :application, 'soils_ag_wx'
-set :repo_url, 'https://github.com/adorableio/soils_ag_wx.git'
+set :repo_url, 'https://github.com/uwent/soils_ag_wx.git'
 
 set :branch, branch
 
