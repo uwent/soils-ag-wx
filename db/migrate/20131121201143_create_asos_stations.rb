@@ -1,4 +1,4 @@
-class CreateAsosStations < ActiveRecord::Migration
+class CreateAsosStations < ActiveRecord::Migration[4.2]
   def change
     create_table :asos_stations do |t|
       t.string :stnid

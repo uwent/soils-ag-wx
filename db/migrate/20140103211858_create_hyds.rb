@@ -1,4 +1,4 @@
-class CreateHyds < ActiveRecord::Migration
+class CreateHyds < ActiveRecord::Migration[4.2]
   def change
     create_table :hyds do |t|
       t.date :date

@@ -1,4 +1,4 @@
-class CreateAsosData < ActiveRecord::Migration
+class CreateAsosData < ActiveRecord::Migration[4.2]
   def change
     create_table :asos_data do |t|
       t.date :date

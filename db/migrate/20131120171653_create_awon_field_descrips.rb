@@ -1,4 +1,4 @@
-class CreateAwonFieldDescrips < ActiveRecord::Migration
+class CreateAwonFieldDescrips < ActiveRecord::Migration[4.2]
   def change
     create_table :awon_field_descrips do |t|
       t.integer :rec_id

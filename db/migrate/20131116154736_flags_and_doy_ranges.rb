@@ -1,4 +1,4 @@
-class FlagsAndDoyRanges < ActiveRecord::Migration
+class FlagsAndDoyRanges < ActiveRecord::Migration[4.2]
   def self.up
     add_column :products, :subscribable, :boolean
     

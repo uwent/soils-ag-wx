@@ -1,4 +1,4 @@
-class CreateT406s < ActiveRecord::Migration
+class CreateT406s < ActiveRecord::Migration[4.2]
   def change
     create_table :t406s do |t|
       t.integer :awon_station_id

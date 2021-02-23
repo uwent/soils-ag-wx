@@ -1,4 +1,4 @@
-class CreateWiMnDets < ActiveRecord::Migration
+class CreateWiMnDets < ActiveRecord::Migration[4.2]
   def change
     create_table :wi_mn_dets do |t|
       t.date :dateStamp
