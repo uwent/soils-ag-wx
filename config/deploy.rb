@@ -1,4 +1,3 @@
-lock '3.14.1'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 branch = ENV['BRANCH'] || 'master'
 
