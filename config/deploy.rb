@@ -2,7 +2,7 @@
 branch = ENV['BRANCH'] || 'master'
 
 set :application, 'soils_ag_wx'
-set :repo_url, 'git@github.com:uwent/soils-ag-wx.git'
+set :repo_url, 'git@soilsagwx.github.com:uwent/soils-ag-wx.git'
 
 set :branch, branch
 
