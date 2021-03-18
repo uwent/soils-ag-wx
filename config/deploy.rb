@@ -1,9 +1,8 @@
-lock '3.14.1'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 branch = ENV['BRANCH'] || 'master'
 
 set :application, 'soils_ag_wx'
-set :repo_url, 'https://github.com/uwent/soils-ag-wx.git'
+set :repo_url, 'git@soilsagwx.github.com:uwent/soils-ag-wx.git'
 
 set :branch, branch
 
@@ -25,7 +24,7 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
 # rbenv
 set :deploy_user, 'deploy'
 set :rbenv_type, :user
-set :rbenv_ruby, '2.6.5'
+set :rbenv_ruby, '2.7.2'
 
 namespace :deploy do
 
