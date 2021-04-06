@@ -1,10 +1,13 @@
 class SubscribersController < ApplicationController
-  before_action :get_subscriber_from_session, only: [:manage, :update, :admin,
-                                                     :destroy,
-                                                     :add_subscription,
-                                                     :remove_subscription,
-                                                     :export_emails]
-
+  before_action :get_subscriber_from_session, only: [
+    :manage,
+    :update,
+    :admin,
+    :destroy,
+    :add_subscription,
+    :remove_subscription,
+    :export_emails,
+  ]
 
   def index
     remove_from_session
@@ -21,7 +24,6 @@ class SubscribersController < ApplicationController
         if @subscriber.admin? && params[:to_edit_id]
           @subscriber = Subscriber.find(params[:to_edit_id])
         end
-
         render
       end
     elsif params[:email_address].nil?
@@ -52,8 +54,7 @@ class SubscribersController < ApplicationController
     else
       if @subscriber.save
         SubscriptionMailer.confirm(@subscriber).deliver
-        redirect_to confirm_notice_subscriber_path(@subscriber),
-                    notice: 'Subscriber was successfully created.'
+        redirect_to confirm_notice_subscriber_path(@subscriber), notice: 'Subscriber was successfully created.'
       else
         render action: "new"
       end
@@ -117,11 +118,12 @@ class SubscribersController < ApplicationController
     long = params[:longitude]
     product = Product.where(name: 'Evapotranspiration').first
     respond_to do |format|
-      subscription = Subscription.new(name: site_name,
-                                       latitude: lat,
-                                       longitude: long,
-                                       product_id: product.id)
-
+      subscription = Subscription.new(
+        name: site_name,
+        latitude: lat,
+        longitude: long,
+        product_id: product.id,
+      )
       @subscriber.subscriptions << subscription
       format.json { render json: subscription }
     end
