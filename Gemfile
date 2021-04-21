@@ -22,10 +22,10 @@ gem 'agwx_grids', '0.0.6'
 # Use agwx_biophys for degree days and the like
 gem 'agwx_biophys', '0.0.4'
 
-platform :ruby do
-  gem 'libv8', '3.16.14.19'
-  gem 'therubyracer', '0.12.3'
-end
+# platform :ruby do
+#   gem 'libv8', '3.16.14.19'
+#   gem 'therubyracer', '0.12.3'
+# end
 
 group :doc do
   gem 'sdoc', require: false
