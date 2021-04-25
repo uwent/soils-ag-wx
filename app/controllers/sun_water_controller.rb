@@ -1,4 +1,5 @@
 require 'grid_controller'
+
 class SunWaterController < ApplicationController
   include GridController
 

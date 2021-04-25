@@ -3,29 +3,47 @@ html, body, ul, li, h1, h2, h3, h4 {
 	padding: 0px;
 	list-style: none;
 }
-h2{
+
+h1 {
+	position: absolute;
+	top: 36px;
+	left: 13px;
+	font-size: 2em;
+	color:#3f3c2d;
+	font-variant: small-caps;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
 	font-family: Arial, Helvetica, sans-serif;
 	color: #363325;
 	font-size: 20px;
 }
+
 img {
 	border: 0px;
 }
+
 a {
 	text-decoration: underline;
 }
+
 a:hover {
 	text-decoration: underline;
 }
+
 .left {
 	float: left;
 }
+
 .right {
 	float: right;
 }
+
 .more {
 	text-align: right;
 }
+
 .clear {
 	clear: both;
 }
@@ -35,6 +53,7 @@ body {
 	text-align: center;
 	font: 13px verdana, arial, sans-serif;
 }
+
 #wrapper {
 	text-align: left;
 	margin: auto;
@@ -46,14 +65,17 @@ body {
 	color: white;
 	width: 100%;
 }
+
 #body-top {
 	background: top left image_url('body_top.png') no-repeat;
 	position: relative;
 }
+
 #body-bot {
 	background: bottom left image_url('body_bot.png') no-repeat;
 	padding-bottom: 17px;
 }
+
 #body-top-2 {
 	position: absolute;
 	top: 12px;
@@ -67,21 +89,13 @@ body {
 	position: relative;
 	padding-top: 68px;
 }
-h1 {
-	position: absolute;
-	top: 36px;
-	left: 13px;
-	font-size: 2em;
-	color:#3f3c2d;
-	font-variant: small-caps;
-	font-family: Arial, Helvetica, sans-serif;
-}
+
 #nav {
 	position: absolute;
 	top: 43px;
-	left: 360px;
-
+	right: 10px;
 }
+
 #nav  a {
 	background-image:image_url('menu_unselected.png');
 	width:120px;
@@ -97,6 +111,7 @@ h1 {
 	color:#e9e4d0;
 	font-weight:bolder;
 }
+
 #nav  a:hover {
 	color:#544e38;
 }
@@ -108,28 +123,33 @@ h1 {
 #body-bot {
 	padding-top: 12px;
 }
+
 #welcome {
 	float: left;
 /*	width: 120px;*/
 	width: 231px;
 	padding-left: 13px;
-
 }
+
 #welcome a {
 	color: #F2F7F8;
 }
+
 #welcome a:hover {
 	color: #CFCCBF;
 }
+
 #welcome h2 {
 	text-align: center;
 	margin: 11px;
 	color:#ceb085;
 	font-size:24px;
 }
+
 #welcome p {
 	margin: 0px 19px;
 }
+
 #welcome .more {
 	margin-top: 18px;
 	margin-bottom: 10px;
@@ -144,12 +164,15 @@ h1 {
 	color: #4f4c39;
 	overflow:auto;
 }
+
 #content .left {
 	margin-right: 10px;
 }
+
 #content a {
 	color: #383425;
 }
+
 #content a:hover {
 	color: #26241A;
 }
@@ -167,6 +190,7 @@ h1 {
 	padding-left: 6px;
 	background: 0px 4px image_url('bar_lit.gif') no-repeat;
 }
+
 .bar-drk {
 	padding-left: 6px;
 	background: 0px 4px image_url('bar_drk.gif') no-repeat;
@@ -178,9 +202,11 @@ h1 {
 	text-align: right;
 	padding-right: 47px;
 }
+
 #footer p {
 	margin-top: 0.5em;
 }
+
 table {
   border-collapse: collapse;
 }
