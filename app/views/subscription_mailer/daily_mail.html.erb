@@ -1,30 +1,42 @@
-<p>THIS EMAIL WAS SENT BY THE UW EXTENSION AG. WEATHER AUTOMATED MAILER, DO NOT REPLY.</p>
-<br/>
+<p>THIS EMAIL WAS SENT BY THE UW EXTENSION AG WEATHER AUTOMATED MAILER, DO NOT REPLY.</p>
+<br>
 <p>Daily evapotranspiration (ET) data for <%= @subscriber.name %>.</p>
-<p>The daily ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.</p>
-<table>
+<p>The daily potential ET data for the site(s) you requested is shown below for the past week.</p>
+<table style="border-spacing: 1em;">
   <thead>
-    <tr>
-      <th align="left" style="width: 15.0em;">Site ID</th>
-      <th align="left" style="width: 7.0em;">Location</th>
-      <th align="right">ET Value (in/day)</th>
+    <tr style="border-bottom: 1px solid grey">
+      <th style="text-align: left; margin-right: 2em;">Site ID</th>
+      <th style="text-align: left; margin-right: 2em;">Location</th>
+      <th style="text-align: left; margin-right: 2em;">Date</th>
+      <th style="text-align: right; margin-right: 2em;">ET Value<br>(in/day)</th>
+      <th style="text-align: right; margin-right: 2em;">Cumul.<br>ET Value</th>
     </tr>
   </thead>
   <tbody>
     <% @values.each do |sub| %>
       <tr>
-        <td align="left"><%= sub[:site_name] %></td>
-        <td align="left"><%= sub[:latitude] %>/<%= sub[:longitude] %></td>
-        <td align="right"><%= sub[:value] %></td>
+        <td style="vertical-align: baseline;"><%= sub[:site_name] %></td>
+        <td style="vertical-align: baseline;"><a href="https://www.google.com/maps/search/?api=1&query=<%= sub[:latitude] %>%2C+<%= sub[:longitude] %>" target="_blank"><%= sub[:latitude] %>, <%= sub[:longitude] %></a></td>
+        <td>
+          <% sub[:dates].each do |d| %>
+            <%= d.strftime("%b %d (%a)") %><br>
+          <% end %>
+        </td>
+        <td style="text-align: right;">
+          <% sub[:values].each do |v|%>
+            <%= v.round(3) %><br>
+          <% end %>
+        </td>
+        <td style="text-align: right;">
+          <% sub[:cum_vals].each do |c| %>
+            <%= c.round(3) %><br>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br />
-<br />
-<p>If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.</p>
-
-<p>
-Each year the first ET email will arrive in your in-box on April 2nd and the last on November 1st.
-<p>
+<br>
+<br>
+<p><i>Each year the first ET email will arrive in your inbox on April 2nd and the last on November 1st.</i></p>
+<p><i>If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.</i></p>

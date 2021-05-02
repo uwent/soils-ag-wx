@@ -52,19 +52,36 @@ class Subscriber < ApplicationRecord
 
   def self.send_daily_mail
     et_product = Product.where(name: 'Evapotranspiration').first
-    date = Date.today - 1.day
-    return if (date.yday < et_product.default_doy_start || 
-               date.yday >= et_product.default_doy_end)
+    yesterday = Date.today - 1.day
+    dates = (Date.today - 1.week)..yesterday
+    return if (
+      yesterday.yday < et_product.default_doy_start ||
+      yesterday.yday >= et_product.default_doy_end)
     Subscriber.all.each do |subscriber| 
       subs = subscriber.subscriptions.where(product: et_product).map do |sub| 
-        { 
+        
+        # collect ets for location
+        vals = dates.map do |date|
+          Endpoint.get_et_value(date, sub.latitude, sub.longitude * -1)
+        end.reverse()
+
+        # cumulative sum of ets
+        sum = 0
+        cum_vals = vals.map { |v| sum += v}
+
+        # return data
+        {
           site_name: sub.name,
           latitude: sub.latitude,
           longitude: sub.longitude,
-          value: Endpoint.get_et_value(date, sub.latitude, sub.longitude * -1)
+          dates: dates.map { |day| day }.reverse(),
+          values: vals,
+          cum_vals: cum_vals
         }
-      end.select { |val| val[:value] > 0 }
-      SubscriptionMailer.daily_mail(subscriber, date, subs).deliver if subs.length > 0
+      end
+      puts subs
+      # end.select { |val| val[:value] > 0 }
+      SubscriptionMailer.daily_mail(subscriber, yesterday, subs).deliver if subs.length > 0
     end
   end
 
