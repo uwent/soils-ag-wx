@@ -3,7 +3,7 @@
 <p>Daily evapotranspiration (ET) data for <%= @subscriber.name %>.</p>
 <p>The daily potential ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.</p>
 <br>
-<table style="border-spacing: 0.5em;">
+<table style="border-spacing: 1.5em 0.25em;">
   <thead>
     <tr>
       <th style="text-align: left;">Site ID</th>
@@ -13,8 +13,11 @@
       <th style="text-align: right;">Cumul.<br>ET Value</th>
     </tr>
   </thead>
-  <tbody style="vertical-align: baseline;">
-    <% @values.each do |sub| %>
+  <tbody>
+    <% @values.each_with_index do |sub, s| %>
+      <% if s > 0 %>
+        <tr style="height: 1em;"><td colspan=5></td></tr>
+      <% end %>
       <% sub[:dates].each_with_index do |d, i| %>
         <% if i == 0 %>
           <tr>
@@ -50,6 +53,4 @@
   </tbody>
 </table>
 <br>
-<br>
-<p><i>Each year the first ET email will arrive in your inbox on April 2nd and the last on November 1st.</i></p>
-<p><i>If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.</i></p>
+<p><i>Each year the first ET email will arrive in your inbox on April 2nd and the last on November 1st. To edit your subscriptions, <a href="https://agweather.cals.wisc.edu/subscribers">click here</a>. If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.</i></p>
