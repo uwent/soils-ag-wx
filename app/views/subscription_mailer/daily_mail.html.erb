@@ -1,38 +1,51 @@
 <p>THIS EMAIL WAS SENT BY THE UW EXTENSION AG WEATHER AUTOMATED MAILER, DO NOT REPLY.</p>
 <br>
 <p>Daily evapotranspiration (ET) data for <%= @subscriber.name %>.</p>
-<p>The daily potential ET data for the site(s) you requested is shown below for the past week.</p>
-<table style="border-spacing: 1em;">
+<p>The daily potential ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.</p>
+<br>
+<table style="border-spacing: 0.5em;">
   <thead>
-    <tr style="border-bottom: 1px solid grey">
-      <th style="text-align: left; margin-right: 2em;">Site ID</th>
-      <th style="text-align: left; margin-right: 2em;">Location</th>
-      <th style="text-align: left; margin-right: 2em;">Date</th>
-      <th style="text-align: right; margin-right: 2em;">ET Value<br>(in/day)</th>
-      <th style="text-align: right; margin-right: 2em;">Cumul.<br>ET Value</th>
+    <tr>
+      <th style="text-align: left;">Site ID</th>
+      <th style="text-align: left;">Location</th>
+      <th style="text-align: left;">Date</th>
+      <th style="text-align: right;">ET Value<br>(in/day)</th>
+      <th style="text-align: right;">Cumul.<br>ET Value</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody style="vertical-align: baseline;">
     <% @values.each do |sub| %>
-      <tr>
-        <td style="vertical-align: baseline;"><%= sub[:site_name] %></td>
-        <td style="vertical-align: baseline;"><a href="https://www.google.com/maps/search/?api=1&query=<%= sub[:latitude] %>%2C+<%= sub[:longitude] %>" target="_blank"><%= sub[:latitude] %>, <%= sub[:longitude] %></a></td>
-        <td>
-          <% sub[:dates].each do |d| %>
-            <%= d.strftime("%b %d (%a)") %><br>
-          <% end %>
-        </td>
-        <td style="text-align: right;">
-          <% sub[:values].each do |v|%>
-            <%= v.round(3) %><br>
-          <% end %>
-        </td>
-        <td style="text-align: right;">
-          <% sub[:cum_vals].each do |c| %>
-            <%= c.round(3) %><br>
-          <% end %>
-        </td>
-      </tr>
+      <% sub[:dates].each_with_index do |d, i| %>
+        <% if i == 0 %>
+          <tr>
+            <td><%= sub[:site_name] %></td>
+            <td><a href="https://www.google.com/maps/search/?api=1&query=<%= sub[:latitude] %>%2C+<%= sub[:longitude] %>" target="_blank"><%= sub[:latitude] %>, <%= sub[:longitude] %></a></td>
+            <td><%= d.strftime("%b-%d") %></td>
+            <td style="text-align: right;">
+              <% if sub[:values][i].negative?() %>
+                No data
+              <% else %>
+                <%= sub[:values][i].round(3) %>
+              <% end %>
+            </td>
+            <td style="text-align: right;"><%= sub[:cum_vals][i].round(3) %></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td></td>
+            <td></td>
+            <td><%= d.strftime("%b-%d") %></td>
+            <td style="text-align: right;">
+              <% if sub[:values][i].negative?() %>
+                No data
+              <% else %>
+                <%= sub[:values][i].round(3) %>
+              <% end %>
+            </td></td>
+            <td style="text-align: right;"><%= sub[:cum_vals][i].round(3) %></td>
+          </tr>
+        <% end %>
+      <% end %>
     <% end %>
   </tbody>
 </table>

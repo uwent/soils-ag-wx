@@ -61,25 +61,27 @@ class Subscriber < ApplicationRecord
       subs = subscriber.subscriptions.where(product: et_product).map do |sub| 
         
         # collect ets for location
-        vals = dates.map do |date|
+        vals = dates.to_a.reverse.map do |date|
           Endpoint.get_et_value(date, sub.latitude, sub.longitude * -1)
-        end.reverse()
+        end
+        # end.select { |val| val[:value] > 0 }
 
         # cumulative sum of ets
         sum = 0
-        cum_vals = vals.map { |v| sum += v}
+        cum_vals = vals.map do |v|
+          sum += v.negative?() ? 0 : v
+        end
 
         # return data
         {
           site_name: sub.name,
           latitude: sub.latitude,
           longitude: sub.longitude,
-          dates: dates.map { |day| day }.reverse(),
+          dates: dates.to_a.reverse,
           values: vals,
           cum_vals: cum_vals
         }
       end
-      puts subs
       # end.select { |val| val[:value] > 0 }
       SubscriptionMailer.daily_mail(subscriber, yesterday, subs).deliver if subs.length > 0
     end
