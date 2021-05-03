@@ -53,18 +53,15 @@ class Subscriber < ApplicationRecord
   def self.send_daily_mail
     et_product = Product.where(name: 'Evapotranspiration').first
     yesterday = Date.today - 1.day
-    dates = (Date.today - 1.week)..yesterday
-    return if (
-      yesterday.yday < et_product.default_doy_start ||
-      yesterday.yday >= et_product.default_doy_end)
+    dates = ((Date.today - 1.week)..yesterday).to_a.reverse
+    return if (yesterday.yday < et_product.default_doy_start || yesterday.yday >= et_product.default_doy_end)
     Subscriber.all.each do |subscriber| 
       subs = subscriber.subscriptions.where(product: et_product).map do |sub| 
         
         # collect ets for location
-        vals = dates.to_a.reverse.map do |date|
+        vals = dates.map do |date|
           Endpoint.get_et_value(date, sub.latitude, sub.longitude * -1)
         end
-        # end.select { |val| val[:value] > 0 }
 
         # cumulative sum of ets
         sum = 0
@@ -77,7 +74,7 @@ class Subscriber < ApplicationRecord
           site_name: sub.name,
           latitude: sub.latitude,
           longitude: sub.longitude,
-          dates: dates.to_a.reverse,
+          dates: dates,
           values: vals,
           cum_vals: cum_vals
         }
