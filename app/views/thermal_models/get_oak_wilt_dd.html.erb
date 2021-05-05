@@ -14,7 +14,7 @@
   <h3>The cumulative degree days</h3>
   <h3>From January 1,  <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %> </h3>
   <h3>Latitude: N<%= params[:latitude] %>, W Longitude: <%= params[:longitude] %> </h3>
-  <h3>GDD: <b><%= @data.values.last %></b> Celsius degree days</h3>
+  <h3>GDD: <b><%= @data.values.last %></b> Fahrenheit degree days</h3>
 
   <br/>
   <% if @scenario %>
