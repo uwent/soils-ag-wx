@@ -1,4 +1,17 @@
 <p>Degree Days from January 1, <%= end_date.strftime("%Y") %> to <%= end_date.strftime("%B %d, %Y") %>:</p>
-<% for date in data.keys.sort %>
-  <%= date %>&nbsp;<%= data[date] %><br/>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>FDDs</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% for date in data.keys.sort %>
+    <tr>
+      <td><%= date %></td>
+      <td><%= data[date] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
