@@ -1,6 +1,6 @@
 <%= form_tag action: :get_dds do %>
 <%= select_tag :latitude, options_for_select(latitudes) %> <label for="latitude"> Latitude</label>
-<%= select_tag :longitude, options_for_select(longitudes) %><label for="longitude"> West longitude</label><br/>
+<%= select_tag :longitude, options_for_select(longitudes) %><label for="longitude"> Longitude</label><br/>
 <% if @dd_methods.size > 1 %>
   <% @dd_methods.each do |method| %>
     <%= radio_button_tag 'method', method, method == @dd_methods[0] %> <%= method %><br/>
@@ -14,5 +14,6 @@
 <%= text_field_tag  :upper_temp, 'None', {size: 3} %> Upper threshold (F)<br/>
 <%= check_box_tag :seven_day %> Report only last 7 days of accumulated values<br/>
 <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'csv' %> Download as CSV&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON<br/>
+<br>
 <%= submit_tag "Get Data Series "%>
 <% end %>
