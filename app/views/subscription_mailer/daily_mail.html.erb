@@ -3,14 +3,14 @@
 <p>Daily evapotranspiration (ET) data for <%= @subscriber.name %>.</p>
 <p>The daily potential ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.</p>
 <br>
-<table style="border-spacing: 1.5em 0.25em;">
+<table>
   <thead>
     <tr>
-      <th style="text-align: left;">Site ID</th>
-      <th style="text-align: left;">Location</th>
-      <th style="text-align: left;">Date</th>
-      <th style="text-align: right;">ET Value<br>(in/day)</th>
-      <th style="text-align: right;">Cumul.<br>ET Value</th>
+      <th align="left" style="width: 12em;">Site ID</th>
+      <th align="left" style="width: 7em;">Location</th>
+      <th align="left" style="width: 4em;">Date</th>
+      <th align="right" style="width: 6em;">ET Value<br>(in/day)</th>
+      <th align="right" style="width: 6em;">Cumul.<br>ET Value</th>
     </tr>
   </thead>
   <tbody>
@@ -24,28 +24,28 @@
             <td><%= sub[:site_name] %></td>
             <td><a href="https://www.google.com/maps/search/?api=1&query=<%= sub[:latitude] %>%2C+<%= sub[:longitude] %>" target="_blank"><%= sub[:latitude] %>, <%= sub[:longitude] %></a></td>
             <td><%= d.strftime("%b-%d") %></td>
-            <td style="text-align: right;">
+            <td align="right">
               <% if sub[:values][i].negative?() %>
                 No data
               <% else %>
                 <%= sub[:values][i].round(3) %>
               <% end %>
             </td>
-            <td style="text-align: right;"><%= sub[:cum_vals][i].round(3) %></td>
+            <td align="right"><%= sub[:cum_vals][i].round(3) %></td>
           </tr>
         <% else %>
           <tr>
             <td></td>
             <td></td>
             <td><%= d.strftime("%b-%d") %></td>
-            <td style="text-align: right;">
+            <td align="right">
               <% if sub[:values][i].negative?() %>
                 No data
               <% else %>
                 <%= sub[:values][i].round(3) %>
               <% end %>
             </td></td>
-            <td style="text-align: right;"><%= sub[:cum_vals][i].round(3) %></td>
+            <td align="right"><%= sub[:cum_vals][i].round(3) %></td>
           </tr>
         <% end %>
       <% end %>
