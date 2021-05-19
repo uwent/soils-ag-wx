@@ -1,4 +1,4 @@
-class CreateAwonStations < ActiveRecord::Migration
+class CreateAwonStations < ActiveRecord::Migration[4.2]
   def change
     create_table :awon_stations do |t|
       t.integer :stnid

@@ -1,4 +1,4 @@
-class CreateWebcamImages < ActiveRecord::Migration
+class CreateWebcamImages < ActiveRecord::Migration[4.2]
   def change
     create_table :webcam_images do |t|
       t.datetime :timestamp

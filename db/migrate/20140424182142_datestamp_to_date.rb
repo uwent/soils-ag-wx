@@ -1,4 +1,4 @@
-class DatestampToDate < ActiveRecord::Migration
+class DatestampToDate < ActiveRecord::Migration[4.2]
   def change
     rename_column :wi_mn_dets, :dateStamp, :date
     rename_column :wi_mn_d_ave_t_airs, :dateStamp, :date

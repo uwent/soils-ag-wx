@@ -1,4 +1,4 @@
-class CreateWiMnDMinTAirs < ActiveRecord::Migration
+class CreateWiMnDMinTAirs < ActiveRecord::Migration[4.2]
   def change
     create_table :wi_mn_d_min_t_airs do |t|
       t.date :dateStamp

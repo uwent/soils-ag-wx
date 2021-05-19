@@ -1,4 +1,4 @@
-class CreateDegreeDayStations < ActiveRecord::Migration
+class CreateDegreeDayStations < ActiveRecord::Migration[4.2]
   def change
     create_table :degree_day_stations do |t|
       t.string :abbrev
@@ -7,6 +7,7 @@ class CreateDegreeDayStations < ActiveRecord::Migration
       t.float :longitude
       t.timestamps
     end
+
     # Fill the Degree Day Station model with the stations in ~asig/products/lists/cpsb.list
     dd_stns = <<-END
     DBQ 42.50 -90.69 Dubuque, IA
