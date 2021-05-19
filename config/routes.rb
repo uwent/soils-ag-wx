@@ -1,106 +1,134 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  get "heartbeat/index"
-  get "heartbeat/awon"
-  get "heartbeat/asos"
-  get "heartbeat/hyd"
-  get "heartbeat/dd"
-  get "heartbeat/et"
-  get "heartbeat/insol"
-  get "heartbeat/ping"
-  get "heartbeat/webapps"
-  get "heartbeat/asos_grids"
-  match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
-  get "awon/awon_check_boxes"
-  get "awon/select_data"
-  get "awon/station_info"
-  get "awon/graphs"
-  get "awon/graphs_soiltemp"
-  get "awon/blog"
-  get "awon/awon_seven_day"
-  get "awon/download_data"
-  match "/awon", to: "awon#index", via: [:get, :post]
-  post "awon/download_data"
-  get "thermal_models/index"
-  get "thermal_models/degree_days"
-  get "thermal_models/corn"
-  get "thermal_models/corn_dev"
-  get "thermal_models/ecb"
-  get "thermal_models/alfalfa"
-  get "thermal_models/corn_stalk_borer"
-  get "thermal_models/potato"
-  get "thermal_models/tree"
-  get "thermal_models/scm"
-  get "thermal_models/wiDDs"
-  get "thermal_models/wiDDs_csv"
-  get "thermal_models/westernbeancutworm"
-  get "thermal_models/scm_doc"
-  get "thermal_models/remaining_dds"
-  get "thermal_models/remaining_dd_map_for"
-  get "thermal_models/frost_map"
-  get "thermal_models/oak_wilt"
-  post "thermal_models/get_dds_many_locations"
-  get "thermal_models/get_dds_many_locations"
-  match "/thermal_models", to: "thermal_models#index", via: [:get, :post]
-  get "sun_water/index"
-  get "sun_water/insol_us"
-  get "sun_water/insol_model"
-  get "sun_water/et_wimn"
-  get "sun_water/et_fl"
-  get "sun_water/et_model"
-  get "sun_water/spreadsheet_download"
-  get "sun_water/spreadsheet_doc"
-  get "sun_water/grid_ets"
-  match "/sun_water/get_grid", to: "sun_water#get_grid", via: [:get, :post]
-  match "/sun_water", to: "sun_water#index", via: [:get, :post]
-  get "weather/index"
-  get "weather/hyd"
-  get "weather/awon"
-  get "weather/grid_temps"
-  get "weather/webcam"
-  get "weather/doycal"
-  get "weather/doycal_grid"
-  get "weather/hyd"
-  post "weather/get_grid"
-  post "weather/webcam_archive"
-  get "weather/webcam_archive"
-  get "weather/kinghall"
-  post "wi_mn_dets/get_grid"
-  post "thermal_models/get_dds"
-  post "thermal_models/get_oak_wilt_dd"
-  post "thermal_models/download_csv"
-  get "navigation/index"
-  get "navigation/about"
-  get "t411s/last"
-
-
-  resources :subscribers, only: [:index, :new, :create, :edit, :update, :destroy] do
+  resources :awon, only: [:index] do
     collection do
-      post :manage
-      get :manage
-      get :logout
-      get :admin
-      get :export_emails
+      get 'awon_check_boxes'
+      get 'awon_seven_day'
+      get 'select_data'
+      get 'station_info'
+      get 'graphs'
+      get 'graphs_soiltemp'
+      get 'blog'
+      get 'download_data'
+      post 'download_data'
+    end
+  end
+  match '/awon', to: 'awon#index', via: [:get, :post]
+
+  resources :heartbeat, only: [:index] do
+    collection do
+      get 'awon'
+      get 'asos'
+      get 'hyd'
+      get 'dd'
+      get 'et'
+      get 'insol'
+      get 'ping'
+      get 'webapps'
+      get 'asos_grids'
+    end
+  end
+  match '/heartbeat', to: 'heartbeat#index', via: [:get, :post]
+
+  resources :navigation, only: [:index] do
+    collection do
+      get 'about'
+    end
+  end
+  match '/navigation', to: 'navigation#index', via: [:get, :post]
+
+  resources :sun_water, only: [:index] do
+    collection do
+      get 'insol_us'
+      get 'insol_model'
+      get 'et_wimn'
+      get 'et_fl'
+      get 'et_model'
+      get 'spreadsheet_download'
+      get 'spreadsheet_doc'
+      get 'grid_ets'
+      get 'get_grid'
+      post 'get_grid'
+    end
+  end
+  match '/sun_water', to: 'sun_water#index', via: [:get, :post]
+
+  resources :thermal_models, only: [:index] do
+    collection do
+      get 'degree_days'
+      get 'corn'
+      get 'corn_dev'
+      get 'ecb'
+      get 'alfalfa'
+      get 'corn_stalk_borer'
+      get 'potato'
+      get 'tree'
+      get 'scm'
+      get 'wiDDs'
+      get 'wiDDs_csv'
+      get 'westernbeancutworm'
+      get 'scm_doc'
+      get 'remaining_dds'
+      get 'remaining_dd_map_for'
+      get 'frost_map'
+      get 'oak_wilt'
+      get 'get_dds'
+      post 'get_dds'
+      get 'get_dds_many_locations'
+      post 'get_dds_many_locations'
+      get 'get_oak_wilt_dd'
+      post 'get_oak_wilt_dd'
+      post 'download_csv'
+    end
+  end
+  match '/thermal_models', to: 'thermal_models#index', via: [:get, :post]
+
+  resources :weather, only: [:index] do
+    collection do
+      get 'hyd'
+      get 'awon'
+      get 'grid_temps'
+      get 'webcam'
+      get 'doycal'
+      get 'doycal_grid'
+      get 'get_grid'
+      post 'get_grid'
+      get 'webcam_archive'
+      post 'webcam_archive'
+      get 'kinghall'
+    end
+  end
+  match '/weather', to: 'weather#index', via: [:get, :post]
+
+  resources :subscribers do
+    collection do
+      get 'admin'
+      get 'manage'
+      post 'manage'
+      get 'logout'
+      get 'export_emails'
     end
     member do
-      post :validate
-      get :confirm
-      get :confirm_notice
-      post :resend_confirmation
-      post :add_subscription
-      post :remove_subscription
-      get :unsubscribe
+      get 'confirm'
+      get 'confirm_notice'
+      get 'unsubscribe'
+      post 'validate'
+      post 'resend_confirmation'
+      post 'add_subscription'
+      post 'remove_subscription'
     end
   end
 
-  resources :hyds, only: [:index, :show]
+  post 'wi_mn_dets/get_grid'
+  get 't411s/last'
 
-  match "/navigation", to: "navigation#index", via: [:get, :post]
   root to: 'navigation#index'
 
   if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+    mount LetterOpenerWeb::Engine, at: '/letter_opener'
   end
+
+  get '*path', to: redirect('/')
 
 end

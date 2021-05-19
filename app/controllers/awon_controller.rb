@@ -100,7 +100,7 @@ class AwonController < ApplicationController
 
   private
   def report_type(number)
-    puts "number is #{number}"
+    logger.info "AWON Controller :: Report number is #{number}"
     case number
     when 411
       T411
@@ -121,15 +121,15 @@ class AwonController < ApplicationController
     begin
       @report_type = params[:report_type].to_i
     rescue => e
-      logger.warn 'incorrect report type passed in: ' + e.to_s
+      logger.warn "AWON Controller :: Incorrect report type passed in: " + e.to_s
       @report_type = "411"
     end
     @report_types = [
-      ["Daily Weather","411"],
-      ["Daily Soil Temperatures","412"],
-      ["Hourly & Half-Hourly Weather/Soil (Current)","406"] ,
-      ["Pre-2000 Half-Hourly Weather/Soil","403"],
-      ["Five-Minute Precip/Wind","401"]
+      ["Daily Weather", "411"],
+      ["Daily Soil Temperatures", "412"],
+      ["Hourly & Half-Hourly Weather/Soil (Current)", "406"] ,
+      ["Pre-2000 Half-Hourly Weather/Soil", "403"],
+      ["Five-Minute Precip/Wind", "401"]
     ]
     @db_class = report_type(@report_type)
     @ahrs = @db_class.attr_human_readables
