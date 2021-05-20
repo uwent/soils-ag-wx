@@ -2,9 +2,9 @@
 
 ## Description
 
-Ruby version `2.7.2`
+Ruby version `2.7.x`
 
-Rails version `6.0.3.4`
+Rails version `6.1.x`
 
 ## Setup
 
@@ -30,14 +30,14 @@ bundle exec rake test
 ## Deployment
 Work with db admin to authorize your ssh key for the deploy user, then run the following commands from the master branch:
 
-Staging:
+Staging ([https://dev.agweather.cals.wisc.edu/](https://dev.agweather.cals.wisc.edu/)):
 ```
-  cap staging deploy
+cap staging deploy
 ```
 
-Production:
+Production ([https://agweather.cals.wisc.edu/](https://agweather.cals.wisc.edu/)):
 ```
-  cap production deploy
+cap production deploy
 ```
 
 ## Migration Notes
