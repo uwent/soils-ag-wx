@@ -8,14 +8,14 @@ module Reportable
   end
 
   module InstanceMethods
-    def to_csv(attrs_to_show=nil)
+    def to_csv(attrs_to_show = nil)
       attrs_to_show ||= self.class.attr_human_readables
       CSV.generate_line(attrs_to_show.collect { |pair| send(pair[0]) })
     end
   end
 
   module ClassMethods
-    def csv_header(use_abbrevs=false,attrs_to_show=nil)
+    def csv_header(use_abbrevs = false, attrs_to_show = nil)
       atr_index = use_abbrevs ? 0 : 1
       attrs_to_show ||= attr_human_readables
       CSV.generate_line(attrs_to_show.collect { |atr| atr[atr_index] })

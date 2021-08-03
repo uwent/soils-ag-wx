@@ -18,7 +18,7 @@ class Subscriber < ApplicationRecord
     self.where("lower(email) = ?", email.downcase).first
   end
 
-  def send_subscriptions(start_date = Date.today-1, finish_date = Date.today-1)
+  def send_subscriptions(start_date = Date.today - 1, finish_date = Date.today - 1)
   end
 
   def is_confirmed?
