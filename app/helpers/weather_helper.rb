@@ -77,16 +77,16 @@ module WeatherHelper
   end
 
   def build_map_grid
-    lats = (42.0..50.0).step(0.5)
-    longs = (-98.0..-86.0).step(0.5)
+    lats = (42..50).step(0.5)
+    longs = (-98..-86).step(0.5)
     x_start = 32.0
     x_end = 623.0
-    x_inc = (x_end - x_start) / (longs.count)
+    x_inc = (x_end - x_start) / (longs.count - 1)
     
     x_start = x_start - 0.5 * x_inc # center the hitbox
     y_start = 63.0
     y_end = 522.0
-    y_inc = (y_end - y_start) / (lats.count)
+    y_inc = (y_end - y_start) / (lats.count - 1)
     y_start = y_start - 0.5 * y_inc
 
     # puts "First x: #{x_start} - #{x_start + x_inc}"
