@@ -9,7 +9,28 @@
   <p></p>
 <% end %>
 
-<%= @param %> for <%= @latitude %>,<%= @longitude %> from <%= @start_date %> to <%= @end_date %>:<br/>
-<% for date in @data.keys.sort %>
-<%= date %>&nbsp;<%= @data[date] %><br/>
-<% end %>
+<h2><%= @title %></h2>
+<br>
+
+<h4><u><%= @param %> data</u></h4>
+<p>
+  <strong>Location:</strong> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+  <strong>Date range:</strong> <%= @start_date %> to <%= @end_date %>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 8em;">Date</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% for date in @data.keys.sort %>
+    <tr>
+      <td><%= date %></td>
+      <td><%= @data[date] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

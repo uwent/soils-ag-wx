@@ -15,7 +15,7 @@ module WeatherHelper
     end
   end
 
-  def td_tag(date=nil)
+  def td_tag(date = nil)
     if date
       if date == Date.today
         open = "<td bgcolor='#00FFFF' "
@@ -69,14 +69,46 @@ module WeatherHelper
 
   # FIXME: Magic Numbers!
   def latitudes
-    (42.0..47.1).step(0.3).collect {|lat| [lat.round(1),lat.round(1)] }
+    (42.0..50).step(0.1).collect {|lat| [lat.round(1), lat.round(1)] }
   end
 
   def longitudes
-    (-93.1..-86.8).step(0.3).collect {|longi| [longi.round(1),longi.round(1)]}
+    (-98..-86).step(0.1).collect {|long| [long.round(1), long.round(1)]}
   end
 
-  def calendar_grid_color(mday,column,today=Date.today)
+  def build_map_grid
+    lats = (42..50).step(0.5)
+    longs = (-98..-86).step(0.5)
+    x_start = 32
+    x_end = 623
+    x_inc = (x_end - x_start) / longs.count
+    x_start = x_start - 0.5 * x_inc # center the hitbox
+    y_start = 63
+    y_end = 522
+    y_inc = (y_end - y_start) / lats.count
+    y_start = y_start - 0.5 * y_inc
+
+    array = []
+    row = 0
+    lats.reverse_each do |lat|
+      col = 0
+      longs.each do |long|
+        array << {
+          lat: lat,
+          long: long,
+          x1: (x_start + x_inc * col).round(0),
+          x2: (x_start + x_inc * (col + 1)).round(0),
+          y1: (y_start + y_inc * row).round(0),
+          y2: (y_start + y_inc * (row + 1)).round(0)
+        }
+        col += 1
+      end
+      row += 1
+    end
+    array
+  end
+
+  def calendar_grid_color(mday, column, today = Date.today)
     if mday == today.mday && column + 1 == today.month
       "aqua"
     elsif (column % 2) == 1

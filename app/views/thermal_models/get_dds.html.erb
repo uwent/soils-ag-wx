@@ -9,7 +9,15 @@
   <p></p>
 <% end %>
 
-<%= @param %> for <%= @latitude %>, -<%= @longitude %> from <%= @start_date %> to <%= @end_date %>:<br/>
+<h2><%= @title %></h2>
+<br>
+
+<h4><u><%= @param %> data</u></h4>
+<p>
+  <strong>Location:</strong> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+  <strong>Date range:</strong> <%= @start_date %> to <%= @end_date %>
+</p>
+
 <table>
   <thead>
     <tr>

@@ -1,4 +1,12 @@
 <map name="latlong" id="latlong">
+
+  <% build_map_grid().each do |g| %>
+    <area shape="rect" coords="<%=g[:x1]%>,<%=g[:y1]%>,<%=g[:x2]%>,<%=g[:y2]%>" onclick="return regionMap(<%=g[:lat]%>,<%=g[:long]%>)"/>
+  <% end %>
+
+</map>
+
+<%# <map name="latlong" id="latlong">
   <area shape="rect" coords="33,64,51,84" onclick="return regionMap(50.0,-98.0)"/>
   <area shape="rect" coords="52,64,70,84" onclick="return regionMap(50.0,-97.6)"/>
   <area shape="rect" coords="71,64,89,84" onclick="return regionMap(50.0,-97.2)"/>
@@ -651,4 +659,4 @@
   <area shape="rect" coords="584,500,602,520" onclick="return regionMap(42.0,-86.4)"/>
   <area shape="rect" coords="603,500,621,520" onclick="return regionMap(42.0,-86.0)"/>
 
-</map>
+</map> %>

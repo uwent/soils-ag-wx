@@ -7,35 +7,36 @@
   <%= image_tag "degree_flower.png",{:width => "231", :height => "156", :alt => "Hot and Cold"} %>
   <h2><%= @title %></h2>
   <p>Our evapotranspiration model uses atmospheric observations from ASOS stations and satellite-derived
-    insolation estimates to predict water use by plants
+    insolation estimates to predict water use by plants.
     </p>
 <% end %>
 
 <%= content_for :scripts do %>
-<script type="text/javascript">
-  function regionMap(latitude,longitude) {
-    latitude = latitude.toFixed(1);
-    longitude = longitude.toFixed(1);
-    if (longitude > 0.0) {
-      longitude = (longitude * -1.0).toFixed(1);
+  <script type="text/javascript">
+    function regionMap(latitude, longitude) {
+      latitude = latitude.toFixed(1);
+      longitude = longitude.toFixed(1);
+      console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
+      if (longitude > 0.0) {
+        longitude = (longitude * -1.0).toFixed(1);
+      }
+      $('#latitude').val(latitude);
+      $('#longitude').val(longitude);
+      return false;
     }
-    $('#latitude').val(latitude);
-    $('#longitude').val(longitude);
-    return false;
-  }
-</script>
+  </script>
 <% end %>
+
 <h2><%= @title %></h2>
 
-<P>
+<p style="font-size: larger">
+   Click <%= link_to "here", subscribers_path %> to subscribe to ET emails or edit an existing subscription.
+</p>
+<br>
 <h4>ET Time Series</h4>
 <p>Note: You can click on the map below to set the latitude and longitude.</p>
 <%= render partial: "partials/grid_selector" %>
-<p/>
-<br/ >
-<p style="font-size: larger">
-   Click <%= link_to "here", subscribers_path %> to subscribe to ET emails or edit an existing subscription.
- </p>
+<br>
 <img src="<%= @map_image %>"  alt="Yesterday's ET Estimates" usemap="#latlong" />
   <P> <a href="/sun_water/et_wimn.csv"> Download yesterday's entire grid of data in CSV Format</a><br>
 

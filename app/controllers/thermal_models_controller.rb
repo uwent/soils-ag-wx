@@ -95,7 +95,14 @@ class ThermalModelsController < ApplicationController
       format.html
       format.csv { render plain: to_csv(@data, params[:method]) }
       format.json do
-        hash = {title: 'Degree Days',method: @method, latitude: @latitude, longitude: @longitude, start_date: @start_date, end_date: @end_date}
+        hash = {
+          title: 'Degree Days',
+          method: @method,
+          latitude: @latitude,
+          longitude: @longitude,
+          start_date: @start_date,
+          end_date: @end_date
+        }
         render plain: @data
       end
     end

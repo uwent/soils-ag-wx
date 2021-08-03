@@ -1,5 +1,4 @@
 <% @title = "Wisconsin Insolation"%>
-
 <% content_for :title do %>
   <%= @title %>
 <% end %>
@@ -11,11 +10,11 @@
     looks like clouds to the satellite).</p>
 <% end %>
 
-<h2><%= @title %>
-</p>
-<div>
+<h2><%= @title %></h2>
+<p>
   <img src="<%= @map_image %>"  alt="Yesterday's Insolation Estimates" />
-</div>
+</p>
+
 
   <!-- <H4>For previous days, access the archive <a name="previous" href="http://alfi.soils.wisc.edu/cgi-bin/asig/InsolAccessPage.rb?reportType=EAST#today">here</a>)</H4>
 
