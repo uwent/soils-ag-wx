@@ -11,7 +11,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
@@ -24,10 +24,12 @@ Rails.application.configure do
 
   # While sendmail is less configurable than the default smtp, it works on our server
   config.action_mailer.delivery_method = :sendmail
-  config.action_mailer.default_url_options = {host: 'agweather.cals.wisc.edu'}
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default_url_options = { host: 'agweather.cals.wisc.edu' }
+  config.action_mailer.default_options = { from: 'agweather@cals.wisc.edu' }
 
   # Compress CSS using a preprocessor.
-    config.assets.js_compressor = Uglifier.new(harmony: true)
+  config.assets.js_compressor = Uglifier.new(harmony: true)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -58,7 +60,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
