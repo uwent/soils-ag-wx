@@ -1,3 +1,3 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "agweather@cals.wisc.edu"
+  default from: "cals-it-admin@cals.wisc.edu"
 end
