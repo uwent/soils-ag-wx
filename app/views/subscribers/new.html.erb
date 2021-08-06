@@ -10,10 +10,11 @@
     <%= do_welcome.html_safe %>
 <% end %>
 
+<h2><%= title %></h2>
 
 <div class='container'>
   <% unless @subscriber.email.blank? || @subscriber.errors.any? %>
-    Subscriber not found. Would you like to enroll?
+    <p><strong>Subscriber not found. Would you like to enroll?</strong></p>
   <% end %>
   <br />
   <br />
