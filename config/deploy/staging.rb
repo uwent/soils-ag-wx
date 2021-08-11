@@ -8,6 +8,8 @@ role :app, %w{deploy@dev.agweather.cals.wisc.edu:216}
 role :web, %w{deploy@dev.agweather.cals.wisc.edu:216}
 role :db,  %w{deploy@dev.agweather.cals.wisc.edu:216}
 
+set :rails_env, 'staging'
+
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server
@@ -37,7 +39,5 @@ role :db,  %w{deploy@dev.agweather.cals.wisc.edu:216}
 #     # password: 'please use keys'
 #   }
 # setting per server overrides global ssh_options
-
-set :rails_env, 'staging'
 
 # fetch(:default_env).merge!(rails_env: :staging)
