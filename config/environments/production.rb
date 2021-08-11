@@ -26,7 +26,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'agweather.cals.wisc.edu' }
-  config.action_mailer.default_options = { from: 'cals-it-admin@cals.wisc.edu' }
+  config.action_mailer.default_options = { from: 'agweather@cals.wisc.edu' }
 
   # Compress CSS using a preprocessor.
   config.assets.js_compressor = Uglifier.new(harmony: true)
