@@ -1,11 +1,9 @@
-#set :stage, :production
-set :deploy_to, "/home/deploy/soils_ag_wx"
-
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
+
 role :app, %w{deploy@agweather.cals.wisc.edu:216}
 role :web, %w{deploy@agweather.cals.wisc.edu:216}
 role :db,  %w{deploy@agweather.cals.wisc.edu:216}
@@ -39,5 +37,7 @@ role :db,  %w{deploy@agweather.cals.wisc.edu:216}
 #     # password: 'please use keys'
 #   }
 # setting per server overrides global ssh_options
+
+set :rails_env, 'production'
 
 # fetch(:default_env).merge!(rails_env: :production)
