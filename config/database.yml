@@ -1,0 +1,30 @@
+# PostgreSQL. Versions 8.2 and up are supported.
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV.fetch('DB_HOST') { 'localhost' } %>
+  username: <%= ENV.fetch('DB_USER') { 'postgres' } %>
+  password: <%= ENV.fetch('DB_PWD') { 'password' } %>
+  port: <% ENV.fetch('DB_PORT') { 5432 } %>
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
+
+development:
+  <<: *default
+  database: soils_ag_wx_development
+
+test:
+  <<: *default
+  database: soils_ag_wx_test
+
+production:
+  <<: *default
+  database: soils_ag_wx_production
+  username: soils_ag_wx
+  password: <%= ENV['SOILS_AG_WX_DATABASE_PASSWORD'] %>
+
+staging:
+  <<: *default
+  database: soils_ag_wx_staging
+  username: soils_ag_wx
+  password: <%= ENV['SOILS_AG_WX_DATABASE_PASSWORD'] %>
