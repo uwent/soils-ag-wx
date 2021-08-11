@@ -1,5 +1,5 @@
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-branch = ENV['SOILS_BRANCH'] || 'main'
+branch = ENV['BRANCH'] || 'main'
 
 set :application, 'soils_ag_wx'
 set :repo_url, 'git@soilsagwx.github.com:uwent/soils-ag-wx.git'
