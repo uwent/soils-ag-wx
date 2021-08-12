@@ -17,14 +17,11 @@ test:
   <<: *default
   database: soils_ag_wx_test
 
-staging:
-  <<: *default
-  database: soils_ag_wx_staging
-  username: soils_ag_wx
-  password: <%= ENV['SOILS_AG_WX_DATABASE_PASSWORD'] %>
-
-production:
+production: &production
   <<: *default
   database: soils_ag_wx_production
   username: soils_ag_wx
   password: <%= ENV['SOILS_AG_WX_DATABASE_PASSWORD'] %>
+
+staging:
+  <<: *production
