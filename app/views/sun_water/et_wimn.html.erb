@@ -29,7 +29,13 @@
 
 <h2><%= @title %></h2>
 
-<p><img src="<%= @map_image %>"  alt="Yesterday's ET Estimates" usemap="#latlong" /></p>
+<p>
+  <img
+    src="<%= @map_image %>"
+    alt="Yesterday's ET Estimates"
+    usemap="#latlong"
+    width="800px"/>
+</p>
 <%= render partial: 'partials/gridmap'%>
 
 <h4>ET Time Series</h4>
