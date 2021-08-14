@@ -1,11 +1,13 @@
+<% @title = "Day-of-Year Calendar" %>
+
 <% content_for :title do %>
-  Weather Observations
+  <%= @title %>
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "440px-Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg", {:width => "231", :height => "231", :alt => "Calendar"} %>
+  <%= image_tag "Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg", {:width => "231", :height => "231", :alt => "Calendar"} %>
   <h2>1-Century Day-Of-Year Calendar</h2>
-  <p style="font-size:5px">Image courtesy <a href="http://en.wikipedia.org/wiki/File:Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg">Wikimedia Commons</a></p>
+  <p style="font-size:6">Image courtesy <a href="http://en.wikipedia.org/wiki/File:Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg">Wikimedia Commons</a></p>
 <% end %>
 
 <% content_for :header_script do %>
@@ -21,13 +23,13 @@ function update_grid(year) {
   });
 }
 <% end %>
+
 <% midyear = Date.today.year %>
-<p>This 100-year calendar starts with the current year, showing the day of year.
-  The bold numbers down the left edge represent the day of month
-(and, for January, also the day of year). Follow the day-of-month row
-across to the appropriate month column to find day-of-year. Today's DOY is 
-highlighted in <span style="background-color:aqua">aqua</span>.
-</p><%= select_tag "year", options_for_select((midyear + 50).downto(midyear-50).collect {|year| [year,year]}, Date.today.year),  :onchange => "update_grid(this.value)" %>
+
+<h2><%= @title %></h2>
+<p>This 100-year calendar starts with the current year, showing the day of year. The bold numbers down the left edge represent the day of month (and, for January, also the day of year). Follow the day-of-month row across to the appropriate month column to find day-of-year. Today's DOY is highlighted in <span style="background-color:aqua">aqua</span>.</p>
+<p><%= select_tag "year", options_for_select((midyear + 50).downto(midyear-50).collect {|year| [year,year]}, Date.today.year), :onchange => "update_grid(this.value)" %></p>
 <div id="grid">
   <%= render partial: "doycal_grid", locals: { cal_matrix: @cal_matrix } %>
 </div>
+<br>

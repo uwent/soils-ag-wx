@@ -7,10 +7,9 @@
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "pic_1.jpg", {:width => "231", :height=>"301", :alt=>"Soil Science/King Hall"}  %>
+  <%= image_tag "pic_1.jpg", {width: "100%", alt: "Soil Science/King Hall"} %>
   <h2>About Our Group</h2>
   <p>Originally developed by the UW-Madison Department of Soil Science, this site is now maintained by the Department of Entomology.</p>
-  <br>
   <p>
     <a href="https://soils.wisc.edu/" class="bar-drk">Dept. of Soil Science</a><br>
     <a href="https://extension.soils.wisc.edu" class="bar-drk">Soil Science Extension</a><br>
@@ -21,14 +20,22 @@
 <!-- content for remainder of page -->
 
 <h2>About Us / Contact</h2>
-<p style="font-size: larger">
-  This web site is a continuation of the hard work first started in the mid 1980’s by Bill Bland, now emeritus faculty member and Rick Wayne, software developer in Department of Soil Science at UW – Madison. The data are provided free of charge to any interested parties. A primary focus of their mission was to help growers maximize their yields, minimize their costs, and assist them wherever possible as responsible stewards of our agricultural landscape. Bill has retired and Rick has accepted a new position so they are no longer involved with the site. John Panuska, professor in Soil Science, coordinated the site for a time, but retired in 2021.
-</p>
+<p>This web site is a continuation of the hard work first started in the mid 1980’s by Bill Bland, now emeritus faculty member and Rick Wayne, software developer in Department of Soil Science at UW – Madison. The data are provided free of charge to any interested parties. A primary focus of their mission was to help growers maximize their yields, minimize their costs, and assist them wherever possible as responsible stewards of our agricultural landscape. Bill has retired and Rick has accepted a new position so they are no longer involved with the site. John Panuska, professor in Soil Science, coordinated the site for a time, but retired in 2021.</p>
+<p>Some functions of this website may not be working currently or may be permanently retired. Feel free to contact the webmaster if any bugs or broken features are found.</p>
 <br>
-<h3>The current site coordinator is:</h3>
-<p>
-  Ben Bradford<br>
-  Department of Entomology<br>
-  Email: <a href="mailto:bbradford@wisc.edu">bbradford@wisc.edu</a>
-</p>
-<div class="clear"></div>
+
+<div class="row">
+  <div class="left"><%= image_tag "pic_2.jpg", { title: "hard at work" } %></div>
+  <div>
+    <h3>Webmaster:</h3>
+    <p>
+      Ben Bradford<br>
+      Department of Entomology
+    </p>
+    <ul>
+      <li>- <%= link_to "staff profile", "https://entomology.wisc.edu/directory/ben-bradford/" %></li>
+      <li>- <%= link_to "entomology department", "https://entomology.wisc.edu/" %></li>
+      <li>- <%= mail_to "agweather@cals.wisc.edu", "contact me" %></li>
+    <ul>
+  </div>
+</div>

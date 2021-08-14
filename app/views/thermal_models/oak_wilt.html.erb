@@ -1,6 +1,6 @@
 <% @title = "Oak Wilt Vectors Emergence Thermal Model "%>
 <% content_for :title do %>
-  <%= @title %>
+  AgWeather: <%= @title %>
 <% end %>
 
 <% content_for :welcome do %>
@@ -14,9 +14,10 @@
 <% end %>
 
 <h2><%= @title %></h2>
-<div class="fineline"/></div>
+<div class="fineline"></div>
 <%= render partial: "partials/_oak_wilt_dd_selector"%>
-<div class="fineline"/></div>
+<p><strong>The oak wilt vectors thermal model can also be viewed in an interactive map at <%= link_to "VDIFN", "https://agweather.cals.wisc.edu/vdifn?panel=insect&model=oak-wilt" %>.</strong></p>
+<div class="fineline"></div>
 <p>
 
 <h3>Oak Wilt General Information</h3>

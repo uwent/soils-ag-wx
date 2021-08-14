@@ -1,6 +1,7 @@
-<% @title = "Wisconsin Insolation"%>
+<% @title = "Insolation Map"%>
+
 <% content_for :title do %>
-  <%= @title %>
+  AgWeather: <%= @title %>
 <% end %>
 
 <% content_for :welcome do %>
@@ -11,6 +12,7 @@
 <% end %>
 
 <h2><%= @title %></h2>
+<p>Yesterday's insolation map for Wisconsin and surrounding states:</p>
 <p>
   <img
     src="<%= @map_image %>"

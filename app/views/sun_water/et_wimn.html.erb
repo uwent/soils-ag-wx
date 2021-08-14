@@ -1,14 +1,12 @@
-<% @title = "Estimated ET for Wisconsin"%>
+<% @title = "Evapotranspiration Map"%>
 <% content_for :title do %>
-  <%= @title %>
+  AgWeather: <%= @title %>
 <% end %>
 
 <% content_for :welcome do %>
   <%= image_tag "degree_flower.png",{:width => "231", :height => "156", :alt => "Hot and Cold"} %>
-  <h2><%= @title %></h2>
-  <p>Our evapotranspiration model uses atmospheric observations from ASOS stations and satellite-derived
-    insolation estimates to predict water use by plants.
-    </p>
+  <h2>Evapotranspiration</h2>
+  <p>Our evapotranspiration model uses atmospheric observations from ASOS stations and satellite-derived insolation estimates to predict water use by plants.</p>
 <% end %>
 
 <%= content_for :scripts do %>
@@ -28,7 +26,7 @@
 <% end %>
 
 <h2><%= @title %></h2>
-
+<p>Yesterday's estimated evapotranspiration map for Wisconsin and surrounding states:</p>
 <p>
   <img
     src="<%= @map_image %>"

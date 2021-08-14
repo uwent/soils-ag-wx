@@ -1,54 +1,70 @@
 <% content_for :title do %>
-  UW Soil Science Weather/Modeling
+  UW AgWeather
 <% end %>
 
 <% content_for :welcome do %>
+  <div><%= image_tag "king_hall_front_unedited.jpg", {:width => "100%", :alt => "Soil Science"} %></div>
   <h2>Welcome!</h2>
-  <%= image_tag "pic_1.jpg",
-    {:width => "100", :height => "130", :alt => "Soil Science",
-     :style => "float:right; margin-left: 1em; margin-right: 0.5em"}%>
-	<p>If you're looking for the old WI Extension site, you're in the right place; we've migrated
-	  our products. For ET and insolation, see <%= link_to 'Sun/Water', :controller => :sun_water %>;
-	   for degree days, see <%= link_to 'Thermal Models', :controller => :thermal_models %>.</p>
-  <p>We offer these data so that growers and other stakeholders in our agricultural landscape
-    can make informed decisions about management practices.</p>
-  <br/>
-  <%= image_tag "uwex.jpg", {:width => "231", :height => "70", :alt => "University of Wisconsin-Maison Extension Logo"} %>
-  <%= image_tag "soils_logo.png", {:width => "231", :height => "64", :alt => "Soil Science Logo"} %>
-  <%= image_tag "bio_systems_eng_logo.jpg", {:width => "231", :height => "64", :alt => "Biological Systems Engineering Logo"} %>
+  <p>
+	  For ET and insolation, see <%= link_to 'Sun/Water', :controller => :sun_water %>; for degree days, see <%= link_to 'Thermal Models', :controller => :thermal_models %>.
+  </p>
+  <p>
+    We offer these data so that growers and other stakeholders in our agricultural landscape can make informed decisions about management practices.
+  </p>
+  <p>
+    Originally developed by the Department of Soil Science department, this site is currently being upgraded and maintained by the Department of Entomology.
+  </p>
+  <br>
+  <div style="text-align: center">- <%= mail_to "agweather@cals.wisc.edu", "Contact Us" %> -</div>
+  <br>
+  <p><%= image_tag "logos/uw-logo-reverse.png", {:width => "100%"} %></p>
 
 <% end %>
 
 <!-- content for remainder of page -->
 
-<%= image_tag "weather.jpg", {:width => "109",  :height => "115", :alt => "Weather Pic", :class => "left"} %>
-<h2><%= link_to "Weather", :controller => "weather"%></h2>
-<p>We archive <%= link_to 'NWS HYD reports', controller: 'weather', action: :hyd %>, daily weather
-  summaries throughout Wisconsin 1995-present. Our
-  <%= link_to "automated weather stations", :controller => 'awon', :action => :index %>, offer a continuous
-  hourly record at Hancock and Arlington back to 1985. We integrate hourly
-  observations at airports all over the Upper Midwest to provide
-  <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.
-</p>
-<p>&nbsp;</p><br/><br/>
+<div class="row">
+  <div class="left">
+    <%= image_tag "weather.jpg" %>
+  </div>
+  <div class="text">
+    <h2><%= link_to "Weather", controller: "weather" %></h2>
+    <p>We archive <%= link_to 'NWS HYD reports', controller: 'weather', action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", :controller => 'awon', :action => :index %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.</p>
+  </div>
+</div>
+
 <div class="fineline"></div>
 
-<%= image_tag "sunwater.png", {:width => "109", :height => "108", :alt => "Pic 2", :class => "left"} %>
-<h2><%= link_to "Sun & Water", :controller => 'sun_water' %></h2>
-<p>We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with
-  atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration
-  via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions.
-</p><br/><br/><br/><br/>
+<div class="row">
+  <div class="left">
+    <%= image_tag "sunwater.png" %>
+  </div>
+  <div>
+    <h2><%= link_to "Sun & Water", controller: "sun_water" %></h2>
+    <p>We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions.</p>
+  </div>
+</div>
+
 <div class="fineline"></div>
 
-<%= image_tag "thermal.png", {:width => "109", :height => "108", :alt => "Pic 2", :class => "left" } %>
-<h2><%= link_to 'Thermal Models', :controller => 'thermal_models' %></h2>
-<p>Using our database of temperatures gridded across the Midwest, we create degree-day style thermal models for a
-  variety of purposes such as predicting pest emergence.
-</p>
-<br/><br/><br/><br/><br/>
+<div class="row">
+  <div class="left">
+    <%= image_tag "thermal.png" %>
+  </div>
+  <div>
+    <h2><%= link_to "Thermal Models", controller: "thermal_models" %></h2>
+    <p>Using our database of temperatures gridded across the Midwest, we create degree-day style thermal models for a variety of purposes such as predicting pest emergence.</p>
+  </div>
+</div>
+
 <div class="fineline"></div>
-<%= image_tag "collage.png", {:width => "109", :height => "108", :alt => "Pic 2", :class => "left" } %>
-<h2><%= link_to 'About Us/Contact', :action => :about %></h2>
-</p>
+  <div class="left">
+    <%= image_tag "collage.png" %>
+  </div>
+  <div>
+    <h2><%= link_to 'About Us/Contact', :action => :about %></h2>
+    <p>This site is currently managed and upgraded by the Dept. of Entomology. If any problems are found please contact us at <%= mail_to "agweather@cals.wisc.edu", "agweather@cals.wisc.edu" %>.</p>
+  </div>
+</div>
+
 <div class="clear"></div>
