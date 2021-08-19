@@ -22,32 +22,40 @@
 </head>
 
 <body>
-	<div id="wrapper">
-		<div id="nav-bar">
-			<h1 id="title"><%= link_to "UW Extension Ag Weather", :controller => "navigation" %></h1>
-			<div id="nav">
-				<!-- link_to "Drought", {:controller => "drought"}, {:selected => @tab_selected[:drought]} -->
-				<%= link_to "Weather", {:controller => "weather"}, {:selected => @tab_selected[:weather]} %>
-				<%= link_to "Sun/Water", {:controller => "sun_water"}, {:selected => @tab_selected[:sun_water]} %>
-				<%= link_to "Thermal Models", {:controller => "thermal_models"}, {:selected => @tab_selected[:thermal_models]} %>
-				<%= link_to "About Us", {:controller => "navigation", :action => :about}, {:selected => @tab_selected[:about]} %>
+	<div class="wrapper">
+		<div class="nav-bar">
+			<div class="nav-title">
+				<h1><%= link_to "UW Extension Ag Weather", :controller => "navigation" %></h1>
 			</div>
-		</div>
-		<div id="body">
-			<div id="body-top">
-				<div id="body-top-2"></div>
-				<div id="body-bot">
-					<div id="welcome">
-						<%= yield :welcome -%>
-					</div>
-					<div id="content">
-						<%= yield -%>
-					</div>
-					<div class="clear"></div>
+			<div class="nav-buttons">
+				<!-- link_to "Drought", {:controller => "drought"}, {:selected => @tab_selected[:drought]} -->
+				<div class="nav-button" selected=<%= @tab_selected[:weather] %>>
+					<%= link_to "Weather", controller: :weather %>
+				</div>
+				<div class="nav-button" selected=<%= @tab_selected[:sun_water] %>>
+					<%= link_to "Sun/Water", controller: :sun_water %>
+				</div>
+				<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>
+					<%= link_to "Thermal Models", controller: :thermal_models %>
+				</div>
+				<div class="nav-button" selected=<%= @tab_selected[:about] %>>
+					<%= link_to "About Us", controller: :navigation, action: :about %>
 				</div>
 			</div>
 		</div>
-		<div id="copyright">
+		<div class="main-box">
+			<div class="main">
+				<div class="welcome">
+					<%= yield :welcome -%>
+				</div>
+				<div class="content-box">
+					<div class="content">
+						<%= yield -%>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="copyright">
 			<%= yield :footer %>
 			<p>Copyright ©<%= Date.current.year %> University of Wisconsin. All rights reserved.</p>
 		</div>
