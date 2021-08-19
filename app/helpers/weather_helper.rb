@@ -1,17 +1,17 @@
 module WeatherHelper
   include AgwxGrids
-  HYD_ASSET_PATH='/hyd'
+  HYD_ASSET_PATH = '/hyd'
   def todays_hyd_link
     yesterday = 1.days.ago
-    hyd_link_for(yesterday,"Yesterday's report")
+    hyd_link_for(yesterday, "Yesterday's report")
   end
 
-  def hyd_link_for(date,text=date.mday)
+  def hyd_link_for(date, text = date.mday)
     year = date.year
     if date <= Date.today
       link_to text, "#{HYD_ASSET_PATH}/#{year}/#{Hyd.filename(date)}"
     else
-      text.to_s
+      "#{text} not available."
     end
   end
 

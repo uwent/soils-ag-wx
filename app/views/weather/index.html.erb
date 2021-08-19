@@ -5,19 +5,34 @@
 <% content_for :welcome do %>
   <%= image_tag "DSC00659.jpg", width: "100%" %>
   <h2>Weather Observations</h2>
+  <p>Weather-related pages and data are available here.</p>
 <% end %>
 
 <!-- content for remainder of page -->
+
+<div class="row">
+  <div class="left"><%= image_tag "grid_map.png" %></div>
+  <div>
+    <h2>Grid-Interpolated Daily Temperatures</h2>
+    <p>Working from observations made by hundreds of automated weather stations across the Upper Midwest,  our computer model interpolates the temperatures to form rectilinear grids by latitude and longitude for daily max,  min, and average temperature.</p>
+    <p><%= link_to "Download temperature data series", controller: :weather, action: :grid_temps %></p>
+  </div>
+</div>
+
+<div class="fineline"></div>
 
 <div class="row">
   <div class="left">
     <%= image_tag "opu.png" %>
   </div>
   <div>
-    <h2><%= link_to 'HYD Reports', action: :hyd %></h2>
+    <h2>HYD Reports</h2>
     <p>We offer online access to NWS HYD reports -- daily weather summaries of temperature and precipitation by volunteer observers -- for hundreds of locations throughout Wisconsin going back to 1995. The reports are text files, one per day.</p>
-    <p><%= todays_hyd_link.html_safe %></p>
-    <p><%= link_to 'Access to dataset', action: :hyd %></p>
+    <ul>
+      <li><%= link_to 'HYD Reports', action: :hyd %></li>
+      <li><%= todays_hyd_link.html_safe %></li>
+      <li><%= link_to 'Access to dataset', action: :hyd %></li>
+    </ul>
   </div>
 </div>
 
@@ -26,21 +41,13 @@
 <div class="row">
   <div class="left"><%= image_tag "sunwater.png" %></div>
   <div>
-    <h2><%= link_to "Automated Weather Observation Network", {controller: :awon, action: :index} %></h2>
-    <p>Since 1985, we have maintained automated weather stations at the Hancock and Arlington ag research stations. (Others were also operated in the 1980s-1990s.) They make hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature.</p>
-    <p class="bar-lit"><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %></p>
-    <p class="bar-lit"><%= link_to 'Access to dataset', controller: :awon %></p>
-    <p class="bar-lit"><%= link_to 'Station status weblog', controller: :awon, action: :blog %></p>
-  </div>
-</div>
-
-<div class="fineline"></div>
-
-<div class="row">
-  <div class="left"><%= image_tag "grid_map.png" %></div>
-  <div>
-    <h2><%= link_to "Grid-Interpolated Daily Temperatures", controller: :weather, action: :grid_temps %></h2>
-    <p>Working from observations made by hundreds of automated weather stations across the Upper Midwest,  our computer model interpolates the temperatures to form rectilinear grids by latitude and longitude for daily max,  min, and average temperature.</p>
+    <h2>Automated Weather Observation Network</h2>
+    <p>Since 1985, we have maintained automated weather stations at the Hancock and Arlington Ag Research stations. (Others were also operated in the 1980s-1990s.) They make hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature. Note: stations were discontinued in 2017, no data is available since then.</p>
+    <ul>
+      <li><%= link_to 'AWON Data Archive', controller: :awon %></li>
+      <li><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %> !BROKEN!</li>
+      <li><%= link_to 'Station status weblog', controller: :awon, action: :blog %></li>
+    </ul>
   </div>
 </div>
 
@@ -49,7 +56,8 @@
 <div class="row">
   <div class="left"><%= image_tag "Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg" %></div>
   <div>
-    <h2><%= link_to "Day-of-Year Calendar", controller: :weather, action: :doycal %></h2>
+    <h2>Day-of-Year Calendar</h2>
     <p>Handy day-of-year calendar for any of the previous 50 and subsequent 50 years</p>
+    <p><%= link_to "View calendar", controller: :weather, action: :doycal %></p>
   </div>
 </div>

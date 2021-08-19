@@ -8,13 +8,17 @@
 
 <% content_for :welcome do %>
   <%= image_tag "pic_1.jpg", {width: "100%", alt: "Soil Science/King Hall"} %>
-  <h2>About Our Group</h2>
-  <p>Originally developed by the UW-Madison Department of Soil Science, this site is now maintained by the Department of Entomology.</p>
-  <p>
-    <a href="https://soils.wisc.edu/" class="bar-drk">Dept. of Soil Science</a><br>
-    <a href="https://extension.soils.wisc.edu" class="bar-drk">Soil Science Extension</a><br>
-    <a href="https://entomology.wisc.edu/" class="bar-drk">Dept. of Entomology</a>
-  </p>
+  <div class="info">
+    <h2>About Our Group</h2>
+    <p>Originally developed by the UW-Madison Department of Soil Science, this site is now maintained by the Department of Entomology.</p>
+    <br>
+    <p><strong>Quick links:</strong></p>
+    <ul>
+      <li><a href="https://soils.wisc.edu/">Dept. of Soil Science</a></li>
+      <li><a href="https://extension.soils.wisc.edu">Soil Science Extension</a></li>
+      <li><a href="https://entomology.wisc.edu/">Dept. of Entomology</a></li>
+    </ul>
+  </div>
 <% end %>
 
 <!-- content for remainder of page -->
@@ -33,9 +37,9 @@
       Department of Entomology
     </p>
     <ul>
-      <li>- <%= link_to "staff profile", "https://entomology.wisc.edu/directory/ben-bradford/" %></li>
-      <li>- <%= link_to "entomology department", "https://entomology.wisc.edu/" %></li>
-      <li>- <%= mail_to "agweather@cals.wisc.edu", "contact me" %></li>
+      <li><%= link_to "staff profile", "https://entomology.wisc.edu/directory/ben-bradford/" %></li>
+      <li><%= link_to "entomology department", "https://entomology.wisc.edu/" %></li>
+      <li><%= mail_to "agweather@cals.wisc.edu", "contact me" %></li>
     <ul>
   </div>
 </div>
