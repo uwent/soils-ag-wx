@@ -5,10 +5,22 @@
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "equinox_090922_ladanyi.jpg",{:width => "231", :height => "156", :alt => "Sun"} %>
+  <%= image_tag "equinox_090922_ladanyi.jpg" %>
   <h2><%= @title %></h2>
-  <p>UW Space Sciences' model provides excellent insolation estimates during most of the year (snow cover
-    looks like clouds to the satellite).</p>
+  <p>UW Space Sciences' model provides excellent insolation estimates during most of the year (snow cover looks like clouds to the satellite).</p>
+<% end %>
+
+<%= content_for :scripts do %>
+  <script type="text/javascript">
+    function regionMap(latitude, longitude) {
+      latitude = latitude.toFixed(1);
+      longitude = longitude.toFixed(1);
+      console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
+      $('#latitude').val(latitude);
+      $('#longitude').val(longitude);
+      return false;
+    }
+  </script>
 <% end %>
 
 <h2><%= @title %></h2>
@@ -17,5 +29,15 @@
   <img
     src="<%= @map_image %>"
     alt="Yesterday's Insolation Estimates"
+    usemap="#latlong"
     width="800px" />
 </p>
+<%= render partial: 'partials/gridmap' %>
+
+<h4>Insolation Time Series</h4>
+<p>Note: You can click on the map to set the latitude and longitude.</p>
+<%# TODO: Fix grid_selector for insolation %>
+<%= render partial: "partials/grid_selector" %>
+
+<p><a href="/sun_water/insol_us.csv"> Download yesterday's entire grid of data in CSV Format</a></p>
+<br>

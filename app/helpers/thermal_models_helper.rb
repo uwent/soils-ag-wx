@@ -13,4 +13,20 @@ module ThermalModelsHelper
     return "scenario_a"
   end
 
+  def scenario_risk(scenario)
+    case scenario
+    when "a"
+      "low - prior to vector emergence"
+    when "b"
+      "moderate - early vector flight"
+    when "c", "d"
+      "high - peak vector flight"
+    when "e"
+      "moderate - late vector flight"
+    when "f"
+      "low - after vector flights"
+    when "g"
+      "low - after July 15"
+    end
+  end
 end

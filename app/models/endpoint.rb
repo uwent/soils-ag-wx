@@ -5,8 +5,9 @@ class Endpoint
   def self.get_et_value(date, lat, long)
     endpoint = "#{BASE_URL}/evapotranspirations?start_date=#{date.strftime('%Y-%m-%d')}&end_date=#{date.strftime('%Y-%m-%d')}&lat=#{lat}&long=#{long}"
     resp = HTTParty.get(endpoint, { timeout: 10 })
-    body = JSON.parse(resp.body)
-    return body.length > 0 ? body[0]['value'].to_f : -1.0
+    json = JSON.parse(resp.body)
+    data = json["data"]
+    data.length > 0 ? data[0]['value'].to_f : -1.0
   end
 
 end

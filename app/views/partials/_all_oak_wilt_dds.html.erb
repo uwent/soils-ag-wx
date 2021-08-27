@@ -2,15 +2,25 @@
 <table>
   <thead>
     <tr>
-      <th style="width: 8em;">Date</th>
-      <th>FDDs</th>
+      <th></th>
+      <th>Date</th>
+      <th>Min temp</th>
+      <th>Max temp</th>
+      <th>DDs</th>
+      <th>Cumul. DDs</th>
+      <th>Oak wilt risk</th>
     </tr>
   </thead>
   <tbody>
-  <% for date in data.keys.sort %>
+  <% @data.each_with_index do |day, i| %>
     <tr>
-      <td><%= date %></td>
-      <td><%= data[date] %></td>
+      <td><%= i + 1 %></td>
+      <td><%= day[:date] %></td>
+      <td><%= day[:min_temp] %></td>
+      <td><%= day[:max_temp] %></td>
+      <td><%= day[:value] %></td>
+      <td><%= day[:cumulative_value] %></td>
+      <td><%= day[:risk] %>
     </tr>
   <% end %>
   </tbody>

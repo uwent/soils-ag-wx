@@ -4,7 +4,7 @@
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "degree_flower.png",{:width => "231", :height => "156", :alt => "Hot and Cold"} %>
+  <%= image_tag "degree_flower.png" %>
   <h2>Evapotranspiration</h2>
   <p>Our evapotranspiration model uses atmospheric observations from ASOS stations and satellite-derived insolation estimates to predict water use by plants.</p>
 <% end %>
@@ -15,9 +15,6 @@
       latitude = latitude.toFixed(1);
       longitude = longitude.toFixed(1);
       console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
-      if (longitude > 0.0) {
-        longitude = (longitude * -1.0).toFixed(1);
-      }
       $('#latitude').val(latitude);
       $('#longitude').val(longitude);
       return false;

@@ -8,14 +8,15 @@ module GridController
     'Max Temp' => WiMnDMaxTAir,
     'Avg Temp' => WiMnDAveTAir,
     'Vapor Pressure' => WiMnDAveVapr,
-    'ET' => WiMnDet
+    'ET' => WiMnDet,
+    'Insol' => Insol
   }
 
-  def to_csv(data,param_name)
+  def to_csv(data)
     CSV.generate do |csv|
-      csv << ["Date",param_name]
-      data.keys.sort.each do |date|
-        csv << [date,data[date]]
+      csv << data.first.keys
+      data.each do |h|
+        csv << h.values
       end
     end
   end

@@ -70,21 +70,28 @@ class ThermalModelsController < ApplicationController
 
   def get_oak_wilt_dd
     response = HTTParty.get(set_dd_url(params), { timeout: 5 })
-    body = JSON.parse(response.body).map { |h| [h['date'], h['value']] }.to_h
-    @data = body.select { |k, _| k.to_s <= @end_date.to_s }
+    json = JSON.parse(response.body, symbolize_names: true)
+    @data = json[:data].each do |day|
+      day[:risk] = helpers.scenario_risk(helpers.define_scenario(day[:cumulative_value], @end_date).last)
+      day
+    end
+    # data = json["data"].map { |h| [h['date'], h['value']] }.to_h
+    # @data = data.select { |k, _| k.to_s <= @end_date.to_s }
   end
 
   def download_csv
-    data = JSON.parse params[:dd_data].gsub('=>', ":")
+    # data = JSON.parse params[:dd_data].gsub('=>', ":")
+    data = JSON.parse(params[:dd_data], symbolize_names: true)
     respond_to do |format|
-      format.csv { render plain: to_csv(data, "Sine") }
+      format.csv { send_data to_csv(data), filename: "oak_wilt_risk.csv" }
     end
   end
 
   def get_dds
     response = HTTParty.get(set_dd_url(params), { timeout: 5 })
-    body = JSON.parse(response.body)
-    @data = body.map { |h| [h['date'], h['value']] }.to_h
+    json = JSON.parse(response.body, symbolize_names: true)
+    @data = json[:data]
+    # @data = data.map { |h| [h['date'], h['value']] }.to_h
     @param = "#{@method} method DDs#{@base_temp ? ' Base temp ' + sprintf("%0.1f",@base_temp) : ''}#{@upper_temp ? ' Upper temp ' + sprintf("%0.1f",@upper_temp) : ''} "
     if params[:seven_day]
       if (all_dates = @data.keys.sort) && all_dates.size > 6
@@ -93,7 +100,7 @@ class ThermalModelsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.csv { render plain: to_csv(@data, params[:method]) }
+      format.csv { send_data to_csv(@data), filename: "get_dds.csv" }
       format.json do
         hash = {
           title: 'Degree Days',
@@ -261,17 +268,17 @@ class ThermalModelsController < ApplicationController
   end
 
   # TODO: Write automated test for this little wanker!
-  def fill_in_max_min_series(name,start_date,end_date,longitude,latitude,min_max_series)
+  def fill_in_max_min_series(name, start_date, end_date, longitude, latitude, min_max_series)
     # Query out data for the whole year, so it's all there and only has to be done once
-    start_date = Date.civil(start_date.year,1,1)
-    end_date = Date.civil(end_date.year,12,31)
+    start_date = Date.civil(start_date.year, 1, 1)
+    end_date = Date.civil(end_date.year, 12, 31)
     # If we've already retrieved the min/max data for this location and year, don't query it again.
     # First make an entry, if necessary, for the location
     min_max_series[name] ||= {}
     # Then set the year, again if it's not already there.
     min_max_series[name][start_date.year] ||= {
-      mins: WiMnDMinTAir.daily_series(start_date,end_date,longitude,latitude),
-      maxes: WiMnDMaxTAir.daily_series(start_date,end_date,longitude,latitude),
+      mins: WiMnDMinTAir.daily_series(start_date, end_date, longitude, latitude),
+      maxes: WiMnDMaxTAir.daily_series(start_date, end_date, longitude, latitude),
     }
   end
 
@@ -288,12 +295,12 @@ class ThermalModelsController < ApplicationController
   def set_dd_url(params)
     @method = params[:method]
     @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f * -1.0
+    @longitude = params[:longitude].to_f
     @base_temp = params[:base_temp].to_f
-    @upper_temp = params[:upper_temp] == 'None' ? nil: params[:upper_temp].to_f
+    @upper_temp = params[:upper_temp] == 'None' ? nil : params[:upper_temp].to_f
     set_start_date_end_date(params)
-    url = "#{Endpoint::BASE_URL}/degree_days?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base_temp=#{@base_temp}"
-    url += "&upper_temp=#{@upper_temp}" unless @upper_temp.nil?
+    url = "#{Endpoint::BASE_URL}/degree_days?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base=#{@base_temp}"
+    url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
     return url
   end
 

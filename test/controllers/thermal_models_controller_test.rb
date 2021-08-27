@@ -97,9 +97,14 @@ class ThermalModelsControllerTest < ActionController::TestCase
   end
 
   test 'should download csv file' do
+    data = [
+      { date: "2020-01-01", value: 12 },
+      { date: "2020-01-01", value: 27 },
+      { date: "2020-01-01", value: 44 }
+    ]
     [:csv].each do |format|
       get :download_csv,
-        params: { dd_data: "{\"2020-09-28\"=>12, \"2020-09-29\"=>27, \"2020-09-30\"=>44}", format: format }
+        params: { dd_data: data.to_json, format: format }
         assert_response :success
     end
   end
