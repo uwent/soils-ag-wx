@@ -268,17 +268,17 @@ class ThermalModelsController < ApplicationController
   end
 
   # TODO: Write automated test for this little wanker!
-  def fill_in_max_min_series(name,start_date,end_date,longitude,latitude,min_max_series)
+  def fill_in_max_min_series(name, start_date, end_date, longitude, latitude, min_max_series)
     # Query out data for the whole year, so it's all there and only has to be done once
-    start_date = Date.civil(start_date.year,1,1)
-    end_date = Date.civil(end_date.year,12,31)
+    start_date = Date.civil(start_date.year, 1, 1)
+    end_date = Date.civil(end_date.year, 12, 31)
     # If we've already retrieved the min/max data for this location and year, don't query it again.
     # First make an entry, if necessary, for the location
     min_max_series[name] ||= {}
     # Then set the year, again if it's not already there.
     min_max_series[name][start_date.year] ||= {
-      mins: WiMnDMinTAir.daily_series(start_date,end_date,longitude,latitude),
-      maxes: WiMnDMaxTAir.daily_series(start_date,end_date,longitude,latitude),
+      mins: WiMnDMinTAir.daily_series(start_date, end_date, longitude, latitude),
+      maxes: WiMnDMaxTAir.daily_series(start_date, end_date, longitude, latitude),
     }
   end
 
@@ -295,7 +295,7 @@ class ThermalModelsController < ApplicationController
   def set_dd_url(params)
     @method = params[:method]
     @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f * -1.0
+    @longitude = params[:longitude].to_f
     @base_temp = params[:base_temp].to_f
     @upper_temp = params[:upper_temp] == 'None' ? nil : params[:upper_temp].to_f
     set_start_date_end_date(params)

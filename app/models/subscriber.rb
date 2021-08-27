@@ -60,7 +60,7 @@ class Subscriber < ApplicationRecord
         
         # collect ets for location
         vals = dates.map do |date|
-          Endpoint.get_et_value(date, sub.latitude, sub.longitude * -1)
+          Endpoint.get_et_value(date, sub.latitude, sub.longitude)
         end
 
         # cumulative sum of ets

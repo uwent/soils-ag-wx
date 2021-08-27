@@ -15,9 +15,6 @@
       latitude = latitude.toFixed(1);
       longitude = longitude.toFixed(1);
       console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
-      if (longitude > 0.0) {
-        longitude = (longitude * -1.0).toFixed(1);
-      }
       $('#latitude').val(latitude);
       $('#longitude').val(longitude);
       return false;

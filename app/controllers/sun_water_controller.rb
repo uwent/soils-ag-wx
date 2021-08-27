@@ -94,8 +94,8 @@ class SunWaterController < ApplicationController
       data = json["data"]
       return CSV.generate(headers: true) do |csv|
         csv << %w(Latitude Longitude ET)
-        data.each do |hash|
-          csv << [hash['lat'], hash['long'].to_f * -1.0, hash['value']]
+        data.each do |h|
+          csv << [h["lat"], h["long"], h["value"]]
         end
       end
     rescue Net::ReadTimeout
@@ -110,7 +110,7 @@ class SunWaterController < ApplicationController
       endpoint = "#{Endpoint::BASE_URL}/insolations/#{date.to_s}"
       resp = HTTParty.get(endpoint, { timeout: 10 })
       body = JSON.parse(resp.body)
-      @map_image = "#{Endpoint::HOST}#{body['map']}"
+      @map_image = "#{Endpoint::HOST}#{body["map"]}"
     rescue Net::ReadTimeout
       Rails.logger.error("Timeout on endpoint: #{endpoint}")
       @map_image = ""
@@ -125,8 +125,8 @@ class SunWaterController < ApplicationController
       data = json["data"]
       return CSV.generate(headers: true) do |csv|
         csv << %w(Latitude Longitude Insol)
-        data.each do |hash|
-          csv << [hash['lat'], hash['long'].to_f * -1.0, hash['value']]
+        data.each do |h|
+          csv << [h["lat"], h["long"], h["value"]]
         end
       end
     rescue Net::ReadTimeout

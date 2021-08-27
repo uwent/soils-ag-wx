@@ -43,7 +43,6 @@ module GridDb
     end
 
     def daily_series(start_date, end_date, long, lat)
-      long *= -1 if long < 0
       url = "#{self.base_url}?lat=#{lat}&long=#{long}&start_date=#{start_date}&end_date=#{end_date}"
       response = HTTParty.get(url, { timeout: 5 })
       json = JSON.parse(response.body, symbolize_names: true)
