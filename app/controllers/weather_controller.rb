@@ -20,7 +20,7 @@ class WeatherController < ApplicationController
   end
 
   def grid_classes
-    @grid_classes = GRID_CLASSES.reject { |key,val| key == 'ET' }
+    @grid_classes = GRID_CLASSES.except('ET', 'Insol')
   end
   
   def grid_temps

@@ -1,4 +1,4 @@
-<% @title="Estimated Evapotranspiration"%>
+<% @title = "Download data series" %>
 <% content_for :title do %>
  <%= @title %>
 <% end %>
@@ -12,24 +12,27 @@
 <h2><%= @title %></h2>
 <br>
 
-<h4><%= @param %> data:</h4>
+<h3><%= @param %> data</h3>
 <p>
-  <strong>Location:</strong> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
-  <strong>Date range:</strong> <%= @start_date %> to <%= @end_date %>
+  <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+  <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
+  <b>Days:</b> <%= @data.size %>
 </p>
 
 <table>
   <thead>
     <tr>
-      <th style="width: 8em;">Date</th>
-      <th>ET</th>
+      <th></th>
+      <th>Date</th>
+      <th>Value</th>
     </tr>
   </thead>
   <tbody>
-  <% for date in @data.keys.sort %>
+  <% @data.each_with_index do |day, i| %>
     <tr>
-      <td><%= date %></td>
-      <td><%= @data[date] %></td>
+      <td><%= i + 1 %>
+      <td><%= day[:date] %></td>
+      <td><%= day[:value] %></td>
     </tr>
   <% end %>
   </tbody>

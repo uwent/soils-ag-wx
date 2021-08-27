@@ -58,22 +58,28 @@ class SunWaterController < ApplicationController
   end
 
   def grid_classes
-    @grid_classes = GRID_CLASSES.select { |key,val| key == 'ET' }
+    @grid_classes = GRID_CLASSES.slice('ET', 'Insol')
   end
 
   def grid_ets
     @title = 'Download ET Estimates'
-    @grid_classes = grid_classes
+    @grid_classes = GRID_CLASSES.slice('ET')
+  end
+
+  def grid_insols
+    @title = 'Download Insolation Estimates'
+    @grid_classes = GRID_CLASSES.slice('Insol')
   end
 
   private
   def et_image(date)
-    @grid_classes = grid_classes
+    grid_ets
     begin
       endpoint = "#{Endpoint::BASE_URL}/evapotranspirations/#{date}"
       resp = HTTParty.get(endpoint, { timeout: 10 })
-      body = JSON.parse(resp.body)
-      @map_image = "#{Endpoint::HOST}#{body['map']}"
+      json = JSON.parse(resp.body)
+      url = json["map"]
+      @map_image = "#{Endpoint::HOST}#{url}"
     rescue Net::ReadTimeout
       Rails.logger.error("Timeout on endpoint: #{endpoint}")
       @map_image = ""
@@ -84,10 +90,11 @@ class SunWaterController < ApplicationController
     begin
       endpoint = "#{Endpoint::BASE_URL}/evapotranspirations/all_for_date?date=#{date.to_s}"
       resp = HTTParty.get(endpoint, { timeout: 10 })
-      body = JSON.parse(resp.body)
+      json = JSON.parse(resp.body)
+      data = json["data"]
       return CSV.generate(headers: true) do |csv|
         csv << %w(Latitude Longitude ET)
-        body.each do |hash|
+        data.each do |hash|
           csv << [hash['lat'], hash['long'].to_f * -1.0, hash['value']]
         end
       end
@@ -98,6 +105,7 @@ class SunWaterController < ApplicationController
   end
 
   def insol_image(date)
+    grid_insols
     begin
       endpoint = "#{Endpoint::BASE_URL}/insolations/#{date.to_s}"
       resp = HTTParty.get(endpoint, { timeout: 10 })
@@ -113,10 +121,11 @@ class SunWaterController < ApplicationController
     begin
       endpoint = "#{Endpoint::BASE_URL}/insolations/all_for_date?date=#{date.to_s}"
       resp = HTTParty.get(endpoint, { timeout: 10 })
-      body = JSON.parse(resp.body)
+      json = JSON.parse(resp.body)
+      data = json["data"]
       return CSV.generate(headers: true) do |csv|
         csv << %w(Latitude Longitude Insol)
-        body.each do |hash|
+        data.each do |hash|
           csv << [hash['lat'], hash['long'].to_f * -1.0, hash['value']]
         end
       end

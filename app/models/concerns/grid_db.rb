@@ -20,6 +20,10 @@ module GridDb
       "#{Endpoint::BASE_URL}/evapotranspirations"
     end
 
+    def insolations_url
+      "#{Endpoint::BASE_URL}/insolations"
+    end
+
     def weather_url
       "#{Endpoint::BASE_URL}/weather"
     end
@@ -42,8 +46,9 @@ module GridDb
       long *= -1 if long < 0
       url = "#{self.base_url}?lat=#{lat}&long=#{long}&start_date=#{start_date}&end_date=#{end_date}"
       response = HTTParty.get(url, { timeout: 5 })
-      body = JSON.parse(response.body)
-      body.map { |h| [h['date'], h[self.endpoint_attribute_name]] }.to_h
+      json = JSON.parse(response.body, symbolize_names: true)
+      json[:data]
+      # data.map { |h| [h["date"], h[self.endpoint_attribute_name]] }.to_h
     end
 
     def date_for(year,doy)

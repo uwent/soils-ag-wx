@@ -8,6 +8,7 @@ body {
 	background: linear-gradient(0deg, #e9e4d0, transparent);
 	// font: 13px verdana, arial, sans-serif;
 	font-family: verdana, arial, sans-serif;
+	font-size: 14px;
 }
 
 h2 {
@@ -25,6 +26,10 @@ ul {
 
 table {
   border-collapse: collapse;
+}
+
+td, th {
+	padding-right: 1rem;
 }
 
 .more {

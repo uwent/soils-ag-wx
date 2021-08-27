@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       get 'spreadsheet_download'
       get 'spreadsheet_doc'
       get 'grid_ets'
+      get 'grid_insols'
       get 'get_grid'
       post 'get_grid'
     end

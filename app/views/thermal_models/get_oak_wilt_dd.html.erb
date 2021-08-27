@@ -10,18 +10,18 @@
 <% end %>
 
 <% if @data.length > 0 %>
-  <% @scenario = define_scenario(@data.values.last, @end_date) %>
+  <% @scenario = define_scenario(@data.last[:cumulative_value], @end_date) %>
   <h3>The cumulative degree days</h3>
   <h3>from January 1,  <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %> </h3>
   <h3>at Latitude: <%= params[:latitude] %>&deg;N, Longitude: <%= params[:longitude] %>&deg;W</h3>
-  <h3>GDD: <b><%= @data.values.last %></b> Fahrenheit degree days</h3>
+  <h3>GDD: <b><%= @data.last[:cumulative_value] %></b> Fahrenheit degree days</h3>
 
   <br/>
   <% if @scenario %>
     <%= render partial: "partials/threshold_recommendations/#{@scenario}" %>
   <% end %>
   <a href="#" onclick="displayAllDds()">View all Degree Days for this date range</a> |
-  <%= render partial: "partials/download_csv", :locals => {data: @data}%> |
+  <%= render partial: "partials/download_csv", :locals => {data: @data.to_json }%> |
   <%= link_to 'Back', :back %>
   <div id="oak-wilt-list" style="display:none">
     <%= render partial: "partials/all_oak_wilt_dds", :locals => {data: @data, end_date: @end_date}%>
