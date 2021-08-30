@@ -155,7 +155,7 @@ class SubscribersController < ApplicationController
 
   def logout
     remove_from_session
-    redirect_to sun_water_et_wimn_path
+    redirect_to sun_water_path
   end
 
   def admin
