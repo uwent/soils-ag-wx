@@ -27,7 +27,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'puma', '~> 5.4'
+  gem 'puma', '~> 5.5'
   gem 'capistrano', '~> 3.16'
   gem 'capistrano-rbenv', '~> 2.2'
   gem 'capistrano-bundler', '~> 2.0', require: false
