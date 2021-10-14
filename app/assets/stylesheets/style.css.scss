@@ -28,10 +28,6 @@ table {
   border-collapse: collapse;
 }
 
-td, th {
-	padding-right: 1rem;
-}
-
 .more {
 	text-align: right;
 }
@@ -218,5 +214,14 @@ td, th {
 
 	p {
 		margin-top: 0.5em;
+	}
+}
+
+.cal-container {
+	width: inherit;
+	display: inline-flex;
+
+	.cal-month {
+		flex: 0 1 auto;
 	}
 }

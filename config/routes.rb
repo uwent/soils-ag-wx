@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   resources :weather, only: [:index] do
     collection do
       get 'hyd'
+      get 'hyd_grid'
       get 'awon'
       get 'grid_temps'
       get 'webcam'
@@ -130,6 +131,6 @@ Rails.application.routes.draw do
   #   mount LetterOpenerWeb::Engine, at: '/letter_opener'
   # end
 
-  get '*path', to: redirect('/')
+  # get '*path', to: redirect('/')
 
 end

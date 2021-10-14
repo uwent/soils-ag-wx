@@ -9,8 +9,8 @@
   <h2>1-Century Day-Of-Year Calendar</h2>
 <% end %>
 
-<% content_for :javascript do %>
-<script lang="js">
+<% content_for :scripts do %>
+<script>
   function update_grid() {
     jQuery.ajax({
       url: "doycal_grid",
@@ -36,7 +36,7 @@
       next_btn.disabled = false;
     }
   }
-  
+
   function prev_year() { year.value -= 1; update_grid(); }
   function next_year() { year.value -= -1; update_grid(); }
 </script>

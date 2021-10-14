@@ -1,90 +1,30 @@
 <% content_for :title do %>
-  <%= title %>
+<%= title %>
 <% end %>
 
 <% content_for :welcome do %>
-    <%= image_tag "awon.jpg",{:width => "231", :height => "347", :alt => "weather station"} %>
-    <h2><%= link_to "Click to Receive Automated Daily ET Values", subscribers_path %></h2>
+<%= image_tag "icons/awon.png", { width: "100%", alt: "Weather station" } %>
+<h2>Automated Weather Station Data</h2>
+<p style="font-weight:bold; color:red">Important Notice:</p>
+<p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
+<p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>
+<p>Data collected and recovered prior to the end date above are archived and available here.</p>
 <% end %>
 
-<% content_for :header_script do %>
-  function report_changed(id)
-  {
+<% content_for :scripts do %>
+<script lang="js">
+  function report_changed(id) {
     $.ajax({
-      url: "<%= awon_path %>/awon_check_boxes?report_type="+id,
-      success: function(response) {
-        $("#check_boxes").html(response);
-      }
+      url: "<%= awon_path %>/awon_check_boxes?report_type=" + id,
+      success: function(response) { $("#check_boxes").html(response); }
     });
   }
 
   $(document).ready(function() {
     report_changed(411); // This should show up, no?
   });
-<% end %>
-
-<h2>Weather Station Status and Data</h2>
-<p><%= link_to "List of stations", :action => :station_info %>, their geographic locations, and the operational dates.</p>
-<p><%= link_to "Last 7 days of weather and soil data", :action => :awon_seven_day %></p>
-<p><%= link_to "Station status weblog", :action => :blog %> <%= @blogs && @blogs.size > 0 ? "(Last updated #{@blogs[0].date})" : ""%></p>
-
-<h3>Download Weather or Soil Data</h3>
-<%= form_tag(:controller => :awon, :action => :download_data) do %>
-  <table>
-  <tr><td width="50%">
-<%= station_selector_section.html_safe %>
-</td>
-<td rowspan="2">
-  Arlington and Hancock stations have a continuous record in the daily and the "hourly and half-hourly" tables; hourly prior to 1999, half-hourly subsequently. Some of the other stations used "half-hourly", others "hourly".
-</td>
-</tr>
-<tr>
-  <td>
-    <%= select_tag 'report_type',
-      options_from_collection_for_select(@report_types, :last, :first),
-      onchange: 'report_changed(this.value);'
-     %>
-  </td>
-</tr>
-</table>
-<p>Clearing all checkboxes is the same as checking them all (you'll get everything).</p>
-<div id="check_boxes">
-  <%= render :partial => 'awon_check_boxes', :locals => {:report_type => @report_type, :ahrs => @ahrs} %>
-</div>
-<p/>
-<div class="awon-notice">
-  <span class="title" style="color: red">Important Notice</span>
-  <p>After the dates shown above, data from Arlington and Hancock will be available via the <a href='http://enviroweather.msu.edu'>Michigan State University Enviroweather Service</a>.
-  </p>
-  <p>
-    Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.
-  </p>
-  <p>
-    Data collected and recovered prior to the end date above are archived and available here.
-  </p>
-</div>
-<table>
-  <tr><td>From: </td><td><%= select_date Date.new(2017,9,23), prefix: 'start_date', start_year: 1985, end_year: 2017 %></td></tr>
-  <tr><td>To: </td><td><%= select_date Date.new(2017,9,30), prefix: 'end_date', start_year: 1985, end_year: 2017%></td></tr>
-</table>
-
-<p>
-  <%= radio_button_tag(:use_abbrevs, false) %>
-  <%= label_tag(:use_abbrevs_0, "Use full column names in first line") %>,
-  &nbsp;&nbsp;<strong>OR</strong>&nbsp;&nbsp;
-  <%= radio_button_tag(:use_abbrevs, true, true) %>
-  <%= label_tag(:use_abbrevs_1, "Use abbreviations") %>
-</p>
-<p/>
-<p>
-  <%= radio_button_tag(:format,'html',true) %>
-  <%= label_tag(:format_html, "View data in your browser")%>,
-  &nbsp;&nbsp;<strong>OR</strong>&nbsp;&nbsp;
-  <%= radio_button_tag(:format,'csv') %>
-  <%= label_tag(:format_csv, "Download directly to a CSV file")%>
-</p>
-<P>
-  <script>
+</script>
+<script lang="js">
     var checked;
     var checkedButtonPrompt = "Clear all parameter checkboxes";
     var uncheckedButtonPrompt = "All parameters (check every box)";
@@ -108,4 +48,66 @@
       $('#toggle_button').html(prompt);
     }
   </script>
-  <input type="submit" value="Download Data"><% end %><button onclick="toggle()" id="toggle_button"/>
+<% end %>
+
+<h2>Weather Station Status and Data</h2>
+<p><%= link_to "List of stations", action: :station_info %>, their geographic locations, and the operational dates.</p>
+<p><%= link_to "Last 7 days of weather and soil data", action: :awon_seven_day %></p>
+<p><%= link_to "Station status weblog", action: :blog %> <%= @blogs && @blogs.size > 0 ? "(Last updated #{@blogs[0].date})" : "" %></p>
+
+<h3>Download Weather or Soil Data</h3>
+<%= form_tag(controller: :awon, action: :download_data) do %>
+  <table>
+    <tr>
+      <td width="50%">
+        <%= station_selector_section.html_safe %>
+      </td>
+      <td rowspan="2">
+        Arlington and Hancock stations have a continuous record in the daily and the "hourly and half-hourly" tables; hourly prior to 1999, half-hourly subsequently. Some of the other stations used "half-hourly", others "hourly".
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= select_tag "report_type", options_from_collection_for_select(@report_types, :last, :first), onchange: "report_changed(this.value);" %>
+      </td>
+    </tr>
+  </table>
+
+  <p>Clearing all checkboxes is the same as checking them all (you'll get everything).</p>
+
+  <div id="check_boxes">
+    <%= render partial: "awon_check_boxes", locals: { report_type: @report_type, ahrs: @ahrs } %>
+  </div>
+
+  <br>
+
+  <table>
+    <tr>
+      <td>From:</td>
+      <td><%= select_date Date.new(2017, 9, 23), prefix: "start_date", start_year: 1985, end_year: 2017 %></td>
+    </tr>
+    <tr>
+      <td>To:</td>
+      <td><%= select_date Date.new(2017, 9, 30), prefix: "end_date", start_year: 1985, end_year: 2017 %></td>
+    </tr>
+  </table>
+
+  <p>
+    <%= radio_button_tag(:use_abbrevs, false) %>
+    <%= label_tag(:use_abbrevs_0, "Use full column names in first line") %>,
+    &nbsp;&nbsp;<strong>OR</strong>&nbsp;&nbsp;
+    <%= radio_button_tag(:use_abbrevs, true, true) %>
+    <%= label_tag(:use_abbrevs_1, "Use abbreviations") %>
+  </p>
+  <p/>
+  <p>
+    <%= radio_button_tag(:format, "html", true) %>
+    <%= label_tag(:format_html, "View data in your browser") %>,
+    &nbsp;&nbsp;<b>OR</b>&nbsp;&nbsp;
+    <%= radio_button_tag(:format, "csv") %>
+    <%= label_tag(:format_csv, "Download directly to a CSV file") %>
+  </p>
+  <p><input type="submit" value="Download Data"></p>
+<% end %>
+<p><button onclick="toggle()" id="toggle_button"></p>
+

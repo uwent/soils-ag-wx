@@ -16,6 +16,12 @@ class WeatherController < ApplicationController
     end
   end
 
+  def hyd_grid
+    date = params[:year] ? Date.civil(params[:year].to_i, 1, 1) : Date.today
+    @year = date.year
+    render partial: "hyd_grid"
+  end
+
   def awon
   end
 
