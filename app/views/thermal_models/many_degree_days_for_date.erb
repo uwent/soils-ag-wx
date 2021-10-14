@@ -2,7 +2,8 @@
  Degree Day Calculator
 <% end %>
 
-<% content_for :header_script do %>
+<% content_for :scripts do %>
+<script>
   var NUM_INITIAL_PARAM_SETS = 6;
   var DISABLED_COLOR = "color:#B0B0B0";
   var last_added_set = NUM_INITIAL_PARAM_SETS; // FRAGILE! Count of default wired-in param_set_n divs below
@@ -86,6 +87,7 @@
     }
   }
   $(document).ready(set_up_elements);
+</script>
 <% end %>
 
 <% content_for :welcome do %>

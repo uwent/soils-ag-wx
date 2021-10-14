@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       get 'remaining_dd_map_for'
       get 'frost_map'
       get 'oak_wilt'
+      get 'many_degree_days_for_date'
       get 'get_dds'
       post 'get_dds'
       get 'get_dds_many_locations'

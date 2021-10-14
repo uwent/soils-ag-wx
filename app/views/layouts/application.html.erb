@@ -3,7 +3,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <%= javascript_include_tag 'application' %>
+	<title><%= yield :title -%></title>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-H9J1XBG94G"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
@@ -13,20 +13,17 @@
 		gtag('config', 'G-H9J1XBG94G');
 	</script>
   <%= csrf_meta_tags %>
-	<title><%= yield :title -%></title>
-  <%= stylesheet_link_tag 'application' %>
-	<%= yield :stylesheet -%>
-	<script language="JavaScript">
-    <%= yield :header_script -%>
-  </script>
+	<%= javascript_include_tag "application" %>
 	<%= yield :scripts -%>
+  <%= stylesheet_link_tag "application" %>
+	<%= yield :stylesheet -%>
 </head>
 
 <body>
 	<div class="wrapper">
 		<div class="nav-bar">
 			<div class="nav-title">
-				<h1><%= link_to "UW Extension Ag Weather", :controller => "navigation" %></h1>
+				<h1><%= link_to "UW Extension Ag Weather", controller: :navigation %></h1>
 			</div>
 			<div class="nav-buttons">
 				<!-- link_to "Drought", {:controller => "drought"}, {:selected => @tab_selected[:drought]} -->
