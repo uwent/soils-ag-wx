@@ -13,13 +13,14 @@
 		gtag('config', 'G-H9J1XBG94G');
 	</script>
   <%= csrf_meta_tags %>
-  <script language="JavaScript">
-    <%= yield :header_script -%>
-  </script>
 	<title><%= yield :title -%></title>
   <%= stylesheet_link_tag 'application' %>
 	<%= yield :stylesheet -%>
+	<script language="JavaScript">
+    <%= yield :header_script -%>
+  </script>
 	<%= yield :scripts -%>
+	<%= yield :javascript -%>
 </head>
 
 <body>

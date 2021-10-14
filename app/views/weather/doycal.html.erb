@@ -5,30 +5,53 @@
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg", {:width => "231", :height => "231", :alt => "Calendar"} %>
+  <%= image_tag "icons/doy-cal.png", {width: "100%", alt: "Calendar"} %>
   <h2>1-Century Day-Of-Year Calendar</h2>
-  <p style="font-size:6">Image courtesy <a href="http://en.wikipedia.org/wiki/File:Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg">Wikimedia Commons</a></p>
 <% end %>
 
-<% content_for :header_script do %>
-function update_grid(year) {  
-  jQuery.ajax({
-    url: "doycal_grid",
-    type: "GET",
-    data: {"year" : year},
-    dataType: "html",
-    success: function(data) {
-      jQuery("#grid").html(data);
+<% content_for :javascript do %>
+<script lang="js">
+  function update_grid() {
+    jQuery.ajax({
+      url: "doycal_grid",
+      type: "GET",
+      data: {"year" : year.value},
+      dataType: "html",
+      success: function(data) {
+        jQuery("#grid").html(data);
+      }
+    });
+
+    if (year.value == year[year.length - 1].value) {
+      console.log("min year " + year.value)
+      prev_btn.disabled = true;
+    } else {
+      prev_btn.disabled = false;
     }
-  });
-}
+
+    if (year.value == year[0].value) {
+      console.log("max year" + year.value)
+      next_btn.disabled = true;
+    } else {
+      next_btn.disabled = false;
+    }
+  }
+  
+  function prev_year() { year.value -= 1; update_grid(); }
+  function next_year() { year.value -= -1; update_grid(); }
+</script>
 <% end %>
 
 <% midyear = Date.today.year %>
 
 <h2><%= @title %></h2>
 <p>This 100-year calendar starts with the current year, showing the day of year. The bold numbers down the left edge represent the day of month (and, for January, also the day of year). Follow the day-of-month row across to the appropriate month column to find day-of-year. Today's DOY is highlighted in <span style="background-color:aqua">aqua</span>.</p>
-<p><%= select_tag "year", options_for_select((midyear + 50).downto(midyear-50).collect {|year| [year,year]}, Date.today.year), :onchange => "update_grid(this.value)" %></p>
+<p>
+  <b>Year:</b>
+  <%= select_tag "year", options_for_select((Date.current.year + 50).downto(Date.current.year - 50).collect { |year| [year, year] }, Date.current.year), :onchange => "update_grid()" %>
+  <%= submit_tag "Prev", :id => "prev_btn", :onclick => "prev_year()" %>
+  <%= submit_tag "Next", :id => "next_btn", :onclick => "next_year()" %>
+</p>
 <div id="grid">
   <%= render partial: "doycal_grid", locals: { cal_matrix: @cal_matrix } %>
 </div>
