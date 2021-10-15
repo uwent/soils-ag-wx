@@ -92,7 +92,8 @@ class AwonController < ApplicationController
       format.csv do
         text = @db_class.csv_header(use_abbrevs,@ahrs)
         text += @results.collect { |rec| rec.to_csv(@ahrs) }.join("")
-        render plain: text
+        # render plain: text
+        send_data text, filename: "awon_data.csv"
       end
     end
 

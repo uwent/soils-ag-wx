@@ -3,7 +3,7 @@
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "DSC00659.jpg", width: "100%" %>
+  <%= image_tag "icons/snowy.png", width: "100%" %>
   <h2>Weather Observations</h2>
   <p>Weather-related pages and data are available here.</p>
 <% end %>
@@ -11,7 +11,9 @@
 <!-- content for remainder of page -->
 
 <div class="row">
-  <div class="left"><%= image_tag "grid_map.png" %></div>
+  <div class="left">
+    <%= image_tag "icons/dd-map-150px.png" %>
+  </div>
   <div>
     <h2><%= link_to "Grid-Interpolated Daily Temperatures", controller: :weather, action: :grid_temps %></h2>
     <p>Working from observations made by hundreds of automated weather stations across the Upper Midwest,  our computer model interpolates the temperatures to form rectilinear grids by latitude and longitude for daily max, min, and average temperature.</p>
@@ -22,14 +24,14 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "opu.png" %>
+    <%= image_tag "icons/hyd-150px.png" %>
   </div>
   <div>
-    <h2><%= link_to 'HYD Reports', action: :hyd %></h2>
+    <h2><%= link_to "HYD Reports", action: :hyd %></h2>
     <p>We offer online access to NWS HYD reports -- daily weather summaries of temperature and precipitation by volunteer observers -- for hundreds of locations throughout Wisconsin going back to 1995. The reports are text files, one per day.</p>
     <ul>
       <li><%= todays_hyd_link.html_safe %></li>
-      <li><%= link_to 'Access to dataset', action: :hyd %></li>
+      <li><%= link_to "Access to dataset", action: :hyd %></li>
     </ul>
   </div>
 </div>
@@ -37,13 +39,15 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "sunwater.png" %></div>
+  <div class="left">
+    <%= image_tag "icons/awon-150px.png" %>
+  </div>
   <div>
     <h2><%= link_to "Automated Weather Observation Network", controller: :awon %></h2>
     <p>Since 1985, we have maintained automated weather stations at the Hancock and Arlington Ag Research stations. (Others were also operated in the 1980s-1990s.) They make hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature. Note: stations were discontinued in 2017, no data is available since then.</p>
     <ul>
-      <li><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %> !BROKEN!</li>
-      <li><%= link_to 'Station status weblog', controller: :awon, action: :blog %></li>
+      <li><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %> <-- Nonfunctional</li>
+      <li><%= link_to "Station status weblog", controller: :awon, action: :blog %></li>
     </ul>
   </div>
 </div>
@@ -51,7 +55,7 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "Petaluma_and_Santa_Rosa_Railroad_Co._Calendar.jpg" %></div>
+  <div class="left"><%= image_tag "icons/doy-cal-150px" %></div>
   <div>
     <h2><%= link_to "Day-of-Year Calendar", controller: :weather, action: :doycal %></h2>
     <p>Handy day-of-year calendar for any of the previous 50 and subsequent 50 years</p>

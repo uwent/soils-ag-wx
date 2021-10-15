@@ -12,7 +12,7 @@ gem 'rails-ujs', '~> 0.1'
 gem 'uglifier', '~> 4.2'
 gem 'turbolinks', '~> 5.2'
 gem 'jbuilder', '~> 2.11'
-gem 'httparty', '~> 0.18'
+gem 'httparty', '~> 0.20'
 gem 'will_paginate', '~> 3.3'
 gem 'best_in_place', git: 'https://github.com/mmotherwell/best_in_place'
 gem 'whenever', '~> 1.0'
@@ -33,7 +33,8 @@ group :development do
   gem 'capistrano-bundler', '~> 2.0', require: false
   gem 'capistrano-rails', '~> 1.6', require: false
   gem 'letter_opener', '~> 1.7'
-  # gem 'letter_opener_web', '~> 1.4' # Not working on ruby 3
+  gem 'letter_opener_web', '~> 1.4'
+  gem 'rexml' # requied by letter_opener_web in rails 3
   gem 'listen', '~> 3.4'
   gem 'ed25519', '~> 1.2'
   gem 'bcrypt_pbkdf', '~> 1.1'

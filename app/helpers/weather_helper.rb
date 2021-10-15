@@ -11,7 +11,7 @@ module WeatherHelper
     if date <= Date.today
       link_to text, "#{HYD_ASSET_PATH}/#{year}/#{Hyd.filename(date)}"
     else
-      "#{text} not available."
+      ""
     end
   end
 

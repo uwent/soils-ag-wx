@@ -1,21 +1,21 @@
-<%= content_for :header_script do %>
-    function show_section(id)
-    {
-      $.ajax({
-        url: "<%= heartbeat_path %>/"+id,
-        success: function(response) {
-          $("#"+id).html(response);
-        }
-      });
-    }
-
-    $(document).ready(function() {
-      var sections = <%= @sections.inspect.html_safe %>;
-      for (ii=0; ii<sections.length; ii++) {
-        show_section(sections[ii]); // This should show up, no?  
+<%= content_for :scripts do %>
+<script>
+  function show_section(id) {
+    $.ajax({
+      url: "<%= heartbeat_path %>/"+id,
+      success: function(response) {
+        $("#"+id).html(response);
       }
     });
+  }
 
+  $(document).ready(function() {
+    var sections = <%= @sections.inspect.html_safe %>;
+    for (ii=0; ii<sections.length; ii++) {
+      show_section(sections[ii]); // This should show up, no?  
+    }
+  });
+</script>
 <% end %>
 <% for section in @sections %>
   <div id="<%= section %>"><%= section %></div>

@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       get 'remaining_dd_map_for'
       get 'frost_map'
       get 'oak_wilt'
+      get 'many_degree_days_for_date'
       get 'get_dds'
       post 'get_dds'
       get 'get_dds_many_locations'
@@ -88,6 +89,7 @@ Rails.application.routes.draw do
   resources :weather, only: [:index] do
     collection do
       get 'hyd'
+      get 'hyd_grid'
       get 'awon'
       get 'grid_temps'
       get 'webcam'
@@ -130,6 +132,6 @@ Rails.application.routes.draw do
   #   mount LetterOpenerWeb::Engine, at: '/letter_opener'
   # end
 
-  get '*path', to: redirect('/')
+  # get '*path', to: redirect('/')
 
 end

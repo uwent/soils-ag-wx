@@ -1,0 +1,42 @@
+<% date = start_date = Date.civil(@year, 1, 1) %>
+<% cur_month = start_date.month %>
+<% weekday = 1 %>
+<% end_date = [Date.civil(@year + 1, 1, 1), Date.today].min %>
+
+<table class="calendar-table">
+
+  <!-- First row of 6 months -->
+  <tr valign="top">
+    <td style="padding:10px">
+      <table>
+        <%= hyd_month_row(date).html_safe %>
+        <% while date < end_date && date.month < 7 %>
+          <% str,new_date = hyd_week(date) %>
+          <%= str.html_safe %>
+          <% if new_date.month > date.month && new_date.month < 7 %>
+            <%= hyd_new_month(new_date).html_safe %>
+          <% end %>
+          <% date = new_date %>
+        <% end %>
+      </table>
+  </tr>
+
+  <!-- Second row of six months -->
+  <% if (end_date - 1).month > 6 %>
+    <tr valign="top">
+      <td style='padding:10px'>
+        <table>
+          <%= hyd_month_row(date).html_safe %>
+            <% while date < end_date %>
+              <% str,new_date = hyd_week(date) %>
+              <%= str.html_safe %>
+              <% if new_date.month > date.month %>
+                <%= hyd_new_month(new_date).html_safe %>
+              <% end %>
+              <% date = new_date %>
+            <% end %>
+        </table>
+    </tr>
+  <% end %>
+</table>
+  
