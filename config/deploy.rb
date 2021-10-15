@@ -42,10 +42,11 @@ set :rbenv_ruby, RUBY_VERSION
 
 namespace :deploy do
 
-  desc "Update ruby install"
-  task :rbenv_install do
+  desc "Update Ruby install"
+  after :started, :rbenv_install do
     on roles(:web) do
       within release_path do
+        execute(`mkdir -p "$(rbenv root)"/plugins && git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`)
         execute("rbenv install #{RUBY_VERSION} -s")
       end
     end
