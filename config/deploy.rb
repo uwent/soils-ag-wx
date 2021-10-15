@@ -1,12 +1,11 @@
-RUBY_VERSION = "3.0.2"
-BRANCH = ENV["BRANCH"] || "main"
+branch = ENV["BRANCH"] || "main"
 
 set :application, "soils_ag_wx"
 set :repo_url, "git@soilsagwx.github.com:uwent/soils-ag-wx.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, BRANCH
+set :branch, branch
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/home/deploy/soils_ag_wx"
@@ -37,20 +36,11 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
 # set :keep_releases, 5
 
 # rbenv
+set :deploy_user, "deploy"
 set :rbenv_type, :user
-set :rbenv_ruby, RUBY_VERSION
+set :rbenv_ruby, "3.0.2"
 
 namespace :deploy do
-
-  desc "Update Ruby install"
-  after :started, :rbenv_install do
-    on roles(:web) do
-      within release_path do
-        execute(`mkdir -p "$(rbenv root)"/plugins && git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`)
-        execute("rbenv install #{RUBY_VERSION} -s")
-      end
-    end
-  end
 
   desc "Restart application"
   after :publishing, :restart do
