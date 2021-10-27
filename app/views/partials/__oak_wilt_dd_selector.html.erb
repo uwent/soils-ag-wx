@@ -1,12 +1,15 @@
 <%= form_tag({action: :get_oak_wilt_dd}, {class: "form__oak_wilt"}) do %>
   <p class="directions">Choose the drop down Latitude and West longitude menu values that are the closest to your location.</p>
   <div class="form-row">
-    <label for="latitude">Latitude</label>
-    <%= select_tag :latitude, options_for_select(latitudes) %>
+    <div>
+      <label for="latitude">Latitude:</label>
+      <%= select_tag :latitude, options_for_select(latitudes), width: "50%" %>
+      &nbsp;
+      <label for="longitude">Longitude:</label>
+      <%= select_tag :longitude, options_for_select(longitudes) %>
+    </div>
   </div>
   <div class="form-row">
-    <label for="longitude">West Longitude</label>
-    <%= select_tag :longitude, options_for_select(longitudes) %>
     <a href="https://support.google.com/maps/answer/18539?co=GENIE.Platform%3DDesktop&hl=en&oco=1" target="_blank" class="helper-link">How to find coordinates from Google Maps</a>
   </div>
   <div class="form-row">
@@ -14,6 +17,8 @@
     <div onChange="validateDate()">
       <%= date_select :grid_date, :end_date, start_year: 2017, default: 1.day.ago, end_year: Time.now.year %>
     </div>
+  </div>
+  <div class="form-row">
     <div id="date-warning" style="display:none;">
       <p>Date of interest must be prior to the current date.<p>
     </div>

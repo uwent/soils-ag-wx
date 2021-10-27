@@ -24,14 +24,22 @@
 <% end %>
 
 <h2><%= @title %></h2>
-<p>Yesterday's insolation map for Wisconsin and surrounding states:</p>
+<h4>Insolation map for Wisconsin and surrounding states for <%= @date %>:</h4>
+<%= form_tag action: :insol_us do %>
 <p>
+  Previous day: <%= submit_tag @date - 1, name: :date %>&nbsp;
+  Next day: <%= submit_tag @date + 1, name: :date %>&nbsp;
+  Latest: <%= submit_tag Date.yesterday, name: :date %>
+</p>
+<% end %>
+
+<div class="map-img">
   <img
     src="<%= @map_image %>"
     alt="Yesterday's Insolation Estimates"
     usemap="#latlong"
-    width="800px" />
-</p>
+    />
+</div>
 <%= render partial: 'partials/gridmap' %>
 
 <h4>Insolation Time Series</h4>

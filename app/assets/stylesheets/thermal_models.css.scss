@@ -30,18 +30,15 @@
   flex-direction: column;
   width: 100%;
 
-  .label {
-    font-size: 1rem;
+  label {
+    padding-bottom: 4px;
   }
 
   select {
-    margin-left: .25rem;
     padding: 5px
   }
 
   .helper-link {
-    margin-left: 5px;
-    margin-top: 3px;
     color: blue !important;
   }
 }
@@ -85,6 +82,7 @@
 }
 
 .directions {
+  margin-top: 0px;
   font-size: 14px;
 }
 

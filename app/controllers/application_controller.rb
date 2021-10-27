@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_tab_selected
 
-
   def authenticate
     return false
     # For now, pretty lame: We only check that it comes from localhost, redbird, andi, or my static VPN address
@@ -42,6 +41,8 @@ class ApplicationController < ActionController::Base
       format.csv { send_data to_csv(@data), filename: "#{grid_class.endpoint_attribute_name} data for #{@latitude}, #{@longitude} for dates #{@start_date} to #{@end_date}.csv"}
     end
   end
+
+  $vdifn_path = "http://agweather.cals.wisc.edu/vdifn"
 
   private
   def set_tab_selected

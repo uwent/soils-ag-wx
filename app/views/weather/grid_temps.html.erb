@@ -24,7 +24,14 @@
 <% end %>
 
 <h2><%= @title %></h2>
-<p>Yesterday's mean temperature map for Wisconsin and surrounding states:</p>
+<h3>Mean temperature map for Wisconsin and surrounding states for <%= @date %>:</h3>
+<%= form_tag action: :grid_temps do %>
+<p>
+  Previous day: <%= submit_tag @date - 1, name: :date %>&nbsp;
+  Next day: <%= submit_tag @date + 1, name: :date %>&nbsp;
+  Latest: <%= submit_tag Date.yesterday, name: :date %>
+</p>
+<% end %>
 <p>
   <img
     src="<%= @map_image %>"

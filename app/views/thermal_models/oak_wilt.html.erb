@@ -1,64 +1,60 @@
 <% @title = "Oak Wilt Vectors Emergence Thermal Model "%>
+
 <% content_for :title do %>
   AgWeather: <%= @title %>
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "oak_wilt.jpg",{:width => "231", :height => "156", :alt => "Hot and Cold"} %>
-  <h2><%= @title %></h2>
-  <p>This oak wilt degree-day model estimates cumulative emergence of the two most important insects that transmit oak wilt (<i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>) in the spring across Wisconsin.  The degree-day model was constructed based on recent vector trapping data in Wisconsin (Jagemann et al., 2018).  This model is a useful tool to refine the beginning of the periods when pruning, wounding, and/or harvesting of oaks should be avoided to reduce the risk of introduction of oak wilt.</p>
-  <div class="user-guide">
-    <a href="https://dnr.wisconsin.gov/sites/default/files/topic/ForestHealth/oakWiltVectorsEmergenceUserGuide.pdf" target="_blank">User guide</a>
-    <a href="https://widnr.widen.net/s/6msxrhqvpz/oak-wilt-degree-day-vectors-emergence-user-interface-demo" target="_blank">Video tutorial</a>
-  </div>
+<%= image_tag "icons/oak-wilt.png" %>
+
+<h2><%= @title %></h2>
+
+<p>This oak wilt degree-day model estimates cumulative emergence of the two most important insects that transmit oak wilt (<i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>) in the spring across Wisconsin.  The degree-day model was constructed based on recent vector trapping data in Wisconsin (Jagemann et al., 2018).  This model is a useful tool to refine the beginning of the periods when pruning, wounding, and/or harvesting of oaks should be avoided to reduce the risk of introduction of oak wilt.</p>
+
+<div class="user-guide">
+  <a href="https://dnr.wisconsin.gov/sites/default/files/topic/ForestHealth/oakWiltVectorsEmergenceUserGuide.pdf" target="_blank">User guide</a>
+  <a href="https://widnr.widen.net/s/6msxrhqvpz/oak-wilt-degree-day-vectors-emergence-user-interface-demo" target="_blank">Video tutorial</a>
+</div>
 <% end %>
 
 <h2><%= @title %></h2>
+
 <div class="fineline"></div>
+
 <%= render partial: "partials/_oak_wilt_dd_selector"%>
-<p><strong>The oak wilt vectors thermal model can also be viewed in an interactive map at <%= link_to "VDIFN", "https://agweather.cals.wisc.edu/vdifn?panel=insect&model=oak-wilt" %>.</strong></p>
+
+<p><b>The oak wilt vectors thermal model can also be viewed in an interactive map at <%= link_to "VDIFN", "https://agweather.cals.wisc.edu/vdifn?panel=insect&model=oak-wilt" %>.</b></p>
+
 <div class="fineline"></div>
-<p>
 
 <h3>Oak Wilt General Information</h3>
 
 <p>Oak wilt is a deadly disease that affects oak trees. First documented in 1944, oak wilt has since been confirmed in most of Wisconsin’s counties. Oak wilt is widespread and common throughout central and southern Wisconsin; however, the disease is still uncommon in northern Wisconsin.</p>
 
 <h4>IMPACT</h4>
+
 <p>Oak wilt kills thousands of trees each year in forests, woodlots and urban areas. Oak wilt can even attack and kill healthy trees. The disease is a particularly serious problem for species in the red oak group such as northern red, northern pin and black oaks. Once wilting symptoms are apparent on a red oak, the infected tree will lose most of its leaves and die within approximately one month.</p>
 
 <h4>BIOLOGY</h4>
-<p>Oak wilt is caused by the fungus <i>Bretziella fagacearum</i>. The fungus grows through the infected tree’s water conducting system, causing the tree to wilt and die. Oak wilt is introduced to an area by sap feeding beetles that carry oak wilt spores to fresh wounds.  In Wisconsin, the major sap feeding beetles that transmit oak wilt are <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>.  Spore-bearing fungal mats develop under the bark in the fall or spring following the death of the infected tree. The sap feeding beetles are attracted to the fungal mats and can transport oak wilt spores to fresh wounds or to recently cut oak stumps. Once
-in an area, the disease spreads to nearby oak trees through interconnected (grafted) root systems, creating an expanding pocket of dead oak trees.</p>
+
+<p>Oak wilt is caused by the fungus <i>Bretziella fagacearum</i>. The fungus grows through the infected tree’s water conducting system, causing the tree to wilt and die. Oak wilt is introduced to an area by sap feeding beetles that carry oak wilt spores to fresh wounds.  In Wisconsin, the major sap feeding beetles that transmit oak wilt are <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>.  Spore-bearing fungal mats develop under the bark in the fall or spring following the death of the infected tree. The sap feeding beetles are attracted to the fungal mats and can transport oak wilt spores to fresh wounds or to recently cut oak stumps. Once in an area, the disease spreads to nearby oak trees through interconnected (grafted) root systems, creating an expanding pocket of dead oak trees.</p>
 
 <h4>IDENTIFICATION</h4>
-<p>
-  Leaves will wilt and drop from the upper canopy first. Symptoms progress down the tree rapidly.  Wilting symptoms are observed from June through September, most commonly in July and August.  Leaves of the infected trees turn
-  dull green or bronze, and look water-soaked. Unlike normal leaf fall, the leaves of
-  infected trees drop to the ground when they are still partially-green.
-</p>
+
+<p>Leaves will wilt and drop from the upper canopy first. Symptoms progress down the tree rapidly.  Wilting symptoms are observed from June through September, most commonly in July and August.  Leaves of the infected trees turn dull green or bronze, and look water-soaked. Unlike normal leaf fall, the leaves of infected trees drop to the ground when they are still partially-green.</p>
 
 <h4>PREVENTION</h4>
-<p>
-  Once the disease exists in a stand, it is difficult to control. <b>Prevention
-  of this disease is the best approach.</b> The greatest risk of oak wilt transmission
-  occurs in the spring and early summer, when oak wilt spore-carrying
-  beetles are abundant and fungal mats are fresh. In Wisconsin, the major sap feeding beetles that transmit oak wilt are <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>.  To help reduce risk, the DNR developed the Oak Harvesting Guidelines to Reduce the Introduction and Spread of Oak Wilt. These recommend harvesting only during the non-restricted period if your stand is in a county that has oak wilt or is within 6 miles of a county with oak wilt.   Harvesting restricted periods are dependent on your location in the state and are:
-</p>
-<p><b>North Zone: April 15 to July 15</b></p>
-<p><b>South Zone: April 1 to July 15</b></p>
-<%= image_tag "OW_North_South_Map.jpg",{ alt: "North and south zone map of Wisconsin.", class: "map-image"} %>
-<p>
-  However, the guidelines’ Exceptions and Modifications allow for stand-level flexibilities. Please read the
-  <a href="https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true&x.share=t" target="_blank">guidelines</a>
-  for more information.
-</p>
-<p>
-  For more information about oak wilt, visit
-  <a href="https://dnr.wisconsin.gov/topic/foresthealth/oakwilt" target="_blank">Wisconsin DNR oak wilt page </a>
-  .
-</p>
 
-<h4>REFERENCE</h4>
+<p>Once the disease exists in a stand, it is difficult to control. <b>Prevention of this disease is the best approach.</b> The greatest risk of oak wilt transmission occurs in the spring and early summer, when oak wilt spore-carrying beetles are abundant and fungal mats are fresh. In Wisconsin, the major sap feeding beetles that transmit oak wilt are <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>.  To help reduce risk, the DNR developed the Oak Harvesting Guidelines to Reduce the Introduction and Spread of Oak Wilt. These recommend harvesting only during the non-restricted period if your stand is in a county that has oak wilt or is within 6 miles of a county with oak wilt.   Harvesting restricted periods are dependent on your location in the state and are:</p>
+
+<p><b>North Zone: April 15 to July 15</b></p>
+
+<p><b>South Zone: April 1 to July 15</b></p>
+
+<%= image_tag "oak-wilt-map.png", { alt: "North and south zone map of Wisconsin."} %>
+<p>However, the guidelines’ Exceptions and Modifications allow for stand-level flexibilities. Please read the <a href="https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true&x.share=t" target="_blank">guidelines</a> for more information.</p>
+<p>For more information about oak wilt, visit the <a href="https://dnr.wisconsin.gov/topic/foresthealth/oakwilt" target="_blank">Wisconsin DNR oak wilt page</a>.</p>
+
+<h4>REFERENCES</h4>
 <p>Ambourn, A.K., Juzwik, J., and Moon, R.D. 2005. Seasonal dispersal of the oak wilt fungus by <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i> in Minnesota. Plant Dis. 89:1067-1076.</p>
 <p>Jagemann, S.M., Juzwik, J., Tobin P.C., and Raffa K.F. 2018. Seasonal and regional distributions, degree-day models, and phoresy rates of the major sap beetle (Coleoptera: Nitidulidae) vectors of the oak wilt fungus, <i>Bretziella fagacearum</i>, in Wisconsin.  Enveron. Entomol. 47:1152-1164.</p>

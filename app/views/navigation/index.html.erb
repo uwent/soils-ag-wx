@@ -17,11 +17,11 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/weather-150px.png" %>
+    <%= link_to image_tag("icons/weather-150px.png"), controller: :weather %>
   </div>
   <div class="text">
     <h2><%= link_to "Weather", controller: :weather %></h2>
-    <p>We archive <%= link_to 'NWS HYD reports', controller: 'weather', action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", :controller => 'awon', :action => :index %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.</p>
+    <p>We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", :controller => 'awon', :action => :index %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.</p>
   </div>
 </div>
 
@@ -29,7 +29,7 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/sunwater-150px.png" %>
+    <%= link_to image_tag("icons/sunwater-150px.png"), controller: :sun_water %>
   </div>
   <div>
     <h2><%= link_to "Sun & Water", controller: :sun_water %></h2>
@@ -41,7 +41,7 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/thermal-150px.png" %>
+    <%= link_to image_tag("icons/thermal-150px.png"), controller: :thermal_models %>
   </div>
   <div>
     <h2><%= link_to "Thermal Models", controller: :thermal_models %></h2>
@@ -53,7 +53,7 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/tree-150px.png" %>
+    <%= link_to image_tag("icons/tree-150px.png"), action: :about %>
   </div>
   <div>
     <h2><%= link_to "About/Contact", action: :about %></h2>

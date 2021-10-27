@@ -1,12 +1,10 @@
-html, body, h1, h2, h3, h4 {
+html, body, h1, h2 {
 	margin: 0px;
 	padding: 0px;
 }
 
 body {
-	// background: image_url('background.png');
 	background: linear-gradient(0deg, #e9e4d0, transparent);
-	// font: 13px verdana, arial, sans-serif;
 	font-family: verdana, arial, sans-serif;
 	font-size: 14px;
 }
@@ -14,6 +12,9 @@ body {
 h2 {
 	font-family: Arial, Helvetica, sans-serif;
 	color: #363325;
+	a {
+		text-decoration: none;
+	}
 }
 
 img {
@@ -74,10 +75,7 @@ table {
 
 	a {
 		text-decoration: none;
-	}
-
-	a:visited {
-		color: inherit;
+		color: inherit
 	}
 }
 
@@ -239,4 +237,18 @@ table {
 	td {
 		text-align: right;
 	}
+}
+
+.plain-table {
+	td, th {
+		text-align: center;
+		padding: 0 1em 1em 0;
+	}
+}
+
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: fit-content;
 }

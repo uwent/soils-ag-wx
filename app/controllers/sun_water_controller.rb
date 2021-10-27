@@ -11,13 +11,13 @@ class SunWaterController < ApplicationController
 
   def insol_us
     begin
-      date = Date.parse(params[:date])
+      @date = Date.parse(params[:date])
     rescue
-      date = (Time.now - 7.hours).to_date.yesterday
+      @date = (Time.now - 7.hours).to_date.yesterday
     end
     respond_to do |format|
-      format.html { insol_image(date) }
-      format.csv { send_data insol_csv(date), filename: "insol-values-#{date}.csv" }
+      format.html { insol_image(@date) }
+      format.csv { send_data insol_csv(@date), filename: "insol-values-#{@date}.csv" }
     end
   end
 
@@ -26,13 +26,13 @@ class SunWaterController < ApplicationController
 
   def et_wimn
     begin
-      date = Date.parse(params[:date])
+      @date = Date.parse(params[:date])
     rescue
-      date = (Time.now - 7.hours).to_date.yesterday
+      @date = (Time.now - 7.hours).to_date.yesterday
     end
     respond_to do |format|
-      format.html { et_image(date) }
-      format.csv { send_data et_csv(date), filename: "et-values-#{date}.csv" }
+      format.html { et_image(@date) }
+      format.csv { send_data et_csv(@date), filename: "et-values-#{@date}.csv" }
     end
   end
 

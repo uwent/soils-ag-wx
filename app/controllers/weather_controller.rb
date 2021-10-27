@@ -32,13 +32,13 @@ class WeatherController < ApplicationController
   
   def grid_temps
     begin
-      date = Date.parse(params[:date])
+      @date = Date.parse(params[:date])
     rescue
-      date = (Time.now - 7.hours).to_date.yesterday
+      @date = Date.current - 1.day
     end
     respond_to do |format|
-      format.html { weather_image(date) }
-      format.csv { send_data weather_csv(date), filename: "weather data for #{date}.csv" }
+      format.html { weather_image(@date) }
+      format.csv { send_data weather_csv(@date), filename: "weather data for #{@date}.csv" }
     end
   end
   

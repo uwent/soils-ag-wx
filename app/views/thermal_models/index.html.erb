@@ -15,9 +15,11 @@
 <% end %>
 
 <div class="row">
-  <div class="left"><%= image_tag "vdifn_net.jpg" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/vdifn-250px.png"), "http://agweather.cals.wisc.edu/vdifn", target: "_blank" %>
+  </div>
   <div>
-    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", "http://agweather.cals.wisc.edu/vdifn"%></h2>
+    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", "http://agweather.cals.wisc.edu/vdifn", target: "_blank" %></h2>
     <p>Visual map-based interface to view disease risk models, insect developmental models, and degree-day accumulation in Wisconsin and surrounding states. This is the newest and most advanced tool we have available.</p>
   </div>
 </div>
@@ -25,9 +27,11 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "WIMNDDModB50_1.png" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/dd-calc-250px.png"), action: :degree_days %>
+  </div>
   <div>
-    <h2><%= link_to "Generic Degree Day Calculator", controller: :thermal_models, action: :degree_days %></h2>
+    <h2><%= link_to "Generic Degree Day Calculator", action: :degree_days %></h2>
     <p>This calculator allows you to input your location, method of calculation (e.g. Modified Sine B), and the appropriate biofix dates.</p>
   </div>
 </div>
@@ -35,7 +39,21 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "oak_wilt.jpg" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/frost-map-250px.png"), action: :frost_map %>
+  </div>
+  <div>
+    <h2><%= link_to "Frost Map", action: :frost_map %></h2>
+    <p>The first map shows the median DOY of first frost; for each map location, half the years were earlier than this date, half later. The second and third map show the earliest DOY of frost in the dataset, and the latest, respectively.</p>
+  </div>
+</div>
+
+<div class="fineline"></div>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("icons/oak-wilt-250px.png"), action: :oak_wilt %>
+  </div>
   <div>
     <h2><%= link_to "Oak Wilt Vectors Emergence Thermal Model", action: :oak_wilt %></h2>
     <p>Degree-day information on emergence of insects that transmit oak wilt.</p>
@@ -45,9 +63,11 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "AlfalfaWeevilLarvae2.jpg" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/alfalfa-weevil.png"), action: :alfalfa_weevil %>
+  </div>
   <div>
-    <h2><%= link_to "Alfalfa Weevil Thermal Models", action: :alfalfa %></h2>
+    <h2><%= link_to "Alfalfa Weevil Thermal Models", action: :alfalfa_weevil %></h2>
     <p>Degree-day information on weevil development.</p>
   </div>
 </div>
@@ -55,17 +75,9 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "corn.jpg" %></div>
-  <div>
-    <h2><%= link_to "Corn-Specific Thermal Models", action: :corn %></h2>
-    <p>Corn development model and specific degree-day models for corn pests.</p>
+  <div class="left">
+    <%= link_to image_tag("icons/seedcorn-maggot.png"), action: :scm %>
   </div>
-</div>
-
-<div class="fineline"></div>
-
-<div class="row">
-  <div class="left"><%= image_tag "seedcornmaggot.jpg" %></div>
   <div>
     <h2><%= link_to "Seedcorn Maggot", action: :scm %></h2>
     <p>Degree day models for this pest of soybean, corn, and vegetable crops</p>
@@ -75,19 +87,23 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "potato.png" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/ecb.png"), action: :ecb %>
+  </div>
   <div>
-    <h2><%= link_to "Potato Development", action: :potato %></h2>
-    <p>Potato P-Day Information.</p>
+    <h2><%= link_to "European Corn Borer", action: :ecb %></h2>
+    <p>Development of European corn borer can be estimated using a Modified base 50 F degree-day calculation.</p>
   </div>
 </div>
 
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "tree.png" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/wbc.png"), action: :western_bean_cutworm %>
+  </div>
   <div>
-    <h2><%= link_to "Gypsy Moth", action: :tree %></h2>
-    <p>We use a Base 50F degree-day model to predict the development of <%= link_to "many tree pests", action: :tree %>.</p>
+    <h2><%= link_to "Western Bean Cutworm", action: :western_bean_cutworm %></h2>
+    <p>Development of European corn borer can be estimated using a Modified base 50 F degree-day calculation.</p>
   </div>
 </div>

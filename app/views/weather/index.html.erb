@@ -12,10 +12,10 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/dd-map-150px.png" %>
+    <%= link_to image_tag("icons/dd-map-150px.png"), action: :grid_temps %>
   </div>
   <div>
-    <h2><%= link_to "Grid-Interpolated Daily Temperatures", controller: :weather, action: :grid_temps %></h2>
+    <h2><%= link_to "Grid-Interpolated Daily Temperatures", action: :grid_temps %></h2>
     <p>Working from observations made by hundreds of automated weather stations across the Upper Midwest,  our computer model interpolates the temperatures to form rectilinear grids by latitude and longitude for daily max, min, and average temperature.</p>
   </div>
 </div>
@@ -24,7 +24,7 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/hyd-150px.png" %>
+    <%= link_to image_tag("icons/hyd-150px.png"), action: :hyd %>
   </div>
   <div>
     <h2><%= link_to "HYD Reports", action: :hyd %></h2>
@@ -40,13 +40,13 @@
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/awon-150px.png" %>
+    <%= link_to image_tag("icons/awon-150px.png"), controller: :awon %>
   </div>
   <div>
     <h2><%= link_to "Automated Weather Observation Network", controller: :awon %></h2>
     <p>Since 1985, we have maintained automated weather stations at the Hancock and Arlington Ag Research stations. (Others were also operated in the 1980s-1990s.) They make hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature. Note: stations were discontinued in 2017, no data is available since then.</p>
     <ul>
-      <li><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %> <-- Nonfunctional</li>
+      <li><s><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %></s> <-- Broken link</li>
       <li><%= link_to "Station status weblog", controller: :awon, action: :blog %></li>
     </ul>
   </div>
@@ -55,9 +55,11 @@
 <div class="fineline"></div>
 
 <div class="row">
-  <div class="left"><%= image_tag "icons/doy-cal-150px.png" %></div>
+  <div class="left">
+    <%= link_to image_tag("icons/doy-cal-150px.png"), action: :doycal %>
+  </div>
   <div>
-    <h2><%= link_to "Day-of-Year Calendar", controller: :weather, action: :doycal %></h2>
+    <h2><%= link_to "Day-of-Year Calendar", action: :doycal %></h2>
     <p>Handy day-of-year calendar for any of the previous 50 and subsequent 50 years</p>
   </div>
 </div>
