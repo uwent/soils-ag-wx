@@ -1,9 +1,5 @@
 <% @title = "Grid-Interpolated Daily Temperatures"%>
 
-<% content_for :title do %>
- <%= @title %>
-<% end %>
-
 <% content_for :welcome do %>
   <%= image_tag "icons/dd-map-250px.png" %>
   <h2><%= @title %></h2>
@@ -24,24 +20,25 @@
 <% end %>
 
 <h2><%= @title %></h2>
-<h3>Mean temperature map for Wisconsin and surrounding states for <%= @date %>:</h3>
+
+<hr>
+
+<h4>Mean temperature map for Wisconsin and surrounding states for <%= @date %>:</h4>
+
 <%= form_tag action: :grid_temps do %>
-<p>
-  Previous day: <%= submit_tag @date - 1, name: :date %>&nbsp;
-  Next day: <%= submit_tag @date + 1, name: :date %>&nbsp;
-  Latest: <%= submit_tag Date.yesterday, name: :date %>
-</p>
+  <%= render partial: "partials/date_changer" %>
 <% end %>
-<p>
-  <img
-    src="<%= @map_image %>"
-    alt="Yesterday's Mean Temperatures"
-    usemap="#latlong"
-    width="800px"/>
-</p>
-<%= render partial: 'partials/gridmap'%>
+
+<p><img src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong"/></p>
+
+<%= render partial: "partials/gridmap"%>
 
 <h4>View/Download Weather Data Time Series</h4>
+
 <%= render partial: "partials/grid_selector" %>
 
 <p><a href="/weather/grid_temps.csv">Download yesterday's entire grid of data in CSV format</a></p>
+
+<br>
+
+<%= link_to "Back", :back %>

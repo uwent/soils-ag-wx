@@ -1,13 +1,5 @@
 <% @title = "Thermal Models" %>
 
-<% content_for :title do %>
-  <%= @title %>
-<% end %>
-
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "style" -%>
-<% end %>
-
 <% content_for :welcome do %>
   <%= image_tag "icons/thermal.png", width: "100%" %>
   <h2>Thermal Models</h2>
@@ -16,10 +8,10 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/vdifn-250px.png"), "http://agweather.cals.wisc.edu/vdifn", target: "_blank" %>
+    <%= link_to image_tag("icons/vdifn-250px.png"), vdifn_url, target: "_blank" %>
   </div>
   <div>
-    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", "http://agweather.cals.wisc.edu/vdifn", target: "_blank" %></h2>
+    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", vdifn_url, target: "_blank" %></h2>
     <p>Visual map-based interface to view disease risk models, insect developmental models, and degree-day accumulation in Wisconsin and surrounding states. This is the newest and most advanced tool we have available.</p>
   </div>
 </div>

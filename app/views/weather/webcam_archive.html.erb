@@ -1,20 +1,14 @@
-<% title = "Webcam Archive for #{@start_date} #{@start_date.year}-#{@start_date.month}-#{@start_date.day}"%>
-<% content_for :title do %>
-  <%= title %>
-<% end %>
+<% @title = "Webcam Archive for #{@start_date} #{@start_date.year}-#{@start_date.month}-#{@start_date.day}"%>
 
 <% content_for :welcome do %>
-  <h2><%= title %></h2>
-  
-  <%= image_tag 'p1344.gif', size: '231x169' %>
+  <h2><%= @title %></h2>
+  <%= image_tag 'p1344.gif' %>
   <p>
     <%= form_tag controller: 'weather', action: :webcam_archive do %>
       <%= select_date @start_date %>
       <%= submit_tag 'See archive for this date'%>
     <% end %>
   </p>
-
-  
 <% end %>
 
 <table>
@@ -31,3 +25,5 @@
     
   </tr>
 </table>
+
+<br><%= link_to "Back", :back %>

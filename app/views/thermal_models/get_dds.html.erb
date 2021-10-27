@@ -1,12 +1,8 @@
 <% @title="Degree Days"%>
-<% content_for :title do %>
- <%= @title %>
-<% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "grid_map.png",{:width => "231", :height => "180", :alt => "Gridded Map"} %>
+  <%= image_tag "grid_map.png" %>
   <h2><%= @title %></h2>
-  <p></p>
 <% end %>
 
 <h2><%= @title %></h2>
@@ -44,6 +40,4 @@
   </tbody>
 </table>
 
-<br>
-
-<%= link_to "Back", :back %>
+<br><%= link_to "Back", :back %>

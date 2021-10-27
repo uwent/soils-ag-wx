@@ -4,6 +4,10 @@
 $ ->
   $(".best_in_place").best_in_place()
 
+  min_lat = 38.0
+  max_lat = 50.0
+  min_long = -98.0
+  max_long = -82.0
 
   sub_count = 0
   if $('#sub_count').length > 0
@@ -13,7 +17,7 @@ $ ->
     if !$.isNumeric(lat)
       return false
     lat_num = parseFloat(lat)
-    return (lat_num >= 42.0 && lat_num <= 47.1)
+    return (lat_num >= min_lat && lat_num <= max_lat)
 
   validate_name = (site_name) ->
     return $.trim(site_name)
@@ -22,16 +26,16 @@ $ ->
     if !$.isNumeric(long)
       return false
     long_num = parseFloat(long)
-    return (long_num >= -93.1 && long_num <= -86.8)
+    return (long_num >= min_long && long_num <= max_long)
 
   validate = (site_name, lat, long) ->
     validations = []
     if !validate_name(site_name)
       validations.push("Invalid site name.")
     if !validate_lat(lat)
-      validations.push("Invalid latitude. Must be a number between 42.0 and 47.1")
+      validations.push("Invalid latitude. Must be a number between " + min_lat + " and " + max_lat)
     if !validate_long(long)
-      validations.push("Invalid longitude. Must be a number between -86.8 and -93.1")
+      validations.push("Invalid longitude. Must be a number between" + min_long + " and " + max_long)
     return validations
 
   add_to_table = (sub) ->

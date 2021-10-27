@@ -1,27 +1,27 @@
-<% content_for :title do %>
-  <%= title %>
-<% end %>
-
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "style" -%>
-<% end %>
+<% @title = title %>
 
 <% content_for :welcome do %>
-    <%= do_welcome.html_safe %>
+  <%= do_welcome.html_safe %>
 <% end %>
 
-<div class="content">
-  <h2>Register for Automated Daily ET Values</h2>
-  <p>The "Register" button below takes you to a form where you can enter your name and email address so that our automatically-emailed et values can find you. Once you're known to our database, you can sign up for locations to have et values delivered to you daily.</p>
+<h2>Register for Automated Daily ET Values</h2>
 
-  <p>After you register, the system will send you an email containing a link which you can click to confirm that you're really you, and that you really want to start receiving automated emails.</p>
+<hr>
 
-  <%= button_to "Register", new_subscriber_url, method: :get %>
-  <br />
-  <h2>Already Registered?</h2>
-  <%= form_tag("/subscribers/manage") do %>
-    <%= label_tag(:email_address, "Please enter your email address to manage your subscriptions: ") %>
-    <%= text_field_tag(:email_address) %>
-    <%= submit_tag("Search") %>
-  <% end %>
-</div>
+<p>The "Register" button below takes you to a form where you can enter your name and email address so that our automatically-emailed et values can find you. Once you're known to our database, you can sign up for locations to have et values delivered to you daily.</p>
+
+<p>After you register, the system will send you an email containing a link which you can click to confirm that you're really you, and that you really want to start receiving automated emails.</p>
+
+<%= button_to "Register", new_subscriber_url, method: :get %>
+
+<br>
+
+<h4>Already Registered?</h4>
+
+<%= form_tag("/subscribers/manage") do %>
+  <%= label_tag(:email_address, "Please enter your email address to manage your subscriptions: ") %>
+  <%= text_field_tag(:email_address) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<br><%= link_to "Back", :back %>

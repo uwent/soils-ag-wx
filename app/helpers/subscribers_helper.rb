@@ -5,8 +5,8 @@ module SubscribersHelper
 
   def do_welcome
     str = <<-END
-    #{image_tag "awon.jpg",{:width => "231", :height => "347", :alt => "weather station"}}
-    <h2>#{link_to "#{title}", :controller => :subscribers, :action => "index"}</h2>
+    #{image_tag "icons/awon.png"}
+    <h2>#{link_to "#{title}", action: "index"}</h2>
     END
     str
   end

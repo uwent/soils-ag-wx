@@ -9,7 +9,7 @@ class SunWaterController < ApplicationController
   def index
   end
 
-  def insol_us
+  def insol_map
     begin
       @date = Date.parse(params[:date])
     rescue
@@ -21,10 +21,7 @@ class SunWaterController < ApplicationController
     end
   end
 
-  def insol_model
-  end
-
-  def et_wimn
+  def et_map
     begin
       @date = Date.parse(params[:date])
     rescue
@@ -34,18 +31,6 @@ class SunWaterController < ApplicationController
       format.html { et_image(@date) }
       format.csv { send_data et_csv(@date), filename: "et-values-#{@date}.csv" }
     end
-  end
-
-  def et_fl
-  end
-
-  def et_model
-  end
-
-  def spreadsheet_download
-  end
-
-  def spreadsheet_doc
   end
 
   def grid_classes
@@ -63,6 +48,7 @@ class SunWaterController < ApplicationController
   end
 
   private
+
   def et_image(date)
     grid_ets
     begin

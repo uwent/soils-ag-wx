@@ -1,6 +1,4 @@
-<% content_for :title do %>
-  Sun and Water
-<% end %>
+<% @title = "Sun and Water" %>
 
 <% content_for :welcome do %>
   <%= image_tag "icons/rock-island-250px.png" %>
@@ -9,8 +7,8 @@
   <br/>
   <p><b>Quick Links</b></p>
   <ul>
-    <li><%= link_to "Insolation map", action: :insol_us %></li>
-    <li><%= link_to "Evapotranspiration map", action: :et_wimn %></li>
+    <li><%= link_to "Insolation map", action: :insol_map %></li>
+    <li><%= link_to "Evapotranspiration map", action: :et_map %></li>
     <li><%= link_to "ET email subscription", subscribers_path %></li>
     <li><%= link_to "Irrigation Scheduling Program", "https://wisp.cals.wisc.edu" %>
   </ul>
@@ -18,51 +16,51 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/insol-150px.png"), action: :insol_us %>
+    <%= link_to image_tag("icons/insol-150px.png"), action: :insol_map %>
   </div>
   <div>
-    <h2><%= link_to "Insolation Data", action: :insol_us %></h2>
+    <h2><%= link_to "Insolation Data", action: :insol_map %></h2>
     <p>We're proud to offer our "take" from the UW Space Science insolation model, which estimates insolation at the surface by comparing each pixel of a satellite image with one taken when no clouds are present. This model, which has undergone over a decade of rigorous quality control and continual improvement, offers a remarkably good fit to data obtained from ground instruments.</p>
     <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
     <p>Daily and hourly insolation data for the previous day can be downloaded from the Space Science and Engineering Center’s anonymous ftp site at prodserv1.ssec.wisc.edu. The insolation files are in the directory insolation_high_res.</p>
     <ul>
-      <li><%= link_to "View insolation map", action: :insol_us %></li>
+      <li><%= link_to "View insolation map", action: :insol_map %></li>
     </ul>
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/sunwater-150px.png"), action: :et_wimn %>
+    <%= link_to image_tag("icons/sunwater-150px.png"), action: :et_map %>
   </div>
   <div>
-    <h2><%= link_to "Evapotranspiration Data", action: :et_wimn %></h2>
+    <h2><%= link_to "Evapotranspiration Data", action: :et_map %></h2>
     <p>Maps of potential evapotranspiration (ET) are calculated from satellite-derived measurements of solar radiation and air temperatures at regional airports. The ET values on the maps are a reasonable estimate of daily crop water use for most crops that have reached at least 80% coverage of the ground. Prior to 80% or greater coverage, ET will be a fraction of the map value in proportion to the amount of coverage. The map values may vary slightly from ET estimates from AWON and other more site-specific models, but these differences are believed to be within the uncertainty of even measurements of actual water use made directly in a given field.</p>
     <ul>
-      <li><%= link_to "View ET map or download data", action: :et_wimn %></li>
+      <li><%= link_to "View ET map or download data", action: :et_map %></li>
       <li><%= link_to "Get ET data in your inbox", subscribers_path %></li>
     </ul>
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/pivot-150px.png"), "https://wisp.cals.wisc.edu/" %>
+    <%= link_to image_tag("icons/pivot-150px.png"), wisp_url %>
   </div>
   <div>
-    <h2><%= link_to "Irrigation Scheduling Program", "https://wisp.cals.wisc.edu/" %></h2>
+    <h2><%= link_to "Irrigation Scheduling Program", wisp_url %></h2>
     <p>An online irrigation scheduling application is available to calculate the allowable-depletion balance. The tool automatically pulls evapotranspiration and degree day data where coverage exists, but rainfall must be entered manually. The program was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science.</p>
     <ul>
-      <li><%= link_to "Irrigation Scheduling Program", "https://wisp.cals.wisc.edu/" %></li>
+      <li><%= link_to "Irrigation Scheduling Program", wisp_url %></li>
     </ul>
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div>

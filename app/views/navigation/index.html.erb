@@ -1,19 +1,13 @@
-<% content_for :title do %>
-  UW AgWeather
-<% end %>
-
 <% content_for :welcome do %>
-<div><%= image_tag "icons/king-hall-250px.png", {width: "100%", alt: "Soil Science"} %></div>
-<h2>Welcome!</h2>
-<p>For ET and insolation, see <%= link_to 'Sun/Water', controller: :sun_water %>; for degree days, see <%= link_to 'Thermal Models', controller: :thermal_models %>.</p>
-<p>We offer these data so that growers and other stakeholders in our agricultural landscape can make informed decisions about management practices.</p>
-<p>Originally developed by the Department of Soil Science department, this site is currently being upgraded and maintained by the Department of Entomology.</p>
-<p><%= mail_to "agweather@cals.wisc.edu", "Contact us" %> with any questions.</p>
-<br>
-<p><%= image_tag "logos/uw-logo-reverse.png", {:width => "100%"} %></p>
+  <div><%= image_tag "icons/king-hall-250px.png" %></div>
+  <h2>Welcome!</h2>
+  <p>For ET and insolation, see <%= link_to 'Sun/Water', controller: :sun_water %>; for degree days, see <%= link_to 'Thermal Models', controller: :thermal_models %>.</p>
+  <p>We offer these data so that growers and other stakeholders in our agricultural landscape can make informed decisions about management practices.</p>
+  <p>Originally developed by the Department of Soil Science department, this site is currently being upgraded and maintained by the Department of Entomology.</p>
+  <p><%= mail_to "agweather@cals.wisc.edu", "Contact us" %> with any questions.</p>
+  <br>
+  <p><%= image_tag "logos/uw-logo-reverse.png", { width: "100%" } %></p>
 <% end %>
-
-<!-- content for remainder of page -->
 
 <div class="row">
   <div class="left">

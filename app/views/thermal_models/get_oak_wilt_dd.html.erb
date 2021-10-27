@@ -1,22 +1,19 @@
 <% @title="Oak Wilt Vectors Emergence Thermal Model"%>
-<% content_for :title do %>
- <%= @title %>
-<% end %>
 
 <% content_for :welcome do %>
   <%= image_tag "ow_leaves.jpg",{:width => "231", :height => "180", :alt => "Oak Wilt"} %>
   <h2><%= @title %></h2>
-  <p></p>
 <% end %>
 
 <% if @data.length > 0 %>
   <% @scenario = define_scenario(@data.last[:cumulative_value], @end_date) %>
-  <h3>The cumulative degree days</h3>
-  <h3>from January 1,  <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %> </h3>
-  <h3>at Latitude: <%= params[:latitude] %>&deg;N, Longitude: <%= params[:longitude] %>&deg;W</h3>
-  <h3>GDD: <b><%= @data.last[:cumulative_value] %></b> Fahrenheit degree days</h3>
+  <p>
+    Cumulative degree days from January 1, <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %><br>
+    at Latitude: <%= params[:latitude] %>&deg;N, Longitude: <%= params[:longitude] %>&deg;W
+  </p>
+  <h4>GDD: <b><%= @data.last[:cumulative_value] %></b> Fahrenheit degree days</h4>
 
-  <br/>
+  <br>
   <% if @scenario %>
     <%= render partial: "partials/threshold_recommendations/#{@scenario}" %>
   <% end %>
@@ -28,7 +25,6 @@
   </div>
 <% else %>
   <h3>Data for this date range is currently unavailable.</h3>
-  <div class='back-button'>
-    <%= link_to 'Back', :back %>
-  </div>
 <% end %>
+
+<br><%= link_to "Back", :back %>

@@ -62,7 +62,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
   end
 
   test "should get westernbeancutworm" do
-    get :westernbeancutworm
+    get :western_bean_cutworm
     assert_response :success
   end
 

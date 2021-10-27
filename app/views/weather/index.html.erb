@@ -1,14 +1,10 @@
-<% content_for :title do %>
-  Weather Observations
-<% end %>
+<% @title = "Weather Observations" %>
 
 <% content_for :welcome do %>
   <%= image_tag "icons/snowy.png", width: "100%" %>
   <h2>Weather Observations</h2>
   <p>Weather-related pages and data are available here.</p>
 <% end %>
-
-<!-- content for remainder of page -->
 
 <div class="row">
   <div class="left">
@@ -20,7 +16,7 @@
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
@@ -36,7 +32,7 @@
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
@@ -52,7 +48,7 @@
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">

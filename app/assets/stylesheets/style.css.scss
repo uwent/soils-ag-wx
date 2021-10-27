@@ -43,6 +43,13 @@ table {
 	border-bottom: 1px solid #D3CAA9;
 }
 
+hr {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	border: 1px;
+	border-bottom: 1px solid #D3CAA9;
+}
+
 .bar-lit {
 	padding-left: 6px;
 	background: 0px 4px image_url('frame/bar_lit.png') no-repeat;
@@ -250,5 +257,16 @@ table {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	width: fit-content;
+}
+
+.form-box {
+  border: 1px solid #8b846a;
+  background-color: #efefef;
+  border-radius: 3px;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
 	width: fit-content;
 }

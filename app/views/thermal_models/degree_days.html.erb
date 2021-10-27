@@ -1,9 +1,7 @@
-<% content_for :title do %>
- Degree Day Calculator
-<% end %>
+<% @title = "Degree Day Calculator" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "degree_flower.png", width: "100%" %>
+  <%= image_tag "degree_flower.png" %>
   <h2>Thermal Models</h2>
   <p>Use the reference sheet to the right and the degree day calculator tool below it to compute degree days for a particular pest model.</p>
 <% end %>
@@ -12,7 +10,7 @@
 <%= render partial: "partials/degree_days_explained" %>
 <%= render partial: "partials/degree_day_table" %>
 <br>
-<h3>Get degree-day data series:</h3>
+<h4>Get degree-day data series:</h4>
 <br>
 <%= render partial: "partials/dd_selector" %>
 <br>

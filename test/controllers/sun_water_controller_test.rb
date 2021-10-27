@@ -6,38 +6,13 @@ class SunWaterControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get insol_us" do
-    get :insol_us
+  test "should get insol_map" do
+    get :insol_map
     assert_response :success
   end
 
-  test "should get insol_model" do
-    get :insol_model
-    assert_response :success
-  end
-
-  test "should get et_wimn" do
-    get :et_wimn
-    assert_response :success
-  end
-
-  test "should get et_fl" do
-    get :et_fl
-    assert_response :success
-  end
-
-  test "should get et_model" do
-    get :et_model
-    assert_response :success
-  end
-
-  test "should get spreadsheet_download" do
-    get :spreadsheet_download
-    assert_response :success
-  end
-
-  test "should get spreadsheet_doc" do
-    get :spreadsheet_doc
+  test "should get et_map" do
+    get :et_map
     assert_response :success
   end
 

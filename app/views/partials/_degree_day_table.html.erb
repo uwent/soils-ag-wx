@@ -18,7 +18,7 @@
 		</tr>
 		<tr>
 			<td><!-- <a href="http://128.104.239.6/scout/field_pdfs/ALTOC.pdf" >Alfalfa Weevil </a>-->
-				Alfalfa Weevil (<%= link_to "DD Map", :action => :alfalfa %>)</td>
+				Alfalfa Weevil (<%= link_to "DD Map", action: :alfalfa_weevil %>)</td>
 			<td>Sine</td>
 			<td>48F</td>
 			<td>86F</td>
@@ -149,7 +149,7 @@
 			<td>January 1</td>
 		</tr>
 		<tr>
-			<td>Western Bean Cutworm (<%= link_to 'More information', :action => :westernbeancutworm %>)
+			<td>Western Bean Cutworm (<%= link_to 'More information', :action => :western_bean_cutworm %>)
 			</td>
 			<td>Simple</td>
 			<td>50F</td>
@@ -157,3 +157,5 @@
 			<td>May 1</td>
 		</tr>
 	</table>
+
+<br><%= link_to "Back", :back %>

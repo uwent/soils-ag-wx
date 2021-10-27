@@ -1,21 +1,16 @@
-<% content_for :title do %>
-  <%= title %>
-<% end %>
-
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "style" -%>
-<% end %>
+<% @title = title %>
 
 <% content_for :welcome do %>
-    <%= do_welcome.html_safe %>
+  <%= do_welcome.html_safe %>
 <% end %>
 
-<div class='subscribers'>
-  <br />
-  <h2>Confirm your account</h2>
-  <p>We have sent you a confirmation email. Please click the link in to email 
-to confirm your account.</p>
-  <br />
-  If you need the confirmation code resent: <button id='resend_confirmation', data-sub-id="<%= @subscriber.id %>">Resend Confirmation</button>
-</div>
-  
+<h2><%= title %></h2>
+<hr>
+
+<h4>Confirm your account</h4>
+
+<p>We have sent you a confirmation email. Please click the link in to email to confirm your account.</p>
+
+<p>If you need the confirmation code resent: <button id='resend_confirmation', data-sub-id="<%= @subscriber.id %>">Resend Confirmation</button></p>
+
+<br><%= link_to "Back", :back %>

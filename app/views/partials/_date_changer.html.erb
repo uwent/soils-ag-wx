@@ -1,0 +1,9 @@
+<p>
+  Previous day: <%= submit_tag @date - 1, name: :date %>&nbsp;
+  Next day: <%= submit_tag @date + 1, name: :date %>&nbsp;
+  Latest: <%= submit_tag Date.yesterday, name: :date %>
+</p>
+<p>
+  Or enter a specific date: <%= text_field_tag :date %>
+  <%= submit_tag "Go" %>
+</p>

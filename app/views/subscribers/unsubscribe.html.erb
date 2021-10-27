@@ -1,22 +1,18 @@
-<% content_for :title do %>
-  <%= title %>
-<% end %>
-
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "style" -%>
-<% end %>
+<% @title = title %>
 
 <% content_for :welcome do %>
-    <%= do_welcome.html_safe %>
+  <%= do_welcome.html_safe %>
 <% end %>
 
-<div class="content">
-  <% if @unsubscribed %>
-    <h2>Unsubscribe from evapotranspiration mail -- <%= @subscriber.email %></h2> 
-    <p>Your will no longer receive evapotranspiration values via email.</p> 
-    <p>If you decide you would like to receive this email again, just visit <%= link_to "Subscribe", subscribers_path %>.</p>
-  <% else %>
-    <h2>Unable to unsubscribe from evapotranspiration mail</h2> 
-    <p>We were not able to unsubscribe you. You must include the correct token. If you copied the link from your email, make sure you copy it entirely and try again.</p>
-  <% end %>
-</div>
+<h2><%= title %></h2>
+<hr>
+
+<% if @unsubscribed %>
+  <h2>Unsubscribe from evapotranspiration mail -- <%= @subscriber.email %></h2> 
+  <p>Your will no longer receive evapotranspiration values via email.</p> 
+  <p>If you decide you would like to receive this email again, just visit <%= link_to "Subscribe", subscribers_path %>.</p>
+<% else %>
+  <h2>Unable to unsubscribe from evapotranspiration mail</h2> 
+  <p>We were not able to unsubscribe you. You must include the correct token. If you copied the link from your email, make sure you copy it entirely and try again.</p>
+<% end %>
+

@@ -1,9 +1,5 @@
 <% @title = "Day-of-Year Calendar" %>
 
-<% content_for :title do %>
-  <%= @title %>
-<% end %>
-
 <% content_for :welcome do %>
   <%= image_tag "icons/doy-cal.png", {width: "100%", alt: "Calendar"} %>
   <h2>1-Century Day-Of-Year Calendar</h2>
@@ -45,14 +41,22 @@
 <% midyear = Date.today.year %>
 
 <h2><%= @title %></h2>
+
+<hr>
+
 <p>This 100-year calendar starts with the current year, showing the day of year. The bold numbers down the left edge represent the day of month (and, for January, also the day of year). Follow the day-of-month row across to the appropriate month column to find day-of-year. Today's DOY is highlighted in <span style="background-color:aqua">aqua</span>.</p>
+
 <p>
   <b>Year:</b>
   <%= select_tag "year", options_for_select((Date.current.year + 50).downto(Date.current.year - 50).collect { |year| [year, year] }, Date.current.year), :onchange => "update_grid()" %>
   <%= submit_tag "Prev", :id => "prev_btn", :onclick => "prev_year()" %>
   <%= submit_tag "Next", :id => "next_btn", :onclick => "next_year()" %>
 </p>
+
 <div id="grid">
   <%= render partial: "doycal_grid", locals: { cal_matrix: @cal_matrix } %>
 </div>
+
 <br>
+
+<%= link_to "Back", :back %>

@@ -1,36 +1,31 @@
-<% content_for :title do %>
-  <%= title %>
-<% end %>
-
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "style" -%>
-<% end %>
+<% @title = "Manage Subscribers" %>
 
 <% content_for :welcome do %>
-    <%= do_welcome.html_safe %>
+  <%= do_welcome.html_safe %>
 <% end %>
+
 <input type="hidden" id="subscriber_id" value="<%= @subscriber.id %>">
 <input type="hidden" id="add_url" value="<%= url_for add_subscription_subscriber_path(@subscriber.id) %>">
 <input type="hidden" id="remove_url" value="<%= url_for remove_subscription_subscriber_path(@subscriber.id) %>">
 <input type="hidden" id="sub_count" value="<%= @subscriber.subscriptions.count %>">
 <input type="hidden" id="delete-cross" value="<%= image_path("cross.png") %>">
 
-<div class="subscriber">
-  <b>Name: </b><%= @subscriber.name %> <b>Email: </b><%= @subscriber.email %>
-  <br />
-  <br />
-  <br />
-  <h2>How To Subscribe</h2>
-  <p>You can enter your own unique site identification, longitude and latitude  for up to 15 sites below.</p>
-  <p>Note that longitude values must be entered as negative numbers. </p>
-  <p>Enter latitude and longitude values below in degrees and decimal degrees rounded to the nearest 0.1°.</p>
-  <p>To convert latitude and longitude values from degrees, minutes and seconds (DMS) to decimal degrees simply divide minutes by 60 and seconds by 3600, add the two values together and append them back on to the whole degree number.</p>
-  <p><b>Example</b><br />
-  Convert -89° 30' 45" longitude to decimal degrees.  The decimal portion equals (30'/60) + (45"/3600) =  0.5125, which when appended to the degree whole number equals -89.5125 and gets rounded to  -89.5°. 
-  </p>
-  <p>
-    To save your input data be sure to press the “Add” button after entering each line, <u>including after the last line</u>.
-  </p>
+<h2><%= title %></h2>
+
+<hr>
+
+<b>Name: </b><%= @subscriber.name %><br>
+<b>Email: </b><%= @subscriber.email %>
+
+<h3>How To Subscribe</h3>
+
+<p>You can enter your own unique site identification, longitude and latitude  for up to 15 sites below. Note that longitude values must be entered as negative numbers. Enter latitude and longitude values below in degrees and decimal degrees rounded to the nearest 0.1°.</p>
+
+<p>Coverage area: Latitudes from 38-50, Longitudes from -98 to -82. Check the <%= link_to "ET map", controller: :sun_water, action: :et_map %> for coverage area and click the map to get a lat/long value for any point on the map.</p>
+
+<p>To save your input data be sure to press the “Add” button after entering each line, <u>including after the last line</u>.</p>
+
+<div class="form-box">
   <table>
     <thead>
       <tr>
@@ -41,7 +36,7 @@
       </tr>
     </thead>
     <tbody>
-      <% et_product = Product.where(name: 'Evapotranspiration').first %>
+      <% et_product = Product.where(name: "Evapotranspiration").first %>
       <% @subscriber.subscriptions.where(product: et_product).each do |subscription| %>
         <tr>
           <td><%= subscription.name %></td>
@@ -58,8 +53,8 @@
       </tr>
     </tbody>
   </table>
-  <br />
-  <br />
-  <%= link_to "<button>Admin</button>".html_safe, admin_subscribers_path if @admin %>
-  <%= link_to "<button>Finish</button>".html_safe, logout_subscribers_path %>
 </div>
+
+<br>
+<%= link_to "<button>Admin</button>".html_safe, admin_subscribers_path if @admin %>
+<%= link_to "<button>Finish</button>".html_safe, logout_subscribers_path %>
