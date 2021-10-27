@@ -9,7 +9,7 @@
     <% if (keys = @grid_classes.keys.sort).size > 1 %>
       <p>
       <% keys.each do |param| %>
-        <%= radio_button_tag 'param', param, param == keys[0] %> <%= param %><br/>
+        <%= radio_button_tag "param", param, param == keys[0] %> <%= param %><br/>
       <% end %>
       </p>
     <% else %>
@@ -22,9 +22,9 @@
     </p>
 
     <p>
-      <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'csv' %> Download as CSV<br/>
+      <%= radio_button_tag "format", "html", true %> View in browser&nbsp;<%= radio_button_tag "format", "csv" %> Download as CSV<br/>
     </p>
 
-    <%= submit_tag "Get Data Series "%>
+    <%= submit_tag "Get Data Series ", data: { disable_with: false } %>
   </fieldset>
 <% end %>

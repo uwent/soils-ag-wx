@@ -1,9 +1,10 @@
 require 'grid_controller'
 
 class WeatherController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:get_grid]
-  
   include GridController
+
+  before_action :authenticate
+  skip_before_action :verify_authenticity_token, only: :get_grid
 
   def index
   end
@@ -30,7 +31,15 @@ class WeatherController < ApplicationController
   end
   
   def grid_temps
-    @grid_classes = grid_classes
+    begin
+      date = Date.parse(params[:date])
+    rescue
+      date = (Time.now - 7.hours).to_date.yesterday
+    end
+    respond_to do |format|
+      format.html { weather_image(date) }
+      format.csv { send_data weather_csv(date), filename: "weather data for #{date}.csv" }
+    end
   end
   
   def webcam
@@ -65,6 +74,39 @@ class WeatherController < ApplicationController
     @cal_matrix = CalMatrix.new(date)
     @year = date.year
     render partial: "doycal_grid"
+  end
+
+  private
+  def weather_image(date)
+    grid_classes
+    begin
+      endpoint = "#{Endpoint::BASE_URL}/weather/#{date}"
+      resp = HTTParty.get(endpoint, { timeout: 10 })
+      json = JSON.parse(resp.body)
+      url = json["map"]
+      @map_image = "#{Endpoint::HOST}#{url}"
+    rescue Net::ReadTimeout
+      Rails.logger.error("Timeout on endpoint: #{endpoint}")
+      @map_image = "no_data.png"
+    end
+  end
+
+  def weather_csv(date)
+    begin
+      endpoint = "#{Endpoint::BASE_URL}/weather/all_for_date?date=#{date.to_s}"
+      resp = HTTParty.get(endpoint, { timeout: 10 })
+      json = JSON.parse(resp.body, symbolize_names: true)
+      data = json[:data]
+      return CSV.generate(headers: true) do |csv|
+        csv << data.first.keys
+        data.each do |h|
+          csv << h.values
+        end
+      end
+    rescue Net::ReadTimeout
+      Rails.logger.error("Timeout on endpoint: #{endpoint}")
+      return CSV.generate(headers: true)
+    end
   end
   
 end

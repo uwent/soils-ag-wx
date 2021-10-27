@@ -1,16 +1,40 @@
-<% @title="Grid-Interpolated Daily Temperatures"%>
+<% @title = "Grid-Interpolated Daily Temperatures"%>
+
 <% content_for :title do %>
  <%= @title %>
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "grid_map.png",{:width => "231", :height => "180", :alt => "Gridded Map"} %>
+  <%= image_tag "icons/dd-map-250px.png" %>
   <h2><%= @title %></h2>
-  <p></p>
+  <p>By interpolating daily temperature and humidity observations at airports, we can offer gridded temperatures (in degrees Celsius) and water vapor pressures across the region.</p>
+<% end %>
+
+<%= content_for :scripts do %>
+  <script lang="js">
+    function regionMap(latitude, longitude) {
+      latitude = latitude.toFixed(1);
+      longitude = longitude.toFixed(1);
+      console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
+      $('#latitude').val(latitude);
+      $('#longitude').val(longitude);
+      return false;
+    }
+  </script>
 <% end %>
 
 <h2><%= @title %></h2>
+<p>Yesterday's mean temperature map for Wisconsin and surrounding states:</p>
+<p>
+  <img
+    src="<%= @map_image %>"
+    alt="Yesterday's Mean Temperatures"
+    usemap="#latlong"
+    width="800px"/>
+</p>
+<%= render partial: 'partials/gridmap'%>
 
-<p>By interpolating daily temperature and humidity observations at airports, we can offer gridded temperatures (in degrees Celsius) and water vapor pressures across the region.</p>
-
+<h4>View/Download Weather Data Time Series</h4>
 <%= render partial: "partials/grid_selector" %>
+
+<p><a href="/weather/grid_temps.csv">Download yesterday's entire grid of data in CSV format</a></p>

@@ -32,14 +32,14 @@ class ApplicationController < ActionController::Base
   def get_grid
     @param = params[:param] # I just loved writing that
     dates = fix_nested_dates(params['grid_date'])
-    @start_date,@end_date = parse_dates dates
+    @start_date, @end_date = parse_dates dates
     @latitude = params[:latitude].to_f
     @longitude = params[:longitude].to_f
     grid_class = grid_classes[params[:param]]
-    @data = grid_class.daily_series(@start_date,@end_date,@longitude,@latitude)
+    @data = grid_class.daily_series(@start_date, @end_date, @longitude, @latitude)
     respond_to do |format|
       format.html
-      format.csv { render plain: to_csv(@data,params[:param]) }
+      format.csv { send_data to_csv(@data), filename: "#{grid_class.endpoint_attribute_name} data for #{@latitude}, #{@longitude} for dates #{@start_date} to #{@end_date}.csv"}
     end
   end
 

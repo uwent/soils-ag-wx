@@ -12,25 +12,37 @@
 <h2><%= @title %></h2>
 <br>
 
-<h4><u><%= @param %> data</u></h4>
 <p>
-  <strong>Location:</strong> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
-  <strong>Date range:</strong> <%= @start_date %> to <%= @end_date %>
+  <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+  <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
+  <b>Days:</b> <%= @data.size %>
 </p>
 
-<table>
+<table class="grid-table">
   <thead>
     <tr>
-      <th style="width: 8em;">Date</th>
-      <th>Value</th>
+      <th>Day</th>
+      <th>Date</th>
+      <th>Min<br>temp<br>(&deg;C)</th>
+      <th>Avg<br>temp<br>(&deg;C)</th>
+      <th>Max<br>temp<br>(&deg;C)</th>
+      <th>Vap.<br>pres.<br>(mbar)</th>
     </tr>
   </thead>
   <tbody>
-  <% for date in @data.keys.sort %>
+  <% @data.each_with_index do |day, i| %>
     <tr>
-      <td><%= date %></td>
-      <td><%= @data[date] %></td>
+      <td><%= i + 1 %>
+      <td><%= day[:date] %></td>
+      <td><%= sprintf("%.2f", day[:min_temp]) %></td>
+      <td><%= sprintf("%.2f", day[:avg_temp]) %></td>
+      <td><%= sprintf("%.2f", day[:max_temp]) %></td>
+      <td><%= sprintf("%.2f", day[:pressure]) %></td>
     </tr>
   <% end %>
   </tbody>
 </table>
+
+<br>
+
+<%= link_to "Back", :back %>

@@ -19,10 +19,10 @@
   <b>Days:</b> <%= @data.size %>
 </p>
 
-<table>
+<table class="grid-table">
   <thead>
     <tr>
-      <th></th>
+      <th>Day</th>
       <th>Date</th>
       <th>Value</th>
     </tr>
@@ -37,3 +37,7 @@
   <% end %>
   </tbody>
 </table>
+
+<br>
+
+<%= link_to "Back", :back %>

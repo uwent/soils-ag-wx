@@ -225,3 +225,18 @@ table {
 		flex: 0 1 auto;
 	}
 }
+
+.grid-table {
+	td, th {
+		padding: 0 1em 0 1em;
+	}
+
+	th {
+		text-align: center;
+		border-bottom: 1px solid;
+	}
+
+	td {
+		text-align: right;
+	}
+}

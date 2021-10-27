@@ -19,15 +19,15 @@
   <strong>Temp. units:</strong> Fahrenheit
 </p>
 
-<table>
+<table class="grid-table">
   <thead>
     <tr>
-      <th></th>
+      <th>Day</th>
       <th>Date</th>
-      <th>Min temp</th>
-      <th>Max temp</th>
+      <th>Min<br>temp</th>
+      <th>Max<br>temp</th>
       <th>DDs</th>
-      <th>Cumul. DDs</th>
+      <th>Cumul.<br>DDs</th>
     </tr>
   </thead>
   <tbody>
@@ -43,3 +43,7 @@
   <% end %>
   </tbody>
 </table>
+
+<br>
+
+<%= link_to "Back", :back %>
