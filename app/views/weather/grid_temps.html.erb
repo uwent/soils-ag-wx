@@ -25,9 +25,7 @@
 
 <h4>Mean temperature map for Wisconsin and surrounding states for <%= @date %>:</h4>
 
-<%= form_tag action: :grid_temps do %>
-  <%= render partial: "partials/date_changer" %>
-<% end %>
+<%= render partial: "partials/date_changer", locals: { action: :grid_temps } %>
 
 <p><img src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong"/></p>
 
