@@ -1,4 +1,5 @@
 <% @title = "Sun and Water" %>
+<% wisp_url = "https://#{Rails.env.production? ? "" : "dev."}wisp.cals.wisc.edu" %>
 
 <% content_for :welcome do %>
   <%= image_tag "icons/rock-island-250px.png" %>
