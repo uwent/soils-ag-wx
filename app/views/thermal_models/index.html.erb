@@ -1,5 +1,5 @@
 <% @title = "Thermal Models" %>
-<% vdifn_url = "https://agweather.cals.wisc.edu/vdifn" %>
+<% vdifn_url = "https://#{ENV['URL_PREFIX']}agweather.cals.wisc.edu/vdifn" %>
 
 <% content_for :welcome do %>
   <%= image_tag "icons/thermal.png", width: "100%" %>
