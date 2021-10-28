@@ -1,7 +1,8 @@
-<%= form_tag action: :get_grid do %>
-  <fieldset style="width: fit-content; padding: 10px;">
-    <legend>Enter parameters:</legend>
-    
+<div class="form-box">
+  <%= form_tag action: :get_grid do %>
+    <b>Enter parameters:</b>
+    <br>
+    <br>
     <%= select_tag :latitude, options_for_select(latitudes) %><label for="latitude"> Latitude</label>
     <%= select_tag :longitude, options_for_select(longitudes) %><label for="longitude"> Longitude</label>
     <br>
@@ -17,8 +18,8 @@
     <% end %>
 
     <p>
-      <%= date_select :grid_date, :start_date, start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.month.ago %> Start date<br/>
-      <%= date_select :grid_date, :end_date, start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.day.ago %> End date
+      <%= date_select :grid_date, :start_date, start_year: Date.current.year - 4, end_year: Date.current.year, default: @date - 1.month %> Start date<br/>
+      <%= date_select :grid_date, :end_date, start_year: Date.current.year - 4, end_year: Date.current.year, default: @date %> End date
     </p>
 
     <p>
@@ -26,5 +27,5 @@
     </p>
 
     <%= submit_tag "Get Data Series ", data: { disable_with: false } %>
-  </fieldset>
-<% end %>
+  <% end %>
+</div>
