@@ -34,7 +34,7 @@ class WeatherController < ApplicationController
     begin
       @date = Date.parse(params[:date])
     rescue
-      @date = Date.current - 1.day
+      @date = (Time.now - 7.hours).to_date.yesterday
     end
     respond_to do |format|
       format.html { weather_image(@date) }
