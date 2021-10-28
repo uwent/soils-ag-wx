@@ -27,13 +27,15 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :grid_temps } %>
 
+<p style="font-size: smaller;"><i>Map color scale is based on min/max temp across region. Map may take a few moments to load if it hasn't already been created.</i></p>
+
 <p><img src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong"/></p>
 
 <%= render partial: "partials/gridmap"%>
 
 <h4>View/Download Weather Data Time Series</h4>
 
-<p>Note: You can click on the map to set the latitude and longitude to within half a degree.</p>
+<p style="font-size: smaller;"><i>Note: You can click on the map to set the latitude and longitude to within half a degree.</i></p>
 
 <%= render partial: "partials/grid_selector" %>
 

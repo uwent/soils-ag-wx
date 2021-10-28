@@ -27,19 +27,23 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :et_map } %>
 
+<p style="font-size: smaller;"><i>Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created.</i></p>
+
 <div class="map-img">
   <img src="<%= @map_image %>" alt="Yesterday's ET Estimates" usemap="#latlong" />
 </div>
 
 <%= render partial: "partials/gridmap" %>
 
-<h4>ET Time Series</h4>
+<br>
 
-<p>Note: You can click on the map to set the latitude and longitude to within half a degree.</p>
+<h4>ET Data Time Series</h4>
+
+<p style="font-size: smaller;"><i>Note: You can click on the map to set the latitude and longitude to within half a degree.</i></p>
 
 <%= render partial: "partials/grid_selector" %>
 
-<p><a href="/sun_water/et_map.csv">Download yesterday's entire grid of data in CSV format</a></p>
+<p><a href="/sun_water/et_map.csv">Download the entire grid of data in CSV format</a></p>
 
 <br>
 

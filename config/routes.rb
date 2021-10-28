@@ -1,3 +1,5 @@
+URL_PREFIX = Rails.env.staging? ? "dev." : ""
+
 Rails.application.routes.draw do
 
   resources :awon, only: :index do
@@ -132,15 +134,11 @@ Rails.application.routes.draw do
   # get 't411s/last'
 
   direct :vdifn do
-    Rails.env.staging? ? "https://dev.agweather.cals.wisc.edu/vdifn" : "https://agweather.cals.wisc.edu/vdifn"
+    "https://#{URL_PREFIX}agweather.cals.wisc.edu/vdifn"
   end
 
   direct :wisp do
-    Rails.env.staging? ? "https://dev.wisp.cals.wisc.edu" : "https://wisp.cals.wisc.edu"
-  end
-
-  direct :wisc do
-    "https://www.wisc.edu"
+    "https://#{URL_PREFIX}wisp.cals.wisc.edu"
   end
 
   root to: 'navigation#index'
