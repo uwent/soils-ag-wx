@@ -1,5 +1,8 @@
-Dear <%= @subscriber.name %>,<br/>
+Dear AgWeather Subscriber,
+<br>
 
-<p>Someone has requested to manage your email subscriptions. To ensure that you are the one intiating this request, we are sending you a validation code. Please enter the code: <span style="font-size: larger"><%= @subscriber.validation_token %></span> in the form. This code will be valid for one hour.
-<p>
-<p>Please do not reply to this email.</p>
+<p>Someone has requested to manage your email subscriptions at <%= link_to subscribers_url, subscribers_url %>. To ensure that you are the one intiating this request, we are sending you a validation code. Please enter the following code in the form:<p>
+
+<span style="font-size: larger; font-weight: bold; color: darkred;"><%= @subscriber.validation_token %></span>
+
+<p>This code will be valid for one hour. Please do not reply to this email.</p>

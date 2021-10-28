@@ -50,11 +50,13 @@ class Subscriber < ApplicationRecord
     self.validation_token == validation_code
   end
 
-  def self.send_daily_mail
+  def self.send_daily_mail(date = Date.current - 1.day)
     et_product = Product.where(name: 'Evapotranspiration').first
-    yesterday = Date.today - 1.day
-    dates = ((Date.today - 1.week)..yesterday).to_a.reverse
-    return if (yesterday.yday < et_product.default_doy_start || yesterday.yday >= et_product.default_doy_end)
+    dates = ((Date.today - 1.week)..date).to_a.reverse
+    if (date.yday < et_product.default_doy_start || date.yday >= et_product.default_doy_end)
+      Rails.logger.info "ET mailer not sent, currently outside of date range."
+      return "Product inactive" unless Rails.env.development?
+    end
     Subscriber.all.each do |subscriber| 
       subs = subscriber.subscriptions.where(product: et_product).map do |sub| 
         
@@ -80,7 +82,7 @@ class Subscriber < ApplicationRecord
         }
       end
       # end.select { |val| val[:value] > 0 }
-      SubscriptionMailer.daily_mail(subscriber, yesterday, subs).deliver if subs.length > 0
+      SubscriptionMailer.daily_mail(subscriber, date, subs).deliver if subs.length > 0
     end
   end
 

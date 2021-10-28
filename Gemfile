@@ -22,7 +22,7 @@ gem 'sdoc', '~> 2.2', group: :doc
 
 group :development, :test do
   gem 'pry-rails', '~> 0.3'
-  gem 'spring', '~> 2.1'
+  gem 'spring', '~> 3.0'
   gem 'rspec_junit_formatter', '~> 0.4'
 end
 

@@ -4,26 +4,27 @@
   <%= do_welcome.html_safe %>
 <% end %>
 
-<div class='subscribers'>
-  <% if @subscriber.errors.any? %>
-    <div id="error_explanation">
-      <% @subscriber.errors.full_messages.each do |msg| %>
-        <%= msg %>
-      <% end %>
-    </div>
-  <% end %>
-  <br />
-  <br />
-  <br />
-  <h2>Validate your account</h2>
-  To ensure you are the owner of this email address, we have sent a validation code to your email address. Please enter the validation code you were sent in order manage your subscriptions.
-<br />
-<br />
+<h2><%= @title %></h2>
+
+<hr>
+
+<% if @subscriber.errors.any? %>
+  <div id="error_explanation">
+    <% @subscriber.errors.full_messages.each do |msg| %>
+      <%= msg %>
+    <% end %>
+  </div>
+<% end %>
+
+<h4>Validate your account</h4>
+<p>To ensure you are the owner of this email address, we have sent a validation code to your email address. Please enter the validation code you were sent in order manage your subscriptions.</p>
+
+<br>
+
 <%= form_tag validate_subscriber_path(@subscriber) do %>
   <%= label_tag(:validate_code, "Validation code: ") %>
   <%= text_field_tag(:validation_code) %> 
   <%= submit_tag("Validate") %>
 <% end %>
   
-</div>
-  
+<br><%= link_to "Back", :back %>
