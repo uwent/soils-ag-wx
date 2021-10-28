@@ -4,9 +4,10 @@ html, body, h1, h2 {
 }
 
 body {
-	background: linear-gradient(0deg, #e9e4d0, transparent);
+	background: #f7f5ee;
+	// background: linear-gradient(0deg, #e9e4d0, transparent);
 	font-family: verdana, arial, sans-serif;
-	font-size: 14px;
+	font-size: smaller;
 }
 
 h2 {
@@ -192,25 +193,25 @@ hr {
 }
 
 .row {
-	min-height: 150px;
 	display: inline-flex;
+	min-height: 150px;
 
-	.left {
-		margin-right: 1em;
-		margin-bottom: 1em;
-		width: 150px;
-		flex: 1 0 auto;
-
-		img {
-			border-radius: 5px;
-			width: 100%;
-		}
-	}
-
-	.right {
-		flex: 0 1 auto;
+	h1, h2, h3, h4 {
+		margin-top: 0;
 	}
 }
+
+.left {
+	flex: 0 0 auto;
+	width: 150px;
+	margin-right: 20px;
+
+	img {
+		border-radius: 5px;
+		width: 100%;
+	}
+}
+
 
 .copyright {
 	font: 13px arial, sans-serif;

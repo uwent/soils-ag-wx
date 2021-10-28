@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :set_tab_selected
+  before_action :app_last_updated
 
   def authenticate
     return false
@@ -42,8 +43,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  $vdifn_path = "http://agweather.cals.wisc.edu/vdifn"
-
   private
   def set_tab_selected
     selects = {
@@ -73,18 +72,33 @@ class ApplicationController < ActionController::Base
 
   def parse_dates(p)
     # p is e.g. the result from params["grid_date"]
-    if p["start_date(1i)"] # it's the old three-element date style
-      [
-        Date.civil(p["start_date(1i)"].to_i, p["start_date(2i)"].to_i, p["start_date(3i)"].to_i),
-        Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
-      ]
-    elsif p["start_date"] && p["end_date"]
-      [
-        Date.parse(p["start_date"]),
-        Date.parse(p["end_date"])
-      ]
+    begin
+      if p["start_date(1i)"] # it's the old three-element date style
+        [
+          Date.civil(p["start_date(1i)"].to_i, p["start_date(2i)"].to_i, p["start_date(3i)"].to_i),
+          Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
+        ]
+      elsif p["start_date"] && p["end_date"]
+        [
+          Date.parse(p["start_date"]),
+          Date.parse(p["end_date"])
+        ]
+      else
+        [nil, nil]
+      end
+    rescue => e
+      Rails.logger.warn "ApplicationController :: Date parsing error: #{e}"
+      [nil, nil]
+    end
+  end
+
+  private 
+
+  def app_last_updated
+    if File.exist?(File.join(Rails.root, "REVISION"))
+      @app_last_updated = File.mtime(File.join(Rails.root, "REVISION")).to_date
     else
-      [nil,nil]
+      @app_last_updated = "Unknown"
     end
   end
 

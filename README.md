@@ -28,7 +28,7 @@ exit
 ## Setup
 
 1. Ensure project dependencies outlined above are satisfied
-2. Close the project
+2. Clone the project
 3. Install gems with `bundle install` in project directory
 4. Create database and schema with `bundle exec rake db:setup`
 5. Ensure [ag-weather](https://github.com/uwent/ag-weather) is set up and running on port `8080`
