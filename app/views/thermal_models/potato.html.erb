@@ -1,18 +1,21 @@
 <% @title = "Potato Development" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "potato.png", width: "100%" %>
+  <%= image_tag "icons/potato.png", alt: "Potato" %>
   <h2><%= @title %></h2>
   <p>Our potato Pday model lets you predict plant development of this pest to better manage production.</p>
-  <br/>
-  
 <% end %>
 
 <h2><%= @title %></h2>
 
-<div class="fineline"></div>
+<hr>
 
-<p>P-Days are the unit of thermal time used in a number of University of Wisconsin-Extension potato management products. To learn more about these products, visit the <%= link_to "Vegetable Pathology Lab website", "https://vegpath.plantpath.wisc.edu" %> or the <%= link_to "Integrated Pest and Crop Management website", "http://ipcm.wisc.edu/" %>.</p>
-<br>
-<h3>Potato Pests</h3>
-<p>For information on potato pests such as the Colorado Potato Beetle, see our <%= link_to "degree-day calculator", action: :degree_days %> page or visit the <%= link_to "UW Vegetable Entomology website", "https://vegento.russell.wisc.edu" %>.</p>
+<h4>Potato development and diseases</h4>
+
+<p>P-Days are the unit of thermal time used in a number of University of Wisconsin-Extension potato management products. Accumulation of potato p-days is particularly useful in assessing the risk of early blight development. To learn more, visit the <%= link_to "Vegetable Pathology Lab website", "https://vegpath.plantpath.wisc.edu" %> or the <%= link_to "Integrated Pest and Crop Management website", "http://ipcm.wisc.edu/" %>. To view potato disease risk models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %>.</p>
+
+<h4>Potato Pests</h4>
+
+<p>For information on potato pests such as the Colorado Potato Beetle, see our <%= link_to "degree-day calculator", action: :degree_days %> page or visit the <%= link_to "UW Vegetable Entomology website", "https://vegento.russell.wisc.edu" %>. To view potato insect development models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %></p>
+
+<br><%= link_to "Back", :back %>

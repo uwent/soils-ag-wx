@@ -1,38 +1,27 @@
 <% @title = "Gypsy Moth Development"%>
 
 <% content_for :welcome do %>
-  <%= image_tag "gypsy.jpg",{:width => "231", :height => "231", :alt => "lake mendota tree"} %>
-  <p style="font-size:75%">Image copyright <a href="http://www.entomart.be/">http://www.entomart.be/</a>
+  <%= image_tag "icons/gypsy.png", alt: "Gypsy moth" %>
   <h2><%= @title %></h2>
 <% end %>
 
-<H4>Introduction</H4>
-The gypsy moth phenology information accessed through the calculator
-below is generated with the GMPHEN model authored by Katherine A.
-Sheehan with the U.S. Dept. of Agriculture, Forest Service, using
-weather data gathered by the WI-MN Cooperative Extension.
+<h2><%= @title %></h2>
 
-<P>GMPHEN is a computer model that uses daily temperature and previously
-published data to predict the timing for gypsy moth and host development.
-This model simulates gypsy moth (<EM>Lymantria dispar</EM>) egg hatch,
-larval and pupal development, and budbreak and leaf expansion for six
-eastern hardwoods.  GMPHEN reports the percentage of gypsy moths in each
-life stage, mean life stage, mean percent leaf expansion, and for each
-host species, percent budbreak and leaf expansion.
+<hr>
 
-<P>To use this model, select the county of interest and enter the
-approximate percentage of each of the six tree species in the
-area.  After the model runs, you can choose to view the data
-as a color or black and white plot, or in a numerical table.
+<h4>Introduction</h4>
 
-<P><%= link_to "More information", :action => "gypsyinfo" %> about GMPHEN and gypsy moth phenology.
+<p>The gypsy moth phenology information accessed through the calculator below is generated with the GMPHEN model authored by Katherine A. Sheehan with the U.S. Dept. of Agriculture, Forest Service, using weather data gathered by the WI-MN Cooperative Extension.</p>
 
-<P>
-<H4>Gypsy Moth Phenology Calculator</H4>
+<p>GMPHEN is a computer model that uses daily temperature and previously published data to predict the timing for gypsy moth and host development. This model simulates gypsy moth (<EM>Lymantria dispar</EM>) egg hatch, larval and pupal development, and budbreak and leaf expansion for six eastern hardwoods.  GMPHEN reports the percentage of gypsy moths in each life stage, mean life stage, mean percent leaf expansion, and for each host species, percent budbreak and leaf expansion.</p>
 
+<p>To use this model, select the county of interest and enter the approximate percentage of each of the six tree species in the area.  After the model runs, you can choose to view the data as a color or black and white plot, or in a numerical table.</p>
+
+<p><%= link_to "More information", action: "gypsy_info" %> about GMPHEN and gypsy moth phenology.</p>
 
 <FORM METHOD="POST" ACTION="http://alfi.soils.wisc.edu/cgi-bin/asig/gypsymoth.pl" >
 <CENTER>
+<h4>Gypsy Moth Phenology Calculator</h4>
 <TABLE BORDER=5 WIDTH=550 CELLPADDING=10>
 <TR>
 <TD COLSPAN=2 ALIGN="CENTER">
@@ -156,6 +145,8 @@ as a color or black and white plot, or in a numerical table.
 </TABLE>
 </FORM>
 
+<br>
+
 <EM><A HREF="http://alfi.soils.wisc.edu/uwex_agwx_data/tree/gypsymoth_full.html">
 Access expanded input list for GMPHEN model</A></EM>
 
@@ -165,5 +156,6 @@ Access expanded input list for GMPHEN model</A></EM>
 use of this <BR>gypsy moth prediction model, please contact<BR> 
 <A HREF="mailto:gypsymoth@datcp.state.wi.us">
 gypsymoth@datcp.state.wi.us</A></FONT></EM>
-
 </CENTER>
+
+<br><%= link_to "Back", :back %>

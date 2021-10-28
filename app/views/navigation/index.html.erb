@@ -6,7 +6,7 @@
   <p>Originally developed by the Department of Soil Science department, this site is currently being upgraded and maintained by the Department of Entomology.</p>
   <p><%= mail_to "agweather@cals.wisc.edu", "Contact us" %> with any questions.</p>
   <br>
-  <p><%= image_tag "logos/uw-logo-reverse.png", { width: "100%" } %></p>
+  <p><%= link_to image_tag("logos/uw-logo-reverse.png", width: "100%"), wisc_url %></p>
 <% end %>
 
 <div class="row">
@@ -15,7 +15,7 @@
   </div>
   <div class="text">
     <h2><%= link_to "Weather", controller: :weather %></h2>
-    <p>We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", :controller => 'awon', :action => :index %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.</p>
+    <p>We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", controller: :awon %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", :controller => 'weather', :action => :grid_temps %>.</p>
   </div>
 </div>
 

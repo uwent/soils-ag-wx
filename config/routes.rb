@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :awon, only: [:index] do
+  resources :awon, only: :index do
     collection do
       get 'awon_check_boxes'
       get 'awon_seven_day'
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   match '/awon', to: 'awon#index', via: [:get, :post]
   get '/awon/*path', to: redirect('/awon') unless Rails.env.development?
 
-  resources :heartbeat, only: [:index] do
+  resources :heartbeat, only: :index do
     collection do
       get 'awon'
       get 'asos'
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   get '/heartbeat/*path', to: redirect('/heartbeat') unless Rails.env.development?
   
 
-  resources :navigation, only: [:index] do
+  resources :navigation, only: :index do
     collection do
       get 'about'
     end
@@ -41,24 +41,24 @@ Rails.application.routes.draw do
   match '/navigation', to: 'navigation#index', via: [:get, :post]
   get '/navigation/*path', to: redirect('/navigation') unless Rails.env.development?
 
-  resources :sun_water, only: [:index] do
+  resources :sun_water, only: :index do
     collection do
       get 'insol_map'
-      post 'insol_map'
+      get 'insol_us', to: redirect('sun_water/insol_map')
       get 'et_map'
-      post 'et_map'
+      get 'et_wimn', to: redirect('sun_water/et_map')
       get 'grid_ets'
       get 'grid_insols'
       get 'get_grid'
+      post 'et_map'
       post 'get_grid'
-      get 'insol_us', to: redirect('sun_water/insol_map')
-      get 'et_wimn', to: redirect('sun_water/et_map')
+      post 'insol_map'
     end
   end
   match '/sun_water', to: 'sun_water#index', via: [:get, :post]
   get '/sun_water/*path', to: redirect('/sun_water') unless Rails.env.development?
 
-  resources :thermal_models, only: [:index] do
+  resources :thermal_models, only: :index do
     collection do
       get 'alfalfa_weevil'
       get 'corn_dev'
@@ -68,40 +68,40 @@ Rails.application.routes.draw do
       get 'ecb'
       get 'frost_map'
       get 'get_dds_many_locations'
-      post 'get_dds_many_locations'
       get 'get_dds'
-      post 'get_dds'
       get 'get_oak_wilt_dd'
-      post 'get_oak_wilt_dd'
       get 'gypsy'
-      get 'gypsyinfo'
+      get 'gypsy_info'
       get 'many_degree_days_for_date'
       get 'oak_wilt'
       get 'potato'
       get 'scm'
       get 'tree'
       get 'western_bean_cutworm'
+      post 'get_dds_many_locations'
+      post 'get_dds'
+      post 'get_oak_wilt_dd'
       post 'download_csv'
     end
   end
   match '/thermal_models', to: 'thermal_models#index', via: [:get, :post]
   get '/thermal_models/*path', to: redirect('/thermal_models') unless Rails.env.development?
 
-  resources :weather, only: [:index] do
+  resources :weather, only: :index do
     collection do
       get 'awon'
       get 'doycal'
       get 'doycal_grid'
       get 'get_grid'
-      post 'get_grid'
       get 'grid_temps'
-      post 'grid_temps'
       get 'hyd'
       get 'hyd_grid'
       get 'webcam'
       get 'webcam_archive'
-      post 'webcam_archive'
       get 'kinghall'
+      post 'get_grid'
+      post 'grid_temps'
+      post 'webcam_archive'
     end
   end
   match '/weather', to: 'weather#index', via: [:get, :post]
@@ -111,18 +111,18 @@ Rails.application.routes.draw do
     collection do
       get 'admin'
       get 'manage'
-      post 'manage'
       get 'logout'
       get 'export_emails'
+      post 'manage'
     end
     member do
       get 'confirm'
       get 'confirm_notice'
       get 'unsubscribe'
-      post 'validate'
-      post 'resend_confirmation'
       post 'add_subscription'
+      post 'resend_confirmation'
       post 'remove_subscription'
+      post 'validate'
     end
   end
   match '/subscribers', to: 'subscribers#index', via: [:get, :post]
@@ -137,6 +137,10 @@ Rails.application.routes.draw do
 
   direct :wisp do
     Rails.env.staging? ? "https://dev.wisp.cals.wisc.edu" : "https://wisp.cals.wisc.edu"
+  end
+
+  direct :wisc do
+    "https://www.wisc.edu"
   end
 
   root to: 'navigation#index'

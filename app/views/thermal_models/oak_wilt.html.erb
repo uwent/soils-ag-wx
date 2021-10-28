@@ -16,7 +16,7 @@
 
 <%= render partial: "partials/_oak_wilt_dd_selector"%>
 
-<p><b>The oak wilt vectors thermal model can also be viewed in an interactive map at <%= link_to "VDIFN", "https://agweather.cals.wisc.edu/vdifn?panel=insect&model=oak-wilt" %>.</b></p>
+<p><b>The oak wilt vectors thermal model can also be viewed in an interactive map at <%= link_to "VDIFN", "#{vdifn_path}?panel=insect&model=oak-wilt" %>.</b></p>
 
 <hr>
 
@@ -44,10 +44,12 @@
 
 <p><b>South Zone: April 1 to July 15</b></p>
 
-<%= image_tag "oak-wilt-map.png", { alt: "North and south zone map of Wisconsin."} %>
+<%= image_tag "oak-wilt-map.png", alt: "North and south zone map of Wisconsin." %>
 <p>However, the guidelines’ Exceptions and Modifications allow for stand-level flexibilities. Please read the <a href="https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true&x.share=t" target="_blank">guidelines</a> for more information.</p>
 <p>For more information about oak wilt, visit the <a href="https://dnr.wisconsin.gov/topic/foresthealth/oakwilt" target="_blank">Wisconsin DNR oak wilt page</a>.</p>
 
 <h4>REFERENCES</h4>
 <p>Ambourn, A.K., Juzwik, J., and Moon, R.D. 2005. Seasonal dispersal of the oak wilt fungus by <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i> in Minnesota. Plant Dis. 89:1067-1076.</p>
 <p>Jagemann, S.M., Juzwik, J., Tobin P.C., and Raffa K.F. 2018. Seasonal and regional distributions, degree-day models, and phoresy rates of the major sap beetle (Coleoptera: Nitidulidae) vectors of the oak wilt fungus, <i>Bretziella fagacearum</i>, in Wisconsin.  Enveron. Entomol. 47:1152-1164.</p>
+
+<br><%= link_to "Back", :back %>

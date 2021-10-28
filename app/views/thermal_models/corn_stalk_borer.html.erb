@@ -1,12 +1,17 @@
 <% @title = "Corn Stalk Borer" %>
+
 <% content_for :welcome do %>
-  <%= image_tag "corn.jpg",{:width => "231", :height => "156", :alt => "Corn"} %>
+  <%= image_tag "icons/stalk-borer.png", alt: "Corn stalk borer" %>
   <h2><%= @title %></h2>
   <p>Our thermal model for corn stalk borer allows you to plan control measures for this pest.</p>
 <% end %>
 
-<h2><%= @title %> Degree Days</h2>
-<div class="fineline"></div>
-The stalk borer is increasingly a significant pest in fields managed with reduced tillage. Eggs are laid during late summer and fall in grassy areas within and adjacent to corn fields, then hatch in spring. Movement from these areas into corn fields first occurs at about 1,110 degree days (base 41F), and peaks when about 1,650 degree days are accumulated. When 1,300-1,400 degree days have accumulated, scout corn to verify that stalk borers are moving from grass to corn by looking for larvae inside the whorls. If an insecticide is needed, treat between 1,400 - 1,700 degree days.<P>
+<h2><%= @title %></h2>
 
-<P>
+<hr>
+
+<p>The stalk borer is increasingly a significant pest in fields managed with reduced tillage. Eggs are laid during late summer and fall in grassy areas within and adjacent to corn fields, then hatch in spring. Movement from these areas into corn fields first occurs at about 1,110 degree days (base 41F), and peaks when about 1,650 degree days are accumulated. When 1,300-1,400 degree days have accumulated, scout corn to verify that stalk borers are moving from grass to corn by looking for larvae inside the whorls. If an insecticide is needed, treat between 1,400 - 1,700 degree days.<p>
+
+<p>Use the <%= link_to "Degree day calculator", action: :degree_days %> with a 41F base temp to compute current conditions for this pest.</p>
+
+<br><%= link_to "Back", :back %>

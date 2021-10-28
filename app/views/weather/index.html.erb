@@ -26,7 +26,7 @@
     <h2><%= link_to "HYD Reports", action: :hyd %></h2>
     <p>We offer online access to NWS HYD reports -- daily weather summaries of temperature and precipitation by volunteer observers -- for hundreds of locations throughout Wisconsin going back to 1995. The reports are text files, one per day.</p>
     <ul>
-      <li><%= todays_hyd_link.html_safe %></li>
+      <li>Yesterday's report: <%= latest_hyd_link.html_safe %></li>
       <li><%= link_to "Access to dataset", action: :hyd %></li>
     </ul>
   </div>

@@ -1,4 +1,4 @@
-<% @title = "Earliest, Median, And Latest Day of First Frost "%>
+<% @title = "Date of First Frost"%>
 
 <% content_for :welcome do %>
   <%= image_tag "icons/frost-map-250px.png" %>
@@ -6,14 +6,21 @@
   <p>First frost days from our historical dataset</p>
 <% end %>
 
-<h2>Day of Year of First Frost</h2>
+<h2><%= @title %></h2>
+
+<hr>
 
 <p>Analyzing our gridded temperature dataset, we can map the day of first frost,defined as the first day after July 1 where the minimum temperature is below 32 F. (See our <%= link_to "day-of-year calendar", controller: :weather, action: :doycal %>.)</p>
 
 <p>The first map shows the median DOY of first frost; for each map location, half the years were earlier than this date, half later. The second and third map show the earliest DOY of frost in the dataset, and the latest, respectively.</p>
-	
-<p><%= image_tag "frost_maps/frost_median_doy_map.gif" %></p>
-<p><%= image_tag "frost_maps/frost_min_doy_map.gif" %></p>
-<p><%= image_tag "frost_maps/frost_max_doy_map.gif" %></p>
+
+<div class="center">
+  <h4>Median day of first frost</h4>
+  <p><%= image_tag "frost_maps/frost-map-median.png" %></p>
+  <h4>Latest date of first frost</h4>
+  <p><%= image_tag "frost_maps/frost-map-max.png" %></p>
+  <h4>Earliest date of first frost</h4>
+  <p><%= image_tag "frost_maps/frost-map-min.png" %></p>
+</div>
 
 <br><%= link_to "Back", :back %>

@@ -1,9 +1,11 @@
 module WeatherHelper
   include AgwxGrids
   HYD_ASSET_PATH = '/hyd'
-  def todays_hyd_link
+
+  def latest_hyd_link
     yesterday = 1.days.ago
-    hyd_link_for(yesterday, "Yesterday's report")
+    link = hyd_link_for(yesterday, "Yesterday's report")
+    link == "" ? "Not available." : link
   end
 
   def hyd_link_for(date, text = date.mday)
@@ -67,13 +69,12 @@ module WeatherHelper
     END
   end
 
-  # FIXME: Magic Numbers!
   def latitudes
-    (38.0..50.0).step(0.1).collect {|lat| [lat.round(1), lat.round(1)] }
+    (38.0..50.0).step(0.1).collect { |lat| [lat.round(1), lat.round(1)] }
   end
 
   def longitudes
-    (-98.0..-82.0).step(0.1).collect {|long| [long.round(1), long.round(1)]}
+    (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)]}
   end
 
   def build_map_grid
