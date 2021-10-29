@@ -34,7 +34,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   end
 
   def days_back(ii)
-    Date.today - (ii+1)
+    Date.today - (ii + 1)
   end
 
   test "confirm" do
@@ -50,7 +50,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal "UW Ag Weather subscription validation code", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
-    assert_match "Dear Jane Smith,\r\n\r\n", mail.body.encoded
+    assert_match "Dear Ag Weather Subscriber,", mail.body.encoded
 
   end
 
@@ -59,7 +59,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal "UW Ag Weather ET Mailer Report", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
-    assert_match "\r\n\r\nDaily evapotranspiration (ET) data for Jane Smith.", mail.body.encoded
+    assert_match "Ag Weather automated mailer", mail.body.encoded
 
   end
 

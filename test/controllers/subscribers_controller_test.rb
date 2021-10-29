@@ -18,7 +18,13 @@ class SubscribersControllerTest < ActionController::TestCase
 
   test "should create subscriber" do
     assert_difference('Subscriber.count') do
-      post :create, params: { subscriber: { confirmed_at: '2020-10-10', email: 'new_user@example.com', name: 'New User' } }
+      post :create, params: {
+        subscriber: {
+          confirmed_at: '2020-10-10',
+          email: 'new_user@example.com',
+          name: 'New User'
+          }
+        }
     end
 
     assert_redirected_to confirm_notice_subscriber_path(assigns(:subscriber))
@@ -28,7 +34,15 @@ class SubscribersControllerTest < ActionController::TestCase
     admin = subscribers(:two)
     admin.update!(admin: true)
     session[:subscriber] = admin.id
-    patch :update, params: { id: @subscriber, format: :json, subscriber: { confirmed_at: @subscriber.confirmed_at, email: @subscriber.email, name: @subscriber.name } }
+    patch :update, params: {
+      id: @subscriber,
+      format: :json,
+      subscriber: {
+        confirmed_at: @subscriber.confirmed_at,
+        email: @subscriber.email,
+        name: @subscriber.name
+      }
+    }
     assert_response :success
   end
 

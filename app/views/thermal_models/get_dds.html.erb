@@ -5,39 +5,56 @@
   <h2><%= @title %></h2>
 <% end %>
 
-<h2><%= @title %></h2>
-<br>
+<% content_for :scripts do %>
+  <script>
+    function copy() {
+      navigator.clipboard.writeText(document.getElementById("data-container").outerHTML);
+      $('#copy-confirm').fadeIn();
+    }
+  </script>
+<% end %>
 
-<h4><u><%= @param %> data</u></h4>
+<h2><%= @title %></h2>
+
+<hr>
+
+<div id="data-container">
+  <h4>Degree days data series</h4>
+  <p>
+    <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+    <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
+    <b>DD model:</b> <%= @param %><br>
+    <b>Temp. units:</b> Fahrenheit
+  </p>
+  <table class="grid-table">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Min<br>temp</th>
+        <th>Max<br>temp</th>
+        <th>DDs</th>
+        <th>Cumul.<br>DDs</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @data.each_with_index do |day, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= day[:date] %></td>
+        <td><%= day[:min_temp] %></td>
+        <td><%= day[:max_temp] %></td>
+        <td><%= day[:value] %></td>
+        <td><%= day[:cumulative_value] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
 <p>
-  <strong>Location:</strong> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
-  <strong>Date range:</strong> <%= @start_date %> to <%= @end_date %><br>
-  <strong>Temp. units:</strong> Fahrenheit
+  <%= submit_tag "Copy to clipboard", onclick: "copy()" %>
+  <span id="copy-confirm" style="display:none;"> Copied!</span>
 </p>
 
-<table class="grid-table">
-  <thead>
-    <tr>
-      <th>Day</th>
-      <th>Date</th>
-      <th>Min<br>temp</th>
-      <th>Max<br>temp</th>
-      <th>DDs</th>
-      <th>Cumul.<br>DDs</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @data.each_with_index do |day, i| %>
-    <tr>
-      <td><%= i + 1 %></td>
-      <td><%= day[:date] %></td>
-      <td><%= day[:min_temp] %></td>
-      <td><%= day[:max_temp] %></td>
-      <td><%= day[:value] %></td>
-      <td><%= day[:cumulative_value] %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<br><%= link_to "Back", :back %>
+<p><%= link_to "Back", :back %></p>

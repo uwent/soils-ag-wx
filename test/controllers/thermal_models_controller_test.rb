@@ -6,13 +6,8 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get degree_days" do
-    get :degree_days
-    assert_response :success
-  end
-
-  test "should get corn" do
-    get :corn
+  test "should get alfalfa_weevil" do
+    get :alfalfa_weevil
     assert_response :success
   end
 
@@ -21,58 +16,23 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get ecb" do
-    get :ecb
-    assert_response :success
-  end
-
-  test "should get alfalfa" do
-    get :alfalfa
-    assert_response :success
-  end
-
   test "should get corn_stalk_borer" do
     get :corn_stalk_borer
     assert_response :success
   end
 
-  test "should get potato" do
-    get :potato
+  test "should get corn" do
+    get :corn
     assert_response :success
   end
 
-  test "should get tree" do
-    get :tree
+  test "should get degree_days" do
+    get :degree_days
     assert_response :success
   end
 
-  test "should get scm" do
-    get :scm
-    assert_response :success
-  end
-
-  test "should get wiDDs" do
-    get :wiDDs
-    assert_response :success
-  end
-
-  test "should get wiDDs_csv" do
-    get :wiDDs_csv
-    assert_response :success
-  end
-
-  test "should get westernbeancutworm" do
-    get :western_bean_cutworm
-    assert_response :success
-  end
-
-  test "should get scm_doc" do
-    get :scm_doc
-    assert_response :success
-  end
-
-  test "should get remaining_dd_map_for" do
-    get :remaining_dd_map_for
+  test "should get ecb" do
+    get :ecb
     assert_response :success
   end
 
@@ -81,22 +41,38 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get oak_wilt" do
-    get :oak_wilt
+  test "should get get_dds_many_locations" do
+    skip("requires params")
+    get :get_dds_many_locations
     assert_response :success
   end
 
   test "should get get_dds" do
     [:json, :csv, :html].each do |format|
-      get :get_dds,
-        params: { grid_date: {"start_date(1i)" => 2011, "start_date(2i)" => 1, "start_date(3i)" => 1,
-        "end_date(1i)" => 2011, "end_date(2i)" => 1, "end_date(3i)" => 1},
-        method: 'Simple', latitude: 44.2, longitude: -89.2, format: format }
+      get :get_dds, params: {
+        grid_date: {
+          "start_date(1i)" => 2011,
+          "start_date(2i)" => 1,
+          "start_date(3i)" => 1,
+          "end_date(1i)" => 2011,
+          "end_date(2i)" => 1,
+          "end_date(3i)" => 1
+        },
+        method: 'Simple',
+        latitude: 44.2,
+        longitude: -89.2,
+        format: format
+      }
       assert_response :success
     end
   end
 
-  test 'should download csv file' do
+  test "should get oak_wilt" do
+    get :oak_wilt
+    assert_response :success
+  end
+
+  test 'oak wilt should download csv file' do
     data = [
       { date: "2020-01-01", value: 12 },
       { date: "2020-01-01", value: 27 },
@@ -110,10 +86,39 @@ class ThermalModelsControllerTest < ActionController::TestCase
   end
 
   test "should get get_oak_wilt_dd" do
-    get :get_dds,
-      params: { grid_date: {"start_date(1i)" => 2011, "start_date(2i)" => 1, "start_date(3i)" => 1,
-      "end_date(1i)" => 2011, "end_date(2i)" => 1, "end_date(3i)" => 1},
-      method: 'Sine', latitude: 44.2, longitude: -89.2}
+    get :get_dds, params: {
+      grid_date: {
+        "start_date(1i)" => 2011,
+        "start_date(2i)" => 1,
+        "start_date(3i)" => 1,
+        "end_date(1i)" => 2011,
+        "end_date(2i)" => 1,
+        "end_date(3i)" => 1
+      },
+      method: 'Sine',
+      latitude: 44.2,
+      longitude: -89.2
+    }
+    assert_response :success
+  end
+
+  test "should get potato" do
+    get :potato
+    assert_response :success
+  end
+
+  test "should get scm" do
+    get :scm
+    assert_response :success
+  end
+
+  test "should get tree" do
+    get :tree
+    assert_response :success
+  end
+
+  test "should get western_bean_cutworm" do
+    get :western_bean_cutworm
     assert_response :success
   end
 
@@ -137,6 +142,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
   test "rising-temp DDs should inflect above zero on April 3" do
     # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
     skip()
+    
     create_rising_temperatures
     assert_in_delta(9.3, WiMnDMinTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
     assert_in_delta(11.3, WiMnDMaxTAir.where(date: '2011-04-03', latitude: LATITUDE).first[LONG_SYM], 2 ** -20)
@@ -170,6 +176,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
   test "accumulation of same temperature adds up correctly" do
     # TODO feature not currently working on prod, skip tests until feature is removed or fixed  -BB 11/2
     skip()
+
     create_stable_temperatures
     get :get_dds,
       grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
@@ -194,6 +201,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
   test "same-temp accumulation works when one day is missing" do
     skip()
     # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
+
     create_stable_with_missing_day
     get :get_dds,
       grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
@@ -261,19 +269,32 @@ class ThermalModelsControllerTest < ActionController::TestCase
   end
 
   test "permalink" do
+    # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
+    skip()
+
     today_str = Date.today.strftime("%m/%d/%Y")
     yesterday_str = (Date.today - 1).strftime("%m/%d/%Y")
     params = {
-      "utf8"=>"✓", "authenticity_token"=>"7kGTwOe88ix4w72X8jeYIybxL20uIjwhqYyZEA8F3G8=",
-      "locations"=>["16"], "commit"=>"Get Degree-Day Data",
-      "method_params"=> {
-        "3"=>{"method"=>"Simple", "base_temp"=>"40.0", "start_date"=>"01/01/2014", "end_date"=>today_str},
-        "4"=>{"method"=>"Simple", "base_temp"=>"40.0", "start_date"=>"01/01/2014", "end_date"=>yesterday_str}
+      "utf8" => "✓",
+      "authenticity_token" => "7kGTwOe88ix4w72X8jeYIybxL20uIjwhqYyZEA8F3G8=",
+      "locations" => ["16"],
+      "commit" => "Get Degree-Day Data",
+      "method_params" => {
+        "3" => {
+          "method" => "Simple",
+          "base_temp" => "40.0",
+          "start_date" => "01/01/2014",
+          "end_date" => today_str
+        },
+        "4" => {
+          "method" => "Simple",
+          "base_temp" => "40.0",
+          "start_date" => "01/01/2014",
+          "end_date" => yesterday_str
+        }
       }
     }
     perma_params = @controller.send :permalink, params
-    # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
-    skip()
     assert_equal(Hash, perma_params.class)
     assert(perma_params.keys.size > 0)
     # permalink() should delete all of these keys

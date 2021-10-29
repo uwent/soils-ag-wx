@@ -7,10 +7,17 @@
 <% end %>
 
 <h2>Degree Day Calculator</h2>
+
+<hr>
+
 <%= render partial: "partials/degree_days_explained" %>
+
 <%= render partial: "partials/degree_day_table" %>
+
 <br>
+
 <h4>Get degree-day data series:</h4>
-<br>
+
 <%= render partial: "partials/dd_selector" %>
-<br>
+
+<p><%= link_to "Back", :back %></p>

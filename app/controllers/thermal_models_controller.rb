@@ -36,19 +36,16 @@ class ThermalModelsController < ApplicationController
   def get_dds
     response = HTTParty.get(set_dd_url(params), { timeout: 5 })
     json = JSON.parse(response.body, symbolize_names: true)
+
     @data = json[:data]
-    # @data = data.map { |h| [h['date'], h['value']] }.to_h
-    @param = "#{@method} method DDs#{@base_temp ? ' Base temp ' + sprintf("%0.1f",@base_temp) : ''}#{@upper_temp ? ' Upper temp ' + sprintf("%0.1f",@upper_temp) : ''} "
-    if params[:seven_day]
-      if (all_dates = @data.keys.sort) && all_dates.size > 6
-        @data = all_dates[-7..-1].inject({}) {|hash,date| hash.merge({date => @data[date]})}
-      end
-    end
+    @param = "#{@method} method DDs#{@base_temp ? ' Base temp ' + sprintf("%0.1f", @base_temp) : ''}#{@upper_temp ? ' Upper temp ' + sprintf("%0.1f", @upper_temp) : ''}"
+    @data = @data.last(7) if params[:seven_day]
+
     respond_to do |format|
       format.html
       format.csv { send_data to_csv(@data), filename: "get_dds.csv" }
       format.json do
-        hash = {
+        params = {
           title: 'Degree Days',
           method: @method,
           latitude: @latitude,
@@ -56,7 +53,10 @@ class ThermalModelsController < ApplicationController
           start_date: @start_date,
           end_date: @end_date
         }
-        render plain: @data
+        render json: {
+          params: params,
+          data: @data
+        }
       end
     end
   end
@@ -81,7 +81,7 @@ class ThermalModelsController < ApplicationController
     # otherwise, silently pass nil back, also setting up exception
   end
 
-  def date_for(date_param,default)
+  def date_for(date_param, default)
     if date_param # could just let the rescue clause work, but we'll trade a little code for efficiency
       begin
         Date.strptime(date_param,format_for(date_param))

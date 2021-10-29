@@ -40,7 +40,7 @@ exit
 Agweather must be running on port `8080` for some tests to pass.
 
 ```bash
-bundle exec rake test
+bundle exec rake test TESTOPTS = "-v"
 ```
 
 ## Deployment

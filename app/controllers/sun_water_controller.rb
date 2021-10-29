@@ -37,20 +37,11 @@ class SunWaterController < ApplicationController
     @grid_classes = GRID_CLASSES.slice('ET', 'Insol')
   end
 
-  def grid_ets
-    @title = 'Download ET Estimates'
-    @grid_classes = GRID_CLASSES.slice('ET')
-  end
-
-  def grid_insols
-    @title = 'Download Insolation Estimates'
-    @grid_classes = GRID_CLASSES.slice('Insol')
-  end
-
   private
 
   def et_image(date)
-    grid_ets
+    @title = 'Download ET Estimates'
+    @grid_classes = GRID_CLASSES.slice('ET')
     begin
       endpoint = "#{Endpoint::BASE_URL}/evapotranspirations/#{date}"
       resp = HTTParty.get(endpoint, { timeout: 10 })
@@ -82,7 +73,8 @@ class SunWaterController < ApplicationController
   end
 
   def insol_image(date)
-    grid_insols
+    @title = 'Download Insolation Estimates'
+    @grid_classes = GRID_CLASSES.slice('Insol')
     begin
       endpoint = "#{Endpoint::BASE_URL}/insolations/#{date.to_s}"
       resp = HTTParty.get(endpoint, { timeout: 10 })

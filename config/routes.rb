@@ -41,13 +41,33 @@ Rails.application.routes.draw do
   match '/navigation', to: 'navigation#index', via: [:get, :post]
   get '/navigation/*path', to: redirect('/navigation') unless Rails.env.development?
 
+  resources :subscribers do
+    collection do
+      get 'admin'
+      get 'manage'
+      get 'logout'
+      get 'export_emails'
+      post 'manage'
+    end
+    member do
+      get 'confirm'
+      get 'confirm_notice'
+      get 'unsubscribe'
+      post 'add_subscription'
+      post 'resend_confirmation'
+      post 'remove_subscription'
+      post 'validate'
+    end
+  end
+  match '/subscribers', to: 'subscribers#index', via: [:get, :post]
+  get '/subscribers/*path', to: redirect('/subscribers') unless Rails.env.development?
+
   resources :sun_water, only: :index do
     collection do
       get 'insol_map'
       get 'insol_us', to: redirect('sun_water/insol_map')
       get 'et_map'
       get 'et_wimn', to: redirect('sun_water/et_map')
-      get 'grid_ets'
       get 'grid_insols'
       get 'get_grid'
       post 'et_map'
@@ -57,6 +77,8 @@ Rails.application.routes.draw do
   end
   match '/sun_water', to: 'sun_water#index', via: [:get, :post]
   get '/sun_water/*path', to: redirect('/sun_water') unless Rails.env.development?
+
+  get 't411s/last'
 
   resources :thermal_models, only: :index do
     collection do
@@ -107,29 +129,15 @@ Rails.application.routes.draw do
   match '/weather', to: 'weather#index', via: [:get, :post]
   get '/weather/*path', to: redirect('/weather') unless Rails.env.development?
 
-  resources :subscribers do
-    collection do
-      get 'admin'
-      get 'manage'
-      get 'logout'
-      get 'export_emails'
-      post 'manage'
-    end
-    member do
-      get 'confirm'
-      get 'confirm_notice'
-      get 'unsubscribe'
-      post 'add_subscription'
-      post 'resend_confirmation'
-      post 'remove_subscription'
-      post 'validate'
-    end
-  end
-  match '/subscribers', to: 'subscribers#index', via: [:get, :post]
-  get '/subscribers/*path', to: redirect('/subscribers') unless Rails.env.development?
-
   # post 'wi_mn_dets/get_grid'
-  # get 't411s/last'
+
+  direct :vdifn do
+    "/vdifn"
+  end
+
+  direct :wisp do
+    "https://wisp.cals.wisc.edu"
+  end
 
   root to: 'navigation#index'
 

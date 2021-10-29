@@ -7,18 +7,23 @@ class WeatherControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get hyd" do
-    get :hyd
-    assert_response :success
-  end
-
-  test "should get awon" do
-    get :awon
+  test "should get doycal" do
+    get :doycal
     assert_response :success
   end
 
   test "should get grid_temps" do
     get :grid_temps
+    assert_response :success
+  end
+
+  test "should get hyd" do
+    get :hyd
+    assert_response :success
+  end
+
+  test "should get kinghall" do
+    get :kinghall
     assert_response :success
   end
 
