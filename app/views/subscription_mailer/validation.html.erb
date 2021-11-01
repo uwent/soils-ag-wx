@@ -1,8 +1,8 @@
 Dear Ag Weather Subscriber,
 <br>
 
-<p>Someone has requested to manage your email subscriptions at <%= link_to subscribers_url, subscribers_url %>. To ensure that you are the one intiating this request, we are sending you a validation code. Please enter the following code in the form:<p>
+<p>Someone has requested to manage your email subscriptions at <%= link_to subscribers_url, subscribers_url %>. To ensure that you are the one intiating this request, we are sending you a validation code. Please enter the following code in the form:</p>
 
-<span style="font-size: larger; font-weight: bold; color: darkred;"><%= @subscriber.validation_token %></span>
+<p><span style="font-size: larger; font-weight: bold;"><%= @subscriber.validation_token %></span></p>
 
 <p>This code will be valid for one hour. Please do not reply to this email.</p>
