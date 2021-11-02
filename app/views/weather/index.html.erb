@@ -12,7 +12,19 @@
   </div>
   <div>
     <h2><%= link_to "Grid-Interpolated Daily Temperatures", action: :grid_temps %></h2>
-    <p>Working from observations made by hundreds of automated weather stations across the Upper Midwest,  our computer model interpolates the temperatures to form rectilinear grids by latitude and longitude for daily max, min, and average temperature.</p>
+    <p>View daily maps and access single point or whole-grid data series for weather parameters including daily min, max, and mean temperatures and vapor pressures.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("icons/precip-map-250px.png"), action: :precip_map %>
+  </div>
+  <div>
+    <h2><%= link_to "Gridded Daily Precipitation Totals", action: :precip_map %></h2>
+    <p>View daily maps and access single point or whole-grid data series for daily precipitation totals. Data is derived from NOAA-generated datasets.</p>
   </div>
 </div>
 
