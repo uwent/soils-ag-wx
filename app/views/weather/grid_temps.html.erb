@@ -7,7 +7,7 @@
 <% end %>
 
 <%= content_for :scripts do %>
-  <script lang="js">
+  <script>
     function regionMap(latitude, longitude) {
       latitude = latitude.toFixed(1);
       longitude = longitude.toFixed(1);
@@ -27,11 +27,14 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :grid_temps } %>
 
-<p style="font-size: smaller;"><i>Map color scale is based on min/max temp across region. Map may take a few moments to load if it hasn't already been created.</i></p>
+<div class="map-img">
+  <img src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong" >
+  <%= render partial: "partials/gridmap" %>
+</div>
 
-<p><img src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong"/></p>
+<p style="font-size: smaller;"><i>Note: Map color scale is based on min/max temp across region. Map may take a few moments to load if it hasn't already been created.</i></p>
 
-<%= render partial: "partials/gridmap"%>
+<hr>
 
 <h4>View/Download Weather Data Time Series</h4>
 
@@ -41,6 +44,4 @@
 
 <p><a href="/weather/grid_temps.csv">Download yesterday's entire grid of data in CSV format</a></p>
 
-<br>
-
-<%= link_to "Back", :back %>
+<br><%= link_to "Back", :back %>

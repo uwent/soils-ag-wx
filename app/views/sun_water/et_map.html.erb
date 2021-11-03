@@ -28,15 +28,14 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :et_map } %>
 
-<p style="font-size: smaller;"><i>Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created.</i></p>
-
 <div class="map-img">
-  <img src="<%= @map_image %>" alt="Yesterday's ET Estimates" usemap="#latlong" />
+  <img src="<%= @map_image %>" alt="Yesterday's ET Estimates" usemap="#latlong" >
+  <%= render partial: "partials/gridmap" %>
 </div>
 
-<%= render partial: "partials/gridmap" %>
+<p style="font-size: smaller;"><i>Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created.</i></p>
 
-<br>
+<hr>
 
 <h4>ET Data Time Series</h4>
 
