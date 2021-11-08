@@ -33,7 +33,7 @@ group :development do
   gem 'capistrano-bundler', '~> 2.0', require: false
   gem 'capistrano-rails', '~> 1.6', require: false
   gem 'letter_opener', '~> 1.7'
-  gem 'letter_opener_web', '~> 1.4'
+  gem 'letter_opener_web', '~> 2.0'
   gem 'rexml' # requied by letter_opener_web in rails 3
   gem 'listen', '~> 3.4'
   gem 'ed25519', '~> 1.2'
