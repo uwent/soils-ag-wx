@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class DegreeDayStationTest < ActiveSupport::TestCase
   # test "the truth" do

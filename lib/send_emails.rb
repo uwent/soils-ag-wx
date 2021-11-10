@@ -1,10 +1,9 @@
-require File.join(File.dirname(__FILE__),'..','config','environment.rb')
+require File.join(File.dirname(__FILE__), "..", "config", "environment.rb")
 
-
-# Glom a date from params. If a string, parse it. If not provided or parse fails, 1 day ago. 
-def extract_date(params,sym)
-  if (d=params[sym])
-    if d.kind_of?(String)
+# Glom a date from params. If a string, parse it. If not provided or parse fails, 1 day ago.
+def extract_date(params, sym)
+  if (d = params[sym])
+    if d.is_a?(String)
       begin
         Date.parse(d)
       rescue Exception => e
@@ -26,12 +25,12 @@ def send_emails(params)
     subscribers = [Subscriber.find(params[:id])]
   end
   subscribers = subscribers.select { |subs| subs.has_confirmed }
-  start_date = extract_date(params,:start_date)  
-  end_date = extract_date(params,:end_date)
+  start_date = extract_date(params, :start_date)
+  end_date = extract_date(params, :end_date)
   sent = 0
   results = []
   subscribers.each do |subs|
-    email = SubscriptionMailer.product_report(subs,start_date,end_date)
+    email = SubscriptionMailer.product_report(subs, start_date, end_date)
     unless email.body.encoded
       puts "No body"
       next
@@ -40,11 +39,11 @@ def send_emails(params)
       puts "Body blank"
       next
     end
-    unless email.body.encoded =~ /At/
+    unless /At/.match?(email.body.encoded)
       puts "No 'At'"
       next
     end
-    unless email.body.encoded =~ /0\.[\d]/
+    unless /0\.\d/.match?(email.body.encoded)
       puts "No ET value"
       next
     end
@@ -54,28 +53,24 @@ def send_emails(params)
   puts "Sent #{sent} emails"
 end
 
-rick = Subscriber.find_by_email('fewayne@wisc.edu')
+rick = Subscriber.find_by_email("fewayne@wisc.edu")
 if ARGV[0]
-  if ARGV[0] == 'everybody'
-    id = 0
+  id = if ARGV[0] == "everybody"
+    0
   else
-    id =ARGV[0].to_i
+    ARGV[0].to_i
   end
 else
   puts "usage: send_emails.rb {everybody|id} [start_date] [end_date] (a test id for rick is #{rick[:id]})"
   exit
 end
 
-if ARGV[1]
-  start_date = Date.parse(ARGV[1])
-else
-  start_date = nil
+start_date = if ARGV[1]
+  Date.parse(ARGV[1])
 end
 
-if ARGV[2]
-  end_date = Date.parse(ARGV[2])
-else
-  end_date = nil
+end_date = if ARGV[2]
+  Date.parse(ARGV[2])
 end
 
 send_emails({id: id, start_date: start_date, end_date: end_date})

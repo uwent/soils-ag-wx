@@ -7,10 +7,10 @@ class Insol < ApplicationRecord
   end
 
   def self.base_url
-    self.insolations_url
+    insolations_url
   end
 
   def self.endpoint_attribute_name
-    'value'
+    "value"
   end
 end

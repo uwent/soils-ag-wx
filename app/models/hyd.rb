@@ -11,34 +11,33 @@ class Hyd < ApplicationRecord
   end
 
   def self.output_directory(year)
-    Dir.mkdir(OUTPUT_BASE_DIR) unless File.exists?(OUTPUT_BASE_DIR)
+    Dir.mkdir(OUTPUT_BASE_DIR) unless File.exist?(OUTPUT_BASE_DIR)
     dir = File.join(OUTPUT_BASE_DIR, year.to_s)
-    Dir.mkdir(dir) unless File.exists?(dir)
+    Dir.mkdir(dir) unless File.exist?(dir)
     dir
   end
 
   def self.filename(date)
-    "opu#{date.year}#{'%03d' % date.yday}"
+    "opu#{date.year}#{"%03d" % date.yday}"
   end
 
   def self.get_data(version = 1)
-    server = 'forecast.weather.gov'
-    url = sprintf('/product.php?site=NWS&issuedby=MKX&product=HYD&format=TXT&version=%0d&glossary=0',version.to_i)
+    server = "forecast.weather.gov"
+    url = sprintf("/product.php?site=NWS&issuedby=MKX&product=HYD&format=TXT&version=%0d&glossary=0", version.to_i)
 
     uri = URI("https://#{server}#{url}")
     res = Net::HTTP.get(uri)
 
     if res
-      preface, body = res.split(/\<pre .*>/)
+      _preface, body = res.split(/<pre .*>/)
       if body
-        body, footer = body.split '$$'
-        return body
+        body, _footer = body.split "$$"
+        body
       else
-        return "No body found HYD retrieval"
+        "No body found HYD retrieval"
       end
     else
-      return "No result from '#{url}'"
+      "No result from '#{url}'"
     end
   end
-
 end

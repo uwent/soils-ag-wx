@@ -1,4 +1,4 @@
-require 'grid_controller'
+require "grid_controller"
 
 class SunWaterController < ApplicationController
   include GridController
@@ -34,17 +34,17 @@ class SunWaterController < ApplicationController
   end
 
   def grid_classes
-    @grid_classes = GRID_CLASSES.slice('ET', 'Insol')
+    @grid_classes = GRID_CLASSES.slice("ET", "Insol")
   end
 
   private
 
   def et_image(date)
-    @title = 'Download ET Estimates'
-    @grid_classes = GRID_CLASSES.slice('ET')
+    @title = "Download ET Estimates"
+    @grid_classes = GRID_CLASSES.slice("ET")
     begin
       endpoint = "#{Endpoint::BASE_URL}/evapotranspirations/#{date}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
+      resp = HTTParty.get(endpoint, {timeout: 10})
       json = JSON.parse(resp.body)
       url = json["map"]
       @map_image = "#{Endpoint::HOST}#{url}"
@@ -55,29 +55,27 @@ class SunWaterController < ApplicationController
   end
 
   def et_csv(date)
-    begin
-      endpoint = "#{Endpoint::BASE_URL}/evapotranspirations/all_for_date?date=#{date.to_s}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
-      json = JSON.parse(resp.body)
-      data = json["data"]
-      return CSV.generate(headers: true) do |csv|
-        csv << %w(Latitude Longitude ET)
-        data.each do |h|
-          csv << [h["lat"], h["long"], h["value"]]
-        end
+    endpoint = "#{Endpoint::BASE_URL}/evapotranspirations/all_for_date?date=#{date}"
+    resp = HTTParty.get(endpoint, {timeout: 10})
+    json = JSON.parse(resp.body)
+    data = json["data"]
+    CSV.generate(headers: true) do |csv|
+      csv << %w[Latitude Longitude ET]
+      data.each do |h|
+        csv << [h["lat"], h["long"], h["value"]]
       end
-    rescue Net::ReadTimeout
-      Rails.logger.error("Timeout on endpoint: #{endpoint}")
-      return CSV.generate(headers: true)
     end
+  rescue Net::ReadTimeout
+    Rails.logger.error("Timeout on endpoint: #{endpoint}")
+    CSV.generate(headers: true)
   end
 
   def insol_image(date)
-    @title = 'Download Insolation Estimates'
-    @grid_classes = GRID_CLASSES.slice('Insol')
+    @title = "Download Insolation Estimates"
+    @grid_classes = GRID_CLASSES.slice("Insol")
     begin
-      endpoint = "#{Endpoint::BASE_URL}/insolations/#{date.to_s}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
+      endpoint = "#{Endpoint::BASE_URL}/insolations/#{date}"
+      resp = HTTParty.get(endpoint, {timeout: 10})
       body = JSON.parse(resp.body)
       @map_image = "#{Endpoint::HOST}#{body["map"]}"
     rescue Net::ReadTimeout
@@ -87,20 +85,18 @@ class SunWaterController < ApplicationController
   end
 
   def insol_csv(date)
-    begin
-      endpoint = "#{Endpoint::BASE_URL}/insolations/all_for_date?date=#{date.to_s}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
-      json = JSON.parse(resp.body)
-      data = json["data"]
-      return CSV.generate(headers: true) do |csv|
-        csv << %w(Latitude Longitude Insol)
-        data.each do |h|
-          csv << [h["lat"], h["long"], h["value"]]
-        end
+    endpoint = "#{Endpoint::BASE_URL}/insolations/all_for_date?date=#{date}"
+    resp = HTTParty.get(endpoint, {timeout: 10})
+    json = JSON.parse(resp.body)
+    data = json["data"]
+    CSV.generate(headers: true) do |csv|
+      csv << %w[Latitude Longitude Insol]
+      data.each do |h|
+        csv << [h["lat"], h["long"], h["value"]]
       end
-    rescue Net::ReadTimeout
-      Rails.logger.error("Timeout on endpoint: #{endpoint}")
-      return CSV.generate(headers: true)
     end
+  rescue Net::ReadTimeout
+    Rails.logger.error("Timeout on endpoint: #{endpoint}")
+    CSV.generate(headers: true)
   end
 end

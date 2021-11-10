@@ -4,11 +4,11 @@
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
 
-role :app, %w{deploy@agweather.cals.wisc.edu:216}
-role :web, %w{deploy@agweather.cals.wisc.edu:216}
-role :db,  %w{deploy@agweather.cals.wisc.edu:216}
+role :app, %w[deploy@agweather.cals.wisc.edu:216]
+role :web, %w[deploy@agweather.cals.wisc.edu:216]
+role :db, %w[deploy@agweather.cals.wisc.edu:216]
 
-set :rails_env, 'production'
+set :rails_env, "production"
 
 # Extended Server Syntax
 # ======================

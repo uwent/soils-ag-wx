@@ -11,8 +11,8 @@ class WebcamImage < ApplicationRecord
   def self.full_filename(timestamp)
     timestamp.strftime("fullsize_#{DFORMAT}.jpg")
   end
-  
-  def self.images_for_date(start_date=Date.today,end_date = start_date + 1)
+
+  def self.images_for_date(start_date = Date.today, end_date = start_date + 1)
     start_dt = utc_midnight_for_local_date(start_date)
     end_dt = utc_midnight_for_local_date(end_date) - 1.second # one second before next day's midnight
     in_interval = where(timestamp: (start_dt..end_dt))
@@ -25,5 +25,4 @@ class WebcamImage < ApplicationRecord
     end
     {start_date: start_dt, end_date: end_dt, thumbs: thumbs, fulls: fulls}
   end
-  
 end

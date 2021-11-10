@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class T412sHelperTest < ActionView::TestCase
 end

@@ -1,4 +1,4 @@
-require 'grid_controller'
+require "grid_controller"
 
 class WeatherController < ApplicationController
   include GridController
@@ -13,13 +13,13 @@ class WeatherController < ApplicationController
   end
 
   def doycal
-    date = params[:year] ? Date.civil(params[:year].to_i,1,1) : Date.today
+    date = params[:year] ? Date.civil(params[:year].to_i, 1, 1) : Date.today
     @cal_matrix = CalMatrix.new(date)
     @year = date.year
   end
-  
+
   def doycal_grid
-    date = params[:year] ? Date.civil(params[:year].to_i,1,1) : Date.today
+    date = params[:year] ? Date.civil(params[:year].to_i, 1, 1) : Date.today
     @cal_matrix = CalMatrix.new(date)
     @year = date.year
     render partial: "doycal_grid"
@@ -38,10 +38,10 @@ class WeatherController < ApplicationController
   end
 
   def hyd
-    if params[:year]
-      @year = params[:year].to_i
+    @year = if params[:year]
+      params[:year].to_i
     else
-      @year = Date.today.year
+      Date.today.year
     end
   end
 
@@ -55,7 +55,7 @@ class WeatherController < ApplicationController
   end
 
   def grid_classes
-    @grid_classes = GRID_CLASSES.except('ET', 'Insol')
+    @grid_classes = GRID_CLASSES.except("ET", "Insol")
   end
 
   def precip_map
@@ -71,34 +71,32 @@ class WeatherController < ApplicationController
   end
 
   def precip_data
-    begin
-      @lat = params[:latitude].to_f
-      @long = params[:longitude].to_f
-      @start_date = Date.new(*params[:start_date].values.map(&:to_i))
-      @end_date = Date.new(*params[:end_date].values.map(&:to_i))
-      url = "#{Endpoint::PRECIP_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
-      response = HTTParty.get(url, { timeout: 5 })
-      json = JSON.parse(response.body, symbolize_names: true)
-      @data = json[:data]
-      respond_to do |format|
-        format.html
-        format.csv { send_data to_csv(@data), filename: "Precip data for #{@latitude}, #{@longitude} for dates #{@start_date} to #{@end_date}.csv"}
-      end
-    rescue
-      redirect_to action: :precip_map
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+    url = "#{Endpoint::PRECIP_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
+    response = HTTParty.get(url, {timeout: 5})
+    json = JSON.parse(response.body, symbolize_names: true)
+    @data = json[:data]
+    respond_to do |format|
+      format.html
+      format.csv { send_data to_csv(@data), filename: "Precip data for #{@latitude}, #{@longitude} for dates #{@start_date} to #{@end_date}.csv" }
     end
+  rescue
+    redirect_to action: :precip_map
   end
-  
+
   def webcam
   end
-  
+
   def webcam_archive
     @start_date = Date.today
     if params[:date]
       begin
-        @start_date = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
-      rescue Exception => e
-        logger.warn "error parsing date parameters: '#{params[:date].inspect}'"
+        @start_date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
+      rescue => e
+        logger.warn "WeatherController :: error parsing date parameters: '#{params[:date].inspect}', error: #{e.message}"
       end
     end
     @end_date = @start_date + 1 # one day
@@ -110,10 +108,10 @@ class WeatherController < ApplicationController
   private
 
   def weather_image(date)
-    @grid_classes = GRID_CLASSES.except('ET', 'Insol')
+    @grid_classes = GRID_CLASSES.except("ET", "Insol")
     begin
       endpoint = "#{Endpoint::WEATHER_URL}/#{date}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
+      resp = HTTParty.get(endpoint, {timeout: 10})
       json = JSON.parse(resp.body)
       url = json["map"]
       @map_image = "#{Endpoint::HOST}#{url}"
@@ -124,52 +122,45 @@ class WeatherController < ApplicationController
   end
 
   def weather_csv(date)
-    begin
-      endpoint = "#{Endpoint::WEATHER_URL}/all_for_date?date=#{date.to_s}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
-      json = JSON.parse(resp.body, symbolize_names: true)
-      data = json[:data]
-      return CSV.generate(headers: true) do |csv|
-        csv << data.first.keys
-        data.each do |h|
-          csv << h.values
-        end
+    endpoint = "#{Endpoint::WEATHER_URL}/all_for_date?date=#{date}"
+    resp = HTTParty.get(endpoint, {timeout: 10})
+    json = JSON.parse(resp.body, symbolize_names: true)
+    data = json[:data]
+    CSV.generate(headers: true) do |csv|
+      csv << data.first.keys
+      data.each do |h|
+        csv << h.values
       end
-    rescue Net::ReadTimeout
-      Rails.logger.error("Timeout on endpoint: #{endpoint}")
-      return CSV.generate(headers: true)
     end
+  rescue Net::ReadTimeout
+    Rails.logger.error("Timeout on endpoint: #{endpoint}")
+    CSV.generate(headers: true)
   end
 
   def precip_image(date)
-    begin
-      endpoint = "#{Endpoint::BASE_URL}/precips/#{date}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
-      json = JSON.parse(resp.body, symbolize_names: true)
-      url = json[:map]
-      @map_image = "#{Endpoint::HOST}#{url}"
-    rescue Net::ReadTimeout
-      Rails.logger.error "Fetch precip image timeout on endpoint: #{endpoint}"
-      @map_image = "no_data.png"
-    end
+    endpoint = "#{Endpoint::BASE_URL}/precips/#{date}"
+    resp = HTTParty.get(endpoint, {timeout: 10})
+    json = JSON.parse(resp.body, symbolize_names: true)
+    url = json[:map]
+    @map_image = "#{Endpoint::HOST}#{url}"
+  rescue Net::ReadTimeout
+    Rails.logger.error "Fetch precip image timeout on endpoint: #{endpoint}"
+    @map_image = "no_data.png"
   end
 
   def precip_csv(date)
-    begin
-      endpoint = "#{Endpoint::BASE_URL}/precips/all_for_date?date=#{date.to_s}"
-      resp = HTTParty.get(endpoint, { timeout: 10 })
-      json = JSON.parse(resp.body, symbolize_names: true)
-      data = json[:data]
-      return CSV.generate(headers: true) do |csv|
-        csv << data.first.keys
-        data.each do |h|
-          csv << h.values
-        end
+    endpoint = "#{Endpoint::BASE_URL}/precips/all_for_date?date=#{date}"
+    resp = HTTParty.get(endpoint, {timeout: 10})
+    json = JSON.parse(resp.body, symbolize_names: true)
+    data = json[:data]
+    CSV.generate(headers: true) do |csv|
+      csv << data.first.keys
+      data.each do |h|
+        csv << h.values
       end
-    rescue Net::ReadTimeout
-      Rails.logger.error("Fetch precip data for csv timeout on endpoint: #{endpoint}")
-      return CSV.generate(headers: true)
     end
+  rescue Net::ReadTimeout
+    Rails.logger.error("Fetch precip data for csv timeout on endpoint: #{endpoint}")
+    CSV.generate(headers: true)
   end
-  
 end

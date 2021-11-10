@@ -1,5 +1,4 @@
 module ThermalModelsHelper
-
   # oak wilt scenarios
   def define_scenario(dd_value, end_date)
     july_15 = (end_date.year.to_s + "-07-15").to_date
@@ -10,7 +9,7 @@ module ThermalModelsHelper
     return "scenario_d" if dd_value < 913 # 50-75% flight
     return "scenario_e" if dd_value < 2172 # 75-95% flight
     return "scenario_f" if dd_value >= 2172 # > 95% flight
-    return "scenario_a"
+    "scenario_a"
   end
 
   def scenario_risk(scenario)

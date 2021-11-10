@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class SubscribersControllerTest < ActionController::TestCase
   setup do
@@ -17,14 +17,14 @@ class SubscribersControllerTest < ActionController::TestCase
   end
 
   test "should create subscriber" do
-    assert_difference('Subscriber.count') do
+    assert_difference("Subscriber.count") do
       post :create, params: {
         subscriber: {
-          confirmed_at: '2020-10-10',
-          email: 'new_user@example.com',
-          name: 'New User'
-          }
+          confirmed_at: "2020-10-10",
+          email: "new_user@example.com",
+          name: "New User"
         }
+      }
     end
 
     assert_redirected_to confirm_notice_subscriber_path(assigns(:subscriber))
@@ -50,8 +50,8 @@ class SubscribersControllerTest < ActionController::TestCase
     admin = subscribers(:two)
     admin.update!(admin: true)
     session[:subscriber] = admin.id
-    assert_difference('Subscriber.count', -1) do
-      delete :destroy, params: { id: @subscriber }
+    assert_difference("Subscriber.count", -1) do
+      delete :destroy, params: {id: @subscriber}
     end
 
     assert_redirected_to admin_subscribers_path

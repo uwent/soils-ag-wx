@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'application_controller'
+require "test_helper"
+require "application_controller"
 
 class WeatherControllerTest < ActionController::TestCase
   test "should get index" do
@@ -31,5 +31,4 @@ class WeatherControllerTest < ActionController::TestCase
     get :webcam
     assert_response :success
   end
-
 end

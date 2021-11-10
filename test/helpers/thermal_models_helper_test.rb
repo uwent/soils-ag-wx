@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class ThermalModelsHelperTest < ActionView::TestCase
-
   mar_15 = "2020-03-15".to_date
   jul_15 = "2020-07-15".to_date
   jul_16 = "2020-07-16".to_date

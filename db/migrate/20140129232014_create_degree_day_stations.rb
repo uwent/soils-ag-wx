@@ -37,9 +37,8 @@ class CreateDegreeDayStations < ActiveRecord::Migration[4.2]
     END
 
     dd_stns.split("\n").each do |line|
-      line =~ /(.{3})[\s]+([\d]{2}\.[\d]{2})[\s]+(-[\d]{2}\.[\d]{2})[\s]+(.+)$/
+      line =~ /(.{3})\s+(\d{2}\.\d{2})\s+(-\d{2}\.\d{2})\s+(.+)$/
       DegreeDayStation.create! abbrev: $1, latitude: $2.to_f, longitude: $3.to_f, name: $4
     end
-    
   end
 end

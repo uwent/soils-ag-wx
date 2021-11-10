@@ -19,12 +19,11 @@
 
 # Learn more: http://github.com/javan/whenever
 
-
 set :output, "/tmp/mailer_whenever.log"
 set :env_path, '"$HOME/.rbenv/shims":"$HOME/.rbenv/bin"'
-job_type :runner, %q{ cd :path && PATH=:env_path:"$PATH" bin/rails runner -e :environment ':task' :output }
+job_type :runner, %q( cd :path && PATH=:env_path:"$PATH" bin/rails runner -e :environment ':task' :output )
 
-every :day, at: '7:30am' do
+every :day, at: "7:30am" do
   runner "Subscriber.send_daily_mail"
 end
 

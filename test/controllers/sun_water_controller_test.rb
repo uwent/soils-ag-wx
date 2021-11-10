@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class SunWaterControllerTest < ActionController::TestCase
   test "should get index" do
@@ -15,5 +15,4 @@ class SunWaterControllerTest < ActionController::TestCase
     get :et_map
     assert_response :success
   end
-
 end

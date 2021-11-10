@@ -7,10 +7,10 @@ class WiMnDet < ApplicationRecord
   end
 
   def self.base_url
-    self.evapotranspirations_url
+    evapotranspirations_url
   end
 
   def self.endpoint_attribute_name
-    'value'
+    "value"
   end
 end

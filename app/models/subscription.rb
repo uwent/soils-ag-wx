@@ -1,12 +1,13 @@
 class Subscription < ApplicationRecord
   belongs_to :subscriber
   belongs_to :product
-  
+
   def within_doy_range(range_start_doy, range_end_doy = range_start_doy)
     return true unless doy_start && doy_end
     return true unless doy_start < doy_end
-    return doy_start <= range_start_doy && range_end_doy <= doy_end
+    doy_start <= range_start_doy && range_end_doy <= doy_end
   end
+
   #
   # Create a report for a set of subscriptions. Usually this will be for a single user, but that's
   # not built in. A report is a hash keyed by product; each product maps to an array of point subscriptions,
@@ -42,9 +43,9 @@ class Subscription < ApplicationRecord
   def self.make_report(subscriptions, start_date, finish_date)
     report = {}
     # force the "list" of subscriptions passed in to be one, even if it was a single Subscription
-    subscriptions = [subscriptions] if subscriptions.kind_of?(Subscription)
-    sorted = subscriptions.group_by {|subs| subs.product}
-    sorted.each do |product,subscriptions|
+    subscriptions = [subscriptions] if subscriptions.is_a?(Subscription)
+    sorted = subscriptions.group_by { |subs| subs.product }
+    sorted.each do |product, subscriptions|
       report[product] = []
       subscriptions.each do |subscr|
         next unless subscr.enabled # Skip anything with "enabled" set to false; default to "true" in database
@@ -58,6 +59,6 @@ class Subscription < ApplicationRecord
   end
 
   def as_json(options = {})
-    { id: id, name: name, latitude: latitude, longitude: longitude }
+    {id: id, name: name, latitude: latitude, longitude: longitude}
   end
 end

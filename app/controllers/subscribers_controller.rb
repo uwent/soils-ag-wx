@@ -6,7 +6,7 @@ class SubscribersController < ApplicationController
     :destroy,
     :add_subscription,
     :remove_subscription,
-    :export_emails,
+    :export_emails
   ]
 
   def index
@@ -28,7 +28,7 @@ class SubscribersController < ApplicationController
       end
     elsif params[:email_address].nil?
       redirect_to subscribers_path
-    elsif @subscriber = Subscriber.email_find(params[:email_address])
+    elsif (@subscriber = Subscriber.email_find(params[:email_address]))
       if @subscriber.is_confirmed?
         @subscriber.generate_validation_token
         render :validate
@@ -51,20 +51,18 @@ class SubscribersController < ApplicationController
     if Subscriber.email_find(params[:subscriber][:email])
       @subscriber.errors.add(:email, "is already registered")
       render action: "new"
+    elsif @subscriber.save
+      SubscriptionMailer.confirm(@subscriber).deliver
+      redirect_to confirm_notice_subscriber_path(@subscriber), notice: "Subscriber was successfully created."
     else
-      if @subscriber.save
-        SubscriptionMailer.confirm(@subscriber).deliver
-        redirect_to confirm_notice_subscriber_path(@subscriber), notice: 'Subscriber was successfully created.'
-      else
-        render action: "new"
-      end
+      render action: "new"
     end
   end
 
   def validate
     @subscriber = Subscriber.find(params[:id])
     validation_code = params[:validation_code]
-    #check the validation code....
+    # check the validation code....
     if @subscriber.is_validation_token_old?
       @subscriber.generate_validation_token
       @subscriber.errors.add(:validation_code, "is too old. We've sent a new one. Check your email.")
@@ -75,7 +73,7 @@ class SubscribersController < ApplicationController
     else
       # add it to the session
       add_to_session(@subscriber.id)
-      redirect_to manage_subscribers_path,notice: 'Subscriber was successfully created.'
+      redirect_to manage_subscribers_path, notice: "Subscriber was successfully created."
     end
   end
 
@@ -88,9 +86,9 @@ class SubscribersController < ApplicationController
     respond_to do |format|
       if @subscriber
         SubscriptionMailer.confirm(@subscriber).deliver
-        format.json { render json: { message: "Resent" } }
+        format.json { render json: {message: "Resent"} }
       else
-        format.json { render json: { message: "Error" } }
+        format.json { render json: {message: "Error"} }
       end
     end
   end
@@ -116,13 +114,13 @@ class SubscribersController < ApplicationController
     site_name = params[:site_name]
     lat = params[:latitude]
     long = params[:longitude]
-    product = Product.where(name: 'Evapotranspiration').first
+    product = Product.where(name: "Evapotranspiration").first
     respond_to do |format|
       subscription = Subscription.new(
         name: site_name,
         latitude: lat,
         longitude: long,
-        product_id: product.id,
+        product_id: product.id
       )
       @subscriber.subscriptions << subscription
       format.json { render json: subscription }
@@ -170,7 +168,7 @@ class SubscribersController < ApplicationController
     return redirect_to manage_subscribers_path unless @subscriber.admin?
 
     respond_to do |format|
-      format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv"}
+      format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv" }
     end
   end
 
@@ -195,19 +193,20 @@ class SubscribersController < ApplicationController
   end
 
   private
-    def subscriber_params
-      params.require(:subscriber).permit(:name, :email, :confirmed_at)
-    end
 
-    def add_to_session(id)
-      session[:subscriber] = id
-    end
+  def subscriber_params
+    params.require(:subscriber).permit(:name, :email, :confirmed_at)
+  end
 
-    def remove_from_session
-      session.delete(:subscriber)
-    end
+  def add_to_session(id)
+    session[:subscriber] = id
+  end
 
-    def get_subscriber_from_session
-      @subscriber = Subscriber.where(id: session[:subscriber]).first
-    end
+  def remove_from_session
+    session.delete(:subscriber)
+  end
+
+  def get_subscriber_from_session
+    @subscriber = Subscriber.where(id: session[:subscriber]).first
+  end
 end

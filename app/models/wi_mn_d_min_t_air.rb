@@ -7,10 +7,10 @@ class WiMnDMinTAir < ApplicationRecord
   end
 
   def self.base_url
-    self.weather_url
+    weather_url
   end
 
   def self.endpoint_attribute_name
-    'min_temp'
+    "min_temp"
   end
 end

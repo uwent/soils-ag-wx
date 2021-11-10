@@ -2,10 +2,11 @@ module AwonHelper
   def title
     "Automated Weather Observation Stations"
   end
+
   def do_welcome
     str = <<-END
-    #{image_tag "awon.jpg",{:width => "231", :height => "347", :alt => "weather station"}}
-    <h2>#{link_to "#{title}", :controller => :awon, :action => "index"}</h2>
+    #{image_tag "awon.jpg", {width: "231", height: "347", alt: "weather station"}}
+    <h2>#{link_to title.to_s, controller: :awon, action: "index"}</h2>
     END
     str.html_safe
   end
@@ -44,17 +45,17 @@ module AwonHelper
   end
 
   def status_boldness(stn)
-    boldness = (stn.status ? 'bold' : 'normal')
+    boldness = (stn.status ? "bold" : "normal")
     "<span style='font-weight: #{boldness}'>"
   end
 
-  def col_format(rec,col)
+  def col_format(rec, col)
     val = rec.send(col[0])
-    if val.class == Date || val.class == DateTime
+    if val.instance_of?(Date) || val.instance_of?(DateTime)
       "<td>#{h(val.strftime("%b %d"))}</td>".html_safe
     elsif col[1] =~ /Temperature/ || col[1] =~ /Soil Temp./
       temp = ((val * 9.0) / 5.0) + 32.0
-      "<td>#{sprintf("%0.1f",temp)}</td>".html_safe
+      "<td>#{sprintf("%0.1f", temp)}</td>".html_safe
     else
       "<td>#{h(val)}</td>".html_safe
     end
@@ -63,7 +64,7 @@ module AwonHelper
   def check_boxes(attr_human_readables)
     ii = -1
     attr_human_readables.each do |ahr|
-      ii+=1
+      ii += 1
       yield [
         check_box_tag("data_field[#{ahr[0]}]"),
         label_tag("data_field[ahr[0]]", ahr[1]),

@@ -27,7 +27,7 @@ set :deploy_to, "/home/deploy/soils_ag_wx"
 
 # Default value for linked_dirs is []
 # set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
-set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
+set :linked_dirs, %w[log tmp/pids tmp/cache tmp/sockets]
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -41,7 +41,6 @@ set :rbenv_type, :user
 set :rbenv_ruby, "3.0.2"
 
 namespace :deploy do
-
   desc "Restart application"
   after :publishing, :restart do
     on roles(:app), in: :sequence, wait: 5 do
@@ -49,5 +48,4 @@ namespace :deploy do
       execute :touch, release_path.join("tmp/restart.txt")
     end
   end
-
 end

@@ -1,15 +1,15 @@
-require 'csv'
+require "csv"
 
 module GridController
   include AgwxGrids
 
   GRID_CLASSES = {
-    'Min Temp' => WiMnDMinTAir,
-    'Max Temp' => WiMnDMaxTAir,
-    'Avg Temp' => WiMnDAveTAir,
-    'Vapor Pressure' => WiMnDAveVapr,
-    'ET' => WiMnDet,
-    'Insol' => Insol
+    "Min Temp" => WiMnDMinTAir,
+    "Max Temp" => WiMnDMaxTAir,
+    "Avg Temp" => WiMnDAveTAir,
+    "Vapor Pressure" => WiMnDAveVapr,
+    "ET" => WiMnDet,
+    "Insol" => Insol
   }
 
   def to_csv(data)
@@ -20,5 +20,4 @@ module GridController
       end
     end
   end
-
 end

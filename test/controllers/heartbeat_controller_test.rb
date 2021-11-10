@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class HeartbeatControllerTest < ActionController::TestCase
-
   test "should get index" do
     get :index
     assert_response :success
@@ -55,5 +54,4 @@ class HeartbeatControllerTest < ActionController::TestCase
     get :asos_grids
     assert_response :success
   end
-
 end

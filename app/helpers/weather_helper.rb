@@ -1,6 +1,6 @@
 module WeatherHelper
   include AgwxGrids
-  HYD_ASSET_PATH = '/hyd'
+  HYD_ASSET_PATH = "/hyd"
 
   def latest_hyd_link
     yesterday = 1.days.ago
@@ -19,10 +19,10 @@ module WeatherHelper
 
   def td_tag(date = nil)
     if date
-      if date == Date.today
-        open = "<td bgcolor='#00FFFF' "
+      open = if date == Date.today
+        "<td bgcolor='#00FFFF' "
       else
-        open = "<td "
+        "<td "
       end
       open + "align='center'>" + hyd_link_for(date) + "</td>"
     else
@@ -52,7 +52,7 @@ module WeatherHelper
         end
       end
     end
-    [res+"</tr>",date+wday]
+    [res + "</tr>", date + wday]
   end
 
   def hyd_month_row(date)
@@ -74,7 +74,7 @@ module WeatherHelper
   end
 
   def longitudes
-    (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)]}
+    (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)] }
   end
 
   def build_map_grid
@@ -84,12 +84,12 @@ module WeatherHelper
     x_start = 50 * s
     x_end = 950 * s
     x_inc = (x_end - x_start) / (longs.count - 1)
-    
-    x_start = x_start - 0.5 * x_inc # center the hitbox
+
+    x_start -= 0.5 * x_inc # center the hitbox
     y_start = 50 * s
     y_end = 910 * s
     y_inc = (y_end - y_start) / (lats.count - 1)
-    y_start = y_start - 0.5 * y_inc
+    y_start -= 0.5 * y_inc
 
     # puts "First x: #{x_start} - #{x_start + x_inc}"
     # puts "Last x: #{x_start + x_inc * longs.count} - #{x_start + x_inc * (longs.count + 1)}"
@@ -126,13 +126,13 @@ module WeatherHelper
     end
   end
 
-  def webcam_archive_link(thumb,full)
+  def webcam_archive_link(thumb, full)
     tts = thumb.timestamp
     fts = full.timestamp
-    timg = image_tag("webcam/archive/#{tts.year}/#{sprintf('%02d',tts.month)}/#{sprintf('%02d',tts.day)}/#{thumb.fname}",size: '160x120')
+    timg = image_tag("webcam/archive/#{tts.year}/#{sprintf("%02d", tts.month)}/#{sprintf("%02d", tts.day)}/#{thumb.fname}", size: "160x120")
     link_to(
       timg,
-      image_path("webcam/archive/#{fts.year}/#{sprintf('%02d',fts.month)}/#{sprintf('%02d',fts.day)}/#{full.fname}")
+      image_path("webcam/archive/#{fts.year}/#{sprintf("%02d", fts.month)}/#{sprintf("%02d", fts.day)}/#{full.fname}")
     )
   end
 end

@@ -20,13 +20,13 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # While sendmail is less configurable than the default smtp, it works on our server
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { host: 'agweather.cals.wisc.edu' }
-  config.action_mailer.default_options = { from: 'agweather@cals.wisc.edu' }
+  config.action_mailer.default_url_options = {host: "agweather.cals.wisc.edu"}
+  config.action_mailer.default_options = {from: "agweather@cals.wisc.edu"}
 
   # Compress CSS using a preprocessor.
   config.assets.js_compressor = Uglifier.new(harmony: true)
@@ -47,7 +47,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # Version of your assets, change this if you want to expire all your assets.
-  config.assets.version = '1.0'
+  config.assets.version = "1.0"
   config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain.
@@ -63,7 +63,7 @@ Rails.application.configure do
   config.log_level = :info
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -93,9 +93,9 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
   # Do not dump schema after migrations.

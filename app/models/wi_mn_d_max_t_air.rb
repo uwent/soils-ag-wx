@@ -7,10 +7,10 @@ class WiMnDMaxTAir < ApplicationRecord
   end
 
   def self.base_url
-    self.weather_url
+    weather_url
   end
 
   def self.endpoint_attribute_name
-    'max_temp'
+    "max_temp"
   end
 end

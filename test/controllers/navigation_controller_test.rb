@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class NavigationControllerTest < ActionController::TestCase
   test "should get index" do
@@ -10,5 +10,4 @@ class NavigationControllerTest < ActionController::TestCase
     get :about
     assert_response :success
   end
-
 end

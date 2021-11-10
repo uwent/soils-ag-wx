@@ -1,9 +1,9 @@
-require 'test_helper'
+require "test_helper"
 
 class SubscriptionMailerTest < ActionMailer::TestCase
-  USER_EMAIL = 'user@example.com'
-  SENDER_EMAIL = 'agweather@cals.wisc.edu'
-  USER = 'Jane Smith'
+  USER_EMAIL = "user@example.com"
+  SENDER_EMAIL = "agweather@cals.wisc.edu"
+  USER = "Jane Smith"
   LATITUDE = 42.0
   LONGITUDE = -89.0
   ETS = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35]
@@ -13,24 +13,28 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   def setup
     @etgrid = Product.create!(
-      name: 'ET',
-      data_table_name: 'wi_mn_dets',
-      type: 'GridProduct',
-      subscribable: true)
+      name: "ET",
+      data_table_name: "wi_mn_dets",
+      type: "GridProduct",
+      subscribable: true
+    )
     @rick = Subscriber.create!(
       name: USER,
       email: USER_EMAIL,
-      confirmation_token: Subscriber.confirmation_number)
+      confirmation_token: Subscriber.confirmation_number
+    )
     @rick_subs = Subscription.create!(
       latitude: LATITUDE,
       longitude: LONGITUDE,
       product_id: GridProduct.first[:id],
       doy_start: 1,
       doy_end: 365,
-      subscriber_id: @rick.id)
-    ETS.each_with_index { |et, ii| WiMnDet.create!(date: days_back(ii), latitude: LATITUDE, w892: et ) }
+      subscriber_id: @rick.id
+    )
+    ETS.each_with_index { |et, ii| WiMnDet.create!(date: days_back(ii), latitude: LATITUDE, w892: et) }
     WiMnDet.create!(date: days_back(DAYS_AGO), latitude: LATITUDE, w892: AGO_ET)
-    @rick.subscriptions << @rick_subs; @rick.save!
+    @rick.subscriptions << @rick_subs
+    @rick.save!
   end
 
   def days_back(ii)
@@ -39,7 +43,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test "confirm" do
     mail = SubscriptionMailer.confirm(@rick)
-    assert_equal 'Please confirm your email address for your UW Ag Weather subscription', mail.subject
+    assert_equal "Please confirm your email address for your UW Ag Weather subscription", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "\r\n\r\nDear Jane Smith", mail.encoded
@@ -51,7 +55,6 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "Dear Ag Weather Subscriber,", mail.body.encoded
-
   end
 
   test "daily mail" do
@@ -60,15 +63,13 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "Ag Weather automated mailer", mail.body.encoded
-
   end
 
   test "special" do
-    mail = SubscriptionMailer.special(@rick,'')
+    mail = SubscriptionMailer.special(@rick, "")
     assert_equal "Update: Your UW Ag Weather automated product subscription", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "Hi Jane Smith,\r\n\r\n", mail.body.encoded
   end
-
 end

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'..','config','environment.rb')
+require File.join(File.dirname(__FILE__), "..", "config", "environment.rb")
 
 def send_emails(params)
   if params[:id] == 0
@@ -7,7 +7,7 @@ def send_emails(params)
   else
     subscribers = [Subscriber.find(params[:id])]
   end
-  unless params[:message_text] && (message_text = params[:message_text]) != ''
+  unless params[:message_text] && (message_text = params[:message_text]) != ""
     puts "usage: send_special.rb {everybody|id} message_file"
     exit
   end
@@ -15,7 +15,7 @@ def send_emails(params)
   sent = 0
   results = []
   subscribers.each do |subs|
-    email = SubscriptionMailer.special(subs,message_text)
+    email = SubscriptionMailer.special(subs, message_text)
     unless email.body.encoded
       puts "No body"
       next
@@ -24,7 +24,7 @@ def send_emails(params)
       puts "Body blank"
       next
     end
-    unless email.body.encoded =~ /Hi/
+    unless /Hi/.match?(email.body.encoded)
       puts "No 'Hi' in '#{email.body.encoded}'"
       next
     end
@@ -34,12 +34,12 @@ def send_emails(params)
   puts "Sent #{sent} emails"
 end
 
-rick = Subscriber.find_by_email('fewayne@wisc.edu')
+rick = Subscriber.find_by_email("fewayne@wisc.edu")
 if ARGV[0]
-  if ARGV[0] == 'everybody'
-    id = 0
+  id = if ARGV[0] == "everybody"
+    0
   else
-    id =ARGV[0].to_i
+    ARGV[0].to_i
   end
 else
   puts "usage: send_special.rb {everybody|id} message_file"
