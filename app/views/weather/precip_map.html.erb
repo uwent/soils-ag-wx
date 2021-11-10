@@ -7,7 +7,7 @@
 <% end %>
 
 <%= content_for :scripts do %>
-  <script lang="js">
+  <script>
     function regionMap(latitude, longitude) {
       latitude = latitude.toFixed(1);
       longitude = longitude.toFixed(1);
@@ -15,7 +15,7 @@
       $('#latitude').val(latitude);
       $('#longitude').val(longitude);
       return false;
-    }
+    };
   </script>
 <% end %>
 
@@ -39,9 +39,11 @@
 
 <p style="font-size: smaller;"><i>Note: You can click on the map to set the latitude and longitude to within half a degree.</i></p>
 
-<%= render partial: "grid_selector" %>
+<%= render partial: "grid_selector", locals: { target: "/weather/precip_data.js" } %>
 
 <p><a href="/weather/precip_map.csv">Download the entire grid of data in CSV format</a></p>
+
+<div id="map_data"></div>
 
 <br>
 

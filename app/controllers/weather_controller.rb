@@ -79,11 +79,14 @@ class WeatherController < ApplicationController
     response = HTTParty.get(url, {timeout: 5})
     json = JSON.parse(response.body, symbolize_names: true)
     @data = json[:data]
+    Rails.logger.info "WeatherController :: Got precip data!"
+    Rails.logger.info "Format: #{params[:format]}"
     respond_to do |format|
-      format.html
-      format.csv { send_data to_csv(@data), filename: "Precip data for #{@latitude}, #{@longitude} for dates #{@start_date} to #{@end_date}.csv" }
+      format.js { render layout: false }
+      format.csv { send_data to_csv(@data), filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv" }
     end
-  rescue
+  rescue => e
+    Rails.logger.warn "WeatherController.precip_data :: Error: #{e.message}"
     redirect_to action: :precip_map
   end
 
