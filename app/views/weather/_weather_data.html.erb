@@ -1,28 +1,11 @@
-<% @title = "Gridded Weather Data" %>
-
-<% content_for :welcome do %>
-  <%= image_tag "grid_map.png" %>
-  <h2><%= @title %></h2>
-  <p></p>
-<% end %>
-
-<% content_for :scripts do %>
-  <script>
-    function copy() {
-      navigator.clipboard.writeText(document.getElementById("data-container").outerHTML);
-      $('#copy-confirm').fadeIn();
-    }
-  </script>
-<% end %>
-
-<h2><%= @title %></h2>
+<% if @data %>
 
 <hr>
 
 <div id="data-container">
   <h4>Weather data series</h4>
   <p>
-    <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+    <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
     <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
     <b>Days:</b> <%= @data.size %>
   </p>
@@ -61,4 +44,8 @@
   <span id="copy-confirm" style="display:none;"> Copied!</span>
 </p>
 
-<p><%= link_to "Back", :back %></p>
+<% else %>
+
+No data!
+
+<% end %>

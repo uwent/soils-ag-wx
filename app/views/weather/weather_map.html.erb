@@ -1,0 +1,41 @@
+<% @title = "Grid-Interpolated Daily Temperatures"%>
+
+<% content_for :welcome do %>
+  <%= image_tag "icons/dd-map-250px.png" %>
+  <h2><%= @title %></h2>
+  <p>By interpolating daily temperature and humidity observations at airports, we can offer gridded temperatures (in degrees Celsius) and water vapor pressures across the region.</p>
+<% end %>
+
+<%= javascript_include_tag "map_functions" %>
+
+<h2><%= @title %></h2>
+
+<hr>
+
+<h4>Mean temperature map for Wisconsin and surrounding states for <%= @date %>:</h4>
+
+<%= render partial: "partials/date_changer", locals: { action: :weather_map } %>
+
+<div id="map-container">
+  <img id="map-img" src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong" >
+</div>
+
+<%#= render partial: "partials/gridmap" %>
+
+<div class="note">
+  Note: Map color scale is based on min/max temp across region. Map may take a few moments to load if it hasn't already been created.
+</div>
+
+<hr>
+
+<h4>View/Download Weather Data Time Series</h4>
+
+<div class="note">Note: You can click on the map to set the latitude and longitude to within half a degree.</div>
+
+<%= render partial: "partials/grid_selector", locals: { target: "/weather/weather_data.js" } %>
+
+<p><%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv %></p>
+
+<div id="map-data"></div>
+
+<br><%= link_to "Back", :back %>

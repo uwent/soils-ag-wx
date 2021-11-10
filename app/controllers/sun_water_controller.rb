@@ -21,6 +21,27 @@ class SunWaterController < ApplicationController
     end
   end
 
+  def insol_data
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+
+    url = "#{Endpoint::INSOL_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
+    response = HTTParty.get(url, {timeout: 5})
+    json = JSON.parse(response.body, symbolize_names: true)
+    @data = json[:data]
+    Rails.logger.info "SunWaterController.insol_data :: Got et data!"
+
+    respond_to do |format|
+      format.js { render layout: false }
+      format.csv { send_data to_csv(@data), filename: "Insolation data for (#{@lat},#{@long}) for dates #{@start_date} to #{@end_date}.csv" }
+    end
+  rescue => e
+    Rails.logger.warn "SunWaterController.insol_data :: Error: #{e.message}"
+    redirect_to action: :insol_map
+  end
+
   def et_map
     begin
       @date = Date.parse(params[:date])
@@ -31,6 +52,27 @@ class SunWaterController < ApplicationController
       format.html { et_image(@date) }
       format.csv { send_data et_csv(@date), filename: "et-values-#{@date}.csv" }
     end
+  end
+
+  def et_data
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+
+    url = "#{Endpoint::ET_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
+    response = HTTParty.get(url, {timeout: 5})
+    json = JSON.parse(response.body, symbolize_names: true)
+    @data = json[:data]
+    Rails.logger.info "SunWaterController.et_data :: Got et data!"
+
+    respond_to do |format|
+      format.js { render layout: false }
+      format.csv { send_data to_csv(@data), filename: "ET data for (#{@lat},#{@long}) for dates #{@start_date} to #{@end_date}.csv" }
+    end
+  rescue => e
+    Rails.logger.warn "SunWaterController.et_data :: Error: #{e.message}"
+    redirect_to action: :et_map
   end
 
   def grid_classes

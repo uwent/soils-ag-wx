@@ -25,18 +25,6 @@ class WeatherController < ApplicationController
     render partial: "doycal_grid"
   end
 
-  def grid_temps
-    begin
-      @date = Date.parse(params[:date])
-    rescue
-      @date = (Time.now - 7.hours).to_date.yesterday
-    end
-    respond_to do |format|
-      format.html { weather_image(@date) }
-      format.csv { send_data weather_csv(@date), filename: "weather data for #{@date}.csv" }
-    end
-  end
-
   def hyd
     @year = if params[:year]
       params[:year].to_i
@@ -57,6 +45,40 @@ class WeatherController < ApplicationController
   def grid_classes
     @grid_classes = GRID_CLASSES.except("ET", "Insol")
   end
+
+  def weather_map
+    begin
+      @date = Date.parse(params[:date])
+    rescue
+      @date = (Time.now - 7.hours).to_date.yesterday
+    end
+    respond_to do |format|
+      format.html { weather_image(@date) }
+      format.csv { send_data weather_csv(@date), filename: "weather data for #{@date}.csv" }
+    end
+  end
+  
+  def weather_data
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+
+    url = "#{Endpoint::WEATHER_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
+    response = HTTParty.get(url, {timeout: 5})
+    json = JSON.parse(response.body, symbolize_names: true)
+    @data = json[:data]
+    Rails.logger.info "WeatherController.weather_data :: Got weather data!"
+
+    respond_to do |format|
+      format.js { render layout: false }
+      format.csv { send_data to_csv(@data), filename: "Weather data for (#{@lat}, #{@long}) for dates #{@start_date} to #{@end_date}.csv" }
+    end
+  rescue => e
+    Rails.logger.warn "WeatherController.weather_data :: Error: #{e.message}"
+    redirect_to action: :weather_map
+  end
+
 
   def precip_map
     begin
