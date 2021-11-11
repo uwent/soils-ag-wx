@@ -2,34 +2,40 @@
 
 <hr>
 
-<h4>Degree Days from January 1, <%= end_date.strftime("%Y") %> to <%= end_date.strftime("%B %d, %Y") %>:</h4>
+<div id="data-container">
+  <h4>Degree days and oak wilt risk from January 1, <%= end_date.strftime("%Y") %> to <%= end_date.strftime("%B %d, %Y") %> for (<%= @latitude %>, <%= @longitude %>):</h4>
+  <table class="grid-table">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Min<br>temp<br>(&deg;F)</th>
+        <th>Max<br>temp<br>(&deg;F)</th>
+        <th>FDDs</th>
+        <th>Cumul.<br>FDDs</th>
+        <th>Oak wilt risk</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @data.each_with_index do |day, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= day[:date] %></td>
+        <td><%= day[:min_temp] %></td>
+        <td><%= day[:max_temp] %></td>
+        <td><%= day[:value] %></td>
+        <td><%= day[:cumulative_value] %></td>
+        <td><%= day[:risk] %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
 
-<table class="grid-table">
-  <thead>
-    <tr>
-      <th>Day</th>
-      <th>Date</th>
-      <th>Min<br>temp</th>
-      <th>Max<br>temp</th>
-      <th>FDDs</th>
-      <th>Cumul.<br>FDDs</th>
-      <th>Oak wilt risk</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @data.each_with_index do |day, i| %>
-    <tr>
-      <td><%= i + 1 %></td>
-      <td><%= day[:date] %></td>
-      <td><%= day[:min_temp] %></td>
-      <td><%= day[:max_temp] %></td>
-      <td><%= day[:value] %></td>
-      <td><%= day[:cumulative_value] %></td>
-      <td><%= day[:risk] %>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<p>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
+  <span id="copy-confirm" style="display:none;"> Copied!</span>
+</p>
 
 <br>
 

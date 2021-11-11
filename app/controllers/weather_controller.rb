@@ -75,8 +75,6 @@ class WeatherController < ApplicationController
   def weather_data
     parse_map_params()
     @units = params[:temp_units]
-    puts params[:in_f]
-    puts @units
 
     url = "#{Endpoint::WEATHER_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
     json = fetch(url)
