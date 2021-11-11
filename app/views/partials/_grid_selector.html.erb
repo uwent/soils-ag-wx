@@ -1,5 +1,5 @@
 <div class="form-box">
-  <%= form_tag(target, method: "get", remote: true) do %>
+  <%= form_tag target, method: "get", remote: true do %>
     <b>Enter parameters:</b>
     <br>
     <br>
@@ -18,10 +18,6 @@
         default: @date %> End date
     </p>
 
-    <p>
-      <%= radio_button_tag "format", "html", true %> View in browser&nbsp;<%= radio_button_tag "format", "csv" %> Download as CSV<br/>
-    </p>
-
-    <%= submit_tag "Get Data Series", data: { disable_with: false } %>
+    <%= button_tag "Get Data Series", name: "format", value: "js" %>
   <% end %>
 </div>

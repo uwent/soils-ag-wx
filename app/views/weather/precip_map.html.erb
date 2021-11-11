@@ -21,20 +21,18 @@
 </div>
 
 <div class="note">
-  Note: Map color scale is based on min/max daily precipitation across region. Map may take a few moments to load if it hasn't already been created. Precipitation data is not available for Canada from our data source.
+  Note: Map color scale is based on min/max daily precipitation across region. Map may take a few moments to load if it hasn't already been created. Precipitation data is not available for Canada from our data source. <%= link_to "Download the entire grid of data in CSV format", action: :precip_map, format: :csv %>.
 </div>
 
 <hr>
 
-<h4>View/Download Precipitation Data Time Series</h4>
+<h4>Get Precipitation Data Time Series</h4>
 
 <div class="note">
   Note: You can click on the map to set the latitude and longitude.
 </div>
 
 <%= render partial: "partials/grid_selector", locals: { target: "/weather/precip_data.js" } %>
-
-<p><%= link_to "Download the entire grid of data in CSV format", action: :precip_map, format: :csv %></p>
 
 <div id="map-data"></div>
 

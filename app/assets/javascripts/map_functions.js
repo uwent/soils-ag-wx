@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  console.log("map_functions loaded!")
+  // console.log("map_functions loaded!")
   img = document.getElementById("map-img")
   if (img != null) {
     img.onmousedown = getCoordinates;

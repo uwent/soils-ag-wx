@@ -31,22 +31,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_grid
-    @param = params[:param] # I just loved writing that
-    dates = fix_nested_dates(params[:grid_date])
-    @start_date, @end_date = parse_dates dates
-    @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f
-    grid_class = grid_classes[params[:param]]
-    @data = grid_class.daily_series(@start_date, @end_date, @longitude, @latitude)
-    respond_to do |format|
-      format.html
-      format.csv { send_data to_csv(@data), filename: "#{grid_class.endpoint_attribute_name} data for #{@latitude}, #{@longitude} for dates #{@start_date} to #{@end_date}.csv" }
-    end
-  rescue
-    redirect_to action: :index
-  end
-
   private
 
   def set_tab_selected
@@ -77,7 +61,6 @@ class ApplicationController < ActionController::Base
 
   def parse_dates(p)
     # p is e.g. the result from params["grid_date"]
-
     if p["start_date(1i)"] # it's the old three-element date style
       [
         Date.civil(p["start_date(1i)"].to_i, p["start_date(2i)"].to_i, p["start_date(3i)"].to_i),
@@ -104,5 +87,59 @@ class ApplicationController < ActionController::Base
     else
       "Unknown"
     end
+  end
+
+  def fetch(endpoint)
+    response = HTTParty.get(endpoint, timeout: 10)
+    JSON.parse(response.body, symbolize_names: true)
+  end
+
+  def parse_map_params
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+  end
+
+  def parse_date
+    Date.parse(params[:date])
+  rescue
+    (Time.now - 7.hours).to_date.yesterday
+  end
+
+  def get_map(url)
+    json = fetch(url)
+    @map_image = "#{Endpoint::HOST}#{json[:map]}"
+  rescue
+    Rails.logger.error "Failed to retrieve endpoint: #{url}"
+    @map_image = "no_data.png"
+  end
+
+  def fetch_to_csv(url)
+    json = fetch(url)
+    data = json[:data]
+    CSV.generate(headers: true) do |csv|
+      csv << data.first.keys
+      data.each do |h|
+        csv << h.values
+      end
+    end
+  rescue
+    Rails.logger.error("Failed to retrieve endpoint: #{url}")
+    CSV.generate(headers: true)
+  end
+
+  def to_csv(data)
+    require "csv"
+    Rails.logger.info "generating csv"
+    CSV.generate(headers: true) do |csv|
+      csv << data.first.keys
+      data.each do |h|
+        csv << h.values
+      end
+    end
+  rescue => e
+    Rails.logger.error("Failed to create csv: #{e.message}")
+    CSV.generate(headers: true)
   end
 end
