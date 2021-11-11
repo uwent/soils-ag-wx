@@ -63,14 +63,13 @@ Rails.application.routes.draw do
   resources :sun_water, only: :index do
     collection do
       get "insol_map"
+      post "insol_map"
+      get "insol_data"
       get "insol_us", to: redirect("sun_water/insol_map", status: 301)
       get "et_map"
-      get "et_wimn", to: redirect("sun_water/et_map", status: 301)
-      get "grid_insols"
-      get "get_grid"
       post "et_map"
-      post "get_grid"
-      post "insol_map"
+      get "et_data"
+      get "et_wimn", to: redirect("sun_water/et_map", status: 301)
     end
   end
   match "/sun_water", to: "sun_water#index", via: [:get, :post]
@@ -112,17 +111,15 @@ Rails.application.routes.draw do
       get "awon"
       get "doycal"
       get "doycal_grid"
-      get "get_grid"
-      post "get_grid"
-      get "grid_temps"
-      post "grid_temps"
+      get "weather_map"
+      post "weather_map"
+      get "weather_data"
       get "hyd"
       get "hyd_grid"
       get "kinghall"
       get "precip_map"
       post "precip_map"
       get "precip_data"
-      post "precip_data"
       get "webcam"
       get "webcam_archive"
       post "webcam_archive"

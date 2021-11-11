@@ -1,3 +1,16 @@
+<%= content_for :scripts do %>
+  <script>
+    function regionMap(latitude, longitude) {
+      latitude = latitude.toFixed(1);
+      longitude = longitude.toFixed(1);
+      console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
+      $('#latitude').val(latitude);
+      $('#longitude').val(longitude);
+      return false;
+    }
+  </script>
+<% end %>
+
 <map name="latlong" id="latlong">
 
   <% build_map_grid().each do |g| %>

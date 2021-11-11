@@ -3,6 +3,10 @@ html, body, h1, h2 {
 	padding: 0px;
 }
 
+area {
+	border: 1px solid "red";
+}
+
 body {
 	background: #f7f5ee;
 	// background: linear-gradient(0deg, #e9e4d0, transparent);
@@ -155,7 +159,7 @@ hr {
 	img {
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
-		width: 100%;
+		// width: 100%;
 	}
 
 	a {
@@ -212,6 +216,11 @@ hr {
 	}
 }
 
+.note {
+	font-style: italic;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
 
 .copyright {
 	font: 13px arial, sans-serif;
@@ -270,4 +279,18 @@ hr {
   flex-direction: column;
   margin-bottom: 1em;
 	width: fit-content;
+}
+
+#map-container {
+	position: relative;
+}
+
+#dot {
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	border-radius: 5px;
+	background: black;
+	border: 1px solid white;
+	pointer-events: none;
 }

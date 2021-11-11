@@ -245,7 +245,7 @@ class ThermalModelsController < ApplicationController
     @base_temp = params[:base_temp].to_f
     @upper_temp = params[:upper_temp] == "None" ? nil : params[:upper_temp].to_f
     set_start_date_end_date(params)
-    url = "#{Endpoint::BASE_URL}/degree_days?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base=#{@base_temp}"
+    url = "#{Endpoint::DD_URL}?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base=#{@base_temp}"
     url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
     url
   end

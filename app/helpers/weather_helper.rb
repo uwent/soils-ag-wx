@@ -78,7 +78,7 @@ module WeatherHelper
   end
 
   def build_map_grid
-    s = 0.8
+    s = 1
     lats = (38..50).step(0.5)
     longs = (-98..-82).step(0.5)
     x_start = 50 * s

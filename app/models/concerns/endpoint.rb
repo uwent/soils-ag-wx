@@ -6,6 +6,7 @@ class Endpoint
   WEATHER_URL = BASE_URL + "/weather"
   INSOL_URL = BASE_URL + "/insolations"
   ET_URL = BASE_URL + "/evapotranspirations"
+  DD_URL = BASE_URL + "/degree_days"
 
   def self.get_et_value(date, lat, long)
     endpoint = "#{BASE_URL}/evapotranspirations?start_date=#{date.strftime("%Y-%m-%d")}&end_date=#{date.strftime("%Y-%m-%d")}&lat=#{lat}&long=#{long}"

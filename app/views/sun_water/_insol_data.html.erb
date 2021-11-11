@@ -1,0 +1,43 @@
+<% if @data %>
+
+<hr>
+
+<div id="data-container">
+  <h4>Insolation data series</h4>
+  <p>
+    <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
+    <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
+    <b>Days:</b> <%= @data.size %>
+  </p>
+  <table class="grid-table" id="table">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Insolation<br>(mJ/m<sup>2</sup>/day)</th>
+        <th>Insolation<br>(kWh/m<sup>2</sup>/day)</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @data.each_with_index do |day, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= day[:date] %></td>
+        <td><%= sprintf("%.2f", day[:value]) %></td>
+        <td><%= sprintf("%.2f", day[:value] * (1 / 3.6)) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
+  <span id="copy-confirm" style="display:none;"> Copied!</span>
+</p>
+
+<% else %>
+
+No data!
+
+<% end %>

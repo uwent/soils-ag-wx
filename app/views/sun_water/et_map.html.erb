@@ -7,18 +7,7 @@
   <p>Click <%= link_to "here", subscribers_path %> to subscribe to daily ET emails or to edit an existing subscription.</p>
 <% end %>
 
-<%= content_for :scripts do %>
-  <script lang="js">
-    function regionMap(latitude, longitude) {
-      latitude = latitude.toFixed(1);
-      longitude = longitude.toFixed(1);
-      console.log("Clicked on " + latitude.toString() + ", " + longitude.toString())
-      $('#latitude').val(latitude);
-      $('#longitude').val(longitude);
-      return false;
-    }
-  </script>
-<% end %>
+<%= javascript_include_tag "map_functions" %>
 
 <h2><%= @title %></h2>
 
@@ -28,27 +17,32 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :et_map } %>
 
-<div class="map-img">
-  <img src="<%= @map_image %>" alt="Yesterday's ET Estimates" usemap="#latlong" >
-  <%= render partial: "partials/gridmap" %>
+<div id="map-container">
+  <img id="map-img" src="<%= @map_image %>" alt="Evapotranspiration map" >
 </div>
 
-<p style="font-size: smaller;"><i>Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created.</i></p>
+<div class="note">
+  Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :et_map, format: :csv %>.
+</div>
 
 <hr>
 
-<h4>ET Data Time Series</h4>
+<h4>Get Evapotranspiration Data Time Series</h4>
 
-<p style="font-size: smaller;"><i>Note: You can click on the map to set the latitude and longitude to within half a degree.</i></p>
+<div class="note">
+  Note: You can click on the map to set the latitude and longitude.
+</div>
 
-<%= render partial: "partials/grid_selector" %>
+<%= render partial: "partials/grid_selector", locals: { target: "/sun_water/et_data" } %>
 
-<p><a href="/sun_water/et_map.csv">Download the entire grid of data in CSV format</a></p>
+<div id="map-data"></div>
 
-<br>
+<hr>
 
 <h4>ET Mailer Subscription</h4>
 
 <p>Click <%= link_to "here", subscribers_path %> to subscribe to daily ET emails from April 1 - Sep 30, or to edit an existing subscription.</p>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>
