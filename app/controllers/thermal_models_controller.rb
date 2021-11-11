@@ -17,7 +17,7 @@ class ThermalModelsController < ApplicationController
     response = HTTParty.get(url, {timeout: 5})
     json = JSON.parse(response.body, symbolize_names: true)
     @data = json[:data].each do |day|
-      day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], @end_date))
+      day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
       day
     end
     if @data.size > 0
