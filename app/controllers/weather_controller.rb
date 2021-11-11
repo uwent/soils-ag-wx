@@ -43,7 +43,8 @@ class WeatherController < ApplicationController
   end
 
   def weather_map
-    @date = parse_date
+    @date = parse_date()
+    @temp_selector = true
     respond_to do |format|
       format.html {
         url = "#{Endpoint::WEATHER_URL}/#{@date}"
@@ -51,13 +52,14 @@ class WeatherController < ApplicationController
       }
       format.csv {
         url = "#{Endpoint::WEATHER_URL}/all_for_date?date=#{@date}"
-        send_data fetch_to_csv(url), filename: "weather grid for #{@date}.csv"
+        json = fetch(url)
+        send_data to_csv(json), filename: "weather grid for #{@date}.csv"
       }
     end
   end
 
   def precip_map
-    @date = parse_date
+    @date = parse_date()
     respond_to do |format|
       format.html {
         url = "#{Endpoint::PRECIP_URL}/#{@date}"
@@ -65,12 +67,16 @@ class WeatherController < ApplicationController
       }
       format.csv {
         url = "#{Endpoint::BASE_URL}/precips/all_for_date?date=#{@date}"
-        send_data fetch_to_csv(url), filename: "precip grid for #{@date}.csv" }
+        json = fetch(url)
+        send_data to_csv(json), filename: "precip grid for #{@date}.csv" }
     end
   end
   
   def weather_data
-    parse_map_params
+    parse_map_params()
+    @units = params[:temp_units]
+    puts params[:in_f]
+    puts @units
 
     url = "#{Endpoint::WEATHER_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
     json = fetch(url)
@@ -87,7 +93,7 @@ class WeatherController < ApplicationController
   end
 
   def precip_data
-    parse_map_params
+    parse_map_params()
 
     url = "#{Endpoint::PRECIP_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
     json = fetch(url)

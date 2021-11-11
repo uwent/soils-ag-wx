@@ -14,9 +14,9 @@
       <tr>
         <th>Day</th>
         <th>Date</th>
-        <th>Min<br>temp<br>(&deg;C)</th>
-        <th>Avg<br>temp<br>(&deg;C)</th>
-        <th>Max<br>temp<br>(&deg;C)</th>
+        <th>Min<br>temp<br>(&deg;<%= @units %>)</th>
+        <th>Avg<br>temp<br>(&deg;<%= @units %>)</th>
+        <th>Max<br>temp<br>(&deg;<%= @units %>)</th>
         <th>Vap.<br>pres.<br>(mbar)</th>
         <th>Hours<br>high RH<br>(>90%)</th>
         <th>Mean<br>temp<br>high RH</th>
@@ -27,12 +27,12 @@
       <tr>
         <td><%= i + 1 %>
         <td><%= day[:date] %></td>
-        <td><%= sprintf("%.2f", day[:min_temp]) %></td>
-        <td><%= sprintf("%.2f", day[:avg_temp]) %></td>
-        <td><%= sprintf("%.2f", day[:max_temp]) %></td>
+        <td><%= sprintf("%.2f", c_to_f(day[:min_temp])) %></td>
+        <td><%= sprintf("%.2f", c_to_f(day[:avg_temp])) %></td>
+        <td><%= sprintf("%.2f", c_to_f(day[:max_temp])) %></td>
         <td><%= sprintf("%.2f", day[:pressure]) %></td>
         <td><%= day[:hours_rh_over_90] %></td>
-        <td><%= day[:avg_temp_rh_over_90] || "-" %></td>
+        <td><%= day[:avg_temp_rh_over_90] ? sprintf("%.2f", c_to_f(day[:avg_temp_rh_over_90])) : "" %></td>
       </tr>
     <% end %>
     </tbody>

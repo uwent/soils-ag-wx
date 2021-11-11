@@ -12,8 +12,13 @@ class WeatherControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get grid_temps" do
-    get :grid_temps
+  test "should get weather_map" do
+    get :weather_map
+    assert_response :success
+  end
+
+  test "should get precip_map" do
+    get :precip_map
     assert_response :success
   end
 

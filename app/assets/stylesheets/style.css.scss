@@ -243,7 +243,7 @@ hr {
 
 .grid-table {
 	td, th {
-		padding: 0 1em 0 1em;
+		padding: 2px 1em 2px 1em;
 	}
 
 	th {
@@ -254,6 +254,11 @@ hr {
 	td {
 		text-align: right;
 	}
+
+	tbody tr:nth-child(even) {
+		background: #d4ceb9;
+	}
+
 }
 
 .plain-table {

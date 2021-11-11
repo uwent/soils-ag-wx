@@ -17,8 +17,8 @@
     <% end %>
 
     <p>
-      <%= date_select :grid_date, :start_date, start_year: Time.now.year - 4, end_year: Time.now.year, default: Date.civil(Date.today.year,1,1) %> Biofix (start) date<br>
-      <%= date_select :grid_date, :end_date, start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.day.ago %> End date
+      <%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: Date.civil(Date.today.year,1,1) %> Biofix (start) date<br>
+      <%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.day.ago %> End date
     </p>
 
     <p>

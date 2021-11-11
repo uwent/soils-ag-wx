@@ -15,7 +15,8 @@ class SunWaterController < ApplicationController
       }
       format.csv {
         url = "#{Endpoint::ET_URL}/all_for_date?date=#{@date}"
-        send_data fetch_to_csv(url), filename: "et grid for #{@date}.csv"
+        json = fetch(url)
+        send_data to_csv(json[:data]), filename: "et grid for #{@date}.csv"
       }
     end
   end
@@ -29,7 +30,8 @@ class SunWaterController < ApplicationController
       }
       format.csv {
         url = "#{Endpoint::INSOL_URL}/all_for_date?date=#{@date}"
-        send_data fetch_to_csv(url), filename: "insol grid #{@date}.csv"
+        json = fetch(url)
+        send_data to_csv(json[:data]), filename: "insol grid #{@date}.csv"
       }
     end
   end
@@ -55,10 +57,10 @@ class SunWaterController < ApplicationController
   end
 
   def insol_data
-    parse_map_params
+    parse_map_params()
 
-    endpoint = "#{Endpoint::INSOL_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
-    json = fetch(endpoint)
+    url = "#{Endpoint::INSOL_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
+    json = fetch(url)
     @data = json[:data]
 
     respond_to do |format|

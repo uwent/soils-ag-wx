@@ -1,8 +1,6 @@
-require "grid_controller"
 require "agwx_biophys"
 
 class ThermalModelsController < ApplicationController
-  include GridController
   include AgwxBiophys::DegreeDays
 
   skip_before_action :verify_authenticity_token, only: :get_dds
@@ -14,15 +12,20 @@ class ThermalModelsController < ApplicationController
     @dd_methods = %w[Average Modified Sine]
   end
 
-  def get_oak_wilt_dd
-    response = HTTParty.get(set_dd_url(params), {timeout: 5})
+  def oak_wilt_dd
+    url = set_dd_url(params)
+    response = HTTParty.get(url, {timeout: 5})
     json = JSON.parse(response.body, symbolize_names: true)
     @data = json[:data].each do |day|
-      day[:risk] = helpers.scenario_risk(helpers.define_scenario(day[:cumulative_value], @end_date).last)
+      day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], @end_date))
       day
     end
-    # data = json["data"].map { |h| [h['date'], h['value']] }.to_h
-    # @data = data.select { |k, _| k.to_s <= @end_date.to_s }
+    if @data.size > 0
+      @scenario = oak_wilt_scenario(@data.last[:cumulative_value], @end_date)
+      @risk = oak_wilt_risk(@scenario)
+    end
+  rescue
+    redirect_to action: :oak_wilt
   end
 
   def download_csv
@@ -228,6 +231,24 @@ class ThermalModelsController < ApplicationController
     }
   end
 
+  def set_dd_url(params)
+    @method = params[:method]
+    @latitude = params[:latitude].to_f
+    @longitude = params[:longitude].to_f
+    @base_temp = params[:base_temp].to_f
+    @upper_temp = params[:upper_temp] == "None" ? nil : params[:upper_temp].to_f
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+    begin
+      @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    rescue
+      @start_date = @end_date.beginning_of_year
+    end
+    # set_start_date_end_date(params)
+    url = "#{Endpoint::DD_URL}?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&end_date=#{@end_date}&method=#{@method.downcase}&base=#{@base_temp}"
+    url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
+    url
+  end
+
   def set_start_date_end_date(params)
     if params[:model_type] === "oak_wilt"
       p = params[:grid_date]
@@ -238,15 +259,33 @@ class ThermalModelsController < ApplicationController
     end
   end
 
-  def set_dd_url(params)
-    @method = params[:method]
-    @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f
-    @base_temp = params[:base_temp].to_f
-    @upper_temp = params[:upper_temp] == "None" ? nil : params[:upper_temp].to_f
-    set_start_date_end_date(params)
-    url = "#{Endpoint::DD_URL}?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&method=#{@method.downcase}&base=#{@base_temp}"
-    url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
-    url
+  # oak wilt scenarios
+  def oak_wilt_scenario(dd_value, date)
+    july_15 = Date.new(date.year, 7, 15)
+    return "g" if date > july_15 # after jul 15
+    return "a" if dd_value < 231 # before flight
+    return "b" if dd_value < 368 # 5-25% flight
+    return "c" if dd_value < 638 # 25-50% flight
+    return "d" if dd_value < 913 # 50-75% flight
+    return "e" if dd_value < 2172 # 75-95% flight
+    return "f" if dd_value >= 2172 # > 95% flight
+    "a"
+  end
+
+  def oak_wilt_risk(scenario)
+    case scenario
+    when "a"
+      "low - prior to vector emergence"
+    when "b"
+      "moderate - early vector flight"
+    when "c", "d"
+      "high - peak vector flight"
+    when "e"
+      "moderate - late vector flight"
+    when "f"
+      "low - after vector flights"
+    when "g"
+      "low - after July 15"
+    end
   end
 end

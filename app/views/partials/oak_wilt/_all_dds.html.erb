@@ -1,4 +1,9 @@
-<p>Degree Days from January 1, <%= end_date.strftime("%Y") %> to <%= end_date.strftime("%B %d, %Y") %>:</p>
+<br>
+
+<hr>
+
+<h4>Degree Days from January 1, <%= end_date.strftime("%Y") %> to <%= end_date.strftime("%B %d, %Y") %>:</h4>
+
 <table class="grid-table">
   <thead>
     <tr>
@@ -25,3 +30,7 @@
   <% end %>
   </tbody>
 </table>
+
+<br>
+
+<%= link_to "Back", :back %>

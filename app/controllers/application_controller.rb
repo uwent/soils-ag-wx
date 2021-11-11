@@ -126,7 +126,6 @@ class ApplicationController < ActionController::Base
     end
   rescue
     Rails.logger.error("Failed to retrieve endpoint: #{url}")
-    CSV.generate(headers: true)
   end
 
   def to_csv(data)
@@ -140,6 +139,5 @@ class ApplicationController < ActionController::Base
     end
   rescue => e
     Rails.logger.error("Failed to create csv: #{e.message}")
-    CSV.generate(headers: true)
   end
 end

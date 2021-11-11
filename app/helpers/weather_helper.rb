@@ -2,6 +2,12 @@ module WeatherHelper
   include AgwxGrids
   HYD_ASSET_PATH = "/hyd"
 
+  def c_to_f(c)
+    @units == "F" ? c * (5.0 / 9.0) + 32 : c
+  rescue
+    c
+  end
+
   def latest_hyd_link
     yesterday = 1.days.ago
     link = hyd_link_for(yesterday, "Yesterday's report")

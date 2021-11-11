@@ -18,6 +18,12 @@
         default: @date %> End date
     </p>
 
+    <% if @temp_selector %>
+    Temperature units:<br>
+    <%= radio_button_tag :temp_units, "F", true %>Fahrenheit
+    <%= radio_button_tag :temp_units, "C" %>Celcius<br><br>
+    <% end %>
+
     <%= button_tag "Get Data Series", name: "format", value: "js" %>
   <% end %>
 </div>
