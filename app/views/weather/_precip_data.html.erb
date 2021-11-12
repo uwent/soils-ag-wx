@@ -25,10 +25,10 @@
       <tr>
         <td><%= i + 1 %>
         <td><%= day[:date] %></td>
-        <td><%= sprintf("%.2f", day[:value]) %></td>
-        <td><%= sprintf("%.2f", day[:cumulative_value]) %></td>
-        <td><%= sprintf("%.2f", (day[:value] / 25.4)) %></td>
-        <td><%= sprintf("%.2f", (day[:cumulative_value] / 25.4)) %></td>
+        <td><%= sprintf_nilsafe(day[:value], 2) %></td>
+        <td><%= sprintf_nilsafe(day[:cumulative_value], 2) %></td>
+        <td><%= sprintf_nilsafe(day[:value] / 25.4, 2) %></td>
+        <td><%= sprintf_nilsafe(day[:cumulative_value] / 25.4, 2) %></td>
       </tr>
     <% end %>
     </tbody>

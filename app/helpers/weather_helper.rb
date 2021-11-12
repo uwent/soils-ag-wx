@@ -8,6 +8,13 @@ module WeatherHelper
     c
   end
 
+  def sprintf_nilsafe(num, digits)
+    num.nil? ? "" : sprintf("%.#{digits}f", num.round(digits))
+  rescue
+    num
+  end
+
+
   def latest_hyd_link
     yesterday = 1.days.ago
     link = hyd_link_for(yesterday, "Yesterday's report")
