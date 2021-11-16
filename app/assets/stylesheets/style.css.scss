@@ -1,6 +1,6 @@
 @import "./breakpoints.scss";
 
-// --- LAYOUT ---
+// --- COLORS ---
 
 $page-bg-color: #f7f5ee;
 $frame-bg-color: #8b846a;
@@ -20,6 +20,10 @@ $content-bg-color: #e9e4d0;
 $content-text-color: #4f4c39;
 $content-link-color: #383425;
 $content-link-hover-color: #26241a;
+$copyright-text-color: #4e4a3a;
+
+
+// --- BASIC STYLES ---
 
 html, body, h1, h2 {
 	margin: 0px;
@@ -61,15 +65,8 @@ hr {
 	border-bottom: 1px solid $hr-color;
 }
 
-.bar-lit {
-	padding-left: 6px;
-	background: 0px 4px image_url('frame/bar_lit.png') no-repeat;
-}
 
-.bar-drk {
-	padding-left: 6px;
-	background: 0px 4px image_url('frame/bar_drk.png') no-repeat;
-}
+// --- LAYOUT ---
 
 .wrapper {
 	max-width: 1200px;
@@ -124,7 +121,8 @@ hr {
 
 .nav-button {
 	background-color: $nav-bg-color;
-	color: $nav-text-color;
+	// color: $nav-text-color;
+	color: $nav-title-color;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	min-width: 100px;
@@ -143,10 +141,9 @@ hr {
 	}
 
 	@media #{$small-only} {
-		margin: 0.5em;
+		margin: 5px;
 		border-radius: 5px;
 		flex-wrap: wrap;
-
 	}
 }
 
@@ -285,7 +282,7 @@ hr {
 
 .copyright {
 	font: 13px arial, sans-serif;
-	color: #4E4A3A;
+	color: $copyright-text-color;
 	text-align: right;
 
 	p {
