@@ -47,7 +47,6 @@ function findSize(e) {
 }
 
 function drawDot(x, y) {
-  var color = '#c5050c';
   var size = 5;
   units = "px";
   $("#dot").remove();

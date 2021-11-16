@@ -1,8 +1,9 @@
 <% @title = "NWS Co-Op Observer Reports" %>
+<% @welcome_image = "snowy.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/snowy.png", width: "100%" %>
   <h2><%= @title %></h2>
+  <p>Access daily weather reports from National Weather Service volunteers across Wisconsin.</p>
 <% end %>
 
 <% content_for :scripts do %>
@@ -57,4 +58,6 @@
   <%= render partial: "hyd_grid" %>
 </div>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>

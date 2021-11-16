@@ -1,14 +1,14 @@
 <% @title = "Thermal Models" %>
+<% @welcome_image = "thermal.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/thermal.png", width: "100%" %>
   <h2>Thermal Models</h2>
   <p>Growth and development for many plants and insects is keyed to temperature. By calculating the history of daily temperatures over a season, we can predict pest emergence, crop development, and other events of keen interest in agriculture.</p>
 <% end %>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/vdifn-250px.png"), vdifn_path, target: "_blank" %>
+    <%= link_to image_tag("vdifn-250px.png"), vdifn_path, target: "_blank" %>
   </div>
   <div>
     <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", vdifn_path, target: "_blank" %></h2>
@@ -20,7 +20,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/dd-calc-250px.png"), action: :degree_days %>
+    <%= link_to image_tag("dd-calc-250px.png"), action: :degree_days %>
   </div>
   <div>
     <h2><%= link_to "Generic Degree Day Calculator", action: :degree_days %></h2>
@@ -32,7 +32,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/frost-map-250px.png"), action: :frost_map %>
+    <%= link_to image_tag("frost-map-250px.png"), action: :frost_map %>
   </div>
   <div>
     <h2><%= link_to "Frost Map", action: :frost_map %></h2>
@@ -44,7 +44,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/oak-wilt-250px.png"), action: :oak_wilt %>
+    <%= link_to image_tag("oak-wilt-250px.png"), action: :oak_wilt %>
   </div>
   <div>
     <h2><%= link_to "Oak Wilt Vectors Emergence Thermal Model", action: :oak_wilt %></h2>
@@ -56,7 +56,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/alfalfa-weevil.png"), action: :alfalfa_weevil %>
+    <%= link_to image_tag("alfalfa-weevil.png"), action: :alfalfa_weevil %>
   </div>
   <div>
     <h2><%= link_to "Alfalfa Weevil Thermal Models", action: :alfalfa_weevil %></h2>
@@ -68,7 +68,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/stalk-borer.png"), action: :ecb %>
+    <%= link_to image_tag("stalk-borer.png"), action: :ecb %>
   </div>
   <div>
     <h2><%= link_to "Corn Stalk Borer", action: :corn_stalk_borer %></h2>
@@ -80,7 +80,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/ecb.png"), action: :ecb %>
+    <%= link_to image_tag("ecb.png"), action: :ecb %>
   </div>
   <div>
     <h2><%= link_to "European Corn Borer", action: :ecb %></h2>
@@ -92,7 +92,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/gypsy.png"), action: :gypsy_info %>
+    <%= link_to image_tag("gypsy.png"), action: :gypsy_info %>
   </div>
   <div>
     <h2><%= link_to "Gypsy Moth", action: :gypsy_info %></h2>
@@ -100,12 +100,11 @@
   </div>
 </div>
 
-
 <hr>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/seedcorn-maggot.png"), action: :scm %>
+    <%= link_to image_tag("seedcorn-maggot.png"), action: :scm %>
   </div>
   <div>
     <h2><%= link_to "Seedcorn Maggot", action: :scm %></h2>
@@ -117,7 +116,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/wbc.png"), action: :western_bean_cutworm %>
+    <%= link_to image_tag("wbc.png"), action: :western_bean_cutworm %>
   </div>
   <div>
     <h2><%= link_to "Western Bean Cutworm", action: :western_bean_cutworm %></h2>
@@ -129,7 +128,19 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/potato.png"), action: :potato %>
+    <%= link_to image_tag("corn.png"), action: :corn_dev %>
+  </div>
+  <div>
+    <h2><%= link_to "Corn Development", action: :corn_dev %></h2>
+    <p>Instructions for tracking corn development using a degree day model.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("potato.png"), action: :potato %>
   </div>
   <div>
     <h2><%= link_to "Potato Pests and Diseases", action: :potato %></h2>

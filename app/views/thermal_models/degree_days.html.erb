@@ -1,23 +1,59 @@
 <% @title = "Degree Day Calculator" %>
+<% @welcome_image = "degree-flower.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "degree_flower.png" %>
-  <h2>Thermal Models</h2>
+  <h2><%= @title %></h2>
   <p>Use the reference sheet to the right and the degree day calculator tool below it to compute degree days for a particular pest model.</p>
 <% end %>
 
-<h2>Degree Day Calculator</h2>
+<%= javascript_include_tag "map_functions" %>
+
+<% content_for :scripts do %>
+<script>
+$(document).ready(function () {
+  $('input[type=radio][name=units]').change(function () {
+    console.log("Units changed!")
+    if (this.value == "C") {
+      var base = (base_temp.value - 32.0) * (5.0 / 9.0)
+      var upper = (upper_temp.value - 32.0) * (5.0 / 9.0)
+      base_temp.value = isNaN(base) ? 10 : base
+      upper_temp.value = isNaN(upper) ? "None" : upper
+    } else {
+      var base = base_temp.value * (9.0 / 5.0) + 32
+      var upper = upper_temp.value * (9.0 / 5.0) + 32
+      base_temp.value = isNaN(base) ? 50 : base
+      upper_temp.value = isNaN(upper) ? "None" : upper
+    }
+  })
+})
+
+</script>
+<% end %>
+
+<h2><%= @title %></h2>
 
 <hr>
 
-<%= render partial: "partials/degree_days_explained" %>
+<%= render partial: "degree_days_explained" %>
 
-<%= render partial: "partials/degree_day_table" %>
+<%= render partial: "degree_day_table" %>
 
 <br>
 
+<hr>
+
 <h4>Get degree-day data series:</h4>
 
-<%= render partial: "partials/dd_selector" %>
+<div class="row">
+  <div class="form-box" style="width: 50%;">
+    <%= render partial: "dd_selector" %>
+  </div>
+  <div class="form-box" style="width: 50%; margin-left: 1em;">
+    <b>Choose location on map:</b>
+    <div id="map-container">
+      <%= image_tag "midwest-map-bg.png", id: "map-img" %>
+    </div>
+  </div>
+</div>
 
 <p><%= link_to "Back", :back %></p>

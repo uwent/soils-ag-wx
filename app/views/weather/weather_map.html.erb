@@ -1,7 +1,7 @@
 <% @title = "Grid-Interpolated Daily Temperatures"%>
+<% @welcome_image = "mean-temps-250px.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/mean-temps-250px.png" %>
   <h2><%= @title %></h2>
   <p>Weather data is collected daily from the National Atmospheric and Oceanic Administration's gridded datasets and provided here for easy access.</p>
 <% end %>
@@ -17,7 +17,7 @@
 <%= render partial: "partials/date_changer", locals: { action: :weather_map } %>
 
 <div id="map-container">
-  <img id="map-img" src="<%= @map_image %>" alt="Yesterday's Mean Temperatures" usemap="#latlong" >
+  <%= image_tag @map_image, id: "map-img" %>
 </div>
 
 <div class="note">

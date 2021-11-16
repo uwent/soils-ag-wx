@@ -21,11 +21,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get corn" do
-    get :corn
-    assert_response :success
-  end
-
   test "should get degree_days" do
     get :degree_days
     assert_response :success
@@ -42,31 +37,47 @@ class ThermalModelsControllerTest < ActionController::TestCase
   end
 
   test "should get get_dds_many_locations" do
-    skip("requires params")
+    skip "requires params"
     get :get_dds_many_locations
     assert_response :success
   end
 
   test "should get get_dds" do
+    params = {
+      latitude: 44.2,
+      longitude: -89.2,
+      start_date: {
+        "date(1i)" => 2011,
+        "date(2i)" => 1,
+        "date(3i)" => 1
+      },
+      end_date: {
+        "date(1i)" => 2011,
+        "date(2i)" => 12,
+        "date(3i)" => 31
+      },
+      method: "Simple"
+    }
     [:json, :csv, :html].each do |format|
-      get :get_dds, params: {
-        start_date: {
-          "date(1i)" => 2011,
-          "date(2i)" => 1,
-          "date(3i)" => 1
-        },
-        end_date: {
-          "date(1i)" => 2011,
-          "date(2i)" => 12,
-          "date(3i)" => 31
-        },
-        method: "Simple",
-        latitude: 44.2,
-        longitude: -89.2,
-        format: format
-      }
+      get :get_dds, params: params.merge(format: format)
       assert_response :success
     end
+  end
+
+  test "should get gypsy" do
+    get :gypsy
+    assert_response :success
+  end
+
+  test "should get gypsy_info" do
+    get :gypsy_info
+    assert_response :success
+  end
+
+  test "should get many_degree_days_for_date" do
+    skip "deprecated"
+    get :many_degree_days_for_date
+    assert_response :success
   end
 
   test "should get oak_wilt" do
@@ -74,21 +85,8 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "oak wilt should download csv file" do
-    data = [
-      {date: "2020-01-01", value: 12},
-      {date: "2020-01-01", value: 27},
-      {date: "2020-01-01", value: 44}
-    ]
-    [:csv].each do |format|
-      get :download_csv,
-        params: {dd_data: data.to_json, format: format}
-      assert_response :success
-    end
-  end
-
   test "should get get_oak_wilt_dd" do
-    get :get_dds, params: {
+    params = {
       latitude: 44.2,
       longitude: -89.2,
       end_date: {
@@ -99,7 +97,20 @@ class ThermalModelsControllerTest < ActionController::TestCase
       method: "Sine",
       base_temp: 41
     }
+    get :get_dds, params: params
     assert_response :success
+  end
+
+  test "oak wilt should download csv file" do
+    data = [
+      {date: "2020-01-01", value: 12},
+      {date: "2020-01-01", value: 27},
+      {date: "2020-01-01", value: 44}
+    ]
+    [:csv].each do |format|
+      get :download_csv, params: {dd_data: data.to_json, format: format}
+      assert_response :success
+    end
   end
 
   test "should get potato" do
@@ -109,11 +120,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
 
   test "should get scm" do
     get :scm
-    assert_response :success
-  end
-
-  test "should get tree" do
-    get :tree
     assert_response :success
   end
 
@@ -216,57 +222,57 @@ class ThermalModelsControllerTest < ActionController::TestCase
   #   assert_in_delta(accum, last_dd, 2**-20)
   # end
 
-  def format_for(arg)
-    @controller.send :format_for, arg
-  end
+  # def format_for(arg)
+  #   @controller.send :format_for, arg
+  # end
 
-  test "format_for" do
-    assert_equal("%m/%d", format_for("02/04"))
-    assert_equal("%m/%d/%Y", format_for("02/04/2010"))
-    assert_nil(format_for("fnord"))
-    assert_nil(format_for("2010-04-01"))
-  end
+  # test "format_for" do
+  #   assert_equal("%m/%d", format_for("02/04"))
+  #   assert_equal("%m/%d/%Y", format_for("02/04/2010"))
+  #   assert_nil(format_for("fnord"))
+  #   assert_nil(format_for("2010-04-01"))
+  # end
 
-  def date_for(date_param, default)
-    @controller.send :date_for, date_param, default
-  end
+  # def date_for(date_param, default)
+  #   @controller.send :date_for, date_param, default
+  # end
 
-  def date_for_returns_default(date_param)
-    default = "Wooja is a great default value"
-    assert_equal(default, date_for(date_param, default))
-  end
+  # def date_for_returns_default(date_param)
+  #   default = "Wooja is a great default value"
+  #   assert_equal(default, date_for(date_param, default))
+  # end
 
-  test "date_for" do
-    date_for_returns_default("snookers")
-    date_for_returns_default("2014-01-01")
-    feb_1_this_year = Date.parse("#{Date.today.year}-02-01")
-    assert_equal(2, feb_1_this_year.month)
-    assert_equal(1, feb_1_this_year.day)
-    assert_equal(feb_1_this_year, date_for("02/01", "Should not return default value"))
-    feb_1_2000 = Date.civil(2000, 2, 1)
-    assert_equal(feb_1_2000, date_for("02/01/2000", "Should not return default value"))
-  end
+  # test "date_for" do
+  #   date_for_returns_default("snookers")
+  #   date_for_returns_default("2014-01-01")
+  #   feb_1_this_year = Date.parse("#{Date.today.year}-02-01")
+  #   assert_equal(2, feb_1_this_year.month)
+  #   assert_equal(1, feb_1_this_year.day)
+  #   assert_equal(feb_1_this_year, date_for("02/01", "Should not return default value"))
+  #   feb_1_2000 = Date.civil(2000, 2, 1)
+  #   assert_equal(feb_1_2000, date_for("02/01/2000", "Should not return default value"))
+  # end
 
-  def strip_year_if_current(date)
-    date = date.strftime("%m/%d/%Y") if date && date.instance_of?(Date)
-    @controller.send :strip_year_if_current, date
-  end
+  # def strip_year_if_current(date)
+  #   date = date.strftime("%m/%d/%Y") if date && date.instance_of?(Date)
+  #   @controller.send :strip_year_if_current, date
+  # end
 
-  test "strip_year_if_current" do
-    assert_nil(strip_year_if_current(nil))
-    assert_nil strip_year_if_current(Date.today)
-    # Fails if run on New Year's Eve
-    tmrw = Date.today + 1
-    expected = sprintf("%02d/%02d", tmrw.month, tmrw.day)
-    fail if tmrw.year != Date.today.year
-    assert_equal(expected, strip_year_if_current(tmrw))
-    next_year = Date.today + 366
-    expected = next_year.strftime("%m/%d/%Y")
-    assert_equal(expected, strip_year_if_current(next_year))
-    last_year = Date.today - 366
-    expected = last_year.strftime("%m/%d/%Y")
-    assert_equal(expected, strip_year_if_current(last_year))
-  end
+  # test "strip_year_if_current" do
+  #   assert_nil(strip_year_if_current(nil))
+  #   assert_nil strip_year_if_current(Date.today)
+  #   # Fails if run on New Year's Eve
+  #   tmrw = Date.today + 1
+  #   expected = sprintf("%02d/%02d", tmrw.month, tmrw.day)
+  #   fail if tmrw.year != Date.today.year
+  #   assert_equal(expected, strip_year_if_current(tmrw))
+  #   next_year = Date.today + 366
+  #   expected = next_year.strftime("%m/%d/%Y")
+  #   assert_equal(expected, strip_year_if_current(next_year))
+  #   last_year = Date.today - 366
+  #   expected = last_year.strftime("%m/%d/%Y")
+  #   assert_equal(expected, strip_year_if_current(last_year))
+  # end
 
   # test "permalink" do
   #   # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
@@ -317,39 +323,39 @@ class ThermalModelsControllerTest < ActionController::TestCase
   # end
 
   # HAK HAK HAAAAK! This merely duplicates the method in the controller, 'cause I couldn't figure out how to call it.
-  def group_by(hash)
-    hash.inject({}) do |ret_hash, (key, el)|
-      group_key = yield el
-      prev_for_group = ret_hash[group_key] || {}
-      group = {key => el}.merge(prev_for_group)
-      ret_hash.merge(group_key => group)
-    end
-  end
+  # def group_by(hash)
+  #   hash.inject({}) do |ret_hash, (key, el)|
+  #     group_key = yield el
+  #     prev_for_group = ret_hash[group_key] || {}
+  #     group = {key => el}.merge(prev_for_group)
+  #     ret_hash.merge(group_key => group)
+  #   end
+  # end
 
-  def compare_hashes(expected, actual)
-    ret = true
-    expected.keys.sort.each do |key|
-      # assert(actual[key],"actual does not contain #{key}: #{actual.inspect}")
-      ret &&= if expected[key].instance_of?(Hash)
-        compare_hashes(expected[key], actual[key])
-      else
-        expected[key] == actual[key]
-      end
-    end
-    assert ret
-  end
+  # def compare_hashes(expected, actual)
+  #   ret = true
+  #   expected.keys.sort.each do |key|
+  #     # assert(actual[key],"actual does not contain #{key}: #{actual.inspect}")
+  #     ret &&= if expected[key].instance_of?(Hash)
+  #       compare_hashes(expected[key], actual[key])
+  #     else
+  #       expected[key] == actual[key]
+  #     end
+  #   end
+  #   assert ret
+  # end
 
-  test "group_by" do
-    hash = {
-      "4" => {foo: "bar", baz: "blah"},
-      "5" => {foo: "bar", baz: "zing"},
-      "6" => {foo: "woof", baz: "blah"}
-    }
-    expected = {
-      "bar" => {"4" => {foo: "bar", baz: "blah"}, "5" => {foo: "bar", baz: "zing"}},
-      "woof" => {"6" => {foo: "woof", baz: "blah"}}
-    }
-    actual = group_by(hash) { |h| h[:foo] }
-    compare_hashes(expected, actual)
-  end
+  # test "group_by" do
+  #   hash = {
+  #     "4" => {foo: "bar", baz: "blah"},
+  #     "5" => {foo: "bar", baz: "zing"},
+  #     "6" => {foo: "woof", baz: "blah"}
+  #   }
+  #   expected = {
+  #     "bar" => {"4" => {foo: "bar", baz: "blah"}, "5" => {foo: "bar", baz: "zing"}},
+  #     "woof" => {"6" => {foo: "woof", baz: "blah"}}
+  #   }
+  #   actual = group_by(hash) { |h| h[:foo] }
+  #   compare_hashes(expected, actual)
+  # end
 end

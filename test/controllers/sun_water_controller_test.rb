@@ -6,13 +6,23 @@ class SunWaterControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get et_map" do
+    get :et_map
+    assert_response :success
+  end
+
+  test "should post et_map" do
+    post :et_map
+    assert_response :success
+  end
+
   test "should get insol_map" do
     get :insol_map
     assert_response :success
   end
 
-  test "should get et_map" do
-    get :et_map
+  test "should post insol_map" do
+    post :insol_map
     assert_response :success
   end
 end

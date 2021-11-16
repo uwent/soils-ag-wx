@@ -1,12 +1,12 @@
 <% @title = "Automated Weather Observation Network" %>
+<% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-<%= image_tag "icons/awon.png", { width: "100%", alt: "Weather station" } %>
-<h2>Automated Weather Station Data</h2>
-<p style="font-weight:bold; color:red">Important Notice:</p>
-<p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
-<p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>
-<p>Data collected and recovered prior to the end date above are archived and available here.</p>
+  <h2>Automated Weather Station Data</h2>
+  <p style="font-weight:bold; color:red">Important Notice:</p>
+  <p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
+  <p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>
+  <p>Data collected and recovered prior to the end date above are archived and available here.</p>
 <% end %>
 
 <% content_for :scripts do %>
@@ -50,8 +50,6 @@
 
 <h2>Weather Station Status and Data</h2>
 <p><%= link_to "List of stations", action: :station_info %>, their geographic locations, and the operational dates.</p>
-<p><%= link_to "Last 7 days of weather and soil data", action: :awon_seven_day %></p>
-<p><%= link_to "Station status weblog", action: :blog %> <%= @blogs && @blogs.size > 0 ? "(Last updated #{@blogs[0].date})" : "" %></p>
 
 <h3>Download Weather or Soil Data</h3>
 <%= form_tag(controller: :awon, action: :download_data) do %>
@@ -109,4 +107,6 @@
 <% end %>
 <p><button onclick="toggle()" id="toggle_button"></p>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>

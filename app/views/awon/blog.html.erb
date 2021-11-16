@@ -1,7 +1,8 @@
 <% @title = "Blog" %>
+<% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-    <%= do_welcome.html_safe %>
+  <h2><%= @title %></h2>
 <% end %>
 
 <h2>Weather Station Updates</h2>
@@ -14,3 +15,7 @@
 <% else %>
   <p>No news has been posted</p>
 <% end %>
+
+<br>
+
+<%= link_to "Back", :back %>

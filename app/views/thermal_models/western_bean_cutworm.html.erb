@@ -1,9 +1,7 @@
 <% @title = "Western Bean Cutworm" %>
-
+<% @welcome_image = "wbc.png" %>
 
 <% content_for :welcome do %>
-<%= image_tag "wbc.jpg" %><br/>
-<p style="font-size:xx-small">Photo courtesy Marlin Rice, Pioneer Hi Bred</p>
 <h2><%= @title %></h2>
 <% end %>
 
@@ -43,4 +41,6 @@
 
 <p>Consult UW Extension Bulletin “Pest Management if Wisconsin Field Crops” management recommendations. This bulletin maybe purchased from your local county extension office or is available to view, purchase or download from UW Cooperative Extension’s The Learning Store at <%= link_to "https://learningstore.extension.wisc.edu/", "https://learningstore.extension.wisc.edu/" %></p>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>

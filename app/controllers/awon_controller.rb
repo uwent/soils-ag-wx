@@ -22,12 +22,6 @@ class AwonController < ApplicationController
     end
   end
 
-  def graphs
-  end
-
-  def graphs_soiltemp
-  end
-
   def blog
     @blogs = Blog.all.order("date DESC")
   end
@@ -51,6 +45,8 @@ class AwonController < ApplicationController
     # @soil_recs = stnids.inject({}) { |hash, stnid| hash.merge({stnid => T412.find(:all,:conditions => ['date >= ? and stnid = ?',Time.now - 6.days,stnid])}) }
     @columns = T411.attr_human_readables.reject { |arr| arr[1] =~ /^Time/ || arr[0] == "DMnBatt" }
     @soil_cols = T412.attr_human_readables.reject { |arr| arr[1] =~ /Time/ || arr[0] == "DMnBatt" }
+  rescue
+    @recs = {}
   end
 
   def download_data

@@ -1,7 +1,8 @@
 <% @title = "AWON Station Info" %>
+<% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-    <%= do_welcome.html_safe %>
+  <h2><%= @title %></h2>
 <% end %>
 
 <h2>AWON Station Info</h2>
@@ -12,14 +13,17 @@
   <% for stn in @stns do %>
   <% from = @stn_dates[stn[:id]][0] %>
   <% to = @stn_dates[stn[:id]][1]%>
-
-      <tr>
-        <td><%= status_boldness(stn).html_safe %><%= stn.name %></span></td>
-        <td><%= stn.latitude %>, <%= stn.longitude %></td>
-        <td><%= stn.wind == "T" ? "Yes" : "No" %></td>
-        <td><%= stn.humidity == "T" ? "Yes" : "No" %></td>
-        <td><%= status_boldness(stn).html_safe %><%= from %> - <%= to %></span></td>
-        <p></p>
-      </tr>
+    <tr>
+      <td><%= status_boldness(stn).html_safe %><%= stn.name %></span></td>
+      <td><%= stn.latitude %>, <%= stn.longitude %></td>
+      <td><%= stn.wind == "T" ? "Yes" : "No" %></td>
+      <td><%= stn.humidity == "T" ? "Yes" : "No" %></td>
+      <td><%= status_boldness(stn).html_safe %><%= from %> - <%= to %></span></td>
+      <p></p>
+    </tr>
   <% end %>
 </table>
+
+<br>
+
+<%= link_to "Back", :back %>

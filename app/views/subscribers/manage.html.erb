@@ -1,7 +1,8 @@
-<% @title = "Manage Subscribers" %>
+<% @title = "Email Subscriptions" %>
+<% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-  <%= do_welcome.html_safe %>
+  <h2><%= @title %></h2>
 <% end %>
 
 <input type="hidden" id="subscriber_id" value="<%= @subscriber.id %>">
@@ -10,7 +11,7 @@
 <input type="hidden" id="sub_count" value="<%= @subscriber.subscriptions.count %>">
 <input type="hidden" id="delete-cross" value="<%= image_path("cross.png") %>">
 
-<h2><%= title %></h2>
+<h2>Manage Subscriptions</h2>
 
 <hr>
 

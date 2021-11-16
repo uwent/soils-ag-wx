@@ -1,4 +1,5 @@
 <% @title = "Degree Day Calculator" %>
+<% @welcome_image = "thermal.png" %>
 
 <% content_for :scripts do %>
 <script>
@@ -20,6 +21,7 @@
     $( jquery_selector ).datepicker();
     $( jquery_selector ).datepicker("setDate",end_date);
   }
+
   // Clone the param set template and add it to the end of our list
   function add_param_set() {
     param_set = $('#param_set_template').clone();
@@ -40,16 +42,19 @@
     set_up_datepickers(last_added_set);
     return(id_or_name);
   }
+
   function remove_last_param_set() {
     target = $('#param_set_' + last_added_set);
     target.remove();
     last_added_set -= 1;
   }
+
   function remove_this(id) {
     target = $('#'+id);
     target.remove();
     last_added_set -= 1;
   }
+
   // Turn off upper temp threshold input for Simple and Sine, on for Modified
   function set_upper_thresh(select) {
     method = select.value
@@ -59,9 +64,7 @@
       // alert(selector);
       $( selector ).prop('disabled',true);
       $( selector ).val(null);
-
       $( selector.replace('input','label').replace('upper_temp','upper_temp_label') ).fadeTo(200,0.2);
-
     } else {
       if (method == 'Modified' || method == 'Sine') {
         $( selector ).prop('disabled',false);
@@ -72,8 +75,8 @@
         alert('Illegal method (not "Simple, Sine, or Modified"), please alert the website administrator.');
       }
     }
-
   }
+
   function set_up_elements() {
     // Select all the locations by default
     $('#locations option').prop('selected', true);
@@ -84,17 +87,19 @@
       set_up_datepickers(ii);
     }
   }
+
   $(document).ready(set_up_elements);
 </script>
 <% end %>
 
 <% content_for :welcome do %>
-  <%= image_tag "thermal.png", {:width => "231", :height => "231", :alt => "Heat and cold"} %>
   <h2>Thermal Model Accumulations For Multiple Locations</h2>
-  <p></p>
 <% end %>
+
 <h2>Multiway Degree-Day Calculator</h2>
+
 <p>View or download multiple degree-day accumulations for up to <%= @stations.size %> locations in Wisconsin. You may replace the default set of commonly-used parameters with your own. Click the "<strong>-</strong>" button to remove an existing set, and the "<strong>+</strong>" button to add a new one. For each set:</p>
+
 <p>
   <ol>
     <li>Select the method:
@@ -108,7 +113,9 @@
     <li>Enter the date range (default: Jan. 1 to today).</li>
   </ol>
 </p>
+
 <p>(<a href="#dds">More on degree days</a>.)</p>
+
 <%= form_tag action: :get_dds_many_locations do %>
 <div id="all_param_sets">
     <div id='param_set_1'>
@@ -191,15 +198,20 @@
       From <input size="10"  id="method_params[6][start_date]" name="method_params[6][start_date]"/>&nbsp;
       To <input size="10"  id="method_params[6][end_date]" name="method_params[6][end_date]"/>&nbsp;
     </div>
-
   </div>
+
   <%= image_tag 'add_button.png', onclick: "add_param_set();", title: 'Add another degree-day set', align: 'middle'%>
-  <br/>
+
+  <br>
+
   <p>Location. All <%= @stations.size %> locations are selected by default; scroll the list and use Ctrl-click (or Command-click on a Mac) to select a subset of them.</p>
-  <%= select_tag :locations, option_groups_from_collection_for_select(@regions,:degree_day_stations,:name,:id,:name), {multiple: true, size: 10} %><br/>
-  <br/>
-  <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON<br/>
-  <br/>
+
+  <%= select_tag :locations, option_groups_from_collection_for_select(@regions,:degree_day_stations,:name,:id,:name), {multiple: true, size: 10} %>
+  <br>
+  <br>
+  <%= radio_button_tag 'format', 'html', true %> View in browser&nbsp;<%= radio_button_tag 'format', 'json' %> Download as JSON
+  <br>
+  <br>
   <%= submit_tag 'Get Degree-Day Data'%>
 <% end %>
 
@@ -218,6 +230,13 @@
 <p/>
 <hr/>
 <a name="dds"></a>
+
 <h3>More information on Degree Days</h3>
-<%= render partial: 'partials/degree_days_explained' %>
-<%= render partial: 'partials/degree_day_table'%>
+
+<%= render partial: 'degree_days_explained' %>
+
+<%= render partial: 'degree_day_table'%>
+
+<br>
+
+<%= link_to "Back", :back %>

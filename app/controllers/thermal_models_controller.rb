@@ -8,13 +8,107 @@ class ThermalModelsController < ApplicationController
   def index
   end
 
+  def alfalfa_weevil
+  end
+
+  def corn_dev
+  end
+
+  def corn_stalk_borer
+  end
+
   def degree_days
     @dd_methods = %w[Average Modified Sine]
   end
 
+  def ecb
+  end
+
+  def frost_map
+  end
+
+  def get_dds_many_locations
+    locns_table = locations_for(params[:locations])
+    min_max_series = {}
+    @data = locns_table.inject({}) do |data_for_all_locations, (name, coords)|
+      data_for_all_methods_one_location = params[:method_params].inject({}) do |single_location_data_hash, (key, method_params)|
+        # Key is the column number in the results table. Might not be sequential if they've deleted some, but it will
+        # be unique. Each key (e.g. "1") represents one DD accumulation by method, base/upper, and dates for a location.
+        start_date, end_date = parse_dd_mult_dates method_params
+        base_temp = (method_params["base_temp"] || "50.0").to_f
+        upper_temp = (method_params["upper_temp"] || "86.0").to_f # Note that this sets upper for simple and sine, which are ignored
+        # Fill in the max-mins hash for this location and date range.
+        fill_in_max_min_series(name, start_date, end_date, coords["longitude"].to_f, coords["latitude"].to_f, min_max_series)
+        # Now perform the appropriate DD series calc.
+        dd_series = calc_dd_series_for(
+          method_params["method"],
+          start_date, end_date,
+          coords["longitude"].to_f, coords["latitude"].to_f,
+          min_max_series[name][start_date.year][:mins], min_max_series[name][start_date.year][:maxes],
+          base_temp, upper_temp
+        )
+        # Use the last date in the accumulation, rather than end_date (might be missing).
+        last_date = dd_series.keys.max
+        dd_accum = dd_series[last_date]
+        # And merge the result into the hash of results
+        single_location_data_hash.merge({key => {"params" => method_params, "date" => last_date, "data" => dd_accum}})
+      end
+      data_for_all_locations.merge({name => data_for_all_methods_one_location})
+    end
+    @locations = group_by(locns_table) { |stn| stn["region"] }
+    # {'DBQ' =>
+    #   {'1' => { 'params' =>  { 'method' =>  'Simple',  'base_temp' =>  40,  'upper_temp' =>  70},  'date' =>  @end_date,  'data' =>  dd_accum}}
+    # }
+    @permalink = permalink(params)
+    respond_to do |format|
+      format.html
+      format.json { render text: @data.to_json }
+    end
+  end
+
+  def get_dds
+    url = Endpoint::DD_URL
+    opts = parse_dd_params()
+    response = HTTParty.get(url, query: opts, timeout: 5)
+    json = JSON.parse(response.body, symbolize_names: true)
+
+    @data = json[:data]
+    @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
+    @data = @data.last(7) if params[:seven_day]
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data to_csv(@data), filename: "get_dds.csv" }
+      format.json do
+        render json: {
+          params: json[:info],
+          data: @data
+        }
+      end
+    end
+  rescue
+    redirect_to action: :degree_days
+  end
+
+  def gypsy
+  end
+
+  def gypsy_info
+  end
+
+  def many_degree_days_for_date
+    @stations = DegreeDayStation.all
+    @regions = Region.sort_south_to_north(Region.all)
+  end
+
+  def oak_wilt
+  end
+
   def oak_wilt_dd
-    url = set_dd_url(params)
-    response = HTTParty.get(url, {timeout: 5})
+    # url = set_dd_url(params)
+    url = Endpoint::DD_URL
+    opts = parse_dd_params()
+    response = HTTParty.get(url, query: opts, timeout: 5)
     json = JSON.parse(response.body, symbolize_names: true)
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
@@ -28,6 +122,17 @@ class ThermalModelsController < ApplicationController
     redirect_to action: :oak_wilt
   end
 
+  def potato
+  end
+
+  def scm
+  end
+
+  def western_bean_cutworm
+  end
+
+  # --- PARTIALS ---
+
   def download_csv
     # data = JSON.parse params[:dd_data].gsub('=>', ":")
     data = JSON.parse(params[:dd_data], symbolize_names: true)
@@ -36,38 +141,7 @@ class ThermalModelsController < ApplicationController
     end
   end
 
-  def get_dds
-    response = HTTParty.get(set_dd_url(params), {timeout: 5})
-    json = JSON.parse(response.body, symbolize_names: true)
-
-    @data = json[:data]
-    @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
-    @data = @data.last(7) if params[:seven_day]
-
-    respond_to do |format|
-      format.html
-      format.csv { send_data to_csv(@data), filename: "get_dds.csv" }
-      format.json do
-        params = {
-          title: "Degree Days",
-          method: @method,
-          latitude: @latitude,
-          longitude: @longitude,
-          start_date: @start_date,
-          end_date: @end_date
-        }
-        render json: {
-          params: params,
-          data: @data
-        }
-      end
-    end
-  end
-
-  def many_degree_days_for_date
-    @stations = DegreeDayStation.all
-    @regions = Region.sort_south_to_north(Region.all)
-  end
+  private
 
   def locations_for(ids)
     ids = ids.collect { |id| id.to_i }
@@ -123,47 +197,6 @@ class ThermalModelsController < ApplicationController
       ret_hash.merge(group_key => group)
     end
   end
-
-  def get_dds_many_locations
-    locns_table = locations_for(params[:locations])
-    min_max_series = {}
-    @data = locns_table.inject({}) do |data_for_all_locations, (name, coords)|
-      data_for_all_methods_one_location = params[:method_params].inject({}) do |single_location_data_hash, (key, method_params)|
-        # Key is the column number in the results table. Might not be sequential if they've deleted some, but it will
-        # be unique. Each key (e.g. "1") represents one DD accumulation by method, base/upper, and dates for a location.
-        start_date, end_date = parse_dd_mult_dates method_params
-        base_temp = (method_params["base_temp"] || "50.0").to_f
-        upper_temp = (method_params["upper_temp"] || "86.0").to_f # Note that this sets upper for simple and sine, which are ignored
-        # Fill in the max-mins hash for this location and date range.
-        fill_in_max_min_series(name, start_date, end_date, coords["longitude"].to_f, coords["latitude"].to_f, min_max_series)
-        # Now perform the appropriate DD series calc.
-        dd_series = calc_dd_series_for(
-          method_params["method"],
-          start_date, end_date,
-          coords["longitude"].to_f, coords["latitude"].to_f,
-          min_max_series[name][start_date.year][:mins], min_max_series[name][start_date.year][:maxes],
-          base_temp, upper_temp
-        )
-        # Use the last date in the accumulation, rather than end_date (might be missing).
-        last_date = dd_series.keys.max
-        dd_accum = dd_series[last_date]
-        # And merge the result into the hash of results
-        single_location_data_hash.merge({key => {"params" => method_params, "date" => last_date, "data" => dd_accum}})
-      end
-      data_for_all_locations.merge({name => data_for_all_methods_one_location})
-    end
-    @locations = group_by(locns_table) { |stn| stn["region"] }
-    # {'DBQ' =>
-    #   {'1' => { 'params' =>  { 'method' =>  'Simple',  'base_temp' =>  40,  'upper_temp' =>  70},  'date' =>  @end_date,  'data' =>  dd_accum}}
-    # }
-    @permalink = permalink(params)
-    respond_to do |format|
-      format.html
-      format.json { render text: @data.to_json }
-    end
-  end
-
-  private
 
   # For permalinks, strip off a date's year if it's the current year, so that the param always works in future
   def strip_year_if_current(date_str)
@@ -247,6 +280,32 @@ class ThermalModelsController < ApplicationController
     url = "#{Endpoint::DD_URL}?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&end_date=#{@end_date}&method=#{@method.downcase}&base=#{@base_temp}"
     url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
     url
+  end
+
+  def parse_dd_params
+    @latitude = params[:latitude].to_f
+    @longitude = params[:longitude].to_f
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+    begin
+      @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    rescue
+      @start_date = @end_date.beginning_of_year
+    end
+    @base_temp = params[:base_temp].to_f
+    @upper_temp = ["None", "none", ""].include?(params[:upper_temp]) ? nil : params[:upper_temp].to_f
+    @units = params[:units]
+    @method = params[:method]
+    opts = {
+      lat: @latitude,
+      long: @longitude,
+      end_date: @end_date,
+      start_date: @start_date,
+      base: @base_temp,
+      upper: @upper_temp,
+      units: @units,
+      method: @method
+    }
+    opts.compact
   end
 
   def set_start_date_end_date(params)

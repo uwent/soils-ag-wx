@@ -1,7 +1,7 @@
 <% @title = "About Us" %>
+<% @welcome_image = "king-hall-back-250px.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/king-hall-back-250px.png", {width: "100%", alt: "Soil Science/King Hall"} %>
   <h2>About Our Group</h2>
   <p>Originally developed by the UW-Madison Department of Soil Science, this site is now maintained by the Department of Entomology.</p>
   <br>
@@ -21,13 +21,15 @@
 
 <p>Some functions of this website may not be working currently or may be permanently retired. Feel free to contact the webmaster if any bugs or broken features are found.</p>
 
+<p>Learn more about <%= link_to "King Hall", action: :king_hall %>, home of the UW Soil Science Department.</p>
+
 <br>
 
 <h4>Webmaster/developer:</h4>
 
 <div class="row">
   <div class="left">
-    <%= image_tag "icons/webmaster.png", { title: "hard at work" } %>
+    <%= image_tag "webmaster.png", title: "hard at work" %>
   </div>
   <div>
     Ben Bradford<br>

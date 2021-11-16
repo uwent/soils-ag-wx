@@ -9,9 +9,6 @@ class WeatherController < ApplicationController
   def index
   end
 
-  def awon
-  end
-
   def doycal
     date = params[:year] ? Date.civil(params[:year].to_i, 1, 1) : Date.today
     @cal_matrix = CalMatrix.new(date)
@@ -37,9 +34,6 @@ class WeatherController < ApplicationController
     date = params[:year] ? Date.civil(params[:year].to_i, 1, 1) : Date.today
     @year = date.year
     render partial: "hyd_grid"
-  end
-
-  def kinghall
   end
 
   def weather_map
@@ -106,22 +100,22 @@ class WeatherController < ApplicationController
     redirect_to action: :precip_map
   end
 
-  def webcam
-  end
+  # def webcam
+  # end
 
-  def webcam_archive
-    @start_date = Date.today
-    if params[:date]
-      begin
-        @start_date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
-      rescue => e
-        logger.warn "WeatherController :: error parsing date parameters: '#{params[:date].inspect}', error: #{e.message}"
-      end
-    end
-    @end_date = @start_date + 1 # one day
-    res = WebcamImage.images_for_date(@start_date)
-    @thumbs = res[:thumbs]
-    @fulls = res[:fulls]
-  end
+  # def webcam_archive
+  #   @start_date = Date.today
+  #   if params[:date]
+  #     begin
+  #       @start_date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
+  #     rescue => e
+  #       logger.warn "WeatherController :: error parsing date parameters: '#{params[:date].inspect}', error: #{e.message}"
+  #     end
+  #   end
+  #   @end_date = @start_date + 1 # one day
+  #   res = WebcamImage.images_for_date(@start_date)
+  #   @thumbs = res[:thumbs]
+  #   @fulls = res[:fulls]
+  # end
 
 end

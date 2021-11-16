@@ -1,14 +1,37 @@
+@import "./breakpoints.scss";
+
+// --- COLORS ---
+
+$page-bg-color: #f7f5ee;
+$frame-bg-color: #8b846a;
+$welcome-bg-color: #544e38;
+$heading-text-color: #363325;
+$nav-bg-color: #aea686;
+$nav-title-color: #3f3c2d;
+$nav-text-color: #58543d;
+$table-row-highlight-color: #d4ceb9;
+$form-border-color: #8b846a;
+$form-bg-color: #efefef;
+$hr-color: #d3caa9;
+$welcome-title-color: #ceb085;
+$welcome-text-color: #f2f7f8;
+$welcome-link-color: #cfccbf;
+$content-bg-color: #e9e4d0;
+$content-text-color: #4f4c39;
+$content-link-color: #383425;
+$content-link-hover-color: #26241a;
+$copyright-text-color: #4e4a3a;
+
+
+// --- BASIC STYLES ---
+
 html, body, h1, h2 {
 	margin: 0px;
 	padding: 0px;
 }
 
-area {
-	border: 1px solid "red";
-}
-
 body {
-	background: #f7f5ee;
+	background: $page-bg-color;
 	// background: linear-gradient(0deg, #e9e4d0, transparent);
 	font-family: verdana, arial, sans-serif;
 	font-size: smaller;
@@ -16,7 +39,8 @@ body {
 
 h2 {
 	font-family: Arial, Helvetica, sans-serif;
-	color: #363325;
+	color: $heading-text-color;
+
 	a {
 		text-decoration: none;
 	}
@@ -34,59 +58,48 @@ table {
   border-collapse: collapse;
 }
 
-.more {
-	text-align: right;
-}
-
-.clear {
-	clear: both;
-}
-
-.fineline {
-	margin-top: 10px;
-	margin-bottom: 15px;
-	border-bottom: 1px solid #D3CAA9;
-}
-
 hr {
 	margin-top: 0.5em;
 	margin-bottom: 1.5em;
 	border: 1px;
-	border-bottom: 1px solid #D3CAA9;
+	border-bottom: 1px solid $hr-color;
 }
 
-.bar-lit {
-	padding-left: 6px;
-	background: 0px 4px image_url('frame/bar_lit.png') no-repeat;
-}
 
-.bar-drk {
-	padding-left: 6px;
-	background: 0px 4px image_url('frame/bar_drk.png') no-repeat;
-}
+// --- LAYOUT ---
 
 .wrapper {
-	width: 1128px;
+	max-width: 1200px;
 	min-height: calc(100vh - 20px);
 	text-align: left;
 	margin: auto;
 	margin-top: 20px;
-	overflow-y: hidden;
 }
+
+
+// --- NAV BAR ---
 
 .nav-bar {
 	display: inline-flex;
 	width: 100%;
+
+	@media #{$medium-down} {
+		flex-direction: column;
+	}
 }
 
 .nav-title {
-	flex: 1;
-	color:#3f3c2d;
+	color: $nav-title-color;
 	font-variant: small-caps;
 
 	a {
 		text-decoration: none;
 		color: inherit
+	}
+
+	@media #{$medium-down} {
+		text-align: center;
+		margin-bottom: 1em;
 	}
 }
 
@@ -95,13 +108,20 @@ hr {
 	margin-top: auto;
 	margin-right: 5px;
 	display: inline-flex;
+	white-space: nowrap;
+	justify-content: flex-end;
+
+	@media #{$small-only} {
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		margin-left: inherit;
+	}
 }
 
 .nav-button {
-	// background-color: #aea686;
-	background-color: #aea686;
-	// color: #5a5644;
-	color: #58543d;
+	background-color: $nav-bg-color;
+	// color: $nav-text-color;
+	color: $nav-title-color;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	min-width: 100px;
@@ -118,81 +138,100 @@ hr {
 		color: inherit;
 		text-decoration: none;
 	}
+
+	@media #{$small-only} {
+		margin: 5px;
+		border-radius: 5px;
+		flex-wrap: wrap;
+	}
 }
 
 .nav-button:hover, .nav-button[selected=yes] {
-	background-color: #8b846a;
-	color: #e9e4d0;
+	background-color: $frame-bg-color;
+	color: $content-bg-color;
 }
 
-.palette {
-	background-color: #544e38;
-	background-color: #8b846a;
-	background-color: #e9e4d0;
-}
+
+// --- MAIN BOX ---
 
 .main-box {
-	background-color: #8b846a;
+	background-color: $frame-bg-color;
 	border-radius: 5px;
+	padding: 10px;
 }
 
 .main {
 	display: inline-flex;
-	// background-color: #8b846a;
-	// border-radius: 5px;
-	margin: 13px;
-	width: -webkit-fill-available;
+	width: inherit;
+	min-height: 750px;
+	overflow: auto;
+	width: 100%;
+}
+
+
+// --- WELCOME BOX ---
+
+.welcome-box {
+	background-color: $welcome-bg-color;
+	width: 250px;
+	flex: none;
+	margin-right: 10px;
+	border-radius: 5px;
+	color: $welcome-text-color;
+
+	@media #{$small-only} {
+		display: none;
+	}
+
+	@media #{$medium-only} {
+		width: 200px;
+	}
+}
+
+.welcome-image img {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	width: 100%;
 }
 
 .welcome {
-	background-color: #5a5644;
-	width: 250px;
-	margin-right: 10px;
-	border-radius: 5px;
-	color: white;
-	flex: 1 0 auto;
-
 	h2, p, ul {
 		margin: 10px;
 	}
 
-	img {
-		border-top-left-radius: 5px;
-		border-top-right-radius: 5px;
-		// width: 100%;
+	h2 {
+		text-align: center;
+		color: $welcome-title-color;
 	}
 
 	a {
-		color: #F2F7F8;
+		color: $welcome-text-color;
 	}
 
 	a:hover {
-		color: #CFCCBF;
+		color: $welcome-link-color;
 	}
+} 
 
-	h2 {
-		text-align: center;
-		color:#ceb085;
-	}
-}
+
+// --- CONTENT BOX ---
 
 .content-box {
-	background-color: #e9e4d0;
-	min-height: 750px;
+	background-color: $content-bg-color;
 	border-radius: 5px;
 	width: 100%;
 }
 
 .content {
 	margin: 10px;
-	color: #4f4c39;
+	color: $content-text-color;
 
 	a {
-		color: #383425;
+		color: $content-link-color;
 	}
 	
 	a:hover {
-		color: #26241A;
+		color: $content-link-hover-color;
 	}
 }
 
@@ -214,6 +253,24 @@ hr {
 		border-radius: 5px;
 		width: 100%;
 	}
+
+	@media #{$medium-down} {
+		width: 100px;
+	}
+
+	@media screen and (max-width: 21em) {
+		display: none;
+	}
+}
+
+// --- STYLES ---
+
+.more {
+	text-align: right;
+}
+
+.clear {
+	clear: both;
 }
 
 .note {
@@ -224,7 +281,7 @@ hr {
 
 .copyright {
 	font: 13px arial, sans-serif;
-	color: #4E4A3A;
+	color: $copyright-text-color;
 	text-align: right;
 
 	p {
@@ -256,7 +313,25 @@ hr {
 	}
 
 	tbody tr:nth-child(even) {
-		background: #d4ceb9;
+		background: $table-row-highlight-color;
+	}
+}
+
+.simple-table {
+	tbody {
+		border: 1px solid $nav-bg-color;
+	}
+
+	td, th {
+		padding: 0.25em 1em 0.25em 1em;
+	}
+
+	th {
+		border-bottom: 1px solid $nav-bg-color;
+	}
+
+	tbody tr:nth-child(even) {
+		background: $table-row-highlight-color;
 	}
 }
 
@@ -268,6 +343,10 @@ hr {
 }
 
 .center {
+	text-align: center;
+}
+
+.center-div {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -275,8 +354,8 @@ hr {
 }
 
 .form-box {
-  border: 1px solid #8b846a;
-  background-color: #efefef;
+  border: 1px solid $form-border-color;
+  background-color: $form-bg-color;
   border-radius: 3px;
   padding: 1em;
   display: flex;
@@ -284,6 +363,9 @@ hr {
   margin-bottom: 1em;
 	width: fit-content;
 }
+
+
+// --- SPECIAL ---
 
 #map-container {
 	position: relative;
@@ -297,4 +379,9 @@ hr {
 	background: black;
 	border: 1px solid white;
 	pointer-events: none;
+}
+
+#data-container {
+	max-width: 100%;
+	overflow: auto;
 }

@@ -1,10 +1,11 @@
-<% @title = title %>
+<% @title = "Email Subscriptions" %>
+<% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-  <%= do_welcome.html_safe %>
+  <h2><%= @title %></h2>
 <% end %>
 
-<h2><%= @title %></h2>
+<h2>Validate Email Address</h2>
 
 <hr>
 
@@ -17,6 +18,7 @@
 <% end %>
 
 <h4>Validate your account</h4>
+
 <p>To ensure you are the owner of this email address, we have sent a validation code to your email address. Please enter the validation code you were sent in order manage your subscriptions.</p>
 
 <br>

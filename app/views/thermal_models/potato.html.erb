@@ -1,7 +1,7 @@
 <% @title = "Potato Development" %>
+<% @welcome_image = "potato.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/potato.png", alt: "Potato" %>
   <h2><%= @title %></h2>
   <p>Our potato Pday model lets you predict plant development of this pest to better manage production.</p>
 <% end %>
@@ -18,4 +18,6 @@
 
 <p>For information on potato pests such as the Colorado Potato Beetle, see our <%= link_to "degree-day calculator", action: :degree_days %> page or visit the <%= link_to "UW Vegetable Entomology website", "https://vegento.russell.wisc.edu" %>. To view potato insect development models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %></p>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>
