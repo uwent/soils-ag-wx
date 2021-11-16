@@ -1,8 +1,9 @@
 <%= form_tag action: action do %>
   <p>
-    Previous day: <%= submit_tag @date - 1, name: :date %>&nbsp;
-    Next day: <%= submit_tag @date + 1, name: :date %>&nbsp;
-    Latest: <%= submit_tag Date.yesterday, name: :date %>
+    Navigation:
+    <label><%= submit_tag "Prev day: #{@date - 1}", name: :date %></label>&nbsp;
+    <label><%= submit_tag "Next day: #{@date + 1}", name: :date %></label>&nbsp;
+    <label><%= submit_tag "Latest: #{Date.yesterday}", name: :date %></label>
   </p>
 <% end %>
 <%= form_tag action: action do %>

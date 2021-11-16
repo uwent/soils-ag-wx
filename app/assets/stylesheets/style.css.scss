@@ -56,6 +56,8 @@ ul {
 
 table {
   border-collapse: collapse;
+	max-width: 100%;
+	overflow: auto;
 }
 
 hr {
@@ -63,6 +65,15 @@ hr {
 	margin-bottom: 1.5em;
 	border: 1px;
 	border-bottom: 1px solid $hr-color;
+}
+
+label {
+	white-space: nowrap;
+}
+
+input, select {
+	margin-top: 1px;
+	margin-bottom: 1px;
 }
 
 
@@ -362,6 +373,24 @@ hr {
   flex-direction: column;
   margin-bottom: 1em;
 	width: fit-content;
+}
+
+.two-box {
+	display: flex;
+	flex-direction: row;
+
+	@media #{$small-only} {
+		flex-direction: column;
+	}
+
+	.form-box {
+		width: 50%;
+		margin: 0.5em;
+
+		@media #{$small-only} {
+			width: auto;
+		}
+	}
 }
 
 

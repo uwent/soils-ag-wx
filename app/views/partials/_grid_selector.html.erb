@@ -3,21 +3,19 @@
     <b>Enter parameters:</b>
     <br>
     <br>
-    <%= select_tag :latitude, options_for_select(latitudes, "43.0") %>
-    <label for="latitude"> Latitude</label>
-    <%= select_tag :longitude, options_for_select(longitudes, "-89.0") %>
-    <label for="longitude"> Longitude</label>
+    <label><%= select_tag :latitude, options_for_select(latitudes, "43.0") %> Latitude</label>&nbsp;
+    <label><%= select_tag :longitude, options_for_select(longitudes, "-89.0") %> Longitude</label>
     <br>
 
     <p>
-      <%= date_select :start_date, :date,
+      <label><%= date_select :start_date, :date,
         start_year: Date.current.year - 4,
         end_year: Date.current.year,
-        default: @date - 1.month %> Start date<br>
-      <%= date_select :end_date, :date,
+        default: @date - 1.month %> Start date</label><br>
+      <label><%= date_select :end_date, :date,
         start_year: Date.current.year - 4,
         end_year: Date.current.year,
-        default: @date %> End date
+        default: @date %> End date</label>
     </p>
 
     <% if @temp_selector %>
