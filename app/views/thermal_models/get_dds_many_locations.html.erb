@@ -47,7 +47,9 @@
 %>
 
 <h2>Degree-Day Accumulations</h2>
+
 <p><a href="#permalink">Save a personalized version of this report</a>.</p>
+
 <table border="1">
   <tr><th>Region</th><th>Location</th><%= methods_to_headers(@data).html_safe %></tr>
   <% for region in Region.sort_south_to_north(@locations.keys) %>
@@ -62,8 +64,13 @@
   <% end %>
 </table>
 <br/>
+
 <a name="permalink"></a><h3>Saving Your Personalized Degree-Day Report</h3>
-<p>
-  If you would like to bookmark this customized report, you can save all your DD specifications; the date ranges will have their years redacted so that the link never goes out of date.
+
+<p>If you would like to bookmark this customized report, you can save all your DD specifications; the date ranges will have their years redacted so that the link never goes out of date.</p>
+
 <h4><%= link_to "Bookmark this link", @permalink.merge(controller: "thermal_models") %></h4>
-</p>
+
+<br>
+
+<%= link_to "Back", :back %>

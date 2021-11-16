@@ -10,4 +10,9 @@ class NavigationControllerTest < ActionController::TestCase
     get :about
     assert_response :success
   end
+
+  test "should get king_hall" do
+    get :king_hall
+    assert_response :success
+  end
 end

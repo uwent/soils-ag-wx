@@ -74,7 +74,6 @@ hr {
 	text-align: left;
 	margin: auto;
 	margin-top: 20px;
-	overflow-y: hidden;
 }
 
 
@@ -165,8 +164,8 @@ hr {
 	display: inline-flex;
 	width: inherit;
 	min-height: 750px;
-	overflow: scroll;
-	max-width: 100%;
+	overflow: auto;
+	width: 100%;
 }
 
 
@@ -384,5 +383,5 @@ hr {
 
 #data-container {
 	max-width: 100%;
-	overflow: scroll;
+	overflow: auto;
 }
