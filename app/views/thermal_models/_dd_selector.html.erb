@@ -1,0 +1,42 @@
+<%= form_tag action: :get_dds do %>
+  <b>Enter parameters:</b><br>
+
+  <p>
+    Location: 
+    <label><%= select_tag :latitude, options_for_select(latitudes, "43.0") %> Latitude</label>&nbsp;
+    <label><%= select_tag :longitude, options_for_select(longitudes, "-89.0") %> Longitude</label>
+  </p>
+
+  <p>
+    Date range:<br>
+    <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: Date.civil(Date.today.year, 1, 1) %>Biofix (start) date</label><br>
+    <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.day.ago %>End date</label>
+  </p>
+
+  <p>
+    Temperature thresholds:<br>
+    <label><%= text_field_tag :base_temp, 50, { size: 3 } %> Base<br></label>
+    <label><%= text_field_tag :upper_temp, "None", { size: 3 } %> Upper</label>
+  </p>
+
+  <p>
+    Temperature units:
+    <label><%= radio_button_tag :units, "F", true %>Fahrenheit</label>&nbsp;
+    <label><%= radio_button_tag :units, "C" %>Celcius</label>
+  </p>
+
+  <p>
+    Method:
+    <label><%= radio_button_tag :method, "sine", true %>Sine</label>&nbsp;
+    <label><%= radio_button_tag :method, "modified" %>Modified</label>&nbsp;
+    <label><%= radio_button_tag :method, "average" %>Average</label>
+  </p>
+
+  <p>
+    <%= check_box_tag :seven_day %> Report only last 7 days of accumulated values<br/>
+  </p>
+
+  <%= button_tag "View in Browser", name: "format", value: "html" %>
+  <%= button_tag "Download as CSV", name: "format", value: "csv" %>
+  <%= button_tag "View as JSON", name: "format", value: "json" %>
+<% end %>

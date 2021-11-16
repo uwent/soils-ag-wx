@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :awon, only: :index do
     collection do
       get "awon_check_boxes"
-      get "awon_seven_day"
+      # get "awon_seven_day"
       get "select_data"
       get "station_info"
       get "graphs"
@@ -31,12 +31,13 @@ Rails.application.routes.draw do
   match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
   get "/heartbeat/*path", to: redirect("/heartbeat") unless Rails.env.development?
 
-  resources :navigation, only: :index do
+  resources :navigation, path: "", only: :index do
     collection do
       get "about"
+      get "king_hall"
     end
   end
-  match "/navigation", to: "navigation#index", via: [:get, :post]
+  match "/navigation", to: "navigation#index", via: :get
   get "/navigation/*path", to: redirect("/navigation") unless Rails.env.development?
 
   resources :subscribers do
@@ -87,7 +88,9 @@ Rails.application.routes.draw do
       get "ecb"
       get "frost_map"
       get "get_dds_many_locations"
+      post "get_dds_many_locations"
       get "get_dds"
+      post "get_dds"
       get "gypsy"
       get "gypsy_info"
       get "many_degree_days_for_date"
@@ -96,10 +99,8 @@ Rails.application.routes.draw do
       post "oak_wilt_dd"
       get "potato"
       get "scm"
-      get "tree"
+      # get "tree"
       get "western_bean_cutworm"
-      post "get_dds_many_locations"
-      post "get_dds"
       post "download_csv"
     end
   end
@@ -116,13 +117,12 @@ Rails.application.routes.draw do
       get "weather_data"
       get "hyd"
       get "hyd_grid"
-      get "kinghall"
       get "precip_map"
       post "precip_map"
       get "precip_data"
-      get "webcam"
-      get "webcam_archive"
-      post "webcam_archive"
+      # get "webcam"
+      # get "webcam_archive"
+      # post "webcam_archive"
     end
   end
   match "/weather", to: "weather#index", via: [:get, :post]

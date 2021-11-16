@@ -4,4 +4,7 @@ class NavigationController < ApplicationController
 
   def about
   end
+
+  def king_hall
+  end
 end

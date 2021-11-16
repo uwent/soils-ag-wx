@@ -1,14 +1,14 @@
 <% @title = "Weather Observations" %>
+<% @welcome_image = "snowy.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/snowy.png", width: "100%" %>
   <h2>Weather Observations</h2>
   <p>Weather-related pages and data are available here.</p>
 <% end %>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/dd-map-150px.png"), action: :weather_map %>
+    <%= link_to image_tag("dd-map-150px.png"), action: :weather_map %>
   </div>
   <div>
     <h2><%= link_to "Grid-Interpolated Daily Temperatures", action: :weather_map %></h2>
@@ -20,7 +20,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/precip-map-250px.png"), action: :precip_map %>
+    <%= link_to image_tag("precip-map-250px.png"), action: :precip_map %>
   </div>
   <div>
     <h2><%= link_to "Gridded Daily Precipitation Totals", action: :precip_map %></h2>
@@ -32,7 +32,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/hyd-150px.png"), action: :hyd %>
+    <%= link_to image_tag("hyd-150px.png"), action: :hyd %>
   </div>
   <div>
     <h2><%= link_to "HYD Reports", action: :hyd %></h2>
@@ -48,15 +48,11 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/awon-150px.png"), controller: :awon %>
+    <%= link_to image_tag("awon-150px.png"), controller: :awon %>
   </div>
   <div>
     <h2><%= link_to "Automated Weather Observation Network", controller: :awon %></h2>
-    <p>Since 1985, we have maintained automated weather stations at the Hancock and Arlington Ag Research stations. (Others were also operated in the 1980s-1990s.) They make hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature. Note: stations were discontinued in 2017, no data is available since then.</p>
-    <ul>
-      <li><s><%= link_to "7-day weather and soil report", controller: :awon, action: :awon_seven_day %></s> <-- Broken link</li>
-      <li><%= link_to "Station status weblog", controller: :awon, action: :blog %></li>
-    </ul>
+    <p>From 1985-2017, we maintained automated weather stations at the Hancock and Arlington Ag Research stations. (Others were also operated in the 1980s-1990s.) They made hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature. Stations were discontinued in 2017. Since then data from Arlington and Hancock can be accessed via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
   </div>
 </div>
 
@@ -64,7 +60,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/doy-cal-150px.png"), action: :doycal %>
+    <%= link_to image_tag("doy-cal-150px.png"), action: :doycal %>
   </div>
   <div>
     <h2><%= link_to "Day-of-Year Calendar", action: :doycal %></h2>

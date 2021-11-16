@@ -1,16 +1,4 @@
 module AwonHelper
-  def title
-    "Automated Weather Observation Stations"
-  end
-
-  def do_welcome
-    str = <<-END
-    #{image_tag "awon.jpg", {width: "231", height: "347", alt: "weather station"}}
-    <h2>#{link_to title.to_s, controller: :awon, action: "index"}</h2>
-    END
-    str.html_safe
-  end
-
   def station_selector_section
     <<-END
     <select name="stnid" SIZE=4 id="station_selector">

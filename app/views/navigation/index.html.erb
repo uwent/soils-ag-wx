@@ -1,17 +1,18 @@
+<% @welcome_image = "king-hall-250px.png" %>
+
 <% content_for :welcome do %>
-  <div><%= image_tag "icons/king-hall-250px.png" %></div>
   <h2>Welcome!</h2>
-  <p>For ET and insolation, see <%= link_to 'Sun/Water', controller: :sun_water %>; for degree days, see <%= link_to 'Thermal Models', controller: :thermal_models %>.</p>
+  <p>For ET and insolation, see <%= link_to "Sun/Water", controller: :sun_water %>; for weather and precipitation, see <%= link_to "Weather", controller: :weather %>; for degree days and pests, see <%= link_to "Thermal Models", controller: :thermal_models %>.</p>
   <p>We offer these data so that growers and other stakeholders in our agricultural landscape can make informed decisions about management practices.</p>
-  <p>Originally developed by the Department of Soil Science department, this site is currently being upgraded and maintained by the Department of Entomology.</p>
-  <p><%= mail_to "agweather@cals.wisc.edu", "Contact us" %> with any questions.</p>
+  <p>Originally developed by the Department of Soil Science, this site is currently being upgraded and maintained by the Department of Entomology.</p>
+  <p><%= mail_to "agweather@cals.wisc.edu", "Contact us" %> with any questions or comments.</p>
   <br>
   <p><%= link_to image_tag("logos/uw-logo-reverse.png", width: "100%"), "https://www.wisc.edu" %></p>
 <% end %>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/weather-150px.png"), controller: :weather %>
+    <%= link_to image_tag("weather-150px.png"), controller: :weather %>
   </div>
   <div class="text">
     <h2><%= link_to "Weather", controller: :weather %></h2>
@@ -19,11 +20,11 @@
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/sunwater-150px.png"), controller: :sun_water %>
+    <%= link_to image_tag("sunwater-150px.png"), controller: :sun_water %>
   </div>
   <div>
     <h2><%= link_to "Sun & Water", controller: :sun_water %></h2>
@@ -31,11 +32,11 @@
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/thermal-150px.png"), controller: :thermal_models %>
+    <%= link_to image_tag("thermal-150px.png"), controller: :thermal_models %>
   </div>
   <div>
     <h2><%= link_to "Thermal Models", controller: :thermal_models %></h2>
@@ -43,11 +44,11 @@
   </div>
 </div>
 
-<div class="fineline"></div>
+<hr>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("icons/tree-150px.png"), action: :about %>
+    <%= link_to image_tag("tree-150px.png"), action: :about %>
   </div>
   <div>
     <h2><%= link_to "About/Contact", action: :about %></h2>

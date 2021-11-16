@@ -4,16 +4,16 @@
   <div class="form-row">
     <div>
       <label for="latitude">Latitude:</label>
-      <%= select_tag :latitude, options_for_select(latitudes), width: "50%" %>
+      <%= select_tag :latitude, options_for_select(latitudes, "43.0"), width: "50%" %>
       &nbsp;
       <label for="longitude">Longitude:</label>
-      <%= select_tag :longitude, options_for_select(longitudes) %>
+      <%= select_tag :longitude, options_for_select(longitudes, "-89.0") %>
     </div>
   </div>
   <div class="form-row">
     <label id="end-date" for="end_date">Date of Interest</label>
     <div onChange="validateDate()">
-      <%= date_select :end_date, :date, start_year: 2017, default: 1.day.ago, end_year: Time.now.year %>
+      <%= date_select :end_date, "date", start_year: 2017, default: 1.day.ago, end_year: Time.now.year %>
     </div>
   </div>
   <div class="form-row">

@@ -1,7 +1,7 @@
 <% @title = "Corn Stalk Borer" %>
+<% @welcome_image = "stalk-borer.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/stalk-borer.png", alt: "Corn stalk borer" %>
   <h2><%= @title %></h2>
   <p>Our thermal model for corn stalk borer allows you to plan control measures for this pest.</p>
 <% end %>
@@ -14,4 +14,6 @@
 
 <p>Use the <%= link_to "Degree day calculator", action: :degree_days %> with a 41F base temp to compute current conditions for this pest.</p>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>

@@ -1,12 +1,13 @@
 <% @title = "AWON Seven-Day" %>
+<% @welcome_image = "icons/awon.png" %>
 
 <% content_for :welcome do %>
-  <%= do_welcome.html_safe %>
+  <h2><%= @title %></h2>
 <% end %>
 
-<h2>Weather Data</h2>
+<h2><%= @title %></h2>
 <div class="table-scroll-wrapper">
-  <% if @recs && @recs.keys.size > 0 && @stns && @stns.keys.size > 0 %>
+  <% if @recs&.keys&.size > 0 && @stns&.keys&.size > 0 %>
     <table border="1" width="100%">
       <tr>
         <% for col in @columns %>

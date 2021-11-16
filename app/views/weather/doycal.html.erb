@@ -1,8 +1,9 @@
 <% @title = "Day-of-Year Calendar" %>
+<% @welcome_image = "doy-cal.png" %>
 
 <% content_for :welcome do %>
-  <%= image_tag "icons/doy-cal.png", {width: "100%", alt: "Calendar"} %>
-  <h2>1-Century Day-Of-Year Calendar</h2>
+  <h2><%= @title %></h2>
+  <p>Easily convert any calendar date to the Julian date/day of year.</p>
 <% end %>
 
 <% content_for :scripts do %>

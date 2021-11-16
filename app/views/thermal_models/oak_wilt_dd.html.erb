@@ -1,8 +1,9 @@
-<% @title="Oak Wilt Vectors Emergence Thermal Model"%>
+<% @title = "Oak Wilt Vectors Emergence Thermal Model" %>
+<% @welcome_image = "ow-leaves.jpg" %>
 
 <% content_for :welcome do %>
-<%= image_tag "ow_leaves.jpg", alt: "Oak Wilt" %>
-<h2><%= @title %></h2>
+  <h2><%= @title %></h2>
+  <p>Oak wilt is a fungal disease carried by bark beetles. Prevention involves avoiding pruning or cutting oak trees during peak beetle flight periods (spring-summer). Use this thermal model to understand the risk in your area.</p>
 <% end %>
 
 <%= content_for :scripts do %>

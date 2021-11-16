@@ -37,7 +37,9 @@ class ThermalModelsController < ApplicationController
   end
 
   def get_dds
-    response = HTTParty.get(set_dd_url(params), {timeout: 5})
+    url = Endpoint::DD_URL
+    opts = parse_dd_params()
+    response = HTTParty.get(url, query: opts, timeout: 5)
     json = JSON.parse(response.body, symbolize_names: true)
 
     @data = json[:data]
@@ -48,20 +50,14 @@ class ThermalModelsController < ApplicationController
       format.html
       format.csv { send_data to_csv(@data), filename: "get_dds.csv" }
       format.json do
-        params = {
-          title: "Degree Days",
-          method: @method,
-          latitude: @latitude,
-          longitude: @longitude,
-          start_date: @start_date,
-          end_date: @end_date
-        }
         render json: {
-          params: params,
+          params: json[:info],
           data: @data
         }
       end
     end
+  rescue
+    redirect_to action: :degree_days
   end
 
   def many_degree_days_for_date
@@ -247,6 +243,34 @@ class ThermalModelsController < ApplicationController
     url = "#{Endpoint::DD_URL}?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&end_date=#{@end_date}&method=#{@method.downcase}&base=#{@base_temp}"
     url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
     url
+  end
+
+  def parse_dd_params
+    @latitude = params[:latitude].to_f
+    @longitude = params[:longitude].to_f
+    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+    begin
+      @start_date = Date.new(*params[:start_date].values.map(&:to_i))
+    rescue
+      @start_date = @end_date.beginning_of_year
+    end
+    @base_temp = params[:base_temp].to_f
+    @upper_temp = ["None", "none", ""].include?(params[:upper_temp]) ? nil : params[:upper_temp].to_f
+    puts @upper_temp
+    # @upper_temp = nil if @upper_temp < @base_temp
+    @units = params[:units]
+    @method = params[:method]
+    opts = {
+      lat: @latitude,
+      long: @longitude,
+      end_date: @end_date,
+      start_date: @start_date,
+      base: @base_temp,
+      upper: @upper_temp,
+      units: @units,
+      method: @method
+    }
+    opts.compact
   end
 
   def set_start_date_end_date(params)
