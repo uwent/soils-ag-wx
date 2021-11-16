@@ -1,12 +1,12 @@
 <% @title = "Automated Weather Observation Network" %>
+<% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-<%= image_tag "icons/awon.png", { width: "100%", alt: "Weather station" } %>
-<h2>Automated Weather Station Data</h2>
-<p style="font-weight:bold; color:red">Important Notice:</p>
-<p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
-<p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>
-<p>Data collected and recovered prior to the end date above are archived and available here.</p>
+  <h2>Automated Weather Station Data</h2>
+  <p style="font-weight:bold; color:red">Important Notice:</p>
+  <p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
+  <p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>
+  <p>Data collected and recovered prior to the end date above are archived and available here.</p>
 <% end %>
 
 <% content_for :scripts do %>
@@ -107,4 +107,6 @@
 <% end %>
 <p><button onclick="toggle()" id="toggle_button"></p>
 
-<br><%= link_to "Back", :back %>
+<br>
+
+<%= link_to "Back", :back %>

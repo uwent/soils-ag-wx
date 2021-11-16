@@ -6,6 +6,7 @@
 <% end %>
 
 <h2><%= @title %></h2>
+
 <div class="table-scroll-wrapper">
   <% if @recs&.keys&.size > 0 && @stns&.keys&.size > 0 %>
     <table border="1" width="100%">
@@ -49,3 +50,7 @@
       </table>
     <% end %>
   </div>
+
+<br>
+
+<%= link_to "Back", :back %>

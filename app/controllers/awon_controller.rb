@@ -22,12 +22,6 @@ class AwonController < ApplicationController
     end
   end
 
-  def graphs
-  end
-
-  def graphs_soiltemp
-  end
-
   def blog
     @blogs = Blog.all.order("date DESC")
   end
