@@ -71,9 +71,10 @@ label {
 	white-space: nowrap;
 }
 
-input, select {
+input, select, button {
 	margin-top: 1px;
-	margin-bottom: 1px;
+	margin-bottom: 2px;
+	font-size: medium;
 }
 
 
@@ -369,10 +370,9 @@ input, select {
   background-color: $form-bg-color;
   border-radius: 3px;
   padding: 1em;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1em;
 	width: fit-content;
+	font-size: medium;
 }
 
 .two-box {

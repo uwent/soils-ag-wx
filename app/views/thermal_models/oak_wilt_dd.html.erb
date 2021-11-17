@@ -87,13 +87,13 @@
   <% end %>
 
   <a href="#" onclick="displayAllDds()">View all Degree Days for this date range</a> |
-  <%= render partial: "partials/oak_wilt/download_csv", locals: { data: @data.to_json } %> |
+  <%= render partial: "oak_wilt_download_csv", locals: { data: @data.to_json } %> |
   <%= link_to 'Back', :back %>
 
   <br>
 
   <div id="oak-wilt-list" style="display:none">
-    <%= render partial: "partials/oak_wilt/all_dds", locals: { data: @data, end_date: @end_date } %>
+    <%= render partial: "oak_wilt_all_dds", locals: { data: @data, end_date: @end_date } %>
   </div>
 
 <% else %>

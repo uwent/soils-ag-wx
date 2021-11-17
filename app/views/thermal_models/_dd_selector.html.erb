@@ -2,9 +2,12 @@
   <b>Enter parameters:</b><br>
 
   <p>
-    Location: 
-    <label><%= select_tag :latitude, options_for_select(latitudes, "43.0") %> Latitude</label>&nbsp;
-    <label><%= select_tag :longitude, options_for_select(longitudes, "-89.0") %> Longitude</label>
+    <div onChange="moveDot()">
+      Location: 
+      <label><%= select_tag :latitude, options_for_select(latitudes, "43.0") %> Latitude</label>&nbsp;
+      <label><%= select_tag :longitude, options_for_select(longitudes, "-89.0") %> Longitude</label>
+      <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;<span id="geo-loc-msg"></span>
+    </div>
   </p>
 
   <p>

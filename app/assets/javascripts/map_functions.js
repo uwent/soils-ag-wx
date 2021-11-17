@@ -84,8 +84,32 @@ function findLatLong(x, y) {
     // console.log("Long: " + long);
     drawDot(x, y);
     updateSelector(lat, long);
-  } else {
-    // $("#dot").remove();
+  }
+}
+
+function moveDot() {
+  var lat = latitude.value;
+  var long = longitude.value;
+  var imgSize = findSize(img);
+  var scale = imgSize[0] / 1000.0;
+  var xMin = 50 * scale;
+  var xMax = 950 * scale;
+  var yMin = 50 * scale;
+  var yMax = 910 * scale;
+  var minLat = 38.0;
+  var maxLat = 50.0;
+  var minLong = -98.0;
+  var maxLong = -82.0;
+
+  if (lat >= minLat && lat <= maxLat && long >= minLong && long <= maxLong) {
+    var relLat = (lat - minLat) / (maxLat - minLat);
+    var relLong = (long - minLong) / (maxLong - minLong);
+    // console.log(relLong);
+    // console.log(relLat);
+    var x = xMin + relLong * (xMax - xMin);
+    var y = yMax - relLat * (yMax - yMin);
+    // console.log("Placing dot at lat: " + lat + ", " + long);
+    drawDot(x, y);
   }
 }
 
@@ -95,4 +119,49 @@ function updateSelector(lat, long) {
   console.log("Clicked on " + lat + "," + long)
   $('#latitude').val(lat);
   $('#longitude').val(long);
+}
+
+function getGeoLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(handleGeoLocation, showError);
+  } else {
+    flashGeoMsg("Browser doesn't support location.");
+  }
+}
+
+function handleGeoLocation(position) {
+  var lat = position.coords.latitude.toFixed(1);
+  var long = position.coords.longitude.toFixed(1);
+  flashGeoMsg("Got location!");
+  console.log("Got location from browser: " + lat + ", " + long);
+  $('#latitude').val(lat);
+  $('#longitude').val(long);
+  moveDot();
+}
+
+function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      flashGeoMsg("User denied the request for Geolocation.")
+      break;
+    case error.POSITION_UNAVAILABLE:
+      flashGeoMsg("Location information is unavailable.")
+      break;
+    case error.TIMEOUT:
+      flashGeoMsg("The request to get user location timed out.")
+      break;
+    case error.UNKNOWN_ERROR:
+      flashGeoMsg("An unknown error occurred.")
+      break;
+  }
+}
+
+async function flashGeoMsg(msg) {
+  var e = document.getElementById("geo-loc-msg");
+  e.innerHTML = msg;
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  $(e).fadeOut(500);
+  await new Promise(resolve => setTimeout(resolve, 500));
+  e.innerHTML = "";
+  $(e).fadeIn();
 }

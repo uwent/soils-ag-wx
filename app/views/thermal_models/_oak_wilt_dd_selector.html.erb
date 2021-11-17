@@ -1,0 +1,30 @@
+<div class="form-box">
+  <%= form_tag action: :oak_wilt_dd do %>
+    <b>Select location and date of interest for Oak Wilt recommendation:</b><br>
+    <p>
+      <div onChange="moveDot()">
+        Location:<br>
+        <label><%= select_tag :latitude, options_for_select(latitudes, "43.0") %> Latitude</label>&nbsp;
+        <label><%= select_tag :longitude, options_for_select(longitudes, "-89.0") %> Longitude</label><br>
+        <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;<span id="geo-loc-msg"></span>
+      </div>
+    </p>
+    <p>
+      <div onChange="validateDate()">
+        Date of Interest:<br>
+        <%= date_select :end_date, "date", start_year: 2017, default: 1.day.ago, end_year: Time.now.year %>
+      </div>
+    </p>
+    <p>
+      <div id="date-warning" style="display:none;">
+        <p>Date of interest must be prior to the current date.<p>
+      </div>
+      <p class="disclaimer">Note: Date of interest must be prior to the current date. The degree day data in this system is available only up to the day before the current date for computation.</p>
+    </p>
+    <input type="hidden" name="model_type" value="oak_wilt" />
+    <input type="hidden" name="method" value="Sine"/>
+    <input type="hidden" name="base_temp" value="41" />
+    <input type="hidden" name="upper_temp" value="None" />
+    <%= submit_tag "Compute Estimated Oak Wilt Vector Emergence Status", class: "button", id: "submit" %>
+  <% end %>
+</div>
