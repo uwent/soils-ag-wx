@@ -36,10 +36,8 @@ group :development, :test do
   gem "pry-rails", "~> 0.3"
   gem "spring", "~> 3.0"
   gem "rspec_junit_formatter", "~> 0.4"
-  gem "standard"
-end
-
-group :test do
+  # gem "webmock", "~> 3.14" # TODO
   gem "rails-controller-testing", "~> 1.0"
-  gem "simplecov", require: false
+  gem "simplecov"
+  gem "standard"
 end

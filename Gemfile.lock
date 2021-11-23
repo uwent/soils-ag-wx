@@ -100,6 +100,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.9)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
     docile (1.4.0)
     ed25519 (1.2.4)
@@ -108,6 +110,7 @@ GEM
     ffi (1.15.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
+    hashdiff (1.0.1)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -267,6 +270,10 @@ GEM
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.1.0)
+    webmock (3.14.0)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -311,6 +318,7 @@ DEPENDENCIES
   standard
   turbolinks (~> 5.2)
   uglifier (~> 4.2)
+  webmock (~> 3.14)
   whenever (~> 1.0)
   will_paginate (~> 3.3)
 
