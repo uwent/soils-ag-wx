@@ -34,7 +34,7 @@ end
 
 group :development, :test do
   gem "pry-rails", "~> 0.3"
-  gem "spring", "~> 3.0"
+  gem "spring", "~> 3.1"
   gem "rspec_junit_formatter", "~> 0.4"
   # gem "webmock", "~> 3.14" # TODO
   gem "rails-controller-testing", "~> 1.0"
