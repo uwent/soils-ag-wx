@@ -11,8 +11,8 @@
     <%= link_to image_tag("dd-map-150px.png"), action: :weather_map %>
   </div>
   <div>
-    <h2><%= link_to "Grid-Interpolated Daily Temperatures", action: :weather_map %></h2>
-    <p>View daily maps and access single point or whole-grid data series for weather parameters including daily min, max, and mean temperatures and vapor pressures.</p>
+    <h2><%= link_to "Gridded Weather Data", action: :weather_map %></h2>
+    <p>View daily maps and access single point or whole-grid data series for weather parameters including daily min, max, and mean temperatures, dewpoints, vapor pressures, and humidity.</p>
   </div>
 </div>
 
@@ -23,7 +23,7 @@
     <%= link_to image_tag("precip-map-250px.png"), action: :precip_map %>
   </div>
   <div>
-    <h2><%= link_to "Gridded Daily Precipitation Totals", action: :precip_map %></h2>
+    <h2><%= link_to "Gridded Daily Precipitation Data", action: :precip_map %></h2>
     <p>View daily maps and access single point or whole-grid data series for daily precipitation totals. Data is derived from NOAA-generated datasets.</p>
   </div>
 </div>
