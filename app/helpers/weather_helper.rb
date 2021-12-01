@@ -14,6 +14,25 @@ module WeatherHelper
     num
   end
 
+  def freeze_temp
+    @units == "F" ? 28 : -2.22
+  end
+
+  def frost_temp
+    @units == "F" ? 32 : 0
+  end
+
+  def format_temp(temp)
+    return "" if temp.nil?
+    temp = c_to_f(temp)
+    temp_text = sprintf_nilsafe(temp, 2)
+    if temp <= freeze_temp
+      color = "red"
+    elsif temp <= frost_temp
+      color = "blue"
+    end
+    color ? "<span style='color:#{color}'>#{temp_text}</span>" : temp_text
+  end
 
   def latest_hyd_link
     yesterday = 1.days.ago
@@ -90,44 +109,44 @@ module WeatherHelper
     (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)] }
   end
 
-  def build_map_grid
-    s = 1
-    lats = (38..50).step(0.5)
-    longs = (-98..-82).step(0.5)
-    x_start = 50 * s
-    x_end = 950 * s
-    x_inc = (x_end - x_start) / (longs.count - 1)
+  # def build_map_grid
+  #   s = 1
+  #   lats = (38..50).step(0.5)
+  #   longs = (-98..-82).step(0.5)
+  #   x_start = 50 * s
+  #   x_end = 950 * s
+  #   x_inc = (x_end - x_start) / (longs.count - 1)
 
-    x_start -= 0.5 * x_inc # center the hitbox
-    y_start = 50 * s
-    y_end = 910 * s
-    y_inc = (y_end - y_start) / (lats.count - 1)
-    y_start -= 0.5 * y_inc
+  #   x_start -= 0.5 * x_inc # center the hitbox
+  #   y_start = 50 * s
+  #   y_end = 910 * s
+  #   y_inc = (y_end - y_start) / (lats.count - 1)
+  #   y_start -= 0.5 * y_inc
 
-    # puts "First x: #{x_start} - #{x_start + x_inc}"
-    # puts "Last x: #{x_start + x_inc * longs.count} - #{x_start + x_inc * (longs.count + 1)}"
-    # puts "First y: #{y_start} - #{y_start + y_inc}"
-    # puts "Last y: #{y_start + y_inc * lats.count} - #{y_start + y_inc * (lats.count + 1)}"
+  #   # puts "First x: #{x_start} - #{x_start + x_inc}"
+  #   # puts "Last x: #{x_start + x_inc * longs.count} - #{x_start + x_inc * (longs.count + 1)}"
+  #   # puts "First y: #{y_start} - #{y_start + y_inc}"
+  #   # puts "Last y: #{y_start + y_inc * lats.count} - #{y_start + y_inc * (lats.count + 1)}"
 
-    array = []
-    row = 0
-    lats.reverse_each do |lat|
-      col = 0
-      longs.each do |long|
-        array << {
-          lat: lat,
-          long: long,
-          x1: (x_start + x_inc * col).round(0),
-          x2: (x_start + x_inc * (col + 1)).round(0),
-          y1: (y_start + y_inc * row).round(0),
-          y2: (y_start + y_inc * (row + 1)).round(0)
-        }
-        col += 1
-      end
-      row += 1
-    end
-    array
-  end
+  #   array = []
+  #   row = 0
+  #   lats.reverse_each do |lat|
+  #     col = 0
+  #     longs.each do |long|
+  #       array << {
+  #         lat: lat,
+  #         long: long,
+  #         x1: (x_start + x_inc * col).round(0),
+  #         x2: (x_start + x_inc * (col + 1)).round(0),
+  #         y1: (y_start + y_inc * row).round(0),
+  #         y2: (y_start + y_inc * (row + 1)).round(0)
+  #       }
+  #       col += 1
+  #     end
+  #     row += 1
+  #   end
+  #   array
+  # end
 
   def calendar_grid_color(mday, column, today = Date.today)
     if mday == today.mday && column + 1 == today.month

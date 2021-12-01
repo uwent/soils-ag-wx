@@ -24,8 +24,9 @@
 
     <% if @temp_selector %>
     Temperature units:<br>
-    <%= radio_button_tag :temp_units, "F", true %>Fahrenheit
-    <%= radio_button_tag :temp_units, "C" %>Celcius<br><br>
+    <label><%= radio_button_tag :temp_units, "F", true %>Fahrenheit</label>
+    <label><%= radio_button_tag :temp_units, "C" %>Celcius</label><br>
+    <br>
     <% end %>
 
     <%= button_tag "Get Data Series", name: "format", value: "js" %>
