@@ -1,4 +1,4 @@
-<% @title = "Insolation Map"%>
+<% @title = "Solar Insolation Map" %>
 <% @welcome_image = "equinox.jpg" %>
 
 <% content_for :welcome do %>
@@ -9,6 +9,12 @@
 <%= javascript_include_tag "map_functions" %>
 
 <h2><%= @title %></h2>
+
+<hr>
+
+<p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
+
+<p>The gridded insolation estimates shown below are imported daily from <%= link_to "UW Madison's Space Science Engineering Center", "https://ssec.wisc.edu" %> and provided on this page for easy access. We use this data, in combination with <%= link_to "gridded daily temperature datasets", controller: :weather, action: :weather_map %>, to generate our <%= link_to "evapotranspiration estimates", action: :et_map %>.</p>
 
 <hr>
 
