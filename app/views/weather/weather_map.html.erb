@@ -20,9 +20,7 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :weather_map } %>
 
-<div id="map-container">
-  <%= image_tag @map_image, id: "map-img" %>
-</div>
+<%= render partial: "partials/map_image" %>
 
 <div class="note">
   Note: Map color scale is based on min/max temp across region. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv %>.

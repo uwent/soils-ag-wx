@@ -99,20 +99,18 @@ class ApplicationController < ActionController::Base
     @long = params[:longitude].to_f
     @start_date = Date.new(*params[:start_date].values.map(&:to_i))
     @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+    {
+      lat: @lat,
+      long: @long,
+      start_date: @start_date,
+      end_date: @end_date
+    }
   end
 
   def parse_date
     Date.parse(params[:date])
   rescue
     (Time.now - 7.hours).to_date.yesterday
-  end
-
-  def get_map(url)
-    json = fetch(url)
-    @map_image = "#{Endpoint::HOST}#{json[:map]}"
-  rescue
-    Rails.logger.error "Failed to retrieve endpoint: #{url}"
-    @map_image = "no_data.png"
   end
 
   def fetch_to_csv(url)
@@ -130,7 +128,7 @@ class ApplicationController < ActionController::Base
 
   def to_csv(data)
     require "csv"
-    Rails.logger.info "generating csv"
+    Rails.logger.debug "ApplicationController :: Generating csv..."
     CSV.generate(headers: true) do |csv|
       csv << data.first.keys
       data.each do |h|
@@ -138,6 +136,6 @@ class ApplicationController < ActionController::Base
       end
     end
   rescue => e
-    Rails.logger.error("Failed to create csv: #{e.message}")
+    Rails.logger.error "ApplicationController :: Failed to create csv: #{e.message}"
   end
 end

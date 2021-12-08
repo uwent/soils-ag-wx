@@ -1,6 +1,9 @@
 require "test_helper"
 
 class WeatherControllerTest < ActionController::TestCase
+  date = "2021-01-01"
+  map_response = { map: "no_data.png" }.to_json
+
   test "should get index" do
     get :index
     assert_response :success
@@ -12,12 +15,14 @@ class WeatherControllerTest < ActionController::TestCase
   end
 
   test "should get weather_map" do
-    get :weather_map
+    stub_request(:get, "https://www.example.com/weather/#{date}").to_return(status: 200, body: map_response, headers: {})
+    get :weather_map, params: {date: date}
     assert_response :success
   end
 
   test "should get precip_map" do
-    get :precip_map
+    stub_request(:get, "https://www.example.com/precips/#{date}").to_return(status: 200, body: map_response, headers: {})
+    get :precip_map, params: {date: date}
     assert_response :success
   end
 

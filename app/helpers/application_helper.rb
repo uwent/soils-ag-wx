@@ -1,9 +1,32 @@
 module ApplicationHelper
-  def borked
-    str = <<-END
-      <h3>Page under reconstruction</h3>
-      <p>Due to a major overhaul of Soil Science's Web infrastucture, some of our products are broken right now. Unfortunately, you've found one. We are working hard on it and hope to have them all back up in a couple of days. We apologize for the inconvenience. (2013-11-19)</p>
-    END
-    str.html_safe
+  def sprintf_nilsafe(num, digits)
+    num.nil? ? "" : sprintf("%.#{digits}f", num.round(digits))
+  rescue
+    num
+  end
+
+  def c_to_f(c)
+    @units == "F" ? c * (9.0 / 5.0) + 32 : c
+  rescue
+    c
+  end
+
+  def freeze_temp
+    @units == "F" ? 28 : -2.22
+  end
+
+  def frost_temp
+    @units == "F" ? 32 : 0
+  end
+
+  def format_temp(temp)
+    return "" if temp.nil?
+    temp_text = sprintf_nilsafe(temp, 2)
+    if temp <= freeze_temp
+      color = "red"
+    elsif temp <= frost_temp
+      color = "blue"
+    end
+    color ? "<span style='color:#{color}'>#{temp_text}</span>" : temp_text
   end
 end

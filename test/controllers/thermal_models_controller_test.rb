@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ThermalModelsControllerTest < ActionController::TestCase
+  dd_response = { data: [ {date: Date.current} ] }.to_json
+
   test "should get index" do
     get :index
     assert_response :success
@@ -58,7 +60,9 @@ class ThermalModelsControllerTest < ActionController::TestCase
       },
       method: "Simple"
     }
+
     [:json, :csv, :html].each do |format|
+      stub_request(:get, "https://www.example.com/degree_days?base=0.0&end_date=2011-12-31&lat=44.2&long=-89.2&method=Simple&start_date=2011-01-01&upper=0.0").to_return(status: 200, body: dd_response, headers: {})
       get :get_dds, params: params.merge(format: format)
       assert_response :success
     end
@@ -97,6 +101,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
       method: "Sine",
       base_temp: 41
     }
+    stub_request(:get, "https://www.example.com/degree_days?base=41.0&end_date=2011-12-31&lat=44.2&long=-89.2&method=Sine&start_date=2011-01-01&upper=0.0").to_return(status: 200, body: dd_response, headers: {})
     get :get_dds, params: params
     assert_response :success
   end

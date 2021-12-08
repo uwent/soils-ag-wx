@@ -37,43 +37,41 @@ class WeatherController < ApplicationController
   end
 
   def weather_map
+    url = AgWeather::WEATHER_URL
     @date = parse_date()
     @temp_selector = true
+
     respond_to do |format|
       format.html {
-        url = "#{Endpoint::WEATHER_URL}/#{@date}"
-        get_map(url)
+        @map_image = AgWeather.get_map(url, @date)
       }
       format.csv {
-        url = "#{Endpoint::WEATHER_URL}/all_for_date?date=#{@date}"
-        json = fetch(url)
-        send_data to_csv(json), filename: "weather grid for #{@date}.csv"
+        data = AgWeather.get_grid(url, date)
+        send_data to_csv(data), filename: "weather grid for #{@date}.csv"
       }
     end
   end
 
   def precip_map
+    url = AgWeather::PRECIP_URL
     @date = parse_date()
+
     respond_to do |format|
       format.html {
-        url = "#{Endpoint::PRECIP_URL}/#{@date}"
-        get_map(url)
+        @map_image = AgWeather.get_map(url, @date)
       }
       format.csv {
-        url = "#{Endpoint::BASE_URL}/precips/all_for_date?date=#{@date}"
-        json = fetch(url)
-        send_data to_csv(json), filename: "precip grid for #{@date}.csv" }
+        data = AgWeather.get_grid(url, @date)
+        send_data to_csv(data), filename: "precip grid for #{@date}.csv" }
     end
   end
   
   def weather_data
-    parse_map_params()
+    url = AgWeather::WEATHER_URL
+    query = parse_map_params()
     @units = params[:temp_units]
-
-    url = "#{Endpoint::WEATHER_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
-    json = fetch(url)
+    json = AgWeather.get(url, query)
     @data = json[:data]
-    Rails.logger.info "WeatherController.weather_data :: Got weather data!"
 
     respond_to do |format|
       format.js { render layout: false }
@@ -85,10 +83,9 @@ class WeatherController < ApplicationController
   end
 
   def precip_data
-    parse_map_params()
-
-    url = "#{Endpoint::PRECIP_URL}?lat=#{@lat}&long=#{@long}&start_date=#{@start_date}&end_date=#{@end_date}"
-    json = fetch(url)
+    url = AgWeather::PRECIP_URL
+    query = parse_map_params()
+    json = AgWeather.get(url, query)
     @data = json[:data]
 
     respond_to do |format|

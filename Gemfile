@@ -33,11 +33,14 @@ group :development do
 end
 
 group :development, :test do
+  gem "dotenv-rails", "~> 2.7"
   gem "pry-rails", "~> 0.3"
   gem "spring", "~> 3.1"
-  gem "rspec_junit_formatter", "~> 0.4"
-  # gem "webmock", "~> 3.14" # TODO
   gem "rails-controller-testing", "~> 1.0"
   gem "simplecov"
   gem "standard"
+end
+
+group :test do
+  gem "webmock", "~> 3.14"
 end

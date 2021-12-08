@@ -46,6 +46,7 @@ class HeartbeatControllerTest < ActionController::TestCase
   end
 
   test "should get webapps" do
+    skip()
     get :webapps
     assert_response :success
   end

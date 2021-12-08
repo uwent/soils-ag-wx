@@ -16,9 +16,7 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :precip_map } %>
 
-<div id="map-container">
-  <img id="map-img" src="<%= @map_image %>" alt="Precipitation map" >
-</div>
+<%= render partial: "partials/map_image" %>
 
 <div class="note">
   Note: Map color scale is based on min/max daily precipitation across region. Map may take a few moments to load if it hasn't already been created. Precipitation data is not available for Canada from our data source. <%= link_to "Download the entire grid of data in CSV format", action: :precip_map, format: :csv %>.

@@ -2,7 +2,7 @@
   <p>
     Navigation:
     <label><%= submit_tag "Prev day: #{@date - 1}", name: :date %></label>&nbsp;
-    <label><%= submit_tag "Next day: #{@date + 1}", name: :date %></label>&nbsp;
+    <% if @date < Date.yesterday %><label><%= submit_tag "Next day: #{@date + 1}", name: :date %></label>&nbsp;<% end %>
     <label><%= submit_tag "Latest: #{Date.yesterday}", name: :date %></label>
   </p>
 <% end %>

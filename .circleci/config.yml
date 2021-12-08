@@ -1,0 +1,46 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@1.2.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.0.3-node
+        environment:
+          PG_HOST: localhost
+          PG_USER: postgres
+          RAILS_ENV: test
+          RACK_ENV: test
+      - image: circleci/postgres:12.8
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: soils_ag_wx_test
+          POSTGRES_PASSWORD: "password"
+    executor: ruby/default
+    steps:
+      - checkout
+      - run:
+          name: Get Bundler
+          command: gem install bundler
+      - run:
+          name: Configure Bundler
+          command: bundle config set --local path './vendor/bundle'
+      - restore_cache:
+          name: Restore Gem Cache
+          keys:
+            - bundle-{{ checksum ".ruby-version" }}-{{ checksum "Gemfile.lock" }}
+            - bundle-{{ checksum ".ruby-version" }}
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      - save_cache:
+          name: Save Gem Cache
+          key: bundle-{{ checksum ".ruby-version" }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ./vendor/bundle
+      - run:
+          name: Set up database
+          command: bin/rails db:setup
+      - run:
+          name: Run tests
+          command: bundle exec rake test

@@ -67,10 +67,9 @@ class ThermalModelsController < ApplicationController
   end
 
   def get_dds
-    url = Endpoint::DD_URL
-    opts = parse_dd_params()
-    response = HTTParty.get(url, query: opts, timeout: 5)
-    json = JSON.parse(response.body, symbolize_names: true)
+    url = AgWeather::DD_URL
+    query = parse_dd_params()
+    json = AgWeather.get(url, query)
 
     @data = json[:data]
     @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
@@ -105,11 +104,9 @@ class ThermalModelsController < ApplicationController
   end
 
   def oak_wilt_dd
-    # url = set_dd_url(params)
-    url = Endpoint::DD_URL
-    opts = parse_dd_params()
-    response = HTTParty.get(url, query: opts, timeout: 5)
-    json = JSON.parse(response.body, symbolize_names: true)
+    url = AgWeather::DD_URL
+    query = parse_dd_params()
+    json = AgWeather.get(url, query)
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
       day
@@ -137,7 +134,7 @@ class ThermalModelsController < ApplicationController
     # data = JSON.parse params[:dd_data].gsub('=>', ":")
     data = JSON.parse(params[:dd_data], symbolize_names: true)
     respond_to do |format|
-      format.csv { send_data to_csv(data), filename: "oak_wilt_risk.csv" }
+      format.csv { send_data to_csv(data), filename: "oak wilt risk.csv" }
     end
   end
 
@@ -264,24 +261,6 @@ class ThermalModelsController < ApplicationController
     }
   end
 
-  def set_dd_url(params)
-    @method = params[:method]
-    @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f
-    @base_temp = params[:base_temp].to_f
-    @upper_temp = params[:upper_temp] == "None" ? nil : params[:upper_temp].to_f
-    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
-    begin
-      @start_date = Date.new(*params[:start_date].values.map(&:to_i))
-    rescue
-      @start_date = @end_date.beginning_of_year
-    end
-    # set_start_date_end_date(params)
-    url = "#{Endpoint::DD_URL}?lat=#{@latitude}&long=#{@longitude}&start_date=#{@start_date}&end_date=#{@end_date}&method=#{@method.downcase}&base=#{@base_temp}"
-    url += "&upper=#{@upper_temp}" unless @upper_temp.nil?
-    url
-  end
-
   def parse_dd_params
     @latitude = params[:latitude].to_f
     @longitude = params[:longitude].to_f
@@ -295,7 +274,7 @@ class ThermalModelsController < ApplicationController
     @upper_temp = ["None", "none", ""].include?(params[:upper_temp]) ? nil : params[:upper_temp].to_f
     @units = params[:units]
     @method = params[:method]
-    opts = {
+    {
       lat: @latitude,
       long: @longitude,
       end_date: @end_date,
@@ -304,8 +283,7 @@ class ThermalModelsController < ApplicationController
       upper: @upper_temp,
       units: @units,
       method: @method
-    }
-    opts.compact
+    }.compact
   end
 
   def set_start_date_end_date(params)

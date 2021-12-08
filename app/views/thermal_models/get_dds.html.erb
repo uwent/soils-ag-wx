@@ -3,49 +3,55 @@
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
+  <p>Results of your specified degree day model are shown.</p>
+  <p><%= link_to "Go back", :back %> to run another model.</p>
 <% end %>
 
-<h2><%= @title %></h2>
+<% if @data %>
+  <div id="data-container">
+    <h4>Degree days data series</h4>
+    <p>
+      <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
+      <b>Date range:</b> <%= @start_date %> to <%= @end_date %> (<%= (@start_date..@end_date).count %> days)<br>
+      <b>Threshold(s):</b> <%= @base_temp %>&deg;<%= @units%> base<% if @upper_temp %>, <%= @upper_temp %>&deg;<%= @units %> upper<% end %><br>
+      <b>Method:</b> <%= @method %>
+    </p>
+    <table class="grid-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Min<br>temp<br>(&deg;<%= @units %>)</th>
+          <th>Max<br>temp<br>(&deg;<%= @units %>)</th>
+          <th><%= @units %>DDs</th>
+          <th>Cumul.<br><%= @units %>DDs</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @data.each_with_index do |day, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= day[:date] %></td>
+          <td><%= format_temp(day[:min_temp]).html_safe %></td>
+          <td><%= format_temp(day[:max_temp]).html_safe %></td>
+          <td><%= day[:value] %></td>
+          <td><%= day[:cumulative_value] %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 
-<hr>
-
-<div id="data-container">
-  <h4>Degree days data series</h4>
-  <p>
-    <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
-    <b>Date range:</b> <%= @start_date %> to <%= @end_date %> (<%= (@start_date..@end_date).count %> days)<br>
-    <b>Threshold(s):</b> <%= @base_temp %>&deg;<%= @units%> base<% if @upper_temp %>, <%= @upper_temp %>&deg;<%= @units %> upper<% end %><br>
-    <b>Method:</b> <%= @method %>
+  <p class="note">
+    Note: Frost temperatures (&lt;<%= frost_temp %>&deg;<%= @units %>) shown in <span style="color:blue">blue</span>, freezing temperatures (&lt;<%= freeze_temp %>&deg;<%= @units %>) shown in <span style="color:red">red</span>.
   </p>
-  <table class="grid-table">
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>Date</th>
-        <th>Min<br>temp<br>(&deg;<%= @units %>)</th>
-        <th>Max<br>temp<br>(&deg;<%= @units %>)</th>
-        <th><%= @units %>DDs</th>
-        <th>Cumul.<br><%= @units %>DDs</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @data.each_with_index do |day, i| %>
-      <tr>
-        <td><%= i + 1 %></td>
-        <td><%= day[:date] %></td>
-        <td><%= day[:min_temp] %></td>
-        <td><%= day[:max_temp] %></td>
-        <td><%= day[:value] %></td>
-        <td><%= day[:cumulative_value] %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
 
-<p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
-  <span id="copy-confirm" style="display:none;"> Copied!</span>
-</p>
+  <p>
+    <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
+    <span id="copy-confirm" style="display:none;"> Copied!</span>
+  </p>
+<% else %>
+  No data!
+<% end %>
 
 <p><%= link_to "Back", :back %></p>

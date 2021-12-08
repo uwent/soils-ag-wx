@@ -23,9 +23,7 @@
 
 <%= render partial: "partials/date_changer", locals: { action: :et_map } %>
 
-<div id="map-container">
-  <img id="map-img" src="<%= @map_image %>" alt="Evapotranspiration map" >
-</div>
+<%= render partial: "partials/map_image" %>
 
 <div class="note">
   Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :et_map, format: :csv %>.
