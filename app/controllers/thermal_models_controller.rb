@@ -23,10 +23,14 @@ class ThermalModelsController < ApplicationController
     @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
     @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
     @units = params[:units] || "F"
+    @min_value = params[:min_value]
+    @max_value = params[:max_value]
     @opts = {
       start_date: @start.to_s,
       end_date: @end.to_s,
-      units: @units
+      units: @units,
+      min_value: @min_value,
+      max_value: @max_value
     }
     respond_to do |format|
       format.html
@@ -39,11 +43,6 @@ class ThermalModelsController < ApplicationController
 
   def dd_map_image
     data = JSON.parse(request.raw_post, symbolize_names: true)
-    puts request.raw_post
-    # puts JSON.parse(request.body)
-    # data = request.raw_post
-    # puts data.inspect
-    # puts data.class
     @map_image = AgWeather.get_dd_map(data[:model], data[:opts])
     render partial: "dd_map_image"
   end

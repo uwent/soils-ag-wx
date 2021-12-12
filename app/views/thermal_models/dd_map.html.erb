@@ -23,14 +23,20 @@
 
       <p>
         Temperature units:
-        <label><%= radio_button_tag :units, "F", @units == "F" %>Fahrenheit</label>&nbsp;
-        <label><%= radio_button_tag :units, "C", @units == "C" %>Celcius</label>
+        <label><%= radio_button_tag(:units, "F", @units == "F") %>Fahrenheit</label>&nbsp;
+        <label><%= radio_button_tag(:units, "C", @units == "C") %>Celcius</label>
       </p>
 
       <p>
         Date range:<br>
         <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Biofix (start) date</label><br>
         <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
+      </p>
+
+      <p>
+        Color scale (leave blank to scale automatically):<br>
+        <label>Minimum value: <%= number_field_tag(:min_value) %></label><br>
+        <label>Maximum value: <%= number_field_tag(:max_value) %></label>
       </p>
 
       <%= submit_tag "Show map" %>
@@ -47,12 +53,15 @@
 <%= render_async "dd_map_image",
   method: "POST",
   data: { model: @model, opts: @opts }.to_json do %>
-  <p>
-    <b>Map loading, please wait...</b><br>
-    Model: <%= @model %><br>
-    Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %><br>
-    Units: <%= "#{@units}" %>
-  </p>
+  <div class="map-loading">
+    <b>Generating map, please wait...</b>
+    <p>
+      Model: <%= @model %><br>
+      Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %><br>
+      Units: <%= "#{@units}" %><br>
+      Scale bar: <%= @min_value.presence ? @min_value : "?"  %> - <%= @max_value.presence ? @max_value : "?" %>
+    </p>
+  </div>
 <% end %>
 
 <div class="note">
