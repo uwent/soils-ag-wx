@@ -23,7 +23,7 @@ class SunWaterController < ApplicationController
 
   def insol_map
     endpoint = AgWeather::INSOL_URL
-    @date = parse_date
+    @date = parse_date()
 
     respond_to do |format|
       format.html {

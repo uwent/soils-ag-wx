@@ -1,0 +1,78 @@
+<% @title = "Degree Day Maps and Data" %>
+<% @welcome_image = "degree-flower.png" %>
+
+<% content_for :welcome do %>
+  <h2>Degree Day Maps</h2>
+  <p>foo</p>
+<% end %>
+
+<%= javascript_include_tag "map_functions" %>
+
+<h2><%= @title %></h2>
+
+<hr>
+
+<div class="two-box">
+  <div class="form-box">
+    <%= form_tag action: :dd_map do %>
+      <b>Choose a pre-existing degree day model map:</b><br>
+
+      <p>
+        <label>Pre-defined models: <%= select_tag :model, options_for_select(dd_labels, @model) %></label>
+      </p>
+
+      <p>
+        Temperature units:
+        <label><%= radio_button_tag :units, "F", @units == "F" %>Fahrenheit</label>&nbsp;
+        <label><%= radio_button_tag :units, "C", @units == "C" %>Celcius</label>
+      </p>
+
+      <p>
+        Date range:<br>
+        <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Biofix (start) date</label><br>
+        <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
+      </p>
+
+      <%= submit_tag "Show map" %>
+    <% end %>
+  </div>
+  <div class="form-box">
+  </div>
+</div>
+
+<hr>
+
+<h4>Degree day map for Wisconsin and surrounding states:</h4>
+
+<%= render_async "dd_map_image",
+  method: "POST",
+  data: { model: @model, opts: @opts }.to_json do %>
+  <p>
+    <b>Map loading, please wait...</b><br>
+    Model: <%= @model %><br>
+    Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %><br>
+    Units: <%= "#{@units}" %>
+  </p>
+<% end %>
+
+<div class="note">
+  Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :dd_map, format: :csv %>.
+</div>
+
+<hr>
+
+<h4>Get Degree Day Data Time Series</h4>
+
+<div class="note">
+  Note: You can click on the map to set the latitude and longitude.
+</div>
+
+<%= render partial: "dd_map_selector" %>
+
+<div id="map-data"></div>
+
+<hr>
+
+<br>
+
+<%= link_to "Back", :back %>

@@ -1,0 +1,7 @@
+<div id="map-container">
+  <% if @map_image.include? "no_data" %>
+    <%= image_tag @map_image %>
+  <% else %>
+    <%= image_tag @map_image, id: "map-img" %>
+  <% end %>
+</div>

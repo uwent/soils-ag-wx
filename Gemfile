@@ -18,6 +18,7 @@ gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem "whenever", "~> 1.0"
 gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
 gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
+gem "render_async"
 
 group :development do
   gem "puma", "~> 5.5"

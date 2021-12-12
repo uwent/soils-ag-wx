@@ -13,8 +13,8 @@
 
     <p>
       Date range:<br>
-      <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: Date.civil(Date.today.year, 1, 1) %>Biofix (start) date</label><br>
-      <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.day.ago %>End date</label>
+      <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Biofix (start) date</label><br>
+      <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
     </p>
 
     <p>
@@ -40,7 +40,7 @@
       <%= check_box_tag :seven_day %> Report only last 7 days of accumulated values<br/>
     </p>
 
-    <%= button_tag "View in Browser", name: "format", value: "html" %>
+    <%= button_tag "View data series", name: "format", value: "html" %>
     <%= button_tag "Download as CSV", name: "format", value: "csv" %>
     <%= button_tag "View as JSON", name: "format", value: "json" %>
   <% end %>

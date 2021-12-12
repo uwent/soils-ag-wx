@@ -17,6 +17,37 @@ class ThermalModelsController < ApplicationController
   def corn_stalk_borer
   end
 
+  def dd_map
+    # TODO: Have this fetch default values from AgWeather so it always has an image to show
+    @model = params[:model].present? ? params[:model] : "dd_50_86"
+    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
+    @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
+    @units = params[:units] || "F"
+    @opts = {
+      start_date: @start.to_s,
+      end_date: @end.to_s,
+      units: @units
+    }
+    respond_to do |format|
+      format.html
+      format.csv {
+        data = AgWeather.get_dd_grid(@model)
+        send_data to_csv(data), filename: "dd data grid for #{@model}.csv"
+      }
+    end
+  end
+
+  def dd_map_image
+    data = JSON.parse(request.raw_post, symbolize_names: true)
+    puts request.raw_post
+    # puts JSON.parse(request.body)
+    # data = request.raw_post
+    # puts data.inspect
+    # puts data.class
+    @map_image = AgWeather.get_dd_map(data[:model], data[:opts])
+    render partial: "dd_map_image"
+  end
+
   def degree_days
     @dd_methods = %w[Average Modified Sine]
   end
@@ -139,6 +170,13 @@ class ThermalModelsController < ApplicationController
   end
 
   private
+
+  def parse_dd_map_params
+    @model = params[:model].present? ? params[:model] : "dd_50_86"
+    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
+    @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
+    @units = params[:units] || "F"
+  end
 
   def locations_for(ids)
     ids = ids.collect { |id| id.to_i }
