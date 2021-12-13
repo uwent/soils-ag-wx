@@ -63,7 +63,7 @@
         <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
       </p>
 
-      <p>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></p>
+      <p><label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label></p>
 
       <%= hidden_field_tag :map_type, "dsv" %>
       <%= hidden_field_tag :dd_model, @dd_model %>
