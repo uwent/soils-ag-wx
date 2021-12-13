@@ -12,12 +12,4 @@ module GridController
     "Insol" => Insol
   }
 
-  def to_csv(data)
-    CSV.generate do |csv|
-      csv << data.first.keys
-      data.each do |h|
-        csv << h.values
-      end
-    end
-  end
 end

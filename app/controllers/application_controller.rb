@@ -31,6 +31,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def map_image
+    data = JSON.parse(request.raw_post, symbolize_names: true)
+    @map_image = AgWeather.get_map(data[:endpoint], data[:id], data[:query])
+    render partial: "partials/map_image"
+  end
+
   private
 
   def set_tab_selected
@@ -110,21 +116,8 @@ class ApplicationController < ActionController::Base
   def parse_date
     Date.parse(params[:date])
   rescue
-    (Time.now - 7.hours).to_date.yesterday
+    Time.now.in_time_zone("US/Central").yesterday.to_date
   end
-
-  # def fetch_to_csv(url)
-  #   json = fetch(url)
-  #   data = json[:data]
-  #   CSV.generate(headers: true) do |csv|
-  #     csv << data.first.keys
-  #     data.each do |h|
-  #       csv << h.values
-  #     end
-  #   end
-  # rescue
-  #   Rails.logger.error("Failed to retrieve endpoint: #{url}")
-  # end
 
   def to_csv(data)
     require "csv"
@@ -137,5 +130,6 @@ class ApplicationController < ActionController::Base
     end
   rescue => e
     Rails.logger.error "ApplicationController :: Failed to create csv: #{e.message}"
+    "no data"
   end
 end

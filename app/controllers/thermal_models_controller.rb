@@ -19,6 +19,7 @@ class ThermalModelsController < ApplicationController
 
   def dd_map
     # TODO: Have this fetch default values from AgWeather so it always has an image to show
+    @endpoint = AgWeather::PEST_URL
     @dd_submit_text ="Show degree day map"
     @dsv_submit_text = "Show disease risk map"
     @dd_model = params[:dd_model].presence || "dd_50_86"
@@ -47,12 +48,6 @@ class ThermalModelsController < ApplicationController
       #   send_data to_csv(data), filename: "data grid for #{@model}.csv"
       # }
     end
-  end
-
-  def dd_map_image
-    data = JSON.parse(request.raw_post, symbolize_names: true)
-    @map_image = AgWeather.get_pest_map(data[:model], data[:opts])
-    render partial: "partials/map_image"
   end
 
   def degree_days

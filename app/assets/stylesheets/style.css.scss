@@ -48,6 +48,7 @@ h2 {
 
 img {
 	max-width: 100%;
+	display: block;
 }
 
 ul {
@@ -397,7 +398,7 @@ input, select, button {
 .map-loading {
 	margin: 0.5em;
 	padding: 0.5em;
-	border: 1px solid;
+	border: 1px solid $form-border-color;
 	width: fit-content;
 	background: $table-row-highlight-color;
 
@@ -412,6 +413,8 @@ input, select, button {
 
 #map-container {
 	position: relative;
+	width: fit-content;
+	border: 1px solid $form-border-color;
 }
 
 #dot {

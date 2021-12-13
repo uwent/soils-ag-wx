@@ -7,30 +7,26 @@ class SunWaterController < ApplicationController
   end
 
   def et_map
-    url = AgWeather::ET_URL
+    @endpoint = AgWeather::ET_URL
     @date = parse_date()
 
     respond_to do |format|
-      format.html {
-        @map_image = AgWeather.get_map(url, @date)
-      }
+      format.html
       format.csv {
-        data = AgWeather.get_grid(url, @date)
+        data = AgWeather.get_grid(@endpoint, @date)
         send_data to_csv(data), filename: "et grid for #{@date}.csv"
       }
     end
   end
 
   def insol_map
-    endpoint = AgWeather::INSOL_URL
+    @endpoint = AgWeather::INSOL_URL
     @date = parse_date()
 
     respond_to do |format|
-      format.html {
-        @map_image = AgWeather.get_map(endpoint, @date)
-      }
+      format.html
       format.csv {
-        data = AgWeather.get_grid(endpoint, @date)
+        data = AgWeather.get_grid(@endpoint, @date)
         send_data to_csv(data), filename: "insol grid for #{@date}.csv"
       }
     end

@@ -13,35 +13,35 @@ gem "uglifier", "~> 4.2"
 gem "turbolinks", "~> 5.2"
 gem "jbuilder", "~> 2.11"
 gem "httparty", "~> 0.20"
+gem "render_async", "~> 2.1"
 gem "will_paginate", "~> 3.3"
 gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem "whenever", "~> 1.0"
 gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
 gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
-gem "render_async"
 
 group :development do
-  gem "puma", "~> 5.5"
-  gem "capistrano", "~> 3.16"
-  gem "capistrano-rbenv", "~> 2.2"
-  gem "capistrano-bundler", "~> 2.0"
-  gem "capistrano-rails", "~> 1.6"
-  gem "letter_opener", "~> 1.7"
-  gem "letter_opener_web", "~> 2.0"
-  gem "listen", "~> 3.4"
-  gem "ed25519", "~> 1.2"
-  gem "bcrypt_pbkdf", "~> 1.1"
+  gem "puma"
+  gem "capistrano"
+  gem "capistrano-rbenv"
+  gem "capistrano-bundler"
+  gem "capistrano-rails"
+  gem "letter_opener"
+  gem "letter_opener_web"
+  gem "listen"
+  gem "ed25519"
+  gem "bcrypt_pbkdf"
 end
 
 group :development, :test do
-  gem "dotenv-rails", "~> 2.7"
-  gem "pry-rails", "~> 0.3"
-  gem "spring", "~> 4.0"
-  gem "rails-controller-testing", "~> 1.0"
-  gem "simplecov"
+  gem "spring"
+  gem "dotenv-rails"
+  gem "pry-rails"
+  gem "rails-controller-testing"
   gem "standard"
 end
 
 group :test do
-  gem "webmock", "~> 3.14"
+  gem "simplecov"
+  gem "webmock"
 end

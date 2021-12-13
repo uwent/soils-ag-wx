@@ -37,35 +37,31 @@ class WeatherController < ApplicationController
   end
 
   def weather_map
-    url = AgWeather::WEATHER_URL
+    @endpoint = AgWeather::WEATHER_URL
     @date = parse_date()
     @temp_selector = true
 
     respond_to do |format|
-      format.html {
-        @map_image = AgWeather.get_map(url, @date)
-      }
+      format.html
       format.csv {
-        data = AgWeather.get_grid(url, date)
+        data = AgWeather.get_grid(@endpoint, @date)
         send_data to_csv(data), filename: "weather grid for #{@date}.csv"
       }
     end
   end
 
   def precip_map
-    url = AgWeather::PRECIP_URL
+    @endpoint = AgWeather::PRECIP_URL
     @date = parse_date()
 
     respond_to do |format|
-      format.html {
-        @map_image = AgWeather.get_map(url, @date)
-      }
+      format.html
       format.csv {
-        data = AgWeather.get_grid(url, @date)
+        data = AgWeather.get_grid(@endpoint, @date)
         send_data to_csv(data), filename: "precip grid for #{@date}.csv" }
     end
   end
-  
+
   def weather_data
     query = parse_map_params()
     @units = params[:temp_units]

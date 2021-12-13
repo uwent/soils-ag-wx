@@ -69,6 +69,7 @@ Rails.application.routes.draw do
       get "insol_us", to: redirect("sun_water/insol_map", status: 301)
       get "et_map"
       post "et_map"
+      post "map_image"
       get "et_data"
       get "et_wimn", to: redirect("sun_water/et_map", status: 301)
     end
@@ -85,7 +86,7 @@ Rails.application.routes.draw do
       get "corn_stalk_borer"
       get "dd_map"
       post "dd_map"
-      post "dd_map_image"
+      post "map_image"
       get "degree_days"
       get "ecb"
       get "frost_map"
@@ -122,6 +123,7 @@ Rails.application.routes.draw do
       get "precip_map"
       post "precip_map"
       get "precip_data"
+      post "map_image"
       # get "webcam"
       # get "webcam_archive"
       # post "webcam_archive"

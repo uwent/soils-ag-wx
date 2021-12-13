@@ -1,9 +1,10 @@
 $(document).ready(function () {
-  console.log("Map functions loaded!")
-  img = document.getElementById("map-img")
-  if (img != null) {
+  console.log("Loaded map functions");
+  elementReady("#map-img").then(() => {
+    console.log("Map found!")
+    img = document.getElementById("map-img");
     img.onmousedown = getCoordinates;
-  }
+  });
 })
 
 function getCoordinates(e) {

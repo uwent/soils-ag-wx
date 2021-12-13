@@ -16,18 +16,9 @@ module AgWeather
     Rails.logger.error "Failed to retrieve endpoint #{url}"
   end
 
-  def self.get_map(endpoint, date)
-    url = "#{endpoint}/#{date}"
-    json = get(url)
-    "#{HOST}#{json[:map]}"
-  rescue
-    Rails.logger.error "Failed to retrieve map image at #{url}"
-    "/no_data.png"
-  end
-
-  def self.get_pest_map(model, opts = {})
-    url = "#{PEST_URL}/#{model}"
-    json = get(url, query: opts, timeout: 30)
+  def self.get_map(endpoint, id, query)
+    url = "#{endpoint}/#{id}"
+    json = get(url, query: query, timeout: 30)
     "#{HOST}#{json[:map]}"
   rescue
     Rails.logger.error "Failed to retrieve map image at #{url}"
