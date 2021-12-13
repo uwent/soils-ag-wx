@@ -36,7 +36,7 @@ end
 group :development, :test do
   gem "dotenv-rails", "~> 2.7"
   gem "pry-rails", "~> 0.3"
-  gem "spring", "~> 3.1"
+  gem "spring", "~> 4.0"
   gem "rails-controller-testing", "~> 1.0"
   gem "simplecov"
   gem "standard"
