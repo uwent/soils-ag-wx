@@ -6,11 +6,12 @@
   <p>Generate maps of Wisconsin or the upper Midwest for common degree day models and several plant disease risk models. Calculations are based on daily temperature and humidity.</p>
 <% end %>
 
-<h2><%= @title %></h2>
+<h2><%= link_to(@title, "") %></h2>
 
 <hr>
 
-<p>These maps show either degree day accumulation (useful for estimating pest or plant development), or disease severity accumulation (useful for understanding the risk of onset of certain fungal plant diseases). For more information on degree day models or to get data for a specific model or location, <%= link_to "click here", action: :degree_days %>. For more information on insect pests, visit the <%= link_to "UW Vegetable Entomology website", vegento_url, target: "_blank" %>. For more information on plant disease modeling, visit the <%= link_to "UW Vegetable Pathology website", vegpath_url, target: "_blank" %>. To view these models and data in an interactive app, check out the <%= link_to "Vegetable and Disease Forecasting Network (VDIFN) site", vdifn_path, target: "_blank" %>
+<p>These maps show either degree day accumulation (useful for estimating pest or plant development), or disease severity accumulation (useful for understanding the risk of onset of certain fungal plant diseases). Generating a map may take 10-15 seconds for the upper Midwest region or 5 seconds for Wisconsin only. Once a map has been generated it will load automatically.</p>
+<p>For more information on degree day models or to get data for a specific model or location, <%= link_to "click here", action: :degree_days %>. For more information on insect pests, visit <%= link_to "UW Vegetable Entomology", vegento_url, target: "_blank" %>. For more information on plant disease modeling, visit <%= link_to "UW Vegetable Pathology", vegpath_url, target: "_blank" %>. To view these models and data in a more interactive framework, check out our <%= link_to "Vegetable and Disease Forecasting Network (VDIFN)", vdifn_path, target: "_blank" %> website.</p>
 
 <hr>
 

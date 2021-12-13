@@ -25,8 +25,9 @@ class ThermalModelsController < ApplicationController
     @dsv_model = params[:dsv_model].presence || "potato_blight_dsv"
     @map_type = params[:map_type].presence || "dd"
     @model = @map_type == "dsv" ? @dsv_model : @dd_model
-    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
     @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
+    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
+    @start = @end if @start > @end
     @units = params[:units].presence || "F"
     @min_value = params[:min_value]
     @max_value = params[:max_value]
@@ -106,7 +107,7 @@ class ThermalModelsController < ApplicationController
   def get_dds
     url = AgWeather::DD_URL
     query = parse_dd_params()
-    json = AgWeather.get(url, query)
+    json = AgWeather.get(url, query: query)
 
     @data = json[:data]
     @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
@@ -141,9 +142,7 @@ class ThermalModelsController < ApplicationController
   end
 
   def oak_wilt_dd
-    url = AgWeather::DD_URL
-    query = parse_dd_params()
-    json = AgWeather.get(url, query)
+    json = AgWeather.get(AgWeather::DD_URL, query: parse_dd_params())
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
       day

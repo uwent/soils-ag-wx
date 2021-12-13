@@ -1,4 +1,4 @@
-<% @title = "Precipitation Data" %>
+<% @title = "Gridded Precipitation Data" %>
 <% @welcome_image = "precip-map-250px.png" %>
 
 <% content_for :welcome do %>
@@ -8,7 +8,7 @@
 
 <%= javascript_include_tag "map_functions" %>
 
-<h2>Gridded Precipitation Data</h2>
+<h2><%= link_to(@title, "") %></h2>
 
 <hr>
 

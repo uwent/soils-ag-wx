@@ -31,7 +31,7 @@ function validateDate() {
 
 <%= javascript_include_tag "map_functions" %>
 
-<h2><%= @title %></h2>
+<h2><%= link_to(@title, "") %></h2>
 
 <hr>
 
@@ -75,7 +75,7 @@ function validateDate() {
 
 <%= image_tag "oak-wilt-map.png", alt: "North and south zone map of Wisconsin." %>
 
-<p>However, the guidelines’ Exceptions and Modifications allow for stand-level flexibilities. Please read the <%= link_to "guidelines", "https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true&x.share=t", target: "_blank" %> for more information.</p>
+<p>However, the guidelines' Exceptions and Modifications allow for stand-level flexibilities. Please read the <%= link_to "guidelines", "https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true&x.share=t", target: "_blank" %> for more information.</p>
 
 <p>For more information about oak wilt, visit the <a href="https://dnr.wisconsin.gov/topic/foresthealth/oakwilt" target="_blank">Wisconsin DNR oak wilt page</a>.</p>
 

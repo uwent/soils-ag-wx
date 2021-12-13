@@ -67,10 +67,9 @@ class WeatherController < ApplicationController
   end
   
   def weather_data
-    url = AgWeather::WEATHER_URL
     query = parse_map_params()
     @units = params[:temp_units]
-    json = AgWeather.get(url, query)
+    json = AgWeather.get(AgWeather::WEATHER_URL, query: query)
     @data = json[:data]
 
     respond_to do |format|
@@ -83,9 +82,8 @@ class WeatherController < ApplicationController
   end
 
   def precip_data
-    url = AgWeather::PRECIP_URL
     query = parse_map_params()
-    json = AgWeather.get(url, query)
+    json = AgWeather.get(AgWeather::PRECIP_URL, query: query)
     @data = json[:data]
 
     respond_to do |format|
