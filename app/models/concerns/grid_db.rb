@@ -17,15 +17,15 @@ module GridDb
     include AgwxGrids
 
     def evapotranspirations_url
-      "#{Endpoint::BASE_URL}/evapotranspirations"
+      AgWeather::ET_URL
     end
 
     def insolations_url
-      "#{Endpoint::BASE_URL}/insolations"
+      AgWeather::INSOL_URL
     end
 
     def weather_url
-      "#{Endpoint::BASE_URL}/weather"
+      AgWeather::WEATHER_URL
     end
 
     def longitude_cols

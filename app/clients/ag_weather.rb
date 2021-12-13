@@ -9,7 +9,7 @@ module AgWeather
   DD_URL = BASE_URL + "/degree_days"
   PEST_URL = BASE_URL + "/pest_forecasts"
 
-  def self.get(endpoint, query = nil, timeout = 5)
+  def self.get(endpoint, query = nil, timeout = 10)
     response = HTTParty.get(endpoint, query: query, timeout: timeout)
     JSON.parse(response.body, symbolize_names: true)
   rescue
@@ -25,7 +25,7 @@ module AgWeather
     "/no_data.png"
   end
 
-  def self.get_dd_map(model, opts = {})
+  def self.get_pest_map(model, opts = {})
     url = "#{PEST_URL}/#{model}"
     json = get(url, opts, 30)
     "#{HOST}#{json[:map]}"
@@ -43,11 +43,24 @@ module AgWeather
     []
   end
 
-  def self.get_dd_grid(model, opts = {})
-    json = get(PEST_URL, {pest: model})
-    json[:data]
-  rescue
-    Rails.logger.error "Failed to retrieve pest/dd data grid at #{url}"
-    []
+  # def self.get_dd_grid(model, opts = {})
+  #   json = get(PEST_URL, {pest: model})
+  #   json[:data]
+  # rescue
+  #   Rails.logger.error "Failed to retrieve pest/dd data grid at #{url}"
+  #   []
+  # end
+
+  def self.get_et_value(date, lat, long)
+    url = "#{ET_URL}"
+    opts = {
+      start_date: date,
+      end_date: date,
+      lat: lat,
+      long: long
+    }
+    json = get(url, opts)
+    data = json[:data]
+    data.length > 0 ? data[0][:value].to_f : -1.0
   end
 end

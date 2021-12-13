@@ -16,4 +16,17 @@ module ThermalModelsHelper
   def dd_labels
     dd_models.collect { |m| [m[:label], m[:value]] }
   end
+
+  def dsv_models
+    [
+      {value: "potato_blight_dsv", label: "Late blight DSVs"},
+      {value: "potato_p_days",   label: "Early blight P-Days"},
+      {value: "carrot_foliar_dsv", label: "Carrot foliar disease DSVs"},
+      {value: "cercospora_div", label: "Cercospora leaf spot DSVs"}
+    ]
+  end
+
+  def dsv_labels
+    dsv_models.collect { |m| [m[:label], m[:value]] }
+  end
 end

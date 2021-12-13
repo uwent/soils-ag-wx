@@ -85,7 +85,6 @@ Rails.application.routes.draw do
       get "corn_stalk_borer"
       get "dd_map"
       post "dd_map"
-      get "dd_map_image"
       post "dd_map_image"
       get "degree_days"
       get "ecb"
@@ -133,13 +132,10 @@ Rails.application.routes.draw do
 
   # post 'wi_mn_dets/get_grid'
 
-  direct :vdifn do
-    "/vdifn"
-  end
-
-  direct :wisp do
-    "https://wisp.cals.wisc.edu"
-  end
+  direct :vdifn do "/vdifn" end
+  direct :wisp do "https://wisp.cals.wisc.edu" end
+  direct :vegpath do "https://vegpath.plantpath.wisc.edu" end
+  direct :vegento do "https://vegento.russell.wisc.edu" end
 
   root to: "navigation#index"
 
