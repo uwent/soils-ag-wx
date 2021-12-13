@@ -20,7 +20,19 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("dd-calc-250px.png"), action: :degree_days %>
+    <%= link_to image_tag("dd-map-250px.png"), action: :dd_map %>
+  </div>
+  <div>
+    <h2><%= link_to "Degree Day and Disease Severity Maps", action: :dd_map %></h2>
+    <p>View maps of degree day accumulation based on your parameters.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("degree-flower.png"), action: :degree_days %>
   </div>
   <div>
     <h2><%= link_to "Generic Degree Day Calculator", action: :degree_days %></h2>

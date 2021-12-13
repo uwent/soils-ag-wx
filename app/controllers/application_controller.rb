@@ -89,10 +89,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def fetch(endpoint)
-    response = HTTParty.get(endpoint, timeout: 10)
-    JSON.parse(response.body, symbolize_names: true)
-  end
+  # def fetch(endpoint)
+  #   response = HTTParty.get(endpoint, timeout: 10)
+  #   JSON.parse(response.body, symbolize_names: true)
+  # end
 
   def parse_map_params
     @lat = params[:latitude].to_f
@@ -113,18 +113,18 @@ class ApplicationController < ActionController::Base
     (Time.now - 7.hours).to_date.yesterday
   end
 
-  def fetch_to_csv(url)
-    json = fetch(url)
-    data = json[:data]
-    CSV.generate(headers: true) do |csv|
-      csv << data.first.keys
-      data.each do |h|
-        csv << h.values
-      end
-    end
-  rescue
-    Rails.logger.error("Failed to retrieve endpoint: #{url}")
-  end
+  # def fetch_to_csv(url)
+  #   json = fetch(url)
+  #   data = json[:data]
+  #   CSV.generate(headers: true) do |csv|
+  #     csv << data.first.keys
+  #     data.each do |h|
+  #       csv << h.values
+  #     end
+  #   end
+  # rescue
+  #   Rails.logger.error("Failed to retrieve endpoint: #{url}")
+  # end
 
   def to_csv(data)
     require "csv"

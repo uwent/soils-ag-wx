@@ -61,7 +61,7 @@ class Subscriber < ApplicationRecord
       subs = subscriber.subscriptions.where(product: et_product).map do |sub|
         # collect ets for location
         vals = dates.map do |date|
-          Endpoint.get_et_value(date, sub.latitude, sub.longitude)
+          AgWeather.get_et_value(date, sub.latitude, sub.longitude)
         end
 
         # cumulative sum of ets

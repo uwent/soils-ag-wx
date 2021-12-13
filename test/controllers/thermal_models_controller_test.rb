@@ -23,6 +23,23 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get dd_map" do
+    get :dd_map
+    assert_response :success
+  end
+
+  test "should post dd_map" do
+    post :dd_map
+    assert_response :success
+  end
+
+  test "should post dd_map_image" do
+    model = "test"
+    stub_request(:get, "https://www.example.com/pest_forecasts/test").to_return(status: 200, body: { map: model }.to_json)
+    post :dd_map_image, body: { model: model, opts: {} }.to_json
+    assert_response :success
+  end
+
   test "should get degree_days" do
     get :degree_days
     assert_response :success

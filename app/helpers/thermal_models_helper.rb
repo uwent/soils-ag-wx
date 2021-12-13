@@ -1,31 +1,32 @@
 module ThermalModelsHelper
-  # oak wilt scenarios
-  # def define_scenario(dd_value, end_date)
-  #   july_15 = (end_date.year.to_s + "-07-15").to_date
-  #   return "scenario_g" if end_date > july_15 # after jul 15
-  #   return "scenario_a" if dd_value < 231 # before flight
-  #   return "scenario_b" if dd_value < 368 # 5-25% flight
-  #   return "scenario_c" if dd_value < 638 # 25-50% flight
-  #   return "scenario_d" if dd_value < 913 # 50-75% flight
-  #   return "scenario_e" if dd_value < 2172 # 75-95% flight
-  #   return "scenario_f" if dd_value >= 2172 # > 95% flight
-  #   "scenario_a"
-  # end
+  def dd_models
+    [
+      {value: "dd_39p2_86", label: "39.2°F / 86F (4°C / 30°C)"},
+      {value: "dd_41_86",   label: "41°F / 86F (5°C / 30°C)"},
+      {value: "dd_41_none", label: "41°F / none (5°C / none)"},
+      {value: "dd_42p8_86", label: "42.8°F / 86°F (6°C / 30°C)"},
+      {value: "dd_45_86",   label: "45°F / 86°F (7.2°C / 30°C)"},
+      {value: "dd_45_none", label: "45°F / none (7.2°C / none)"},
+      {value: "dd_48_none", label: "48°F / none (9°C / none)"},
+      {value: "dd_50_86",   label: "50°F / 86°F (10°C / 30°C)"},
+      {value: "dd_50_none", label: "50°F / none (10°C / none)"}
+    ]
+  end
 
-  # def scenario_risk(scenario)
-  #   case scenario
-  #   when "a"
-  #     "low - prior to vector emergence"
-  #   when "b"
-  #     "moderate - early vector flight"
-  #   when "c", "d"
-  #     "high - peak vector flight"
-  #   when "e"
-  #     "moderate - late vector flight"
-  #   when "f"
-  #     "low - after vector flights"
-  #   when "g"
-  #     "low - after July 15"
-  #   end
-  # end
+  def dd_labels
+    dd_models.collect { |m| [m[:label], m[:value]] }
+  end
+
+  def dsv_models
+    [
+      {value: "potato_blight_dsv", label: "Late blight DSVs"},
+      {value: "potato_p_days",   label: "Early blight P-Days"},
+      {value: "carrot_foliar_dsv", label: "Carrot foliar disease DSVs"},
+      {value: "cercospora_div", label: "Cercospora leaf spot DSVs"}
+    ]
+  end
+
+  def dsv_labels
+    dsv_models.collect { |m| [m[:label], m[:value]] }
+  end
 end

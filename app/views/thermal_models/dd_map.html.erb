@@ -1,0 +1,94 @@
+<% @title = "Degree Day and Disease Severity Maps" %>
+<% @welcome_image = "degree-flower.png" %>
+
+<% content_for :welcome do %>
+  <h2><%= @title %></h2>
+  <p>Generate maps of Wisconsin or the upper Midwest for common degree day models and several plant disease risk models. Calculations are based on daily temperature and humidity.</p>
+<% end %>
+
+<h2><%= @title %></h2>
+
+<hr>
+
+<p>These maps show either degree day accumulation (useful for estimating pest or plant development), or disease severity accumulation (useful for understanding the risk of onset of certain fungal plant diseases). For more information on degree day models or to get data for a specific model or location, <%= link_to "click here", action: :degree_days %>. For more information on insect pests, visit the <%= link_to "UW Vegetable Entomology website", vegento_url, target: "_blank" %>. For more information on plant disease modeling, visit the <%= link_to "UW Vegetable Pathology website", vegpath_url, target: "_blank" %>. To view these models and data in an interactive app, check out the <%= link_to "Vegetable and Disease Forecasting Network (VDIFN) site", vdifn_path, target: "_blank" %>
+
+<hr>
+
+<div class="two-box">
+  <div class="form-box">
+    <%= form_tag action: :dd_map do %>
+      <b>Choose a degree day model to load:</b><br>
+
+      <p><label>Choose models: <%= select_tag :dd_model, options_for_select(dd_labels, @dd_model) %></label></p>
+
+      <p>
+        Temperature units:
+        <label><%= radio_button_tag(:units, "F", @units == "F") %>Fahrenheit</label>&nbsp;
+        <label><%= radio_button_tag(:units, "C", @units == "C") %>Celcius</label>
+      </p>
+
+      <p>
+        Date range:<br>
+        <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Start date</label><br>
+        <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
+      </p>
+
+      <p>
+        Color scale (leave blank to scale automatically):<br>
+        <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
+      </p>
+
+      <p><label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label></p>
+
+      <%= hidden_field_tag :map_type, "dd" %>
+      <%= hidden_field_tag :dsv_model, @dsv_model %>
+      <%= submit_tag @dd_submit_text %>
+    <% end %>
+  </div>
+  <div class="form-box">
+    <%= form_tag action: :dd_map do %>
+      <b>Choose a disease severity model to load:</b><br>
+
+      <p><label>Choose model: <%= select_tag :dsv_model, options_for_select(dsv_labels, @dsv_model) %></label></p>
+
+      <p>
+        Date range:<br>
+        <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Start date</label><br>
+        <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
+      </p>
+
+      <p>
+        Color scale (leave blank to scale automatically):<br>
+        <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
+      </p>
+
+      <p>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></p>
+
+      <%= hidden_field_tag :map_type, "dsv" %>
+      <%= hidden_field_tag :dd_model, @dd_model %>
+      <%= hidden_field_tag :units, @units %>
+      <%= submit_tag @dsv_submit_text %>
+    <% end %>
+  </div>
+</div>
+
+<br>
+
+<%= render_async "dd_map_image",
+  method: "POST",
+  data: { model: @model, opts: @opts }.to_json do %>
+  <div class="map-loading">
+    <b>Generating map, please wait...</b>
+    <p>
+      Model: <%= @model %><br>
+      Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %>
+      <% unless @map_type == "dsv" %><br>Units: <%= "#{@units}" %><% end %>
+      <% if @min_value.presence || @max_value.presence %><br>Scale bar: <%= @min_value.presence ? @min_value : "?"  %> - <%= @max_value.presence ? @max_value : "?" %><% end %>
+      <br>Map extent: <%= @wi_only ? "Wisconsin only" : "Upper Midwest" %>
+    </p>
+  </div>
+<% end %>
+
+<br>
+
+<%= link_to "Back", :back %>

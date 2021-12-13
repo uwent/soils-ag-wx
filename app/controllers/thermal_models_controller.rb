@@ -17,6 +17,43 @@ class ThermalModelsController < ApplicationController
   def corn_stalk_borer
   end
 
+  def dd_map
+    # TODO: Have this fetch default values from AgWeather so it always has an image to show
+    @dd_submit_text ="Show degree day map"
+    @dsv_submit_text = "Show disease risk map"
+    @dd_model = params[:dd_model].presence || "dd_50_86"
+    @dsv_model = params[:dsv_model].presence || "potato_blight_dsv"
+    @map_type = params[:map_type].presence || "dd"
+    @model = @map_type == "dsv" ? @dsv_model : @dd_model
+    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
+    @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
+    @units = params[:units].presence || "F"
+    @min_value = params[:min_value]
+    @max_value = params[:max_value]
+    @wi_only = params[:wi_only] == "true"
+    @opts = {
+      start_date: @start.to_s,
+      end_date: @end.to_s,
+      units: @units,
+      min_value: @min_value,
+      max_value: @max_value,
+      wi_only: @wi_only
+    }.compact
+    respond_to do |format|
+      format.html
+      # format.csv {
+      #   data = AgWeather.get_dd_grid(@model)
+      #   send_data to_csv(data), filename: "data grid for #{@model}.csv"
+      # }
+    end
+  end
+
+  def dd_map_image
+    data = JSON.parse(request.raw_post, symbolize_names: true)
+    @map_image = AgWeather.get_pest_map(data[:model], data[:opts])
+    render partial: "partials/map_image"
+  end
+
   def degree_days
     @dd_methods = %w[Average Modified Sine]
   end
@@ -139,6 +176,13 @@ class ThermalModelsController < ApplicationController
   end
 
   private
+
+  def parse_dd_map_params
+    @model = params[:model].present? ? params[:model] : "dd_50_86"
+    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
+    @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
+    @units = params[:units] || "F"
+  end
 
   def locations_for(ids)
     ids = ids.collect { |id| id.to_i }

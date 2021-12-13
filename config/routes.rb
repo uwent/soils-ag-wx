@@ -15,21 +15,21 @@ Rails.application.routes.draw do
   match "/awon", to: "awon#index", via: [:get, :post]
   get "/awon/*path", to: redirect("/awon") unless Rails.env.development?
 
-  resources :heartbeat, only: :index do
-    collection do
-      get "awon"
-      get "asos"
-      get "hyd"
-      get "dd"
-      get "et"
-      get "insol"
-      get "ping"
-      get "webapps"
-      get "asos_grids"
-    end
-  end
-  match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
-  get "/heartbeat/*path", to: redirect("/heartbeat") unless Rails.env.development?
+  # resources :heartbeat, only: :index do
+  #   collection do
+  #     get "awon"
+  #     get "asos"
+  #     get "hyd"
+  #     get "dd"
+  #     get "et"
+  #     get "insol"
+  #     get "ping"
+  #     get "webapps"
+  #     get "asos_grids"
+  #   end
+  # end
+  # match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
+  # get "/heartbeat/*path", to: redirect("/heartbeat") unless Rails.env.development?
 
   resources :navigation, path: "", only: :index do
     collection do
@@ -83,6 +83,9 @@ Rails.application.routes.draw do
       get "alfalfa_weevil"
       get "corn_dev"
       get "corn_stalk_borer"
+      get "dd_map"
+      post "dd_map"
+      post "dd_map_image"
       get "degree_days"
       get "ecb"
       get "frost_map"
@@ -129,13 +132,10 @@ Rails.application.routes.draw do
 
   # post 'wi_mn_dets/get_grid'
 
-  direct :vdifn do
-    "/vdifn"
-  end
-
-  direct :wisp do
-    "https://wisp.cals.wisc.edu"
-  end
+  direct :vdifn do "/vdifn" end
+  direct :wisp do "https://wisp.cals.wisc.edu" end
+  direct :vegpath do "https://vegpath.plantpath.wisc.edu" end
+  direct :vegento do "https://vegento.russell.wisc.edu" end
 
   root to: "navigation#index"
 
