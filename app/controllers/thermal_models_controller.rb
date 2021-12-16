@@ -20,7 +20,7 @@ class ThermalModelsController < ApplicationController
   def dd_map
     # TODO: Have this fetch default values from AgWeather so it always has an image to show
     @endpoint = AgWeather::PEST_URL
-    @dd_submit_text ="Show degree day map"
+    @dd_submit_text = "Show degree day map"
     @dsv_submit_text = "Show disease risk map"
     @dd_model = params[:dd_model].presence || "dd_50_86"
     @dsv_model = params[:dsv_model].presence || "potato_blight_dsv"
@@ -101,7 +101,7 @@ class ThermalModelsController < ApplicationController
 
   def get_dds
     url = AgWeather::DD_URL
-    query = parse_dd_params()
+    query = parse_dd_params
     json = AgWeather.get(url, query: query)
 
     @data = json[:data]
@@ -137,7 +137,7 @@ class ThermalModelsController < ApplicationController
   end
 
   def oak_wilt_dd
-    json = AgWeather.get(AgWeather::DD_URL, query: parse_dd_params())
+    json = AgWeather.get(AgWeather::DD_URL, query: parse_dd_params)
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
       day

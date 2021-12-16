@@ -11,5 +11,4 @@ module GridController
     "ET" => WiMnDet,
     "Insol" => Insol
   }
-
 end

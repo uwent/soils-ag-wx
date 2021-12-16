@@ -38,7 +38,7 @@ class WeatherController < ApplicationController
 
   def weather_map
     @endpoint = AgWeather::WEATHER_URL
-    @date = parse_date()
+    @date = parse_date
     @temp_selector = true
 
     respond_to do |format|
@@ -52,18 +52,19 @@ class WeatherController < ApplicationController
 
   def precip_map
     @endpoint = AgWeather::PRECIP_URL
-    @date = parse_date()
+    @date = parse_date
 
     respond_to do |format|
       format.html
       format.csv {
         data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "precip grid for #{@date}.csv" }
+        send_data to_csv(data), filename: "precip grid for #{@date}.csv"
+      }
     end
   end
 
   def weather_data
-    query = parse_map_params()
+    query = parse_map_params
     @units = params[:temp_units]
     json = AgWeather.get(AgWeather::WEATHER_URL, query: query)
     @data = json[:data]
@@ -78,7 +79,7 @@ class WeatherController < ApplicationController
   end
 
   def precip_data
-    query = parse_map_params()
+    query = parse_map_params
     json = AgWeather.get(AgWeather::PRECIP_URL, query: query)
     @data = json[:data]
 
@@ -108,5 +109,4 @@ class WeatherController < ApplicationController
   #   @thumbs = res[:thumbs]
   #   @fulls = res[:fulls]
   # end
-
 end

@@ -1,5 +1,4 @@
 class SunWaterController < ApplicationController
-
   before_action :authenticate
   skip_before_action :verify_authenticity_token, only: :get_grid
 
@@ -8,7 +7,7 @@ class SunWaterController < ApplicationController
 
   def et_map
     @endpoint = AgWeather::ET_URL
-    @date = parse_date()
+    @date = parse_date
 
     respond_to do |format|
       format.html
@@ -21,7 +20,7 @@ class SunWaterController < ApplicationController
 
   def insol_map
     @endpoint = AgWeather::INSOL_URL
-    @date = parse_date()
+    @date = parse_date
 
     respond_to do |format|
       format.html
@@ -34,7 +33,7 @@ class SunWaterController < ApplicationController
 
   def et_data
     url = AgWeather::ET_URL
-    query = parse_map_params()
+    query = parse_map_params
     json = AgWeather.get(url, query: query)
     @data = json[:data]
 
@@ -51,7 +50,7 @@ class SunWaterController < ApplicationController
 
   def insol_data
     url = AgWeather::INSOL_URL
-    query = parse_map_params()
+    query = parse_map_params
     json = AgWeather.get(url, query: query)
     @data = json[:data]
 
@@ -65,5 +64,4 @@ class SunWaterController < ApplicationController
     Rails.logger.warn "SunWaterController.insol_data :: Error: #{e.message}"
     redirect_to action: :insol_map
   end
-
 end

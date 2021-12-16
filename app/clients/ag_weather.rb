@@ -27,7 +27,7 @@ module AgWeather
 
   def self.get_grid(endpoint, date)
     url = endpoint + "/all_for_date"
-    json = get(url, query: { date: date })
+    json = get(url, query: {date: date})
     json[:data]
   rescue
     Rails.logger.error "Failed to retrieve data grid at #{url}"
@@ -43,7 +43,7 @@ module AgWeather
   # end
 
   def self.get_et_value(date, lat, long)
-    url = "#{ET_URL}"
+    url = ET_URL.to_s
     opts = {
       start_date: date,
       end_date: date,

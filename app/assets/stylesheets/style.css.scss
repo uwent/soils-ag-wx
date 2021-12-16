@@ -10,6 +10,7 @@ $nav-bg-color: #aea686;
 $nav-title-color: #3f3c2d;
 $nav-text-color: #58543d;
 $table-row-highlight-color: #d4ceb9;
+$table-row-underline-color: #8b846a;
 $form-border-color: #8b846a;
 $form-bg-color: #efefef;
 $hr-color: #d3caa9;
@@ -329,6 +330,10 @@ input, select, button {
 
 	tbody tr:nth-child(even) {
 		background: $table-row-highlight-color;
+	}
+
+	tbody tr:nth-child(7n) {
+		border-bottom: 1px solid $table-row-underline-color;
 	}
 }
 

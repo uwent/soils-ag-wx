@@ -52,4 +52,3 @@ AwonStation.create(
   has_412: true,
   has_404: false
 )
-

@@ -31,6 +31,7 @@ group :development do
   gem "listen"
   gem "ed25519"
   gem "bcrypt_pbkdf"
+  gem "standard"
 end
 
 group :development, :test do
@@ -38,7 +39,6 @@ group :development, :test do
   gem "dotenv-rails"
   gem "pry-rails"
   gem "rails-controller-testing"
-  gem "standard"
 end
 
 group :test do

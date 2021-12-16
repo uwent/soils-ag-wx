@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ThermalModelsControllerTest < ActionController::TestCase
-  dd_response = { data: [ {date: Date.current} ] }.to_json
+  dd_response = {data: [{date: Date.current}]}.to_json
 
   test "should get index" do
     get :index
@@ -29,14 +29,14 @@ class ThermalModelsControllerTest < ActionController::TestCase
   end
 
   test "should post dd_map" do
-    post :dd_map, params: { model: "test" }
+    post :dd_map, params: {model: "test"}
     assert_response :success
   end
 
   test "should post map_image" do
     model = "test"
-    stub_request(:get, "https://www.example.com/pest_forecasts/#{model}").to_return(status: 200, body: { map: model }.to_json)
-    post :map_image, body: { endpoint: AgWeather::PEST_URL, id: model, opts: {} }.to_json
+    stub_request(:get, "https://www.example.com/pest_forecasts/#{model}").to_return(status: 200, body: {map: model}.to_json)
+    post :map_image, body: {endpoint: AgWeather::PEST_URL, id: model, opts: {}}.to_json
     assert_response :success
   end
 
