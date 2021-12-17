@@ -5,6 +5,9 @@
 $page-bg-color: #f7f5ee;
 $frame-bg-color: #8b846a;
 $welcome-bg-color: #544e38;
+$welcome-title-color: #ceb085;
+$welcome-text-color: #f2f7f8;
+$welcome-link-color: #cfccbf;
 $heading-text-color: #363325;
 $nav-bg-color: #aea686;
 $nav-title-color: #3f3c2d;
@@ -14,9 +17,6 @@ $table-row-underline-color: #8b846a;
 $form-border-color: #8b846a;
 $form-bg-color: #efefef;
 $hr-color: #d3caa9;
-$welcome-title-color: #ceb085;
-$welcome-text-color: #f2f7f8;
-$welcome-link-color: #cfccbf;
 $content-bg-color: #e9e4d0;
 $content-text-color: #4f4c39;
 $content-link-color: #383425;
@@ -212,13 +212,17 @@ input, select, button {
 		margin: 10px;
 	}
 
+	a {
+		color: $welcome-text-color;
+	}
+
 	h2 {
 		text-align: center;
 		color: $welcome-title-color;
-	}
 
-	a {
-		color: $welcome-text-color;
+		a {
+			color: $welcome-title-color;
+		}
 	}
 
 	a:hover {

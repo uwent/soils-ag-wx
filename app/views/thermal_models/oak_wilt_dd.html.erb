@@ -2,7 +2,7 @@
 <% @welcome_image = "ow-leaves.jpg" %>
 
 <% content_for :welcome do %>
-  <h2><%= @title %></h2>
+  <h2><%= link_to @title, action: :oak_wilt %></h2>
   <p>Oak wilt is a fungal disease carried by bark beetles. Prevention involves avoiding pruning or cutting oak trees during peak beetle flight periods (spring-summer). Use this thermal model to understand the risk in your area.</p>
 <% end %>
 
@@ -14,18 +14,20 @@
 </script>
 <% end %>
 
-<h2><%= link_to(@title, "") %></h2>
+<h2><%= link_to @title + " Results", action: :oak_wilt %></h2>
 
 <hr>
 
 <% if @data.size > 0 %>
   <h3>Thermal model:</h3>
 
-  <div style="margin-left: 2em; margin-right: 2em;">
-    <p><b>Date range:</b> January 1, <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %></p>
-    <p><b>Location:</b> Latitude: <%= params[:latitude] %>&deg;N, Longitude: <%= params[:longitude] %>&deg;W</p>
-    <p><b>Cumulative degree days:</b> <%= @data.last[:cumulative_value] %> Fahrenheit degree days</p>
-  </div>
+  <p style="margin-left: 2em; margin-right: 2em;">
+    <b>Location:</b> <%= params[:latitude] %>&deg;N, <%= params[:longitude] %>&deg;W (<%= link_to "show on Google maps", "https://www.google.com/maps/search/?api=1&query=#{params[:latitude]},#{params[:longitude]}", target: "_blank" %>)<br>
+    <b>Date range:</b> January 1, <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %><br><br>
+    <b>Total degree days:</b> <%= @data.last[:cumulative_value] %> Fahrenheit degree days<br>
+    <b>Oak wilt high risk period:</b> 231 - 2172 degree days and date prior to July 15<br><br>
+    <b>Predicted risk:</b> <%= @risk %>
+  </p>
 
   <br>
 
