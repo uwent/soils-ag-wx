@@ -24,8 +24,8 @@
 
     <% if @temp_selector %>
     Temperature units:<br>
-    <label><%= radio_button_tag :temp_units, "F", true %>Fahrenheit</label>
-    <label><%= radio_button_tag :temp_units, "C" %>Celcius</label><br>
+    <label><%= radio_button_tag :units, "F", @units == "F" %>Fahrenheit</label>
+    <label><%= radio_button_tag :units, "C", @units == "C" %>Celcius</label><br>
     <br>
     <% end %>
 

@@ -34,7 +34,7 @@
         <label><%= date_select :start_date_select, :date,
           start_year: earliest_date.year,
           end_year: Date.current.year,
-          default: @date - 1.week %> Start</label><br>
+          default: @start_date || @date - 1.week %> Start</label><br>
         <label><%= date_select :end_date_select, :date,
           start_year: earliest_date.year,
           end_year: Date.current.year,
@@ -44,7 +44,7 @@
         <p>
           Units:
           <% @unit_options.each do |unit| %>
-            <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %><%= unit %></label>&nbsp;
+            <label><%= radio_button_tag :units, unit, @units == unit %><%= unit %></label>&nbsp;
           <% end %>
         </p>
       <% end %>

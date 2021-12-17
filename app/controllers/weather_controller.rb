@@ -41,6 +41,7 @@ class WeatherController < ApplicationController
     @date = parse_date
     @units = params[:units].presence || "F"
     @unit_options = ["F", "C"]
+    @temp_selector = true
 
     respond_to do |format|
       format.html
@@ -68,7 +69,7 @@ class WeatherController < ApplicationController
 
   def weather_data
     query = parse_map_params
-    @units = params[:temp_units]
+    @units = params[:units]
     json = AgWeather.get(AgWeather::WEATHER_URL, query: query)
     @data = json[:data]
 
