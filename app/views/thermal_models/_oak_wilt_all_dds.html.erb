@@ -1,5 +1,6 @@
-<br>
+<% @units = "F" %>
 
+<br>
 <hr>
 
 <div id="data-container">
@@ -21,8 +22,8 @@
       <tr>
         <td><%= i + 1 %></td>
         <td><%= day[:date] %></td>
-        <td><%= day[:min_temp] %></td>
-        <td><%= day[:max_temp] %></td>
+        <td><%= format_temp(day[:min_temp]).html_safe %></td>
+        <td><%= format_temp(day[:max_temp]).html_safe %></td>
         <td><%= day[:value] %></td>
         <td><%= day[:cumulative_value] %></td>
         <td><%= day[:risk] %>
@@ -31,6 +32,10 @@
     </tbody>
   </table>
 </div>
+
+<p class="note">
+  Note: Frost temperatures (&lt;<%= frost_temp %>&deg;<%= @units %>) shown in <span style="color:blue">blue</span>, freezing temperatures (&lt;<%= freeze_temp %>&deg;<%= @units %>) shown in <span style="color:red">red</span>.
+</p>
 
 <p>
   <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
