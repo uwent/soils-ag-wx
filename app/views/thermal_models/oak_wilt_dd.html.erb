@@ -36,13 +36,11 @@
       <!-- GDD is lower than 128.3, and the end date is on or before 7/15.   -->
       <p class="larger-font">Currently it is low risk for oak wilt above-ground transmission.</p>
 
-      <p>Note: Growing degree days can accumulate quickly and subsequent recommendations can change quickly in March, April, and May. Please check back daily.</p>
+      <p><b>Note:</b> Growing degree days can accumulate quickly and subsequent recommendations can change quickly in March, April, and May. Please check back daily.</p>
 
-      <p>Note: When you consider extending harvesting deadlines, it is important to be aware that the stumps and wounds are susceptible for up to 72 hours after cutting.</p>
+      <p><b>Note:</b> When you consider extending harvesting deadlines, it is important to be aware that the stumps and wounds are susceptible for up to 72 hours after cutting.</p>
 
-      <h4>Estimated Vector Emergence Status:</h4>
-
-      <p>Based on the degree day model (Jagemann et al., 2018), it is estimated that less than 5% of <i>Colopterus truncatus</i> have emerged as of the date yet. <i>C. truncatus</i> and <i>Carpophilus sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
+      <p><b>Estimated vector emergence status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that less than 5% of <i>Colopterus truncatus</i> have emerged as of the date yet. <i>C. truncatus</i> and <i>Carpophilus sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
     <% end %>
 
     <% if %w[b c d e f].include? @scenario %>
@@ -52,38 +50,39 @@
 
       <p><b>Forest setting:</b> If your stand is in a county that has oak wilt OR within 6 miles of a county with oak wilt, any activities that may wound oaks should only be considered under certain conditions.  Read <%= link_to "Oak Harvesting Guidelines to Reduce the Risk of Introduction and Spread of Oak wilt", @links[:harvesting_guide], target: "_blank" %> for details.</p>
 
-      <h4>Estimated Vector Emergence Status:</h4>
-
       <% if @scenario == "b" %>
         <!-- GDD is equal or more than 231 and less than 388, and the end date is on or before 7/15. -->
-        <p>Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 5% of <i>Colopterus truncatus</i> have emerged as of the date. <i>C. truncatus</i> and <i>Carpophilus sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
+        <p><b>Estimated vector emergence status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 5% of <i>Colopterus truncatus</i> have emerged as of the date. <i>C. truncatus</i> and <i>Carpophilus sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
       <% end %>
 
       <% if @scenario == "c" %>
         <!-- FDD is equal or more than 388 and less than 638, and the end date is on or before 7/15.   -->
-        <p>Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 25% of <i>Colopterus truncatus</i> and 5% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin.  <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
+        <p><b>Estimated vector emergence status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 25% of <i>Colopterus truncatus</i> and 5% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin.  <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
       <% end %>
 
       <% if @scenario == "d" %>
         <!-- FDD is equal or more than 638 and less than 913, and the end date is on or before 7/15. -->
-        <p>Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 50% of <i>Colopterus truncatus</i> and 25% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
+        <p><b>Estimated vector emergence status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 50% of <i>Colopterus truncatus</i> and 25% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
       <% end %>
 
       <% if @scenario == "e" %>
         <!-- FDD is equal or more than 913 and less than 2172, and the end date is on or before 7/15. -->
-        <p>Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 75% of <i>Colopterus truncatus</i> and 50% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
+        <p><b>Estimated Vector Emergence Status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 75% of <i>Colopterus truncatus</i> and 50% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
       <% end %>
 
       <% if @scenario == "f" %>
         <!-- FGDD is equal or more than 2172 and the end date is on or before 7/15. -->
-        <p>Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 95% of <i>Colopterus truncatus</i> and 50% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
+        <p><b>Estimated Vector Emergence Status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that at least 95% of <i>Colopterus truncatus</i> and 50% of <i>Carphophilus sayi </i> have emerged as of the date yet. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
       <% end %>
-    <% else %>
-      <!-- Scenario g: The end date is after 7/15. -->
+    <% end %>
+
+    <% if @scenario == "g" %>
+      <!-- The end date is after 7/15. -->
       <p class="larger-font">The risk of overland transmission of oak wilt is greatly reduced after July 15th.</p>
+
       <p><b>Forest setting:</b> Harvesting can be considered. Read <%= link_to "Oak Harvesting Guidelines to Reduce the Risk of Introduction and Spread of Oak wilt", @links[:harvesting_guide], target: "_blank" %> for details.</p>
 
-      <p> Although substantial numbers of beetles, especially <i>Carpophillus sayi</i> were trapped past July 15th, only low proportions of beetles carried viable oak wilt fungal spores after July 15th (Jagemann et al., 2018). The abundance of the two major vectors of oak wilt was investigated in Minnesota in 2002 and 2003 (Ambourn et al., 2005). Abundance and contamination rate of <i>Colopterus truncatus</i> with the oak wilt fungal spores peaked in April and May. Abundance of <i>C. sayi</i> peaked in October, but the pathogen was most commonly isolated from beetles collected during May and June.</p>
+      <p><b>Estimated vector emergence status:</b> Although substantial numbers of beetles, especially <i>Carpophillus sayi</i> were trapped past July 15th, only low proportions of beetles carried viable oak wilt fungal spores after July 15th (Jagemann et al., 2018). The abundance of the two major vectors of oak wilt was investigated in Minnesota in 2002 and 2003 (Ambourn et al., 2005). Abundance and contamination rate of <i>Colopterus truncatus</i> with the oak wilt fungal spores peaked in April and May. Abundance of <i>C. sayi</i> peaked in October, but the pathogen was most commonly isolated from beetles collected during May and June.</p>
     <% end %>
   </div>
 
@@ -102,5 +101,7 @@
 <% else %>
 
   <h3>Data for this date range is currently unavailable.</h3>
+
+  <%= link_to 'Back', :back %>
 
 <% end %>
