@@ -84,6 +84,15 @@ function validateDate() {
 
 <p>For more information about oak wilt, visit the <%= link_to "Wisconsin DNR oak wilt page", @links[:dnr_page], target:"_blank" %></p>
 
+<h4>MORE INFORMATION</h4>
+
+<p>Please note that this web page and the guidelines listed here were developed in cooperation with the <%= link_to "Wisconsin Department of Natural Resources", "https://dnr.wisconsin.gov/", target: "_blank" %>. If you reside outside of Wisconsin, consider searching for local news and recommendations from your department of natural resources or university. Quick links to search results:</p>
+<ul>
+<% %w[Minnesota Michigan Iowa Missouri Illinois Indiana Ohio].each do |state| %>
+  <li><%= link_to state, "https://www.google.com/search?q=#{state}+oak+wilt", target: "_blank" %></li>
+<% end %>
+</ul>
+
 <h4>REFERENCES</h4>
 
 <p>Ambourn, A.K., Juzwik, J., and Moon, R.D. 2005. Seasonal dispersal of the oak wilt fungus by <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i> in Minnesota. Plant Dis. 89:1067-1076.</p>
