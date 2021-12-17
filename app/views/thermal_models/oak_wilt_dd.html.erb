@@ -24,6 +24,7 @@
   <p style="margin-left: 2em; margin-right: 2em;">
     <b>Location:</b> <%= params[:latitude] %>&deg;N, <%= params[:longitude] %>&deg;W (<%= link_to "show on Google maps", "https://www.google.com/maps/search/?api=1&query=#{params[:latitude]},#{params[:longitude]}", target: "_blank" %>)<br>
     <b>Date range:</b> January 1, <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %><br><br>
+    <b>Degree day model:</b> Base 41&deg;F<br>
     <b>Total degree days:</b> <%= @data.last[:cumulative_value] %> Fahrenheit degree days<br>
     <b>Oak wilt high risk period:</b> 231 - 2172 degree days and date prior to July 15<br><br>
     <b>Predicted risk:</b> <%= @risk %>
