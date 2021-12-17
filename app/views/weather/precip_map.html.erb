@@ -12,16 +12,18 @@
 
 <hr>
 
-<h4>Total daily precipitation map for Wisconsin and surrounding states for <%= @date %>:</h4>
+<p>Use this page to access precipitation data for the upper Midwest. This data is collected daily from NOAA gridded datasets.</p>
 
-<%= render partial: "partials/date_changer", locals: { action: :precip_map } %>
+<%= render partial: "partials/map_navigator" %>
+
+<br>
 
 <%= render_async "map_image",
   method: "POST",
-  data: { endpoint: @endpoint, id: @date, query: {} }.to_json,
+  data: { endpoint: @endpoint, id: @date, query: {units: @units, start_date: @start_date}.compact }.to_json,
   error_message: "<p>Sorry, unable to load map. Please try again.</p>" do %>
   <div class="map-loading">
-    <b>Loading map for <%= @date %>, please wait...</b>
+    <b>Loading map, please wait...</b>
   </div>
 <% end %>
 

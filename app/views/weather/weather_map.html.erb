@@ -14,23 +14,47 @@
 
 <p>This gridded weather data is imported daily from the <%= link_to "National Oceanic and Atmospheric Administration", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %> and includes air temperatures and dew points. From these data we compute vapor pressure and relative humidity. The map below shows mean daily air temperature, but all weather parameters may be viewed by clicking on the map or selecting a specific Latitude/Longitude and clicking 'Get Data Series' in the box below. Use the buttons above the map to view a different date.</p>
 
-<hr>
+<br>
 
-<h4>Mean temperature map for Wisconsin and surrounding states for <%= @date %>:</h4>
-
-<%= render partial: "partials/date_changer", locals: { action: :weather_map } %>
+<div class="form-box">
+  <b>Select air temperature map:</b>
+  <p>Shown: <%= @date.strftime("%b %d, %Y") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</p>
+  <%= form_tag do %>
+    <%= hidden_field_tag :date, @date %>
+    <% if @unit_options %>
+      <p>
+        Units:
+        <% @unit_options.each do |unit| %>
+          <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %>&deg;<%= unit %></label>&nbsp;
+        <% end %>
+      </p>
+    <% end %>
+    <p>
+      Go:
+      <label><%= submit_tag "Prev: #{@date - 1}", name: :date %></label>&nbsp;
+      <% if @date < Date.current - 2.days %>
+        <label><%= submit_tag "Next: #{@date + 1}", name: :date %></label>&nbsp;
+      <% end %>
+      <% if @date < Date.yesterday %><label><%= submit_tag "Latest: #{Date.yesterday}", name: :date %></label><% end %>
+    </p>
+  <% end %>
+  <%= form_tag do %>
+    <%= hidden_field_tag :units, @units %>
+    <p>Or enter a specific date: <%= text_field_tag :date %>&nbsp;<%= submit_tag "Go" %></p>
+  <% end %>
+</div>
 
 <%= render_async "map_image",
   method: "POST",
-  data: { endpoint: @endpoint, id: @date, query: {} }.to_json,
+  data: { endpoint: @endpoint, id: @date, query: {units: @units}.compact }.to_json,
   error_message: "<p>Sorry, unable to load map. Please try again.</p>" do %>
   <div class="map-loading">
-    <b>Loading map for <%= @date %>, please wait...</b>
+    <b>Loading map for, please wait...</b>
   </div>
 <% end %>
 
 <div class="note">
-  Note: Map color scale is based on min/max temp across region. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv, params: { date: @date } %>.
+  Note: Map color scale is based on min/max temp across region. <%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv, params: { date: @date } %>.
 </div>
 
 <hr>

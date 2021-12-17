@@ -39,7 +39,8 @@ class WeatherController < ApplicationController
   def weather_map
     @endpoint = AgWeather::WEATHER_URL
     @date = parse_date
-    @temp_selector = true
+    @units = params[:units].presence || "F"
+    @unit_options = ["F", "C"]
 
     respond_to do |format|
       format.html
@@ -52,7 +53,9 @@ class WeatherController < ApplicationController
 
   def precip_map
     @endpoint = AgWeather::PRECIP_URL
-    @date = parse_date
+    parse_dates
+    @units = params[:units].presence || "mm"
+    @unit_options = ["mm", "in"]
 
     respond_to do |format|
       format.html

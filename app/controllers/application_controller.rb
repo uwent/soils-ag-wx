@@ -103,8 +103,8 @@ class ApplicationController < ActionController::Base
   def parse_map_params
     @lat = params[:latitude].to_f
     @long = params[:longitude].to_f
-    @start_date = Date.new(*params[:start_date].values.map(&:to_i))
-    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
+    @start_date = Date.new(*params[:start_date_select].values.map(&:to_i))
+    @end_date = Date.new(*params[:end_date_select].values.map(&:to_i))
     {
       lat: @lat,
       long: @long,
@@ -117,6 +117,17 @@ class ApplicationController < ActionController::Base
     Date.parse(params[:date])
   rescue
     Time.now.in_time_zone("US/Central").yesterday.to_date
+  end
+
+  def parse_dates
+    if params[:cumulative]
+      @start_date = Date.new(*params[:start_date_select].values.map(&:to_i))
+      @date = Date.new(*params[:end_date_select].values.map(&:to_i))
+    else
+      @date = parse_date
+    end
+  rescue
+    @date = parse_date
   end
 
   def to_csv(data)

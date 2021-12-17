@@ -134,9 +134,13 @@ class ThermalModelsController < ApplicationController
   end
 
   def oak_wilt
+    @links = oak_wilt_links
+    @units = "F"
   end
 
   def oak_wilt_dd
+    @links = oak_wilt_links
+
     json = AgWeather.get(AgWeather::DD_URL, query: parse_dd_params)
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
@@ -170,6 +174,15 @@ class ThermalModelsController < ApplicationController
   end
 
   private
+
+  def oak_wilt_links
+    {
+      dnr_page: "https://dnr.wisconsin.gov/topic/foresthealth/oakwilt",
+      user_guide: "https://dnr.wisconsin.gov/sites/default/files/topic/ForestHealth/oakWiltVectorsEmergenceUserGuide.pdf",
+      video_tutorial: "https://widnr.widen.net/s/6msxrhqvpz/oak-wilt-degree-day-vectors-emergence-user-interface-demo",
+      harvesting_guide: "https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true"
+    }
+  end
 
   def parse_dd_map_params
     @model = params[:model].present? ? params[:model] : "dd_50_86"
@@ -350,17 +363,17 @@ class ThermalModelsController < ApplicationController
   def oak_wilt_risk(scenario)
     case scenario
     when "a"
-      "low - prior to vector emergence"
+      "Low - prior to vector emergence"
     when "b"
-      "moderate - early vector flight"
+      "High - early vector flight"
     when "c", "d"
-      "high - peak vector flight"
+      "High - peak vector flight"
     when "e"
-      "moderate - late vector flight"
+      "High - late vector flight"
     when "f"
-      "low - after vector flights"
+      "Low - after vector flights"
     when "g"
-      "low - after July 15"
+      "Low - after July 15"
     end
   end
 end

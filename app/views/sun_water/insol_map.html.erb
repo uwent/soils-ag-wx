@@ -16,23 +16,23 @@
 
 <p>The gridded insolation estimates shown below are imported daily from <%= link_to "UW Madison's Space Science Engineering Center", "https://ssec.wisc.edu" %> and provided on this page for easy access. We use this data, in combination with <%= link_to "gridded daily temperature datasets", controller: :weather, action: :weather_map %>, to generate our <%= link_to "evapotranspiration estimates", action: :et_map %>.</p>
 
-<hr>
+<br>
 
-<h4>Insolation map for Wisconsin and surrounding states for <%= @date %>:</h4>
+<%= render partial: "partials/map_navigator" %>
 
-<%= render partial: "partials/date_changer", locals: { action: :insol_map } %>
+<br>
 
 <%= render_async "map_image",
   method: "POST",
-  data: { endpoint: @endpoint, id: @date, query: {} }.to_json,
+  data: { endpoint: @endpoint, id: @date, query: {start_date: @start_date}.compact }.to_json,
   error_message: "<p>Sorry, unable to load map. Please try again.</p>" do %>
   <div class="map-loading">
-    <b>Loading map for <%= @date %>, please wait...</b>
+    <b>Loading map, please wait...</b>
   </div>
 <% end %>
 
 <div class="note">
-  Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :insol_map, format: :csv, params: { date: @date } %>.
+  Note: Single-day map color scale is based on min/max values for the entire year. <%= link_to "Download the entire grid of data in CSV format", action: :insol_map, format: :csv, params: { date: @date } %>.
 </div>
 
 <hr>

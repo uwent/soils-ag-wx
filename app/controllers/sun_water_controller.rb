@@ -7,7 +7,9 @@ class SunWaterController < ApplicationController
 
   def et_map
     @endpoint = AgWeather::ET_URL
-    @date = parse_date
+    parse_dates
+    @units = params[:units].presence || "in"
+    @unit_options = ["in", "mm"]
 
     respond_to do |format|
       format.html
@@ -20,7 +22,7 @@ class SunWaterController < ApplicationController
 
   def insol_map
     @endpoint = AgWeather::INSOL_URL
-    @date = parse_date
+    parse_dates
 
     respond_to do |format|
       format.html

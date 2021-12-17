@@ -29,4 +29,8 @@ module ApplicationHelper
     end
     color ? "<span style='color:#{color}'>#{temp_text}</span>" : temp_text
   end
+
+  def earliest_date
+    Date.new(2016, 1, 1)
+  end
 end
