@@ -100,6 +100,10 @@ class ApplicationController < ActionController::Base
   #   JSON.parse(response.body, symbolize_names: true)
   # end
 
+  def default_date
+    Time.now.in_time_zone("US/Central").yesterday.to_date
+  end
+
   def parse_map_params
     @lat = params[:latitude].to_f
     @long = params[:longitude].to_f
@@ -114,15 +118,17 @@ class ApplicationController < ActionController::Base
   end
 
   def parse_date
-    Date.parse(params[:date])
+    [Date.parse(params[:date]), default_date].min
   rescue
-    Time.now.in_time_zone("US/Central").yesterday.to_date
+    default_date
   end
 
   def parse_dates
     if params[:cumulative]
-      @start_date = Date.new(*params[:start_date_select].values.map(&:to_i))
-      @date = Date.new(*params[:end_date_select].values.map(&:to_i))
+      start_date = Date.new(*params[:start_date_select].values.map(&:to_i)) || default_date.beginning_of_year
+      date = Date.new(*params[:end_date_select].values.map(&:to_i)) || default_date
+      @date = [date, default_date].min
+      @start_date = [start_date, @date].min
     else
       @date = parse_date
     end
