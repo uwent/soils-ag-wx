@@ -36,7 +36,19 @@
   </div>
   <div>
     <h2><%= link_to "Generic Degree Day Calculator", action: :degree_days %></h2>
-    <p>This calculator allows you to input your location, method of calculation (e.g. Modified Sine B), and the appropriate biofix dates.</p>
+    <p>This calculator allows you to input your location, method of calculation (e.g. average/modified/sine), and the appropriate biofix dates.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("oak-wilt-250px.png"), action: :oak_wilt %>
+  </div>
+  <div>
+    <h2><%= link_to "Oak Wilt Vectors Emergence Thermal Model", action: :oak_wilt %></h2>
+    <p>Degree-day information on emergence of insects that transmit oak wilt and recommendations for when it is safe to prune/cut/harvest oak in Wisconsin.</p>
   </div>
 </div>
 
@@ -49,18 +61,6 @@
   <div>
     <h2><%= link_to "Frost Map", action: :frost_map %></h2>
     <p>The first map shows the median DOY of first frost; for each map location, half the years were earlier than this date, half later. The second and third map show the earliest DOY of frost in the dataset, and the latest, respectively.</p>
-  </div>
-</div>
-
-<hr>
-
-<div class="row">
-  <div class="left">
-    <%= link_to image_tag("oak-wilt-250px.png"), action: :oak_wilt %>
-  </div>
-  <div>
-    <h2><%= link_to "Oak Wilt Vectors Emergence Thermal Model", action: :oak_wilt %></h2>
-    <p>Degree-day information on emergence of insects that transmit oak wilt.</p>
   </div>
 </div>
 
