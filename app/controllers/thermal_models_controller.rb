@@ -19,6 +19,7 @@ class ThermalModelsController < ApplicationController
 
   def dd_map
     # TODO: Have this fetch default values from AgWeather so it always has an image to show
+    @is_post = request.method == "POST"
     @endpoint = AgWeather::PEST_URL
     @dd_submit_text = "Show degree day map"
     @dsv_submit_text = "Show disease risk map"

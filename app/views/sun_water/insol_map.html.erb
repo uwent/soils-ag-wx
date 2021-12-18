@@ -7,6 +7,7 @@
 <% end %>
 
 <%= javascript_include_tag "map_functions" %>
+<% if @is_post %><%= javascript_include_tag "scroll_to_form" %><% end %>
 
 <h2><%= link_to(@title, "") %></h2>
 

@@ -6,6 +6,7 @@ class SunWaterController < ApplicationController
   end
 
   def et_map
+    @is_post = request.method == "POST"
     @endpoint = AgWeather::ET_URL
     parse_dates
     @units = params[:units].presence || "in"
@@ -21,6 +22,7 @@ class SunWaterController < ApplicationController
   end
 
   def insol_map
+    @is_post = request.method == "POST"
     @endpoint = AgWeather::INSOL_URL
     parse_dates
 

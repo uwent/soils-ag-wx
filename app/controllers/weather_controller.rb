@@ -37,6 +37,7 @@ class WeatherController < ApplicationController
   end
 
   def weather_map
+    @is_post = request.method == "POST"
     @endpoint = AgWeather::WEATHER_URL
     @date = parse_date
     @units = params[:units].presence || "F"
@@ -53,11 +54,12 @@ class WeatherController < ApplicationController
   end
 
   def precip_map
+    @is_post = request.method == "POST"
     @endpoint = AgWeather::PRECIP_URL
     parse_dates
     @units = params[:units].presence || "mm"
     @unit_options = ["mm", "in"]
-
+    
     respond_to do |format|
       format.html
       format.csv {
