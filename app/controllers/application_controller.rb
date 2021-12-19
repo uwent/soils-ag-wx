@@ -125,6 +125,7 @@ class ApplicationController < ActionController::Base
 
   def parse_dates
     if params[:cumulative]
+      @cumulative = true
       start_date = Date.new(*params[:start_date_select].values.map(&:to_i)) || default_date.beginning_of_year
       date = Date.new(*params[:end_date_select].values.map(&:to_i)) || default_date
       @date = [date, default_date].min

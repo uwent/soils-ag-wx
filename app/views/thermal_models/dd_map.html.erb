@@ -16,7 +16,7 @@
 <p>These maps show either degree day accumulation (useful for estimating pest or plant development), or disease severity accumulation (useful for understanding the risk of onset of certain fungal plant diseases). Generating a map may take 10-15 seconds for the upper Midwest region or 5 seconds for Wisconsin only. Once a map has been generated it will load automatically.</p>
 <p>For more information on degree day models or to get data for a specific model or location, <%= link_to "click here", action: :degree_days %>. For more information on insect pests, visit <%= link_to "UW Vegetable Entomology", vegento_url, target: "_blank" %>. For more information on plant disease modeling, visit <%= link_to "UW Vegetable Pathology", vegpath_url, target: "_blank" %>. To view these models and data in a more interactive framework, check out our <%= link_to "Vegetable and Disease Forecasting Network (VDIFN)", vdifn_path, target: "_blank" %> website.</p>
 
-<hr>
+<br>
 
 <div class="two-box">
   <div class="form-box">
@@ -65,14 +65,12 @@
   </div>
 </div>
 
-<br>
-
 <%= render_async "map_image",
   method: "POST",
   data: { endpoint: @endpoint, id: @model, query: @opts }.to_json,
-  error_message: "Sorry, unable to load image. Please try again." do %>
-  <div class="map-loading">
-    <b>Generating map, please wait...</b>
+  error_message: "Sorry, unable to load map. Please try again." do %>
+  <% @wait_time = 30 %>
+  <%= render layout: "partials/loading" do %>
     <p>
       Model: <%= @model %><br>
       Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %>
@@ -80,8 +78,10 @@
       <% if @min_value.presence || @max_value.presence %><br>Scale bar: <%= @min_value.presence ? @min_value : "?"  %> - <%= @max_value.presence ? @max_value : "?" %><% end %>
       <br>Map extent: <%= @wi_only ? "Wisconsin only" : "Upper Midwest" %>
     </p>
-  </div>
+  <% end %>
 <% end %>
+
+<p class="note">Note: Map data unavailable outside of Wisconsin prior to around October 2021.</p>
 
 <br>
 

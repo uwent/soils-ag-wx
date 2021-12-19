@@ -1,6 +1,7 @@
 @import "./breakpoints.scss";
 
-// --- COLORS ---
+
+// --- COLORS --- //
 
 $page-bg-color: #f7f5ee;
 $frame-bg-color: #8b846a;
@@ -24,7 +25,7 @@ $content-link-hover-color: #26241a;
 $copyright-text-color: #4e4a3a;
 
 
-// --- BASIC STYLES ---
+// --- BASIC STYLES --- //
 
 html, body, h1, h2 {
 	margin: 0px;
@@ -79,7 +80,7 @@ input, select, button {
 }
 
 
-// --- LAYOUT ---
+// --- LAYOUT --- //
 
 .wrapper {
 	max-width: 1200px;
@@ -90,7 +91,7 @@ input, select, button {
 }
 
 
-// --- NAV BAR ---
+// --- NAV BAR --- //
 
 .nav-bar {
 	display: inline-flex;
@@ -165,7 +166,7 @@ input, select, button {
 }
 
 
-// --- MAIN BOX ---
+// --- MAIN BOX --- //
 
 .main-box {
 	background-color: $frame-bg-color;
@@ -182,7 +183,7 @@ input, select, button {
 }
 
 
-// --- WELCOME BOX ---
+// --- WELCOME BOX --- //
 
 .welcome-box {
 	background-color: $welcome-bg-color;
@@ -231,7 +232,7 @@ input, select, button {
 } 
 
 
-// --- CONTENT BOX ---
+// --- CONTENT BOX --- //
 
 .content-box {
 	background-color: $content-bg-color;
@@ -282,7 +283,7 @@ input, select, button {
 
 
 
-// --- STYLES ---
+// --- STYLES --- //
 
 .more {
 	text-align: right;
@@ -302,9 +303,10 @@ input, select, button {
 	font: 13px arial, sans-serif;
 	color: $copyright-text-color;
 	text-align: right;
+	margin-right: 10px;
 
 	p {
-		margin-top: 0.5em;
+		margin-top: 10px;
 	}
 }
 
@@ -389,6 +391,7 @@ input, select, button {
 .two-box {
 	display: flex;
 	flex-direction: row;
+	margin-bottom: 0.5em;
 
 	@media #{$small-only} {
 		flex-direction: column;
@@ -408,17 +411,16 @@ input, select, button {
 	margin: 0.5em;
 	padding: 0.5em;
 	border: 1px solid $form-border-color;
-	width: fit-content;
 	background: $table-row-highlight-color;
+	display: flex;
 
-	p {
-		margin-left: 1em;
+	div {
 		margin-right: 1em;
 	}
 }
 
 
-// --- SPECIAL ---
+// --- IDs --- //
 
 #map-container {
 	position: relative;

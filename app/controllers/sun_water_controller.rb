@@ -16,7 +16,7 @@ class SunWaterController < ApplicationController
       format.html
       format.csv {
         data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "et grid for #{@date}.csv"
+        send_data to_csv(data), filename: "et grid (in) for #{@date}.csv"
       }
     end
   end
@@ -25,12 +25,14 @@ class SunWaterController < ApplicationController
     @is_post = request.method == "POST"
     @endpoint = AgWeather::INSOL_URL
     parse_dates
+    @units = params[:units].presence || "MJ"
+    @unit_options = ["MJ", "KWh"]
 
     respond_to do |format|
       format.html
       format.csv {
         data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "insol grid for #{@date}.csv"
+        send_data to_csv(data), filename: "insol grid (mj-m2-day) for #{@date}.csv"
       }
     end
   end

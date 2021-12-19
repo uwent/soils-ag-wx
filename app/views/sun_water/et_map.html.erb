@@ -22,19 +22,21 @@
 
 <%= render partial: "partials/map_navigator" %>
 
-<br>
-
 <%= render_async "map_image",
   method: "POST",
   data: { endpoint: @endpoint, id: @date, query: {units: @units, start_date: @start_date}.compact }.to_json,
-  error_message: "<p>Sorry, unable to load map. Please try again.</p>" do %>
-  <div class="map-loading">
-    <b>Loading map, please wait...</b>
-  </div>
+  error_message: "Sorry, unable to load map. Please try again." do %>
+  <%= render layout: "partials/loading" do %>
+    <p>
+      Date: <%= @date %><br>
+      <% if @start_date %>Start date: <%= @start_date || "Not specified" %><br><% end %>
+      Units: <%= @units %>
+    </p>
+  <% end %>
 <% end %>
 
 <div class="note">
-  Note: Map color scale is based on min/max values for the entire year. Map may take a few moments to load if it hasn't already been created. <%= link_to "Download the entire grid of data in CSV format", action: :et_map, format: :csv, params: { date: @date } %>.
+  Note: Single-day map color scale is based on min/max values for the entire year. <%= link_to "Download the entire grid of data in CSV format", action: :et_map, format: :csv, params: { date: @date } %>.
 </div>
 
 <hr>

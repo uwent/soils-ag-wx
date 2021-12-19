@@ -26,3 +26,7 @@ function copy(id) {
   navigator.clipboard.writeText(document.getElementById(id).outerHTML);
   $('#copy-confirm').fadeIn();
 }
+
+if (window.history.replaceState) {
+  window.history.replaceState(null, null, window.location.href);
+}
