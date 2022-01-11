@@ -68,14 +68,6 @@ module WeatherHelper
     END
   end
 
-  def latitudes
-    (38.0..50.0).step(0.1).collect { |lat| [lat.round(1), lat.round(1)] }
-  end
-
-  def longitudes
-    (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)] }
-  end
-
   # def build_map_grid
   #   s = 1
   #   lats = (38..50).step(0.5)

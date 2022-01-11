@@ -33,4 +33,20 @@ module ApplicationHelper
   def earliest_date
     Date.new(2016, 1, 1)
   end
+
+  def latitudes
+    (38.0..50.0).step(0.1).collect { |lat| [lat.round(1), lat.round(1)] }
+  end
+
+  def default_latitude
+    "43.1"
+  end
+
+  def longitudes
+    (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)] }
+  end
+
+  def default_longitude
+    "-89.4"
+  end
 end
