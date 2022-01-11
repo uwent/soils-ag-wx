@@ -21,10 +21,9 @@
       </div>
       <p class="disclaimer">Note: Date of interest must be prior to the current date. The degree day data in this system is available only up to the day before the current date for computation.</p>
     </p>
-    <input type="hidden" name="model_type" value="oak_wilt" />
-    <input type="hidden" name="method" value="Sine"/>
-    <input type="hidden" name="base_temp" value="41" />
-    <input type="hidden" name="upper_temp" value="None" />
+    <%= hidden_field_tag :method, "sine" %>
+    <%= hidden_field_tag :base_temp, 41 %>
+    <%= hidden_field_tag :upper_temp, "None" %>
     <%= submit_tag "Compute Estimated Oak Wilt Vector Emergence Status", class: "button", id: "submit" %>
   <% end %>
 </div>

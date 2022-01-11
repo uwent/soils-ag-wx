@@ -175,15 +175,6 @@ class ThermalModelsController < ApplicationController
 
   private
 
-  def oak_wilt_links
-    {
-      dnr_page: "https://dnr.wisconsin.gov/topic/foresthealth/oakwilt",
-      user_guide: "https://dnr.wisconsin.gov/sites/default/files/topic/ForestHealth/oakWiltVectorsEmergenceUserGuide.pdf",
-      video_tutorial: "https://widnr.widen.net/s/6msxrhqvpz/oak-wilt-degree-day-vectors-emergence-user-interface-demo",
-      harvesting_guide: "https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true"
-    }
-  end
-
   def parse_dd_map_params
     @model = params[:model].present? ? params[:model] : "dd_50_86"
     @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
@@ -337,15 +328,15 @@ class ThermalModelsController < ApplicationController
     }.compact
   end
 
-  def set_start_date_end_date(params)
-    if params[:model_type] === "oak_wilt"
-      p = params[:grid_date]
-      @start_date = Date.civil(p["end_date(1i)"].to_i, 1, 1)
-      @end_date = Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
-    else
-      @start_date, @end_date = parse_dates(params["grid_date"])
-    end
-  end
+  # def set_start_date_end_date(params)
+  #   if params[:model_type] === "oak_wilt"
+  #     p = params[:grid_date]
+  #     @start_date = Date.civil(p["end_date(1i)"].to_i, 1, 1)
+  #     @end_date = Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
+  #   else
+  #     @start_date, @end_date = parse_dates(params["grid_date"])
+  #   end
+  # end
 
   # oak wilt scenarios
   def oak_wilt_scenario(dd_value, date)
@@ -373,5 +364,14 @@ class ThermalModelsController < ApplicationController
     when "g"
       "Low - after July 15"
     end
+  end
+
+  def oak_wilt_links
+    {
+      dnr_page: "https://dnr.wisconsin.gov/topic/foresthealth/oakwilt",
+      user_guide: "https://dnr.wisconsin.gov/sites/default/files/topic/ForestHealth/oakWiltVectorsEmergenceUserGuide.pdf",
+      video_tutorial: "https://widnr.widen.net/s/6msxrhqvpz/oak-wilt-degree-day-vectors-emergence-user-interface-demo",
+      harvesting_guide: "https://widnr.widen.net/view/pdf/aqszuho7ee/Oak-Harvesting-Guidelines-Web-version---FR-560.pdf?t.download=true"
+    }
   end
 end
