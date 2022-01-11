@@ -21,7 +21,7 @@ class OldAsos < ApplicationRecord
         where("ID = ? and Date >= ? and Date <= ?", stnid, Date.civil(year, 1, 1), Date.civil(year, 12, 31)).each do |old|
           date = old["Date"]
           AsosDatum.create!(
-            date: date, nominal_time: time_for(date, old["NominalTime"]), actual_time: time_for(date, old["ActualTime"]), asos_station_id: stns[stnid],
+            date:, nominal_time: time_for(date, old["NominalTime"]), actual_time: time_for(date, old["ActualTime"]), asos_station_id: stns[stnid],
             t_dew: old["TDew"], t_air: old["TAir"], windspeed: old["WindSpeed"], pressure: old["Pressure"], precip: old["Precip"],
             wind_dir: old["WindDir"]
           )

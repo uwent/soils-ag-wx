@@ -103,7 +103,7 @@ class ThermalModelsController < ApplicationController
   def get_dds
     url = AgWeather::DD_URL
     query = parse_dd_params
-    json = AgWeather.get(url, query: query)
+    json = AgWeather.get(url, query:)
 
     @data = json[:data]
     @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
@@ -145,7 +145,6 @@ class ThermalModelsController < ApplicationController
     json = AgWeather.get(AgWeather::DD_URL, query: parse_dd_params)
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
-      day
     end
     if @data.size > 0
       @scenario = oak_wilt_scenario(@data.last[:cumulative_value], @end_date)

@@ -6,7 +6,7 @@ def extract_date(params, sym)
     if d.is_a?(String)
       begin
         Date.parse(d)
-      rescue Exception => e
+      rescue
         Date.today - 1
       end
     else
@@ -73,4 +73,4 @@ end_date = if ARGV[2]
   Date.parse(ARGV[2])
 end
 
-send_emails({id: id, start_date: start_date, end_date: end_date})
+send_emails({id:, start_date:, end_date:})

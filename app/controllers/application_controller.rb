@@ -15,21 +15,21 @@ class ApplicationController < ActionController::Base
     #   request.remote_ip == "146.151.214.80"
   end
 
-  def fix_nested_dates(param)
-    if param.is_a? String
-      # convert to hash
-      slen = "start_date".length + 5
-      elen = "end_date".length
-      start_date_index = param.index("start_date") + slen
-      end_date_index = param.index("end_date") + elen
-      {
-        start_date: param[start_date_index, start_date_index + 10],
-        end_date: param[end_date_index, end_date_index + 10]
-      }
-    else
-      param
-    end
-  end
+  # def fix_nested_dates(param)
+  #   if param.is_a? String
+  #     # convert to hash
+  #     slen = "start_date".length + 5
+  #     elen = "end_date".length
+  #     start_date_index = param.index("start_date") + slen
+  #     end_date_index = param.index("end_date") + elen
+  #     {
+  #       start_date: param[start_date_index, start_date_index + 10],
+  #       end_date: param[end_date_index, end_date_index + 10]
+  #     }
+  #   else
+  #     param
+  #   end
+  # end
 
   def map_image
     data = JSON.parse(request.raw_post, symbolize_names: true)
@@ -65,27 +65,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def parse_dates(p)
-    # p is e.g. the result from params["grid_date"]
-    if p["start_date(1i)"] # it's the old three-element date style
-      [
-        Date.civil(p["start_date(1i)"].to_i, p["start_date(2i)"].to_i, p["start_date(3i)"].to_i),
-        Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
-      ]
-    elsif p["start_date"] && p["end_date"]
-      [
-        Date.parse(p["start_date"]),
-        Date.parse(p["end_date"])
-      ]
-    else
-      [nil, nil]
-    end
-  rescue => e
-    Rails.logger.warn "ApplicationController :: Date parsing error: #{e}"
-    [nil, nil]
-  end
-
-  private
+  # def parse_dates(p)
+  #   # p is e.g. the result from params["grid_date"]
+  #   if p["start_date(1i)"] # it's the old three-element date style
+  #     [
+  #       Date.civil(p["start_date(1i)"].to_i, p["start_date(2i)"].to_i, p["start_date(3i)"].to_i),
+  #       Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
+  #     ]
+  #   elsif p["start_date"] && p["end_date"]
+  #     [
+  #       Date.parse(p["start_date"]),
+  #       Date.parse(p["end_date"])
+  #     ]
+  #   else
+  #     [nil, nil]
+  #   end
+  # rescue => e
+  #   Rails.logger.warn "ApplicationController :: Date parsing error: #{e}"
+  #   [nil, nil]
+  # end
 
   def app_last_updated
     @app_last_updated = if File.exist?(File.join(Rails.root, "REVISION"))

@@ -80,7 +80,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
 
     [:json, :csv, :html].each do |format|
       stub_request(:get, "https://www.example.com/degree_days?base=0.0&end_date=2011-12-31&lat=44.2&long=-89.2&method=Simple&start_date=2011-01-01&upper=0.0").to_return(status: 200, body: dd_response, headers: {})
-      get :get_dds, params: params.merge(format: format)
+      get :get_dds, params: params.merge(format:)
       assert_response :success
     end
   end
@@ -130,7 +130,7 @@ class ThermalModelsControllerTest < ActionController::TestCase
       {date: "2020-01-01", value: 44}
     ]
     [:csv].each do |format|
-      get :download_csv, params: {dd_data: data.to_json, format: format}
+      get :download_csv, params: {dd_data: data.to_json, format:}
       assert_response :success
     end
   end

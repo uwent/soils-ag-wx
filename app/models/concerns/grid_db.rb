@@ -74,7 +74,7 @@ module GridDb
         date = date_for(year, doy)
         layer.rows.each_with_index do |row, index|
           latitude = grid.latitude_for(index)
-          db_row = new date: date, latitude: latitude
+          db_row = new(date:, latitude:)
           (0..row.size - 1).each do |col_index|
             db_row[long_cols[col_index]] = row[col_index]
           end

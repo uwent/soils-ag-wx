@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 6.1.4"
-gem "railties", "~> 6.1.4"
-gem "activesupport", "~> 6.1.4"
+gem "rails", "~> 7.0"
+gem "railties", "~> 7.0"
+gem "activesupport", "~> 7.0"
 gem "pg", "~> 1.2"
 gem "sassc-rails", "~> 2.1"
 gem "coffee-rails", "~> 5.0"
@@ -13,12 +13,13 @@ gem "uglifier", "~> 4.2"
 gem "turbolinks", "~> 5.2"
 gem "jbuilder", "~> 2.11"
 gem "httparty", "~> 0.20"
-gem "render_async", "~> 2.1"
+gem "render_async", "~> 2.1" # for asynchronous loading of page elements
 gem "will_paginate", "~> 3.3"
 gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem "whenever", "~> 1.0"
 gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
 gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
+gem "terser", "~> 1.1" # for JS compression
 
 group :development do
   gem "puma"
@@ -29,8 +30,6 @@ group :development do
   gem "letter_opener"
   gem "letter_opener_web"
   gem "listen"
-  gem "ed25519"
-  gem "bcrypt_pbkdf"
   gem "standard"
 end
 

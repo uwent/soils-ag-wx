@@ -5,7 +5,7 @@ class RegionTest < ActiveSupport::TestCase
     assert(@region = Region.first)
     DegreeDayStation.delete_all
     [41.0, 42.0, 40.0, 39.0].each do |latitude|
-      DegreeDayStation.create! region: @region, latitude: latitude
+      DegreeDayStation.create! region: @region, latitude:
     end
   end
 

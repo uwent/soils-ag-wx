@@ -75,9 +75,9 @@ class Subscriber < ApplicationRecord
           site_name: sub.name,
           latitude: sub.latitude,
           longitude: sub.longitude,
-          dates: dates,
+          dates:,
           values: vals,
-          cum_vals: cum_vals
+          cum_vals:
         }
       end
       # end.select { |val| val[:value] > 0 }

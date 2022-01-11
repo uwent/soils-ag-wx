@@ -12,7 +12,7 @@ class HeartbeatController < ApplicationController
   def awon
     @awon_res = {}
     [4751, 4781].each do |stnid|
-      awon_station = AwonStation.where(stnid: stnid).first
+      awon_station = AwonStation.where(stnid:).first
       [T411, T412, T406].each do |awon_class|
         @awon_res["#{awon_station.abbrev}_#{awon_class}"] = awon_class.hasYesterday(["awon_station_id=?", awon_station[:id]])
       end

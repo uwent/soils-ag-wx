@@ -3,7 +3,6 @@
 require "date"
 
 class CalMatrix
-  @cols
 
   # default to making a calendar for this year
   def initialize(date = Date.today)
@@ -29,12 +28,11 @@ class CalMatrix
 
   def row(mday)
     row = []
-    0.upto 11 do |col_index|
+    0.upto(11) do |col_index|
       col = col(col_index)
       if mday - 1 < col.size
         row[col_index] = col[mday - 1]
       end
-      col_index += 1
     end
     row
   end

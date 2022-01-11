@@ -10,7 +10,7 @@ module AgWeather
   PEST_URL = BASE_URL + "/pest_forecasts"
 
   def self.get(url, query: nil, timeout: 10)
-    response = HTTParty.get(url, query: query, timeout: timeout)
+    response = HTTParty.get(url, query:, timeout:)
     JSON.parse(response.body, symbolize_names: true)
   rescue
     Rails.logger.error "Failed to retrieve endpoint #{url}"
@@ -18,7 +18,7 @@ module AgWeather
 
   def self.get_map(endpoint, id, query)
     url = "#{endpoint}/#{id}"
-    json = get(url, query: query, timeout: 30)
+    json = get(url, query:, timeout: 30)
     "#{HOST}#{json[:map]}"
   rescue
     Rails.logger.error "Failed to retrieve map image at #{url}"
@@ -27,7 +27,7 @@ module AgWeather
 
   def self.get_grid(endpoint, date)
     url = endpoint + "/all_for_date"
-    json = get(url, query: {date: date})
+    json = get(url, query: {date:})
     json[:data]
   rescue
     Rails.logger.error "Failed to retrieve data grid at #{url}"
@@ -47,8 +47,8 @@ module AgWeather
     opts = {
       start_date: date,
       end_date: date,
-      lat: lat,
-      long: long
+      lat:,
+      long:
     }
     json = get(url, query: opts)
     data = json[:data]

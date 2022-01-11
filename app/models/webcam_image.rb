@@ -23,6 +23,6 @@ class WebcamImage < ApplicationRecord
       thumbs = []
       fulls = []
     end
-    {start_date: start_dt, end_date: end_dt, thumbs: thumbs, fulls: fulls}
+    {start_date: start_dt, end_date: end_dt, thumbs:, fulls:}
   end
 end

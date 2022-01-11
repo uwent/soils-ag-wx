@@ -40,7 +40,7 @@ class SunWaterController < ApplicationController
   def et_data
     url = AgWeather::ET_URL
     query = parse_map_params
-    json = AgWeather.get(url, query: query)
+    json = AgWeather.get(url, query:)
     @data = json[:data]
 
     respond_to do |format|
@@ -57,7 +57,7 @@ class SunWaterController < ApplicationController
   def insol_data
     url = AgWeather::INSOL_URL
     query = parse_map_params
-    json = AgWeather.get(url, query: query)
+    json = AgWeather.get(url, query:)
     @data = json[:data]
 
     respond_to do |format|

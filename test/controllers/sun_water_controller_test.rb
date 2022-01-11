@@ -17,7 +17,7 @@ class SunWaterControllerTest < ActionController::TestCase
 
   test "should post et_map" do
     stub_request(:get, "https://www.example.com/evapotranspirations/#{date}").to_return(status: 200, body: map_response, headers: {})
-    post :et_map, params: {date: date}
+    post :et_map, params: {date:}
     assert_response :success
   end
 
@@ -35,7 +35,7 @@ class SunWaterControllerTest < ActionController::TestCase
 
   test "should post insol_map" do
     stub_request(:get, "https://www.example.com/insolations/#{date}").to_return(status: 200, body: map_response, headers: {})
-    post :insol_map, params: {date: date}
+    post :insol_map, params: {date:}
     assert_response :success
   end
 

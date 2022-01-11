@@ -47,10 +47,10 @@ else
 end
 
 if ARGV[1]
-  message_text = File.open(ARGV[1]).read
+  message_text = File.read(ARGV[1])
 else
   puts "usage: send_special.rb {everybody|id} message_file"
   exit
 end
 
-send_emails({id: id, message_text: message_text})
+send_emails({id:, message_text:})

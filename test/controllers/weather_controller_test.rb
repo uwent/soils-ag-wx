@@ -22,7 +22,7 @@ class WeatherControllerTest < ActionController::TestCase
 
   test "should post weather_map" do
     stub_request(:get, "https://www.example.com/weather/#{date}").to_return(status: 200, body: map_response, headers: {})
-    get :weather_map, params: {date: date}
+    get :weather_map, params: {date:}
     assert_response :success
   end
 
@@ -40,7 +40,7 @@ class WeatherControllerTest < ActionController::TestCase
 
   test "should post precip_map" do
     stub_request(:get, "https://www.example.com/precips/#{date}").to_return(status: 200, body: map_response, headers: {})
-    get :precip_map, params: {date: date}
+    get :precip_map, params: {date:}
     assert_response :success
   end
 

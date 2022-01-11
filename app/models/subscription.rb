@@ -59,6 +59,6 @@ class Subscription < ApplicationRecord
   end
 
   def as_json(options = {})
-    {id: id, name: name, latitude: latitude, longitude: longitude}
+    {id:, name:, latitude:, longitude:}
   end
 end
