@@ -27,11 +27,11 @@
 
 <h4>Webmaster/developer:</h4>
 
-<div class="row">
+<div style="display: inline-flex; margin-bottom: 1.5em;">
   <div class="left">
     <%= image_tag "webmaster.png", title: "hard at work" %>
   </div>
-  <div>
+  <div class="right">
     Ben Bradford<br>
     Department of Entomology
     <ul>
@@ -44,10 +44,31 @@
 
 <h4>Site info:</h4>
 
-<p>
-  Last updated: <%= @app_last_updated %><br>
-  Source code: <%= link_to "Github", "https://github.com/uwent/soils-ag-wx" %>
-</p>
+Data sources:
+
+<ul>
+  <li>Weather: <%= link_to "NOAA URMA 2.5km-resolution daily grids", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %></li>
+  <li>Precipitation: <%= link_to "NOAA estimated precipitation daily grids", "https://nomads.ncep.noaa.gov/pub/data/nccf/com/pcpanl/prod/" %></li>
+  <li>Solar insolation: <%= link_to "UW Space Science and Engineering Center", "https://www.ssec.wisc.edu/data/" %></li>
+  <li>Evapotranspiration: Computed from weather and insolation grids using the method outlined in <%= link_to "Diak et al. 1998", "https://doi.org/10.1175/1520-0477(1998)079%3C1345:AMDADB%3E2.0.CO;2" %>.</li>
+</ul>
+
+<br>
+
+Site structure:
+
+<div style="overflow: scroll">
+  <pre>
+    AgWeather backend server - <%= link_to "link to API blueprint", AgWeather::BASE_URL %> - <%= link_to "source code", "https://github.com/uwent/ag-weather" %>
+      │
+      ├─ Soils Ag Wx (this site) - <%= link_to "source code", "https://github.com/uwent/soils-ag-wx" %>
+      │
+      ├─ Vegetable Disease and Insect Forecasting Network (VDIFN) - <%= link_to "link", vdifn_url %> - <%= link_to "source code", "https://github.com/uwent/ag-vdifn" %>
+      │
+      └─ Wisconsin Irrigation Scheduling Program (WISP) - <%= link_to "link", wisp_url %> - <%= link_to "source code", "https://github.com/uwent/wisp" %></pre>
+</div>
+
+<p>Last updated: <%= @app_last_updated %></p>
 
 <br>
 
