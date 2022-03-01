@@ -35,7 +35,7 @@ $ ->
     if !validate_lat(lat)
       validations.push("Invalid latitude. Must be a number between " + min_lat + " and " + max_lat)
     if !validate_long(long)
-      validations.push("Invalid longitude. Must be a number between" + min_long + " and " + max_long)
+      validations.push("Invalid longitude. Must be a number between " + min_long + " and " + max_long)
     return validations
 
   add_to_table = (sub) ->
