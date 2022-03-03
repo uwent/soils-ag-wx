@@ -1,20 +1,26 @@
-<% @title = "Oak Wilt Vectors Emergence Thermal Model" %>
+<% @title = "Oak Wilt Thermal Model Results for (#{@latitude}, #{@longitude})" %>
 <% @welcome_image = "ow-leaves.jpg" %>
 
 <% content_for :welcome do %>
-  <h2><%= link_to @title, action: :oak_wilt %></h2>
+  <h2><%= link_to("Oak Wilt Vectors Emergence Thermal Model", action: :oak_wilt) %></h2>
   <p>Oak wilt is a fungal disease carried by bark beetles. Prevention involves avoiding pruning or cutting oak trees during peak beetle flight periods (spring-summer). Use this thermal model to understand the risk in your area.</p>
 <% end %>
 
 <%= content_for :scripts do %>
 <script>
-  function displayAllDds(){
-    document.getElementById("oak-wilt-list").style.display= "block";
+  function displayAllDDs(){
+    el = document.getElementById("oak-wilt-list");
+    el.style.display = el.style.display == "none" ? "block" : "none";
   }
+
+  let lat = <%= @latitude %>;
+  let long = <%= @longitude %>;
+  let url = window.location.pathname + "?lat=" + lat + "&long=" + long;
+  $(document).ready(() => { window.history.replaceState({}, "", url) })
 </script>
 <% end %>
 
-<h2><%= link_to @title + " Results", action: :oak_wilt %></h2>
+<h2><%= link_to(@title, action: :oak_wilt) %></h2>
 
 <hr>
 
@@ -22,7 +28,7 @@
   <h3>Thermal model:</h3>
 
   <p style="margin-left: 2em; margin-right: 2em;">
-    <b>Location:</b> <%= params[:latitude] %>&deg;N, <%= params[:longitude] %>&deg;W (<%= link_to "show on Google maps", "https://www.google.com/maps/search/?api=1&query=#{params[:latitude]},#{params[:longitude]}", target: "_blank" %>)<br>
+    <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W (<%= link_to "show on Google maps", "https://www.google.com/maps/search/?api=1&query=#{@latitude},#{@longitude}", target: "_blank" %>)<br>
     <b>Date range:</b> January 1, <%= @end_date.strftime("%Y") %> to <%= @end_date.strftime("%B %d, %Y") %><br><br>
     <b>Degree day model:</b> Base 41&deg;F<br>
     <b>Total degree days:</b> <%= @data.last[:cumulative_value] %> Fahrenheit degree days<br>
@@ -84,13 +90,16 @@
 
   <br>
 
-  <a href="#" onclick="displayAllDds()">View all Degree Days for this date range</a> |
-  <%= render partial: "oak_wilt_download_csv", locals: { data: @data.to_json } %> |
-  <%= link_to 'Back', :back %>
+  <a style="text-decoration: underline; cursor: pointer;" onclick="displayAllDDs()">View all Degree Days for this date range</a> | <%= form_tag({action: :download_csv}, {class: "form__download_csv"}) do %>
+    <%= hidden_field_tag "data", @data.to_json %>
+    <%= hidden_field_tag "filename", "oak wilt risk for #{@end_date.to_formatted_s} at (#{@latitude}, #{@longitude})" %>
+    <%= hidden_field_tag "format", "csv" %>
+    <%= submit_tag("Download CSV", class: "link", id: "submit")%>
+  <% end %> | <%= link_to 'Back', :back %>
 
   <br>
 
-  <div id="oak-wilt-list" style="display:none">
+  <div id="oak-wilt-list" style="display: none;">
     <%= render partial: "oak_wilt_all_dds", locals: { data: @data, end_date: @end_date } %>
   </div>
 

@@ -141,8 +141,29 @@ class ThermalModelsController < ApplicationController
 
   def oak_wilt_dd
     @links = oak_wilt_links
+    if params[:lat].nil? || params[:long].nil?
+      redirect_to action: :oak_wilt
+    end
+    @latitude = params[:lat].to_f
+    @longitude = params[:long].to_f
+    puts @latitude
 
-    json = AgWeather.get(AgWeather::DD_URL, query: parse_dd_params)
+    @end_date = begin
+      Date.new(*params[:end_date].values.map(&:to_i))
+    rescue
+      Date.yesterday
+    end
+
+    query = {
+      lat: @latitude,
+      long: @longitude,
+      end_date: @end_date,
+      start_date: @end_date.beginning_of_year,
+      base: 41,
+      units: "F"
+    }.compact
+
+    json = AgWeather.get(AgWeather::DD_URL, query: query)
     @data = json[:data].each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
     end
@@ -150,8 +171,8 @@ class ThermalModelsController < ApplicationController
       @scenario = oak_wilt_scenario(@data.last[:cumulative_value], @end_date)
       @risk = oak_wilt_risk(@scenario)
     end
-  rescue
-    redirect_to action: :oak_wilt
+  # rescue
+  #   redirect_to action: :oak_wilt
   end
 
   def potato
@@ -166,10 +187,9 @@ class ThermalModelsController < ApplicationController
   # --- PARTIALS ---
 
   def download_csv
-    # data = JSON.parse params[:dd_data].gsub('=>', ":")
-    data = JSON.parse(params[:dd_data], symbolize_names: true)
+    data = JSON.parse(params[:data], symbolize_names: true)
     respond_to do |format|
-      format.csv { send_data to_csv(data), filename: "oak wilt risk.csv" }
+      format.csv { send_data to_csv(data), filename: "#{params[:filename]}.csv" }
     end
   end
 

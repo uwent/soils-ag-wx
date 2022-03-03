@@ -1,18 +1,18 @@
 <div class="form-box">
-  <%= form_tag action: :oak_wilt_dd do %>
+  <%= form_tag(action: :oak_wilt_dd) do %>
     <b>Select location and date of interest for Oak Wilt recommendation:</b><br>
     <p>
       <div onChange="moveDot()">
         Location:<br>
-        <label><%= select_tag :latitude, options_for_select(latitudes, default_latitude) %> Latitude</label>&nbsp;
-        <label><%= select_tag :longitude, options_for_select(longitudes, default_longitude) %> Longitude</label><br>
+        <label><%= select_tag(:lat, options_for_select(latitudes, default_latitude)) %> Latitude</label>&nbsp;
+        <label><%= select_tag(:long, options_for_select(longitudes, default_longitude)) %> Longitude</label><br>
         <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;<span id="geo-loc-msg"></span>
       </div>
     </p>
     <p>
       <div onChange="validateDate()">
         Date of Interest:<br>
-        <%= date_select :end_date, "date", start_year: 2017, default: 1.day.ago, end_year: Time.now.year %>
+        <%= date_select(:end_date, "date", start_year: 2017, default: 1.day.ago, end_year: Time.now.year) %>
       </div>
     </p>
     <p>
@@ -21,9 +21,6 @@
       </div>
       <p class="disclaimer">Note: Date of interest must be prior to the current date. The degree day data in this system is available only up to the day before the current date for computation.</p>
     </p>
-    <%= hidden_field_tag :method, "sine" %>
-    <%= hidden_field_tag :base_temp, 41 %>
-    <%= hidden_field_tag :upper_temp, "None" %>
-    <%= submit_tag "Compute Estimated Oak Wilt Vector Emergence Status", class: "button", id: "submit" %>
+    <%= submit_tag("Compute Estimated Oak Wilt Vector Emergence Status", class: "button", id: "submit") %>
   <% end %>
 </div>

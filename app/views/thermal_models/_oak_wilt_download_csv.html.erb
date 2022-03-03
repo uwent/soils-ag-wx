@@ -1,5 +1,0 @@
-<%= form_tag({action: :download_csv}, {class: "form__download_csv"}) do %>
-  <%= hidden_field_tag "dd_data", data %>
-  <%= hidden_field_tag 'format', 'csv'%>
-  <%= submit_tag("Download CSV", class: "link", id: "submit")%>
-<% end %>

@@ -2,7 +2,7 @@
 <% @welcome_image = "oak-wilt.png" %>
 
 <% content_for :welcome do %>
-  <h2><%= @title %></h2>
+  <h2><%= link_to(@title, "") %></h2>
   <p>This oak wilt degree-day model estimates cumulative emergence of the two most important insects that transmit oak wilt (<i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>) in the spring across Wisconsin. The degree-day model was constructed based on recent vector trapping data in Wisconsin (Jagemann et al., 2018). This model is a useful tool to refine the beginning of the periods when pruning, wounding, and/or harvesting of oaks should be avoided to reduce the risk of introduction of oak wilt.</p>
   <div class="user-guide">
     <%= link_to "User guide", @links[:user_guide], target:"_blank" %>
@@ -34,6 +34,10 @@ function validateDate() {
 <h2><%= link_to(@title, "") %></h2>
 
 <hr>
+
+<p>This oak wilt risk management tool was developed in cooperation with the Wisconsin DNR and uses a degree day model to predict the presence of insect vectors of oak wilt. The idea is to refine the start date (traditionally April 1 in southern Wisconsin and April 15 in northern Wisconsin, see Figure 1 below) of the restricted oak harvesting period based on climatic conditions in a given year. With this tool, the restricted period now begins after the accumulation of 231 Fahrenheit degree days, which may occur days or weeks after these calendar-based cutoffs.</p>
+
+<p>NOTE: This oak wilt model risk model <b>IS APPROVED</b> for use in Wisconsin, Minnesota, and Iowa, by the respective state natural resource agencies. This model <b>IS NOT APPROVED</b> for use by the Michigan DNR, and residents of other states shown on the map should assume that the model is not explicitly approved by their state agency and it should be used as an informational resource only.</p>
 
 <div class="two-box">
   <%= render partial: "oak_wilt_dd_selector" %>
@@ -82,7 +86,7 @@ function validateDate() {
 
 <p>Please read the <%= link_to "harvesting guidelines", @links[:harvesting_guide], target: "_blank" %> section on Exceptions and Modifications which may allow for stand-level flexibilities.</p>
 
-<p>For more information about oak wilt, visit the <%= link_to "Wisconsin DNR oak wilt page", @links[:dnr_page], target:"_blank" %></p>
+<p>For more information about oak wilt, visit the <%= link_to "Wisconsin DNR oak wilt page", @links[:dnr_page], target:"_blank" %>.</p>
 
 <h4>MORE INFORMATION</h4>
 
@@ -95,9 +99,11 @@ function validateDate() {
 
 <h4>REFERENCES</h4>
 
-<p>Ambourn, A.K., Juzwik, J., and Moon, R.D. 2005. Seasonal dispersal of the oak wilt fungus by <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i> in Minnesota. Plant Dis. 89:1067-1076.</p>
-
-<p>Jagemann, S.M., Juzwik, J., Tobin P.C., and Raffa K.F. 2018. Seasonal and regional distributions, degree-day models, and phoresy rates of the major sap beetle (Coleoptera: Nitidulidae) vectors of the oak wilt fungus, <i>Bretziella fagacearum</i>, in Wisconsin. Enveron. Entomol. 47:1152-1164.</p>
+<ol>
+  <li>Ambourn, A.K., Juzwik, J., and Moon, R.D. 2005. Seasonal dispersal of the oak wilt fungus by <i>Colopterus truncatus</i> and <i>Carpophilus sayi</i> in Minnesota. Plant Dis. 89:1067-1076.</li>
+  <br>
+  <li>Jagemann, S.M., Juzwik, J., Tobin P.C., and Raffa K.F. 2018. Seasonal and regional distributions, degree-day models, and phoresy rates of the major sap beetle (Coleoptera: Nitidulidae) vectors of the oak wilt fungus, <i>Bretziella fagacearum</i>, in Wisconsin. Enveron. Entomol. 47:1152-1164.</li>
+</ol>
 
 <br>
 
