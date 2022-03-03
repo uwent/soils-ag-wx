@@ -141,19 +141,7 @@ class ThermalModelsController < ApplicationController
 
   def oak_wilt_dd
     @links = oak_wilt_links
-    if params[:lat].nil? || params[:long].nil?
-      redirect_to action: :oak_wilt
-    end
-    @latitude = params[:lat].to_f
-    @longitude = params[:long].to_f
-    puts @latitude
-
-    @end_date = begin
-      Date.new(*params[:end_date].values.map(&:to_i))
-    rescue
-      Date.yesterday
-    end
-
+    parse_oak_wilt_dd_params
     query = {
       lat: @latitude,
       long: @longitude,
@@ -194,6 +182,26 @@ class ThermalModelsController < ApplicationController
   end
 
   private
+
+  def parse_oak_wilt_dd_params
+    if params[:lat].present? && params[:long].present?
+      @latitude = params[:lat].to_f
+      @longitude = params[:long].to_f
+    elsif params[:latitude].present? && params[:longitude].present?
+      @latitude = params[:latitude].to_f
+      @longitude = params[:longitude].to_f
+    else
+      raise ArgumentError.new
+    end
+
+    @end_date = begin
+      Date.new(*params[:end_date].values.map(&:to_i))
+    rescue
+      Date.yesterday
+    end
+  rescue
+    redirect_to action: :oak_wilt
+  end
 
   def parse_dd_map_params
     @model = params[:model].present? ? params[:model] : "dd_50_86"

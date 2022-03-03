@@ -1,7 +1,7 @@
 $(document).ready(function () {
-  console.log("Loaded map functions");
+  // console.log("Loaded map functions");
   elementReady("#map-img").then(() => {
-    console.log("Map found!")
+    // console.log("Map found!")
     img = document.getElementById("map-img");
     img.onmousedown = getCoordinates;
   });
