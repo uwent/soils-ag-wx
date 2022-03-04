@@ -1,8 +1,8 @@
-<% @title = "Oak Wilt Thermal Model Results for (#{@latitude}, #{@longitude})" %>
+<% @title = "Oak Wilt Vectors Emergence Thermal Model" %>
 <% @welcome_image = "ow-leaves.jpg" %>
 
 <% content_for :welcome do %>
-  <h2><%= link_to("Oak Wilt Vectors Emergence Thermal Model", action: :oak_wilt) %></h2>
+  <h2><%= link_to(@title, action: :oak_wilt) %></h2>
   <p>Oak wilt is a fungal disease carried by bark beetles. Prevention involves avoiding pruning or cutting oak trees during peak beetle flight periods (spring-summer). Use this thermal model to understand the risk in your area.</p>
 <% end %>
 
@@ -12,10 +12,7 @@
     el = document.getElementById("oak-wilt-list");
     el.style.display = el.style.display == "none" ? "block" : "none";
   }
-
-  let lat = <%= @latitude %>;
-  let long = <%= @longitude %>;
-  let url = window.location.pathname + "?lat=" + lat + "&long=" + long;
+  let url = window.location.pathname + "?lat=" + <%= @latitude %> + "&long=" + <%= @longitude %>;
   $(document).ready(() => { window.history.replaceState({}, "", url) })
 </script>
 <% end %>
@@ -41,9 +38,9 @@
   <h3>Recommendation:</h3>
   
   <div style="margin-left: 2em; margin-right: 2em;">
+    <%# GDD is lower than 128.3, and the end date is on or before 7/15. %>
     <% if @scenario == "a" %>
-      <%# GDD is lower than 128.3, and the end date is on or before 7/15. %>
-      <p class="larger-font">Currently it is low risk for oak wilt above-ground transmission.</p>
+      <p class="larger-font" style="color: darkgreen;">Currently it is low risk for oak wilt above-ground transmission.</p>
 
       <p><b>Note:</b> Growing degree days can accumulate quickly and subsequent recommendations can change quickly in March, April, and May. Please check back daily.</p>
 
@@ -52,34 +49,26 @@
       <p><b>Estimated vector emergence status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that less than 5% of <i>Colopterus truncatus</i> have emerged as of the date yet. <i>C. truncatus</i> and <i>Carpophilus sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
     <% end %>
 
+    <%# High risk: the end date is before 7/15 and flights are in progress. %>
     <% if %w[b c d e f].include? @scenario %>
-      <%# High risk: the end date is before 7/15 and flights are in progress. %>
       <p class="larger-font warning">Wounding/pruning/harvesting oaks should be avoided.</p>
 
       <p>If an oak is wounded, consider applying wound dressing immediately to wounds and the last three growth rings of cut stumps. Though not scientifically proven, herbicide application to stumps is believed to make the stump less suitable for pathogen infection.</p>
 
       <p><b>Forest setting:</b> If your stand is in a county that has oak wilt OR within 6 miles of a county with oak wilt, any activities that may wound oaks should only be considered under certain conditions.  Read <%= link_to "Oak Harvesting Guidelines to Reduce the Risk of Introduction and Spread of Oak wilt", @links[:harvesting_guide], target: "_blank" %> for details.</p>
 
-      <%# FDD is equal or more than 231 and less than 388, and the end date is on or before 7/15. %>
-      <% if @scenario == "b" %><% ct = 5; cs = 0 %><% end %>
-      
-      <%# FDD is equal or more than 388 and less than 638, and the end date is on or before 7/15. %>
-      <% if @scenario == "c" %><% ct = 25; cs = 5 %><% end %>
-
-      <%# FDD is equal or more than 638 and less than 913, and the end date is on or before 7/15. %>
-      <% if @scenario == "d" %><% ct = 50; cs = 25 %><% end %>
-
-      <%# FDD is equal or more than 913 and less than 2172, and the end date is on or before 7/15. %>
-      <% if @scenario == "e" %><% ct = 75; cs = 50 %><% end %>
-
-      <%# FDD is equal or more than 2172 and the end date is on or before 7/15. %>
-      <% if @scenario == "f" %><% ct = 95; cs = 75 %><% end %>
+      <%# vector emergence status %>
+      <% if @scenario == "b"; ct = 5; cs = 0; end %>
+      <% if @scenario == "c"; ct = 25; cs = 5; end %>
+      <% if @scenario == "d"; ct = 50; cs = 25; end %>
+      <% if @scenario == "e"; ct = 75; cs = 50; end %>
+      <% if @scenario == "f"; ct = 95; cs = 75; end %>
 
       <p><b>Estimated vector emergence status:</b> Based on the degree day model (Jagemann et al., 2018), it is estimated that at least <%= ct %>% of <i>Colopterus truncatus</i> and <%= cs %>% of <i>Carphophilus sayi</i> have emerged as of the specified date. <i>C. truncatus</i> and <i>C. sayi</i> are the two most important insects that transmit oak wilt in Wisconsin. <i>C. truncatus</i> emerges earlier in spring than <i>C. sayi.</i></p>
     <% end %>
 
+    <%# Low risk: the end date is 7/15. %>
     <% if @scenario == "g" %>
-      <%# Low risk: the end date is 7/15. %>
       <p class="larger-font">The risk of overland transmission of oak wilt is greatly reduced after July 15th.</p>
 
       <p><b>Forest setting:</b> Harvesting can be considered. Read <%= link_to "Oak Harvesting Guidelines to Reduce the Risk of Introduction and Spread of Oak wilt", @links[:harvesting_guide], target: "_blank" %> for details.</p>

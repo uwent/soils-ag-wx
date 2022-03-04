@@ -1,4 +1,4 @@
-<% @title = "Oak Wilt Vectors Emergence Thermal Model " %>
+<% @title = "Oak Wilt Vectors Emergence Thermal Model" %>
 <% @welcome_image = "oak-wilt.png" %>
 
 <% content_for :welcome do %>
@@ -36,8 +36,6 @@ function validateDate() {
 <hr>
 
 <p>This oak wilt risk management tool was developed in cooperation with the Wisconsin DNR and uses a degree day model to predict the presence of insect vectors of oak wilt. The idea is to refine the start date (traditionally April 1 in southern Wisconsin and April 15 in northern Wisconsin, see Figure 1 below) of the restricted oak harvesting period based on climatic conditions in a given year. With this tool, the restricted period now begins after the accumulation of 231 Fahrenheit degree days, which may occur days or weeks after these calendar-based cutoffs.</p>
-
-<p>NOTE: This oak wilt model risk model <b>IS APPROVED</b> for use in Wisconsin, Minnesota, and Iowa, by the respective state natural resource agencies. This model <b>IS NOT APPROVED</b> for use by the Michigan DNR, and residents of other states shown on the map should assume that the model is not explicitly approved by their state agency and it should be used as an informational resource only.</p>
 
 <div class="two-box">
   <%= render partial: "oak_wilt_dd_selector" %>
