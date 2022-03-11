@@ -16,6 +16,8 @@
         <th>Date</th>
         <th>Potential<br>ET (in)</th>
         <th>Cumul.<br>ET (in)</th>
+        <th>Potential<br>ET (mm)</th>
+        <th>Cumul.<br>ET (mm)</th>
       </tr>
     </thead>
     <tbody>
@@ -25,6 +27,8 @@
         <td><%= day[:date] %></td>
         <td><%= sprintf_nilsafe(day[:value], 3) %></td>
         <td><%= sprintf_nilsafe(day[:cumulative_value], 3) %></td>
+        <td><%= sprintf_nilsafe(day[:value] * 2.54, 3) %></td>
+        <td><%= sprintf_nilsafe(day[:cumulative_value] * 2.45, 3) %></td>
       </tr>
     <% end %>
     </tbody>
