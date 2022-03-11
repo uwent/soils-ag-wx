@@ -1,17 +1,18 @@
 <div class="form-box">
   <%= form_tag target, method: "get", remote: true do %>
-    <b>Enter parameters:</b><br>
-    <p>
+    <div class="title">Enter parameters:</div>
+    <fieldset>
+      <legend>Location:</legend>
       <div onChange="moveDot()">
-        Location:<br>
         <label><%= select_tag :latitude, options_for_select(latitudes, default_latitude) %> Latitude</label>&nbsp;
         <label><%= select_tag :longitude, options_for_select(longitudes, default_longitude) %> Longitude</label><br>
-        <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;<span id="geo-loc-msg"></span>
+        <button type="button" onclick="getGeoLocation()">Get my location</button>
+        <span id="geo-loc-msg"></span>
       </div>
-    </p>
+    </fieldset>
 
-    <p>
-      Date range:<br>
+    <fieldset>
+      <legend>Date range:</legend>
       <label><%= date_select :start_date_select, :date,
         start_year: Date.current.year - 4,
         end_year: Date.current.year,
@@ -20,15 +21,25 @@
         start_year: Date.current.year - 4,
         end_year: Date.current.year,
         default: @date %> End</label>
-    </p>
+    </fieldset>
 
     <% if @temp_selector %>
-    Temperature units:<br>
-    <label><%= radio_button_tag :units, "F", @units == "F" %>Fahrenheit</label>
-    <label><%= radio_button_tag :units, "C", @units == "C" %>Celcius</label><br>
-    <br>
+      <fieldset>
+        <legend>Temperature units:</legend>
+        <label><%= radio_button_tag :units, "F", @units == "F" %>Fahrenheit</label>
+        <label><%= radio_button_tag :units, "C", @units == "C" %>Celcius</label><br>
+      </fieldset>
     <% end %>
 
-    <%= button_tag "Get Data Series", name: "format", value: "js" %>
+    <% if @methods %>
+      <fieldset>
+        <legend>Method:</legend>
+        <% @methods.each do |method| %>
+          <label><%= radio_button_tag :method, method, @method == method %><%= method.titlecase %></label>
+        <% end %>
+      </fieldset>
+    <% end %>
+
+    <%= button_tag "Get Data Series", name: "format", value: "js", class: "submit" %>
   <% end %>
 </div>

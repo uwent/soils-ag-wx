@@ -107,12 +107,16 @@ class ApplicationController < ActionController::Base
     @long = params[:longitude].to_f
     @start_date = Date.new(*params[:start_date_select].values.map(&:to_i))
     @end_date = Date.new(*params[:end_date_select].values.map(&:to_i))
+    @units = params[:units]
+    @method = params[:method]
     {
       lat: @lat,
       long: @long,
       start_date: @start_date,
-      end_date: @end_date
-    }
+      end_date: @end_date,
+      units: @units,
+      method: @method
+    }.compact
   end
 
   def parse_date

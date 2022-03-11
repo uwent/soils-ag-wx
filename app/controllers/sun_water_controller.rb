@@ -11,6 +11,8 @@ class SunWaterController < ApplicationController
     parse_dates
     @units = params[:units].presence || "in"
     @unit_options = ["in", "mm"]
+    @methods = ["classic", "adjusted"]
+    @method = params[:method].presence || "classic"
 
     respond_to do |format|
       format.html

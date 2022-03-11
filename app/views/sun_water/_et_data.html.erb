@@ -7,7 +7,8 @@
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
     <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
-    <b>Days:</b> <%= @data.size %>
+    <b>Days:</b> <%= @data.size %><br>
+    <b>ET calculation method:</b> <%= @method %>
   </p>
   <table class="grid-table" id="table">
     <thead>

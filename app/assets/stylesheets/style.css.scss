@@ -72,6 +72,7 @@ hr {
 
 label {
 	white-space: nowrap;
+	margin-bottom: 2px;
 }
 
 input, select, button {
@@ -386,12 +387,42 @@ input, select, button {
   padding: 1em;
   margin-bottom: 1em;
 	width: fit-content;
+
+	.title {
+		font-weight: bold;
+		text-decoration: underline;
+		margin-bottom: 1em;
+	}
+
+	fieldset {
+		margin-top: 1em;
+		margin-bottom: 1em;
+		border: 2px solid lightgrey;
+	}
+
+	button {
+		margin-top: 0.5em;
+	}
+	
+	.submit {
+		width: 100%;
+		background: lightgrey;
+		border: 1px solid grey;
+		border-radius: 3px;
+		padding: 0.5em;
+
+		&:hover {
+			background: $frame-bg-color;
+			border-color: $welcome-bg-color;
+		}
+	}
 }
 
 .two-box {
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 0.5em;
+	gap: 1em;
 
 	@media #{$small-only} {
 		flex-direction: column;
@@ -399,7 +430,7 @@ input, select, button {
 
 	.form-box {
 		width: 50%;
-		margin: 0.5em;
+		// margin: 0.5em;
 
 		@media #{$small-only} {
 			width: auto;
