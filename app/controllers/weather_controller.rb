@@ -52,7 +52,7 @@ class WeatherController < ApplicationController
           "Temperature units: #{@units}": nil,
           "Vapor pressure units: kPa": nil
         }
-        send_data to_csv(data, headers), filename: "weather grid for #{@date}.csv"
+        send_data to_csv(data, headers:), filename: "weather grid for #{@date}.csv"
       }
     end
   end
