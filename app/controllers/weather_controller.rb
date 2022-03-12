@@ -48,7 +48,11 @@ class WeatherController < ApplicationController
       format.html
       format.csv {
         data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "weather grid for #{@date}.csv"
+        headers = {
+          "Temperature units: #{@units}": nil,
+          "Vapor pressure units: kPa": nil
+        }
+        send_data to_csv(data, headers), filename: "weather grid for #{@date}.csv"
       }
     end
   end

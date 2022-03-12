@@ -32,7 +32,7 @@
         <td><%= format_temp(c_to_f(day[:avg_temp])).html_safe %></td>
         <td><%= format_temp(c_to_f(day[:max_temp])).html_safe %></td>
         <td><%= format_temp(c_to_f(day[:dew_point])).html_safe %></td>
-        <td><%= sprintf_nilsafe(day[:pressure], 2) %></td>
+        <td><%= sprintf_nilsafe(day[:pressure], 3) %></td>
         <td><%= day[:hours_rh_over_90] %></td>
         <td><%= format_temp(c_to_f(day[:avg_temp_rh_over_90])).html_safe %></td>
       </tr>

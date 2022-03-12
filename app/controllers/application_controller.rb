@@ -139,10 +139,15 @@ class ApplicationController < ActionController::Base
     @date = parse_date
   end
 
-  def to_csv(data)
+  def to_csv(data, headers)
     require "csv"
     Rails.logger.debug "ApplicationController :: Generating csv..."
     CSV.generate(headers: true) do |csv|
+      headers.each do |line|
+        csv << line
+      end
+      csv << {} if headers
+
       csv << data.first.keys
       data.each do |h|
         csv << h.values
