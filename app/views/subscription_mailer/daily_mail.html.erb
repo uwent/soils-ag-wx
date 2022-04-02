@@ -23,6 +23,7 @@
   table thead {
     border-top: 1px solid grey;
     border-bottom: 1px solid grey;
+    background: #ededed;
   }
 
   table th, td {
@@ -38,6 +39,10 @@
     background: #ededed;
   }
 
+  table tr:last-child {
+    border-bottom: 1px solid grey;
+  }
+
   .footer {
     font-size: smaller;
     color: grey;
@@ -47,7 +52,7 @@
   }
 </style>
 
-<h4>Ag Weather automated mailer for <%= @date.strftime('%m/%d/%Y') %></h4>
+<h4>AgWeather automated mailer for <%= @date.strftime('%m/%d/%Y') %></h4>
 
 <p>The daily potential evapotranspiration data for the site(s) you requested is shown below:</p>
 
@@ -91,7 +96,7 @@
 <h4>More information:</h4>
 
 <ul>
-  <li><%= link_to "Ag Weather homepage", root_url %></li>
+  <li><%= link_to "AgWeather homepage", root_url %></li>
   <li><%= link_to "Evapotranspiration map", controller: :sun_water, action: :et_map %></li>
   <li><%= link_to "Insolation map", controller: :sun_water, action: :insol_map %></li>
   <li><%= link_to "Daily weather map", controller: :weather, action: :weather_map %></li>

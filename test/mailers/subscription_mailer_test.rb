@@ -43,7 +43,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test "confirm" do
     mail = SubscriptionMailer.confirm(@rick)
-    assert_equal "Please confirm your email address for your UW Ag Weather subscription", mail.subject
+    assert_equal "Please confirm your email address for your UW AgWeather subscription", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "\r\n\r\nDear Jane Smith", mail.encoded
@@ -51,23 +51,23 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test "validation" do
     mail = SubscriptionMailer.validation(@rick)
-    assert_equal "UW Ag Weather subscription validation code", mail.subject
+    assert_equal "UW AgWeather subscription validation code", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
-    assert_match "Dear Ag Weather Subscriber,", mail.body.encoded
+    assert_match "Dear AgWeather Subscriber,", mail.body.encoded
   end
 
   test "daily mail" do
     mail = SubscriptionMailer.daily_mail(@rick, Date.today, [])
-    assert_equal "UW Ag Weather ET Mailer Report", mail.subject
+    assert_equal "UW AgWeather ET Mailer Report", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
-    assert_match "Ag Weather automated mailer", mail.body.encoded
+    assert_match "AgWeather automated mailer", mail.body.encoded
   end
 
   test "special" do
     mail = SubscriptionMailer.special(@rick, "")
-    assert_equal "Update: Your UW Ag Weather automated product subscription", mail.subject
+    assert_equal "Update: Your UW AgWeather automated product subscription", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "Hi Jane Smith,\r\n\r\n", mail.body.encoded

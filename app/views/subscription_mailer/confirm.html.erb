@@ -1,5 +1,9 @@
-<% def protect_against_forgery?; false; end %>Dear <%= @subscriber.name%>,<br/>
-<p>The following email has been sent to you from the UW Ag. Weather Data Site to confirm your request to register as a subscriber to the site’s automated daily ET data service.  If you initiated this request simply click on the subscription registration link below to continue the registration process.</p>
+<% def protect_against_forgery?; false; end %>Dear <%= @subscriber.name%>,<br>
+
+<p>The following email has been sent to you from the UW AgWeather Site to confirm your request to register as a subscriber to the site's automated daily ET data service. If you initiated this request simply click on the subscription registration link below to continue the registration process.</p>
+
 <p>Once you are registered, you will be able to enter your site names and locations (latitude and longitude) for which you want daily ET data.</p>
-<p>If you <b>did not</b> initiate a registration request to the UWEX Ag Weather data service simply delete this email now.</p>
-<p><%= link_to 'UW Ag. Weather Data Service Subscription Registration Link', @url %></p>
+
+<p>If you <b>did not</b> initiate a registration request to the UW AgWeather data service simply delete this email now.</p>
+
+<p><%= link_to "Click here to activate your subscription", @url %></p>
