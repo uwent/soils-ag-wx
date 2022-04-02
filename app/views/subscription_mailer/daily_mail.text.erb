@@ -1,12 +1,12 @@
-Ag Weather automated mailer for <%=@date.strftime('%m/%d/%Y') %>
+Ag Weather automated mailer for <%= @date.strftime("%m/%d/%Y") %>
 
-The daily ET data for the site(s) you requested is shown below for <%= @date.strftime('%m/%d/%Y') %>.
+The daily ET data for the site(s) you requested is shown below for <%= @date.strftime("%m/%d/%Y") %>.
 
 
 Site Id                      Lat/Long  ET Value (in/day)
 -------------------------  ----------  -----------------
-<% @values.each do |sub| %>
-<%= sprintf("%-25s  %.1f/%.1f  %.3f", sub[:site_name], sub[:latitude], sub[:longitude], sub[:values][0]) %><%= " (no data)" if sub[:values][0] < 0 %>
+<% @data.each do |site| %>
+<%= sprintf("%-25s  %.1f/%.1f  %.3f", site[:site_name], site[:latitude], site[:longitude], site[:values][0]) %><%= " (no data)" if site[:values][0] < 0 %>
 <% end %>
 
 

@@ -42,16 +42,17 @@ module AgWeather
   #   []
   # end
 
-  def self.get_et_value(date, lat, long)
-    url = ET_URL.to_s
+  def self.get_et_values(lat, long, date, start_date = nil)
+    url = ET_URL
     opts = {
-      start_date: date,
-      end_date: date,
-      lat:,
-      long:
-    }
+      lat: lat,
+      long: long,
+      start_date: start_date,
+      end_date: date
+    }.compact
+    puts opts
     json = get(url, query: opts)
     data = json[:data]
-    data.length > 0 ? data[0][:value].to_f : -1.0
+    # data.length > 0 ? data[0][:value].to_f : -1.0
   end
 end

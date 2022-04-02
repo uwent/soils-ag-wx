@@ -52,36 +52,52 @@ class Subscriber < ApplicationRecord
 
   def self.send_daily_mail(date = Date.current - 1.day)
     et_product = Product.where(name: "Evapotranspiration").first
-    dates = ((Date.today - 1.week)..date).to_a.reverse
+    dates = (date - 6.days)..date
     if date.yday < et_product.default_doy_start || date.yday >= et_product.default_doy_end
       Rails.logger.info "ET mailer not sent, currently outside of date range."
       return "Product inactive" unless Rails.env.development?
     end
+
+    # TODO: this should be made much more efficient. Collect all subscribed locations then query AgWeather for the date range for each location.
+
     Subscriber.all.each do |subscriber|
-      subs = subscriber.subscriptions.where(product: et_product).map do |sub|
-        # collect ets for location
-        vals = dates.map do |date|
-          AgWeather.get_et_value(date, sub.latitude, sub.longitude)
-        end
+      subs = subscriber.subscriptions.where(product: et_product)
+      puts subs
 
-        # cumulative sum of ets
-        sum = 0
-        cum_vals = vals.map do |v|
-          sum += v.negative? ? 0 : v
-        end
+      if subs.size > 0
+        data = subs.map do |site|
+          # collect ets for location
+          ets = AgWeather.get_et_values(site.latitude, site.longitude, date, dates.first)
 
-        # return data
-        {
-          site_name: sub.name,
-          latitude: sub.latitude,
-          longitude: sub.longitude,
-          dates:,
-          values: vals,
-          cum_vals:
-        }
+          # convert to hash
+          vals = {}
+          ets.each do |val|
+            vals[val[:date]] = val[:value]
+          end
+
+          # match received ETs to date list
+          vals = dates.collect do |day|
+            key = day.to_formatted_s
+            vals[key].nil? ? -1 : vals[key]
+          end
+
+          # cumulative sum of ets
+          sum = 0
+          cum_vals = vals.map do |val|
+            sum += val.negative? ? 0 : val
+          end
+
+          {
+            site_name: site.name,
+            latitude: site.latitude,
+            longitude: site.longitude,
+            dates: dates,
+            values: vals,
+            cum_vals: cum_vals
+          }
+        end
+        SubscriptionMailer.daily_mail(subscriber, date, data).deliver
       end
-      # end.select { |val| val[:value] > 0 }
-      SubscriptionMailer.daily_mail(subscriber, date, subs).deliver if subs.length > 0
     end
   end
 

@@ -1,60 +1,104 @@
+<style>
+  body {
+    font-family: sans-serif;
+    max-width: 800px;
+  }
+
+  .box {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    width: fit-content;
+    overflow: auto;
+    max-width: 100%;
+  }
+
+  .box-header {
+    margin-bottom: 5px;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  table thead {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+  }
+
+  table th, td {
+    text-align: right;
+    padding: 0.25em 1em 0.25em 1em;
+  }
+
+  table th:first-child, td:first-child {
+    text-align: left;
+  }
+
+  table tr:nth-child(even) {
+    background: #ededed;
+  }
+
+  .footer {
+    font-size: smaller;
+    color: grey;
+    border-top: 2px solid lightgrey;
+    padding-top: 1em;
+    font-style: italic;
+  }
+</style>
+
 <h4>Ag Weather automated mailer for <%= @date.strftime('%m/%d/%Y') %></h4>
+
 <p>The daily potential evapotranspiration data for the site(s) you requested is shown below:</p>
-<table>
-  <thead>
-    <tr>
-      <th align="left" style="width: 12em;">Site ID</th>
-      <th align="left" style="width: 7em;">Location</th>
-      <th align="left" style="width: 5em;">Date</th>
-      <th align="right" style="width: 6em;">ET Value<br>(in/day)</th>
-      <th align="right" style="width: 6em;">Cumul.<br>ET Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @values.each_with_index do |sub, s| %>
-      <% if s > 0 %>
-        <tr style="height: 1em;"><td colspan=5></td></tr>
-      <% end %>
-      <% sub[:dates].each_with_index do |d, i| %>
-        <% if i == 0 %>
+
+<% @data.each do |site| %>
+  <div class="box">
+    <div class="box-header">
+      <b><%= site[:site_name] %></b> (<a href="https://www.google.com/maps/search/?api=1&query=<%= site[:latitude] %>%2C+<%= site[:longitude] %>" target="_blank"><%= site[:latitude] %>, <%= site[:longitude] %></a>)
+      <br>
+    </div>
+    <div class="box-content">
+      <table>
+        <thead>
           <tr>
-            <td><%= sub[:site_name] %></td>
-            <td><a href="https://www.google.com/maps/search/?api=1&query=<%= sub[:latitude] %>%2C+<%= sub[:longitude] %>" target="_blank"><%= sub[:latitude] %>, <%= sub[:longitude] %></a></td>
-            <td><%= d.strftime("%b-%d") %></td>
-            <td align="right">
-              <% if sub[:values][i].negative?() %>
-                No data
-              <% else %>
-                <%= sub[:values][i].round(3) %>
-              <% end %>
-            </td>
-            <td align="right"><%= sub[:cum_vals][i].round(3) %></td>
+            <th>Date</th>
+            <th>ET Value<br>(in/day)</th>
+            <th>Cumul.<br>ET Value</th>
           </tr>
-        <% else %>
-          <tr>
-            <td></td>
-            <td></td>
-            <td><%= d.strftime("%b-%d") %></td>
-            <td align="right">
-              <% if sub[:values][i].negative?() %>
-                No data
-              <% else %>
-                <%= sub[:values][i].round(3) %>
-              <% end %>
-            </td></td>
-            <td align="right"><%= sub[:cum_vals][i].round(3) %></td>
-          </tr>
-        <% end %>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
-<p><b>More information:</b></p>
+        </thead>
+        <tbody>
+          <% site[:dates].each_with_index do |date, i| %>
+            <tr>
+              <td><%= date.strftime("%a, %b %-d") %></td>
+              <td>
+                <% if site[:values][i].negative?() %>
+                  No data
+                <% else %>
+                  <%= site[:values][i].round(3) %>
+                <% end %>
+              </td>
+              <td><%= site[:cum_vals][i].round(3) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+<br>
+
+<h4>More information:</h4>
+
 <ul>
   <li><%= link_to "Ag Weather homepage", root_url %></li>
   <li><%= link_to "Evapotranspiration map", controller: :sun_water, action: :et_map %></li>
   <li><%= link_to "Insolation map", controller: :sun_water, action: :insol_map %></li>
   <li><%= link_to "Daily weather map", controller: :weather, action: :weather_map %></li>
 </ul>
-<hr>
-<p><i>Each year the first ET email will arrive in your inbox on April 1st and the last on Sept 30th. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.</i></p>
+
+<br>
+
+<div class="footer">
+  Each year the first ET email will arrive in your inbox on May 1st and the last on Sept 30th. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.
+</div>
