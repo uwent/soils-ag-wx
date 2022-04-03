@@ -3,7 +3,7 @@ class SubscriptionMailer < ApplicationMailer
     @subscriber = subscriber
     @url = confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token)
     mail(
-      to: subscriber.email,
+      to: @subscriber.email,
       subject: "Please confirm your email address for your UW AgWeather subscription"
     )
   end
@@ -12,7 +12,7 @@ class SubscriptionMailer < ApplicationMailer
     @subscriber = subscriber
     @url = confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token)
     mail(
-      to: subscriber.email,
+      to: @subscriber.email,
       subject: "UW AgWeather subscription validation code"
     )
   end
@@ -32,7 +32,7 @@ class SubscriptionMailer < ApplicationMailer
     @mesg_text = mesg_text
     @subscriber = subscriber
     mail(
-      to: subscriber.email,
+      to: @subscriber.email,
       subject: "Update: Your UW AgWeather automated product subscription"
     )
   end

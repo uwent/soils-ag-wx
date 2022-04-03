@@ -1,19 +1,27 @@
 <style>
   body {
     font-family: sans-serif;
-    max-width: 800px;
+  }
+
+  .container {
+    max-width: 650px;
+    margin-right: auto;
   }
 
   .box {
     margin-top: 2em;
     margin-bottom: 1em;
     width: fit-content;
-    overflow: auto;
     max-width: 100%;
+    overflow: auto;
   }
 
   .box-header {
     margin-bottom: 5px;
+  }
+
+  .box-content {
+    font-size: medium;
   }
 
   table {
@@ -52,58 +60,53 @@
   }
 </style>
 
-<h4>AgWeather automated mailer for <%= @date.strftime('%m/%d/%Y') %></h4>
-
-<p>The daily potential evapotranspiration data for the site(s) you requested is shown below:</p>
-
-<% @data.each do |site| %>
-  <div class="box">
-    <div class="box-header">
-      <b><%= site[:site_name] %></b> (<a href="https://www.google.com/maps/search/?api=1&query=<%= site[:latitude] %>%2C+<%= site[:longitude] %>" target="_blank"><%= site[:latitude] %>, <%= site[:longitude] %></a>)
-      <br>
-    </div>
-    <div class="box-content">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>ET Value<br>(in/day)</th>
-            <th>Cumul.<br>ET Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% site[:dates].each_with_index do |date, i| %>
+<div class="container">
+  <h4>AgWeather automated mailer for <%= @date.strftime('%m/%d/%Y') %></h4>
+  <p>The daily potential evapotranspiration data for the site(s) you requested is shown below:</p>
+  <% @data.each do |site| %>
+    <div class="box">
+      <div class="box-header">
+        <b><%= site[:site_name] %></b> (<a href="https://www.google.com/maps/search/?api=1&query=<%= site[:latitude] %>%2C+<%= site[:longitude] %>" target="_blank"><%= site[:latitude] %>, <%= site[:longitude] %></a>)
+        <br>
+      </div>
+      <div class="box-content">
+        <table>
+          <thead>
             <tr>
-              <td><%= date.strftime("%a, %b %-d") %></td>
-              <td>
-                <% if site[:values][i].negative?() %>
-                  No data
-                <% else %>
-                  <%= site[:values][i].round(3) %>
-                <% end %>
-              </td>
-              <td><%= site[:cum_vals][i].round(3) %></td>
+              <th>Date</th>
+              <th>ET Value<br>(in/day)</th>
+              <th>Cumul.<br>ET Value</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% site[:dates].each_with_index do |date, i| %>
+              <tr>
+                <td><%= date.strftime("%a, %b %-d") %></td>
+                <td>
+                  <% if site[:values][i].nil? %>
+                    No data
+                  <% else %>
+                    <%= sprintf("%.3f", site[:values][i]) %>
+                  <% end %>
+                </td>
+                <td><%= sprintf("%.3f", site[:cum_vals][i]) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
+  <% end %>
+  <br>
+  <h4>More information:</h4>
+  <ul>
+    <li><%= link_to "AgWeather homepage", root_url %></li>
+    <li><%= link_to "Evapotranspiration map", controller: :sun_water, action: :et_map %></li>
+    <li><%= link_to "Insolation map", controller: :sun_water, action: :insol_map %></li>
+    <li><%= link_to "Daily weather map", controller: :weather, action: :weather_map %></li>
+  </ul>
+  <br>
+  <div class="footer">
+    Each year the first ET email will arrive in your inbox on May 1st and the last on Sept 30th. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.
   </div>
-<% end %>
-
-<br>
-
-<h4>More information:</h4>
-
-<ul>
-  <li><%= link_to "AgWeather homepage", root_url %></li>
-  <li><%= link_to "Evapotranspiration map", controller: :sun_water, action: :et_map %></li>
-  <li><%= link_to "Insolation map", controller: :sun_water, action: :insol_map %></li>
-  <li><%= link_to "Daily weather map", controller: :weather, action: :weather_map %></li>
-</ul>
-
-<br>
-
-<div class="footer">
-  Each year the first ET email will arrive in your inbox on May 1st and the last on Sept 30th. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.
 </div>

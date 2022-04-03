@@ -78,13 +78,13 @@ class Subscriber < ApplicationRecord
           # match received ETs to date list
           vals = dates.collect do |day|
             key = day.to_formatted_s
-            vals[key].nil? ? -1 : vals[key]
+            vals[key]
           end
 
           # cumulative sum of ets
           sum = 0
           cum_vals = vals.map do |val|
-            sum += val.negative? ? 0 : val
+            sum += val.nil? ? 0 : val
           end
 
           {
