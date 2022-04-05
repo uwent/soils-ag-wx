@@ -114,13 +114,21 @@ class SubscribersController < ApplicationController
     site_name = params[:site_name]
     lat = params[:latitude]
     long = params[:longitude]
-    product = Product.where(name: "Evapotranspiration").first
+
+    # check for existing
+    if @subscriber.subscriptions.where(latitude: lat, longitude: long).size > 0
+      return render json: {
+        message: "Subscription already exists for a site at #{lat}, #{long}."
+      }
+    end
+
+    # product = Product.where(name: "Evapotranspiration").first
     respond_to do |format|
       subscription = Subscription.new(
         name: site_name,
         latitude: lat,
         longitude: long,
-        product_id: product.id
+        product_id: 1
       )
       @subscriber.subscriptions << subscription
       format.json { render json: subscription }

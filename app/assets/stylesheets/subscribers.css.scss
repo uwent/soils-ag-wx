@@ -1,0 +1,20 @@
+.subscriptions-table {
+  table {
+    border-collapse: collapse;
+  }
+  
+  tr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .delete-site {
+    margin: 5px;
+    padding: 2px;
+    border: 1px solid black;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+  }
+}

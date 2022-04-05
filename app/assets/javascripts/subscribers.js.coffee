@@ -92,6 +92,8 @@ $ ->
         if (data.id)
           add_to_table(data)
           erase_inputs()
+        else
+          alert(data.message)
 
   $('table').on 'click', '.delete-site', (event) ->
     sub_id = $(event.target).closest('td').data('subscription-id')

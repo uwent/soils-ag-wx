@@ -50,9 +50,7 @@ module AgWeather
       start_date: start_date,
       end_date: date
     }.compact
-    puts opts
     json = get(url, query: opts)
     data = json[:data]
-    # data.length > 0 ? data[0][:value].to_f : -1.0
   end
 end

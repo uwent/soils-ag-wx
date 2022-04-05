@@ -27,7 +27,7 @@
 <p>To save your input data be sure to press the “Add” button after entering each line, <u>including after the last line</u>.</p>
 
 <div class="form-box">
-  <table>
+  <table class="subscriptions-table">
     <thead>
       <tr>
         <th>Site Name</th>
@@ -37,13 +37,17 @@
       </tr>
     </thead>
     <tbody>
-      <% et_product = Product.where(name: "Evapotranspiration").first %>
-      <% @subscriber.subscriptions.where(product: et_product).each do |subscription| %>
+      <% @subscriber.subscriptions.order(:name).each do |subscription| %>
         <tr>
           <td><%= subscription.name %></td>
           <td><%= subscription.latitude %></td>
           <td><%= subscription.longitude %></td>
-          <td class='delete-site' data-subscription-id=<%= subscription.id %>><span>Delete Site</span> <%= image_tag("cross.png", class:'delete-cross') %></td>
+          <td data-subscription-id=<%= subscription.id %>>
+            <div class="delete-site">
+              <div>Delete Site</div>
+              <div><%= image_tag("cross.png", class:'delete-cross') %></div>
+            </div>
+          </td>
         </tr>
       <% end %>
       <tr id="add-controls">
