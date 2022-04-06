@@ -52,10 +52,13 @@ Rails.application.routes.draw do
       get "confirm"
       get "confirm_notice"
       get "unsubscribe"
-      post "add_subscription"
-      post "resend_confirmation"
-      post "remove_subscription"
       post "validate"
+      post "resend_confirmation"
+      post "add_subscription"
+      post "remove_subscription"
+      post "enable_subscription"
+      post "disable_subscription"
+      get "send_email"
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]

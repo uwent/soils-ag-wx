@@ -16,6 +16,18 @@ class Subscription < ApplicationRecord
     dates_active === Date.current
   end
 
+  def self.enabled
+    where(enabled: true)
+  end
+
+  def self.enable_all
+    all.update(enabled: true)
+  end
+
+  def self.disable_all
+    all.update(enabled: false)
+  end
+
   # Create a report for a set of subscriptions. Usually this will be for a single user, but that's
   # not built in. A report is a hash keyed by product; each product maps to an array of point subscriptions,
   # which are in turn hashes keyed by the subscription; each subscription (lat/long point) maps to an array

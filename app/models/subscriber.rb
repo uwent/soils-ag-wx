@@ -50,19 +50,36 @@ class Subscriber < ApplicationRecord
     validation_token == validation_code
   end
 
-  def self.send_daily_mail(date = Date.current - 1.day, force: false)
-    dates = (date - 6.days)..date
+  def self.send_daily_mail
+    Rails.logger.info "Subscriber :: Sending daily mail..."
 
-    # subscription window open?
-    unless Subscription.active? || force
-      Rails.logger.info "ET mailer not sent, currently outside of date range."
-      return "Subscriptions currently inactive" unless Rails.env.development?
+    if Date.current == Subscription.dates_active.first
+      Rails.logger.info "Subscriber :: Enabling all subscriptions at start of season"
+      Subscription.enable_all
     end
 
-    # collect data
-    sites = Subscription.all.pluck(:latitude, :longitude).uniq
+    if Date.current == Subscription.dates_active.last + 1.day
+      Rails.logger.info "Subscriber :: Disabling all subscriptions at end of season"
+      Subscription.disable_all
+    end
 
-    if sites.size > 0
+    if Subscription.enabled.size > 0
+      send_subscriptions(Subscriber.all)
+    else
+      Rails.logger.info "Subscriber :: No subscriptions to send!"
+    end
+  end
+
+  def self.send_subscriptions(subscribers)
+    date = Date.yesterday
+    dates = (date - 6.days)..date
+
+    # collect data
+    subscriptions = Subscription.where(subscriber: subscribers)
+
+    if subscriptions.size > 0
+      sites = subscriptions.pluck(:latitude, :longitude).uniq
+
       all_data = {}
       sites.each do |site|
         lat, long = site
@@ -99,7 +116,7 @@ class Subscriber < ApplicationRecord
       end
 
       Subscriber.all.each do |subscriber|
-        subscriptions = subscriber.subscriptions
+        subscriptions = subscriber.subscriptions.order(:name)
         data = subscriptions.collect do |subscription|
           lat = subscription.latitude
           long = subscription.longitude
@@ -113,37 +130,6 @@ class Subscriber < ApplicationRecord
         end
         SubscriptionMailer.daily_mail(subscriber, date, data).deliver
       end
-
-
-      # et_hash = {}
-      # weather_hash = {}
-      # precip_hash = {}
-
-      # ets.each do { |val| et_hash[val[:date]] = val[:value] }
-      # weather.each do { |val| weather_hash[val[:date]] = val[:value] }
-      # precips.each do { |val| precip_hash[val[:date]] = val[:value] }
-
-      # # match received ETs to date list
-      # vals = dates.collect do |day|
-      #   key = day.to_formatted_s
-      #   vals[key]
-      # end
-
-      # # cumulative sum of ets
-      # sum = 0
-      # cum_vals = vals.map do |val|
-      #   sum += val.nil? ? 0 : val
-      # end
-
-      # {
-      #   site_name: site.name,
-      #   latitude: site.latitude,
-      #   longitude: site.longitude,
-      #   dates: dates,
-      #   values: vals,
-      #   cum_vals: cum_vals
-      # }
-      
     end
   end
 

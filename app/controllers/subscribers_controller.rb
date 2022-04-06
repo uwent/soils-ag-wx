@@ -4,8 +4,11 @@ class SubscribersController < ApplicationController
     :update,
     :admin,
     :destroy,
+    :send_email,
     :add_subscription,
     :remove_subscription,
+    :enable_subscription,
+    :disable_subscription,
     :export_emails
   ]
 
@@ -104,6 +107,15 @@ class SubscribersController < ApplicationController
     end
   end
 
+  def send_email
+    return render json: {message: "error"} if @subscriber.nil?
+    token = params[:token]
+    if token == @subscriber.confirmation_token
+      Subscriber.send_subscriptions(@subscriber)
+    end
+    redirect_to action: :manage
+  end
+
   def add_subscription
     return render json: {message: "error"} if @subscriber.nil?
 
@@ -148,15 +160,41 @@ class SubscribersController < ApplicationController
     end
   end
 
+  def enable_subscription
+    return render json: {message: "error"} if @subscriber.nil?
+
+    if @subscriber.admin? && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
+    subscription_id = params[:subscription_id]
+    @subscriber.subscriptions.where(id: subscription_id).first.update(enabled: true)
+    respond_to do |format|
+      format.json { render json: {message: "enabled"} }
+    end
+  end
+
+  def disable_subscription
+    return render json: {message: "error"} if @subscriber.nil?
+
+    if @subscriber.admin? && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
+    subscription_id = params[:subscription_id]
+    @subscriber.subscriptions.where(id: subscription_id).first.update(enabled: false)
+    respond_to do |format|
+      format.json { render json: {message: "disabled"} }
+    end
+  end
+
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
     token = params[:token]
     @unsubscribed = false
     if token == @subscriber.confirmation_token
-      et_product = Product.where(name: "Evapotranspiration").first
-      @subscriber.subscriptions.where(product: et_product).delete_all
+      @subscriber.subscriptions.all.update(enabled: false)
       @unsubscribed = true
     end
+    redirect_to action: :manage
   end
 
   def logout
@@ -183,21 +221,29 @@ class SubscribersController < ApplicationController
   def update
     return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
 
-    subr = Subscriber.find(params[:id])
-    subr.update(subscriber_params)
+    subscriber = Subscriber.find(params[:id])
+    subscriber.update(subscriber_params)
     respond_to do |format|
       format.json { render json: {message: "success"} }
     end
   end
 
   def destroy
-    return redirect_to subscribers_path if @subscriber.nil? || !@subscriber.admin?
-    subr = Subscriber.find(params[:id])
-    subr.subscriptions.each { |s| s.delete }
-    subr.destroy
-    respond_to do |format|
-      format.html { redirect_to admin_subscribers_path }
+    return redirect_to subscribers_path if @subscriber.nil?
+
+    if @subscriber.admin?
+      subscriber = Subscriber.find(params[:id])
+      if subscriber != @subscriber
+        subscriber.subscriptions.each { |s| s.delete }
+        subscriber.destroy
+      end
+      return redirect_to admin_subscribers_path
+    elsif params[:token] == @subscriber.confirmation_token
+      @subscriber.subscriptions.each { |s| s.delete }
+      @subscriber.destroy
+      return redirect_to subscribers_path
     end
+    return redirect_to manage_subscribers_path
   end
 
   private

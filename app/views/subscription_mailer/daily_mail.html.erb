@@ -2,73 +2,75 @@
   body {
     font-family: tahoma, sans-serif;
   }
-</style>
 
-<table cellpadding="15" cellspacing="0" role="presentation" style="width: 650px; border: 1px solid #8b846a;">
-  <thead>
-    <tr>
-      <td style="font-family: verdana, sans-serif; font-size: 1.2em; background: #e9e4d0; text-align: center; border-bottom: 1px solid #8b846a;">
-        <b><%= link_to "UW Extension Ag Weather Automated Mailer", root_url, style: "text-decoration: none; color: inherit;" %></b>
-      </td>
-    </tr>
-  </thead>
-  <tbody style="background: #f7f5ee;">
-    <tr>
-      <td>The past week's weather data for the site(s) you've requested are shown below:</td>
-    </tr>
-    <tr>
-      <td align="center">
-        <% @data.each do |site| %>
-          <p>
-            <b><%= "#{site[:site_name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
-          </p>
-          <table cellpadding="5" cellspacing="0" style="font-size: 0.9em; border: 1px solid #8b846a;">
-            <thead>
-              <tr style="background: #e9e4d0;">
-                <th style="border-bottom: 1px solid #8b846a; text-align: left;">Date</th>
-                <th style="border-bottom: 1px solid #8b846a; text-align: right;">Max temp<br>(&deg;F)</th>
-                <th style="border-bottom: 1px solid #8b846a; text-align: right;">Min temp<br>(&deg;F)</th>
-                <th style="border-bottom: 1px solid #8b846a; text-align: right;">Precip<br>(in)</th>
-                <th style="border-bottom: 1px solid #8b846a; text-align: right;">Pot. ET<br>(in)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% site[:site_data].values.each_with_index do |day, i| %>
-                <% weight = (day == site[:site_data].values.last) ? "font-weight: bold;" : "" %>
-                <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
-                <tr style="<%= weight + background %>">
-                  <td style="white-space: nowrap"><%= day[:date] %></td>
-                  <td style="text-align: right;"><%= day[:min_temp] %></td>
-                  <td style="text-align: right;"><%= day[:max_temp] %></td>
-                  <td style="text-align: right;"><%= day[:precip] %></td>
-                  <td style="text-align: right;"><%= day[:et] %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <br>
-        <% end %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <h4>More information:</h4>
-        <ul>
-          <li><%= link_to "AgWeather homepage", root_url, style: "color: inherit" %></li>
-          <li><%= link_to "Daily weather map", {controller: :weather, action: :weather_map}, style: "color: inherit" %></li>
-          <li><%= link_to "Precipitation map", {controller: :weather, action: :precip_map}, style: "color: inherit" %></li>
-          <li><%= link_to "Evapotranspiration map", {controller: :sun_water, action: :et_map}, style: "color: inherit" %></li>
-          <li><%= link_to "Insolation map", {controller: :sun_water, action: :insol_map}, style: "color: inherit" %></li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-  <tfoot style="background: #f7f5ee; font-size: 0.8em; color: grey;">
-    <tr>
-      <td>
-        <hr style="border: 1px solid #e9e4d0;">
-        <i>Each year the first ET email will arrive in your inbox on <%= Subscription.dates_active.first.strftime("%b %-d") %> and the last on <%= Subscription.dates_active.last.strftime("%b %-d") %>. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily ET emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to be removed.</i>
-      </td>
-    </tr>
-  </tfoot>
+  table {
+    border-collapse: collapse;
+  }
+</style>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="15" cellspacing="0" style="border-collapse:collapse; table-width:fixed; width: 600px; border: 1px solid #8b846a;">
+        <tr>
+          <td bgcolor="#e9e4d0" style="font-family: verdana, sans-serif; font-size: 1.2em; background: #e9e4d0; text-align: center; border-bottom: 1px solid #8b846a;">
+            <b><%= link_to "UW Extension Ag Weather Automated Mailer", root_url, style: "text-decoration: none; color: inherit;" %></b>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#f7f5ee" style="background: #f7f5ee;">The past week's weather data for the site(s) you've requested are shown below:</td>
+        </tr>
+        <tr>
+          <td bgcolor="#f7f5ee;" align="center" style="background: #f7f5ee;">
+            <% @data.each do |site| %>
+              <p>
+                <b><%= "#{site[:site_name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
+              </p>
+              <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a; font-size: 0.9em;">
+                <thead>
+                  <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
+                    <th style="text-align: left;">Date</th>
+                    <th style="text-align: right;">Min temp<br>(&deg;F)</th>
+                    <th style="text-align: right;">Max temp<br>(&deg;F)</th>
+                    <th style="text-align: right;">Precip<br>(in)</th>
+                    <th style="text-align: right;">Pot. ET<br>(in)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% site[:site_data].values.each_with_index do |day, i| %>
+                    <% weight = (day == site[:site_data].values.last) ? "font-weight: bold;" : "" %>
+                    <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
+                    <tr style="<%= weight + background %>">
+                      <td style="white-space: nowrap"><%= day[:date] %></td>
+                      <td style="text-align: right;"><%= day[:min_temp] %></td>
+                      <td style="text-align: right;"><%= day[:max_temp] %></td>
+                      <td style="text-align: right;"><%= day[:precip] %></td>
+                      <td style="text-align: right;"><%= day[:et] %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+              <br>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#f7f5ee;" style="background: #f7f5ee;">
+            <h4>More information:</h4>
+            <ul>
+              <li><%= link_to "AgWeather homepage", root_url, style: "color: inherit" %></li>
+              <li><%= link_to "Daily weather map", {controller: :weather, action: :weather_map}, style: "color: inherit" %></li>
+              <li><%= link_to "Precipitation map", {controller: :weather, action: :precip_map}, style: "color: inherit" %></li>
+              <li><%= link_to "Evapotranspiration map", {controller: :sun_water, action: :et_map}, style: "color: inherit" %></li>
+              <li><%= link_to "Insolation map", {controller: :sun_water, action: :insol_map}, style: "color: inherit" %></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#f7f5ee" style="background: #f7f5ee; font-size: 0.8em; color: grey;">
+            <i>Each year the first ET email will arrive in your inbox on <%= Subscription.dates_active.first.strftime("%b %-d") %> and the last on <%= Subscription.dates_active.last.strftime("%b %-d") %>. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to unsubscribe.</i>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
 </table>

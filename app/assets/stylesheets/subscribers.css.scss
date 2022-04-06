@@ -1,20 +1,59 @@
-.subscriptions-table {
-  table {
-    border-collapse: collapse;
-  }
-  
-  tr {
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  
-  .delete-site {
-    margin: 5px;
-    padding: 2px;
-    border: 1px solid black;
-    cursor: pointer;
+$form-border-color: #8b846a;
+$form-bg-color: #efefef;
 
-    display: inline-flex;
-    align-items: center;
+.location-container {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.sub-box {
+  border: 1px solid $form-border-color;
+  background-color: $form-bg-color;
+  border-radius: 3px;
+  margin-bottom: 1em;
+  padding: 10px 10px 5px 10px;
+  max-width: 100%;
+}
+
+.tbl-container {
+  max-width: 100%;
+  overflow: auto;
+  padding-bottom: 10px;
+
+  thead tr {
+    padding: 5px x;
+  }
+  
+  tbody tr {
+    margin: 0;
+  }
+  
+  th, td {
+    padding: 0 5px;
+  }
+}
+
+.toggle-site {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.delete-site {
+  margin: 5px;
+  padding: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sub-controls {
+  display: flex;
+  gap: 1em;
+
+  button {
+    padding: 5px 10px;
   }
 }

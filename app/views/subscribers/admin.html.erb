@@ -1,46 +1,50 @@
-<% @title = "Subscribers (Admin)" %>
+<% @title = "Subscriber Administration" %>
 <% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
 <% end %>
 
+<h2><%= @title %></h2>
+
+<hr>
+
 <div class="subscriber">
-  <%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %>
-  <br />
-  <br />
-  <%= link_to 'Export Email CSV', export_emails_subscribers_path(format: :csv) %>
-  <br />
-  <br />
   <%= will_paginate @subscribers, class: :apple_pagination %>
-  <br />
-  <table width="90%" style="margin-left: 5%;">
+  <br>
+  <table class="simple-table">
     <thead>
-      <tr>
-        <th width="35%">Name</th>
-        <th width="35%">Email</th>
-        <th width="5%" align="center">Locations</th>
-        <th width="25%" align="right"></th>
+      <tr style="border-bottom: 1px solid grey">
+        <th>Name</th>
+        <th>Email</th>
+        <th>Locations</th>
+        <th>Admin?</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% @subscribers.each do |sub| %>
+      <% @subscribers.each do |subscriber| %>
         <tr>
-          <td><%= best_in_place sub, :name, :as => :input %></td>
-          <td><%= best_in_place sub, :email, :as => :input %></td>
-          <td align="center"><%= sub.subscriptions.count %></td>
+          <td><%= best_in_place subscriber, :name, :as => :input %></td>
+          <td><%= best_in_place subscriber, :email, :as => :input %></td>
+          <td align="center"><%= subscriber.subscriptions.size %></td>
+          <td align="center"><%= subscriber.admin? ? "Yes" : "" %></td>
           <td>
-            <%= link_to "<button>Locations</button>".html_safe, manage_subscribers_path(to_edit_id: sub.id) %>
-            <%= link_to "<button>Delete</button>".html_safe, subscriber_path(sub.id), method: :delete, data: {confirm: "Are you sure?"} %>
+            <%= link_to "<button>Manage locations</button>".html_safe, manage_subscribers_path(to_edit_id: subscriber.id) %>
+            <%= link_to "<button>Delete account</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure?"} %>
           </td>
       </tr>
       <% end %>
     </tbody>
   </table>
-  <br />
+  <br>
   <%= will_paginate @subscribers, class: :apple_pagination %>
 </div>
 
 <br>
 
-<%= link_to "Back", :back %>
+<div class="sub-controls">
+  <div><%= link_to "<button>Back</button>".html_safe, :back %></div>
+  <div><%= link_to "<button>Export Email CSV</button>".html_safe, export_emails_subscribers_path(format: :csv) %></div>
+  <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
+</div>

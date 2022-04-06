@@ -125,35 +125,33 @@ input, select, button {
 	display: inline-flex;
 	white-space: nowrap;
 	justify-content: flex-end;
+	gap: 1px;
 
 	@media #{$small-only} {
 		flex-wrap: wrap;
 		justify-content: space-evenly;
 		margin-left: inherit;
+		width: 100%;
+	}
+
+	a {
+		flex-grow: 1;
+		color: inherit;
+		text-decoration: none;
 	}
 }
 
 .nav-button {
 	background-color: $nav-bg-color;
-	// color: $nav-text-color;
 	color: $nav-title-color;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-	min-width: 100px;
 	height: 1.5em;
-	margin-left: 1px;
-	padding-top: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 5px 10px 0 10px;
 	text-align: center;
 	font-weight: bold;
 	font-size: 1.1em;
 	
-	a {
-		color: inherit;
-		text-decoration: none;
-	}
-
 	@media #{$small-only} {
 		margin: 5px;
 		border-radius: 5px;

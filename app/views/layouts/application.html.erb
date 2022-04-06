@@ -27,18 +27,21 @@
 				<h1><%= link_to "UW Extension AgWeather", controller: :navigation %></h1>
 			</div>
 			<div class="nav-buttons">
-				<div class="nav-button" selected=<%= @tab_selected[:weather] %>>
-					<%= link_to "Weather", controller: :weather %>
-				</div>
-				<div class="nav-button" selected=<%= @tab_selected[:sun_water] %>>
-					<%= link_to "Sun/Water", controller: :sun_water %>
-				</div>
-				<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>
-					<%= link_to "Thermal Models", controller: :thermal_models %>
-				</div>
-				<div class="nav-button" selected=<%= @tab_selected[:about] %>>
-					<%= link_to "About Us", controller: :navigation, action: :about %>
-				</div>
+				<%= link_to controller: :weather do %>
+					<div class="nav-button" selected=<%= @tab_selected[:weather] %>>Weather</div>
+				<% end %>
+				<%= link_to controller: :sun_water do %>
+					<div class="nav-button" selected=<%= @tab_selected[:sun_water] %>>Sun/Water</div>
+				<% end %>
+				<%= link_to controller: :thermal_models do %>
+					<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>Thermal Models</div>
+				<% end %>
+				<%= link_to controller: :subscribers, action: :manage do %>
+					<div class="nav-button" selected=<%= @tab_selected[:subscriptions] %>>Emails</div>
+				<% end %>
+				<%= link_to controller: :navigation, action: :about do %>
+					<div class="nav-button" selected=<%= @tab_selected[:about] %>>About Us</div>
+				<% end %>
 			</div>
 		</div>
 		<div class="main-box">
