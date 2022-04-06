@@ -50,11 +50,11 @@ class Subscriber < ApplicationRecord
     validation_token == validation_code
   end
 
-  def self.send_daily_mail(date = Date.current - 1.day)
+  def self.send_daily_mail(date = Date.current - 1.day, force: false)
     dates = (date - 6.days)..date
 
     # subscription window open?
-    if Subscription.active?
+    unless Subscription.active? || force
       Rails.logger.info "ET mailer not sent, currently outside of date range."
       return "Subscriptions currently inactive" unless Rails.env.development?
     end
