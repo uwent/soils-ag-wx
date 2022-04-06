@@ -5,10 +5,17 @@ class Subscription < ApplicationRecord
   def within_doy_range(range_start_doy, range_end_doy = range_start_doy)
     return true unless doy_start && doy_end
     return true unless doy_start < doy_end
-    doy_start <= range_start_doy && range_end_doy <= doy_end
+    (doy_start <= range_start_doy) && (range_end_doy <= doy_end)
   end
 
-  #
+  def self.dates_active
+    Date.new(Date.current.year, 4, 1)..Date.new(Date.current.year, 9, 30)
+  end
+
+  def self.active?
+    dates_active === Date.current
+  end
+
   # Create a report for a set of subscriptions. Usually this will be for a single user, but that's
   # not built in. A report is a hash keyed by product; each product maps to an array of point subscriptions,
   # which are in turn hashes keyed by the subscription; each subscription (lat/long point) maps to an array
@@ -40,6 +47,7 @@ class Subscription < ApplicationRecord
   #     ]
   #   ]
   # }
+
   def self.make_report(subscriptions, start_date, finish_date)
     report = {}
     # force the "list" of subscriptions passed in to be one, even if it was a single Subscription

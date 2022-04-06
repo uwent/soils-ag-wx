@@ -51,14 +51,13 @@ class Subscriber < ApplicationRecord
   end
 
   def self.send_daily_mail(date = Date.current - 1.day)
-    et_product = Product.where(name: "Evapotranspiration").first
     dates = (date - 6.days)..date
-    if date.yday < et_product.default_doy_start || date.yday >= et_product.default_doy_end
-      Rails.logger.info "ET mailer not sent, currently outside of date range."
-      return "Product inactive" unless Rails.env.development?
-    end
 
-    # TODO: this should be made much more efficient. Collect all subscribed locations then query AgWeather for the date range for each location.
+    # subscription window open?
+    if Subscription.active?
+      Rails.logger.info "ET mailer not sent, currently outside of date range."
+      return "Subscriptions currently inactive" unless Rails.env.development?
+    end
 
     # collect data
     sites = Subscription.all.pluck(:latitude, :longitude).uniq
