@@ -75,7 +75,7 @@ class Subscriber < ApplicationRecord
     dates = (date - 6.days)..date
 
     # collect data
-    subscriptions = Subscription.where(subscriber: subscribers)
+    subscriptions = Subscription.where(subscriber: subscribers, enabled: true)
 
     if subscriptions.size > 0
       sites = subscriptions.pluck(:latitude, :longitude).uniq

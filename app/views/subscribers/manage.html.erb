@@ -104,4 +104,5 @@
   <% else %>
     <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.confirmation_token), method: :delete, data: {confirm: "Are you sure?"} %></div>
   <% end %>
+  <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>

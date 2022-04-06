@@ -8,7 +8,7 @@ role :app, %w[deploy@dev.agweather.cals.wisc.edu:216]
 role :web, %w[deploy@dev.agweather.cals.wisc.edu:216]
 role :db, %w[deploy@dev.agweather.cals.wisc.edu:216]
 
-set :rails_env, "production"
+set :rails_env, "staging"
 
 # Extended Server Syntax
 # ======================

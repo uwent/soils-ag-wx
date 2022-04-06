@@ -82,6 +82,7 @@ class SubscribersController < ApplicationController
 
   def confirm_notice
     @subscriber = Subscriber.find(params[:id])
+    return redirect_to subscribers_path if @subscriber.nil?
   end
 
   def resend_confirmation
@@ -103,7 +104,7 @@ class SubscribersController < ApplicationController
       add_to_session(@subscriber.id)
       render :manage
     else
-      redirect_to confirm_notice_subscriber_path(@subcriber)
+      redirect_to subscribers_path
     end
   end
 
@@ -199,7 +200,7 @@ class SubscribersController < ApplicationController
 
   def logout
     remove_from_session
-    redirect_to sun_water_path
+    redirect_to root_path
   end
 
   def admin
