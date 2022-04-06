@@ -62,7 +62,6 @@ class Subscriber < ApplicationRecord
 
     # collect data
     sites = Subscription.all.pluck(:latitude, :longitude).uniq
-    puts "Sites", sites.map(&:to_s)
 
     if sites.size > 0
       all_data = {}
@@ -80,7 +79,7 @@ class Subscriber < ApplicationRecord
         precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
         weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
 
-        # convert to hash
+        # collect and format data for each date
         site_data = {}
         dates.each do |date|
           datestring = date.to_formatted_s
@@ -96,15 +95,12 @@ class Subscriber < ApplicationRecord
           }
         end
 
+        # add site's weekly data to main hash
         all_data[[lat, long].to_s] = site_data
       end
 
-      puts all_data
-
       Subscriber.all.each do |subscriber|
-        puts "\nSubscriber: #{subscriber.name}"
         subscriptions = subscriber.subscriptions
-
         data = subscriptions.collect do |subscription|
           lat = subscription.latitude
           long = subscription.longitude
@@ -116,9 +112,6 @@ class Subscriber < ApplicationRecord
             site_data: all_data[site_key]
           }
         end
-
-        "\nSubscriber data:"
-        puts data
         SubscriptionMailer.daily_mail(subscriber, date, data).deliver
       end
 
