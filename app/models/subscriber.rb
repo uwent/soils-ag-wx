@@ -60,44 +60,98 @@ class Subscriber < ApplicationRecord
 
     # TODO: this should be made much more efficient. Collect all subscribed locations then query AgWeather for the date range for each location.
 
-    Subscriber.all.each do |subscriber|
-      subs = subscriber.subscriptions.where(product: et_product)
-      puts subs
+    # collect data
+    sites = Subscription.all.pluck(:latitude, :longitude).uniq
+    puts "Sites", sites.map(&:to_s)
 
-      if subs.size > 0
-        data = subs.map do |site|
-          # collect ets for location
-          ets = AgWeather.get_et_values(site.latitude, site.longitude, date, dates.first)
+    if sites.size > 0
+      all_data = {}
+      sites.each do |site|
+        lat, long = site
 
-          # convert to hash
-          vals = {}
-          ets.each do |val|
-            vals[val[:date]] = val[:value]
-          end
+        opts = {
+          lat: lat,
+          long: long,
+          start_date: dates.first,
+          end_date: dates.last
+        }
 
-          # match received ETs to date list
-          vals = dates.collect do |day|
-            key = day.to_formatted_s
-            vals[key]
-          end
+        ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
+        precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
+        weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
 
-          # cumulative sum of ets
-          sum = 0
-          cum_vals = vals.map do |val|
-            sum += val.nil? ? 0 : val
-          end
-
-          {
-            site_name: site.name,
-            latitude: site.latitude,
-            longitude: site.longitude,
-            dates: dates,
-            values: vals,
-            cum_vals: cum_vals
+        # convert to hash
+        site_data = {}
+        dates.each do |date|
+          datestring = date.to_formatted_s
+          weather = weathers.find { |h| h[:date] == datestring }
+          precip = precips.find { |h| h[:date] == datestring }
+          et = ets.find { |h| h[:date] == datestring }
+          site_data[datestring] = {
+            date: date.strftime("%a, %b %-d"),
+            min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
+            max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
+            precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
+            et: et.nil? ? "No data": sprintf("%.3f", et[:value])
           }
         end
+
+        all_data[[lat, long].to_s] = site_data
+      end
+
+      puts all_data
+
+      Subscriber.all.each do |subscriber|
+        puts "\nSubscriber: #{subscriber.name}"
+        subscriptions = subscriber.subscriptions
+
+        data = subscriptions.collect do |subscription|
+          lat = subscription.latitude
+          long = subscription.longitude
+          site_key = [lat, long].to_s
+          {
+            site_name: subscription.name,
+            lat: lat,
+            long: long,
+            site_data: all_data[site_key]
+          }
+        end
+
+        "\nSubscriber data:"
+        puts data
         SubscriptionMailer.daily_mail(subscriber, date, data).deliver
       end
+
+
+      # et_hash = {}
+      # weather_hash = {}
+      # precip_hash = {}
+
+      # ets.each do { |val| et_hash[val[:date]] = val[:value] }
+      # weather.each do { |val| weather_hash[val[:date]] = val[:value] }
+      # precips.each do { |val| precip_hash[val[:date]] = val[:value] }
+
+      # # match received ETs to date list
+      # vals = dates.collect do |day|
+      #   key = day.to_formatted_s
+      #   vals[key]
+      # end
+
+      # # cumulative sum of ets
+      # sum = 0
+      # cum_vals = vals.map do |val|
+      #   sum += val.nil? ? 0 : val
+      # end
+
+      # {
+      #   site_name: site.name,
+      #   latitude: site.latitude,
+      #   longitude: site.longitude,
+      #   dates: dates,
+      #   values: vals,
+      #   cum_vals: cum_vals
+      # }
+      
     end
   end
 

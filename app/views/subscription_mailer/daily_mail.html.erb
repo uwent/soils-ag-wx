@@ -13,7 +13,6 @@
     margin-bottom: 1em;
     width: fit-content;
     max-width: 100%;
-    overflow: auto;
   }
 
   .box-header {
@@ -22,6 +21,7 @@
 
   .box-content {
     font-size: medium;
+    overflow: auto
   }
 
   table {
@@ -64,9 +64,10 @@
   <h4>AgWeather automated mailer for <%= @date.strftime('%m/%d/%Y') %></h4>
   <p>The daily potential evapotranspiration data for the site(s) you requested is shown below:</p>
   <% @data.each do |site| %>
+    <% puts site %>
     <div class="box">
       <div class="box-header">
-        <b><%= site[:site_name] %></b> (<a href="https://www.google.com/maps/search/?api=1&query=<%= site[:latitude] %>%2C+<%= site[:longitude] %>" target="_blank"><%= site[:latitude] %>, <%= site[:longitude] %></a>)
+        <b><%= site[:site_name] %></b> (<a href="https://www.google.com/maps/search/?api=1&query=<%= site[:lat] %>%2C+<%= site[:long] %>" target="_blank"><%= site[:lat] %>, <%= site[:long] %></a>)
         <br>
       </div>
       <div class="box-content">
@@ -74,22 +75,21 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>ET Value<br>(in/day)</th>
-              <th>Cumul.<br>ET Value</th>
+              <th>Max temp<br>(&deg;F)</th>
+              <th>Min temp<br>(&deg;F)</th>
+              <th>Precip<br>(in)</th>
+              <th>Pot. ET<br>(in/day)</th>
             </tr>
           </thead>
           <tbody>
-            <% site[:dates].each_with_index do |date, i| %>
+            <% site[:site_data].values.each do |day| %>
+            <% puts day %>
               <tr>
-                <td><%= date.strftime("%a, %b %-d") %></td>
-                <td>
-                  <% if site[:values][i].nil? %>
-                    No data
-                  <% else %>
-                    <%= sprintf("%.3f", site[:values][i]) %>
-                  <% end %>
-                </td>
-                <td><%= sprintf("%.3f", site[:cum_vals][i]) %></td>
+                <td><%= day[:date] %></td>
+                <td><%= day[:min_temp] %></td>
+                <td><%= day[:max_temp] %></td>
+                <td><%= day[:precip] %></td>
+                <td><%= day[:et] %></td>
               </tr>
             <% end %>
           </tbody>
