@@ -19,10 +19,10 @@
 
 <h4>Already Registered?</h4>
 
-<%= form_tag("/subscribers/manage") do %>
-  <%= label_tag(:email_address, "Please enter your email address to manage your subscriptions: ") %>
-  <%= text_field_tag(:email_address) %>
-  <%= submit_tag("Search") %>
+<%= form_tag "/subscribers/manage" do %>
+  <%= label_tag :email_address, "Please enter your email address to manage your subscriptions: " %>
+  <%= text_field_tag :email, nil, type: "email", required: true, autofocus: true, placeholder: "email@example.com" %>
+  <%= submit_tag "Search" %>
 <% end %>
 
 <br><%= link_to "Back", :back %>

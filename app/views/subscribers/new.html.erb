@@ -23,7 +23,7 @@
     <%= f.text_field :name, required: true %>
     <br>
     <%= f.label :email %>
-    <%= f.text_field :email, required: true, pattern: '[^@]+@[^@]+\.[a-zA-Z]{2,6}' %>
+    <%= f.text_field :email, required: true, type: "email" %>
     <br><br>
     <%= f.submit "Register Subscriber" %>
   <% end %>

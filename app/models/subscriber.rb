@@ -1,9 +1,12 @@
 class Subscriber < ApplicationRecord
-  before_create :set_confirmation_token
   has_many :subscriptions
   has_many :products, through: :subscriptions
+
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
+
+  before_save { |subscriber| subscriber.email = subscriber.email.downcase.strip }
+  before_create :set_confirmation_token
 
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/

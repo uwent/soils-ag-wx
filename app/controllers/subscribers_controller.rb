@@ -13,6 +13,10 @@ class SubscribersController < ApplicationController
     :export_emails
   ]
 
+  before_action :fix_email, if: -> { params[:email].present? }
+
+  rescue_from ActiveRecord::RecordNotFound, with: :logout
+
   def index
     # remove_from_session
     return redirect_to manage_subscribers_path unless @subscriber.nil?
@@ -68,12 +72,12 @@ class SubscribersController < ApplicationController
   ## New methods ##
 
   def manage
-    @email = params[:email_address]&.strip
+    email = params[:email]
     # is there a subscriber in the session? If so they have already validated.
     if !@subscriber.nil?
-      if @email && @email != @subscriber.email
+      if email && email != @subscriber.email
         remove_from_session
-        redirect_to manage_subscribers_path(email_address: @email)
+        redirect_to manage_subscribers_path(email:)
       else
         @admin = @subscriber.admin?
         if @subscriber.admin? && params[:to_edit_id]
@@ -81,9 +85,9 @@ class SubscribersController < ApplicationController
         end
         render
       end
-    elsif @email.nil?
+    elsif email.nil?
       redirect_to subscribers_path
-    elsif (@subscriber = Subscriber.email_find(@email))
+    elsif (@subscriber = Subscriber.email_find(email))
       if @subscriber.is_confirmed?
         @subscriber.generate_validation_token
         render :validate
@@ -91,7 +95,7 @@ class SubscribersController < ApplicationController
         render :confirm_notice
       end
     else
-      redirect_to new_subscriber_path(email: @email)
+      redirect_to new_subscriber_path(email:)
     end
   end
 
@@ -115,6 +119,7 @@ class SubscribersController < ApplicationController
 
   def confirm_notice
     @subscriber = Subscriber.find(params[:id])
+    @email = @subscriber.email
     return redirect_to subscribers_path if @subscriber.nil?
   end
 
@@ -254,7 +259,12 @@ class SubscribersController < ApplicationController
 
   private
 
+  def fix_email
+    params[:email] = params[:email]&.downcase&.strip
+  end
+
   def subscriber_params
+    params[:subscriber][:email] = params[:subscriber][:email]&.downcase&.strip
     params.require(:subscriber).permit(:name, :email, :confirmed_at)
   end
 
