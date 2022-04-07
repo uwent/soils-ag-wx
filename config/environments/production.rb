@@ -28,7 +28,10 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_options = {from: "agweather@cals.wisc.edu"}
-  config.action_mailer.default_url_options = {host: "agweather.cals.wisc.edu", protocol: "https"}
+  config.action_mailer.default_url_options = {
+    host: ENV["AG_WEATHER_HOST"] || "agweather.cals.wisc.edu",
+    protocol: "https"
+  }
   
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
