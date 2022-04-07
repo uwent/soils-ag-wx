@@ -13,7 +13,7 @@
 
 <p>After you register, the system will send you an email containing a link which you can click to confirm that you're really you, and that you really want to start receiving automated emails.</p>
 
-<%= button_to "Register", new_subscriber_url, method: :get %>
+<%= link_to new_subscriber_path do %><button>Register</button><% end %>
 
 <br>
 
