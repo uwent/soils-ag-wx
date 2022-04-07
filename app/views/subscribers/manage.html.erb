@@ -2,6 +2,8 @@
 <% @welcome_image = "awon.png" %>
 
 <script>
+  let subscriptions_count = <%= @subscriber.subscriptions.count %>
+
   function getGeoLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
     lat = position.coords.latitude.toFixed(1)
@@ -10,7 +12,9 @@
     })
   }
 
-  setTimeout(() => {document.getElementById("send-email").disabled = false}, 5000)
+  if (subscriptions_count > 0) {
+    setTimeout(() => {document.getElementById("send-email").disabled = false}, 5000)
+  }
 </script>
 
 <% content_for :welcome do %>

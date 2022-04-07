@@ -124,18 +124,21 @@ class Subscriber < ApplicationRecord
       # send emails to each subscriber with their sites
       subscribers.each do |subscriber|
         subscriptions = subscriber.subscriptions.enabled.order(:name)
-        data = subscriptions.collect do |subscription|
-          lat = subscription.latitude
-          long = subscription.longitude
-          site_key = [lat, long].to_s
-          {
-            site_name: subscription.name,
-            lat: lat,
-            long: long,
-            site_data: all_data[site_key]
-          }
+
+        if subscriptions.size > 0
+          data = subscriptions.collect do |subscription|
+            lat = subscription.latitude
+            long = subscription.longitude
+            site_key = [lat, long].to_s
+            {
+              site_name: subscription.name,
+              lat: lat,
+              long: long,
+              site_data: all_data[site_key]
+            }
+          end
+          SubscriptionMailer.daily_mail(subscriber, date, data).deliver
         end
-        SubscriptionMailer.daily_mail(subscriber, date, data).deliver
       end
     end
   end

@@ -68,11 +68,12 @@ class SubscribersController < ApplicationController
   ## New methods ##
 
   def manage
+    @email = params[:email_address]&.strip
     # is there a subscriber in the session? If so they have already validated.
     if !@subscriber.nil?
-      if params[:email_address] && params[:email_address] != @subscriber.email
+      if @email && @email != @subscriber.email
         remove_from_session
-        redirect_to manage_subscribers_path(email_address: params[:email_address])
+        redirect_to manage_subscribers_path(email_address: @email)
       else
         @admin = @subscriber.admin?
         if @subscriber.admin? && params[:to_edit_id]
@@ -80,9 +81,9 @@ class SubscribersController < ApplicationController
         end
         render
       end
-    elsif params[:email_address].nil?
+    elsif @email.nil?
       redirect_to subscribers_path
-    elsif (@subscriber = Subscriber.email_find(params[:email_address]))
+    elsif (@subscriber = Subscriber.email_find(@email))
       if @subscriber.is_confirmed?
         @subscriber.generate_validation_token
         render :validate
@@ -90,8 +91,7 @@ class SubscribersController < ApplicationController
         render :confirm_notice
       end
     else
-      @email_address = params[:email_address]
-      redirect_to new_subscriber_path(email: @email_address)
+      redirect_to new_subscriber_path(email: @email)
     end
   end
 
@@ -135,14 +135,14 @@ class SubscribersController < ApplicationController
     @subscriber = Subscriber.find(params[:id])
     if @subscriber.confirm!(passed_token)
       add_to_session(@subscriber.id)
-      render :manage
+      redirect_to action: :manage
     else
       redirect_to subscribers_path
     end
   end
 
   def send_email
-    return render json: {message: "error"} if @subscriber.nil?
+    return redirect_to subscribers_path if @subscriber.nil?
     token = params[:token]
     if token == @subscriber.confirmation_token
       Subscriber.send_subscriptions(Subscriber.where(id: @subscriber))

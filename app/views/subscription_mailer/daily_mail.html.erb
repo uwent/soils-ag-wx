@@ -13,7 +13,7 @@
       <table role="presentation" width="600" cellpadding="15" cellspacing="0" style="border-collapse:collapse; table-width:fixed; width: 600px; border: 1px solid #8b846a;">
         <tr>
           <td bgcolor="#e9e4d0" style="font-family: verdana, sans-serif; font-size: 1.2em; background: #e9e4d0; text-align: center; border-bottom: 1px solid #8b846a;">
-            <b><%= link_to "UW Extension Ag Weather Automated Mailer", root_url, style: "text-decoration: none; color: inherit;" %></b>
+            <b>UW Extension Ag Weather Automated Mailer</b>
           </td>
         </tr>
         <tr>
@@ -25,7 +25,7 @@
               <p>
                 <b><%= "#{site[:site_name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
               </p>
-              <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a; font-size: 0.9em;">
+              <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a;">
                 <thead>
                   <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
                     <th style="text-align: left;">Date</th>
@@ -67,7 +67,7 @@
         </tr>
         <tr>
           <td bgcolor="#f7f5ee" style="background: #f7f5ee; font-size: 0.8em; color: grey;">
-            <i>Each year the first ET email will arrive in your inbox on <%= Subscription.dates_active.first.strftime("%b %-d") %> and the last on <%= Subscription.dates_active.last.strftime("%b %-d") %>. To edit your subscriptions, <%= link_to "click here", subscribers_url %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to unsubscribe.</i>
+            <i>Each year the first ET email will arrive in your inbox on <%= Subscription.dates_active.first.strftime("%b %-d") %> and the last on <%= Subscription.dates_active.last.strftime("%b %-d") %>. To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to unsubscribe.</i>
           </td>
         </tr>
       </table>

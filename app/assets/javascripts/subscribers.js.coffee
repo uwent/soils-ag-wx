@@ -107,11 +107,14 @@ $ ->
         to_edit_id: subscriber_id
       success: (data) ->
         if (data.message == "success")
-          $("#delete-site-" + sub_id).prop("disabled", true)
-          $("#subscription-toggle-" + sub_id).prop("disabled", true)
-          parent_row.fadeOut(500, =>
-            $(this).remove())
-        $("#submit_site").prop("disabled", false)
+          window.location.reload()
+        else
+          alert("Unable to delete site, try reloading the page.")
+        #   $("#delete-site-" + sub_id).prop("disabled", true)
+        #   $("#subscription-toggle-" + sub_id).prop("disabled", true)
+        #   parent_row.fadeOut(500, =>
+        #     $(this).remove())
+        # $("#submit_site").prop("disabled", false)
   
   $("[id^=sub-toggle]").on "change", (event) ->
     sub_id = $(event.target).closest("tr").data("subscription-id")

@@ -9,7 +9,7 @@ class Subscription < ApplicationRecord
   end
 
   def self.dates_active
-    Date.new(Date.current.year, 4, 1)..Date.new(Date.current.year, 9, 30)
+    Date.new(Date.current.year, 4, 15)..Date.new(Date.current.year, 9, 30)
   end
 
   def self.active?
