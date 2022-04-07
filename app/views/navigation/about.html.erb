@@ -70,6 +70,8 @@ Site structure:
 
 <p>Last updated: <%= @app_last_updated %></p>
 
+<p>Environment: <%= Rails.env %> / <%= ENV["RAILS_ENV"] %>
+
 <br>
 
 <%= link_to "Back", :back %>
