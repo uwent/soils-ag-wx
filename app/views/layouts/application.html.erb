@@ -36,7 +36,7 @@
 				<%= link_to controller: :thermal_models do %>
 					<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>Thermal Models</div>
 				<% end %>
-				<%= link_to controller: :subscribers, action: :manage do %>
+				<%= link_to controller: :subscribers do %>
 					<div class="nav-button" selected=<%= @tab_selected[:subscriptions] %>>Emails</div>
 				<% end %>
 				<%= link_to controller: :navigation, action: :about do %>

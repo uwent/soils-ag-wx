@@ -75,10 +75,11 @@ class Subscriber < ApplicationRecord
     dates = (date - 6.days)..date
 
     # collect data
-    subscriptions = Subscription.where(subscriber: subscribers, enabled: true)
+    all_subs = Subscription.where(subscriber: subscribers, enabled: true)
 
-    if subscriptions.size > 0
-      sites = subscriptions.pluck(:latitude, :longitude).uniq
+    if all_subs.size > 0
+      sites = all_subs.pluck(:latitude, :longitude).uniq
+      Rails.logger.debug "Sites: #{sites}"
 
       all_data = {}
       sites.each do |site|
@@ -94,6 +95,9 @@ class Subscriber < ApplicationRecord
         ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
         precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
         weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
+        Rails.logger.debug "Ets: #{ets}"
+        Rails.logger.debug "Precips: #{precips}"
+        Rails.logger.debug "Weather: #{weathers}"
 
         # collect and format data for each date
         site_data = {}
@@ -111,12 +115,15 @@ class Subscriber < ApplicationRecord
           }
         end
 
+        Rails.logger.debug "Site data: #{site_data}"
+
         # add site's weekly data to main hash
         all_data[[lat, long].to_s] = site_data
       end
 
-      Subscriber.all.each do |subscriber|
-        subscriptions = subscriber.subscriptions.order(:name)
+      # send emails to each subscriber with their sites
+      subscribers.each do |subscriber|
+        subscriptions = subscriber.subscriptions.enabled.order(:name)
         data = subscriptions.collect do |subscription|
           lat = subscription.latitude
           long = subscription.longitude

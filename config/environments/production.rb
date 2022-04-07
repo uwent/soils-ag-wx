@@ -27,7 +27,7 @@ Rails.application.configure do
   # While sendmail is less configurable than the default smtp, it works on our server
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = {host: "agweather.cals.wisc.edu"}
+  config.action_mailer.default_url_options = {host: "https://agweather.cals.wisc.edu"}
   config.action_mailer.default_options = {from: "agweather@cals.wisc.edu"}
 
   # Compress CSS using a preprocessor.

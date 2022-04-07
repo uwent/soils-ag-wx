@@ -1,5 +1,6 @@
 class SubscribersController < ApplicationController
   before_action :get_subscriber_from_session, only: [
+    :index,
     :manage,
     :update,
     :admin,
@@ -13,8 +14,58 @@ class SubscribersController < ApplicationController
   ]
 
   def index
-    remove_from_session
+    # remove_from_session
+    return redirect_to manage_subscribers_path unless @subscriber.nil?
   end
+
+  def new
+    @subscriber = Subscriber.new(email: params[:email])
+  end
+
+  def create
+    @subscriber = Subscriber.new(subscriber_params)
+
+    if Subscriber.email_find(params[:subscriber][:email])
+      @subscriber.errors.add(:email, "is already registered")
+      render action: "new"
+    elsif @subscriber.save
+      SubscriptionMailer.confirm(@subscriber).deliver
+      redirect_to confirm_notice_subscriber_path(@subscriber), notice: "Subscriber was successfully created."
+    else
+      render action: "new"
+    end
+  end
+
+  def update
+    return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
+
+    subscriber = Subscriber.find(params[:id])
+    subscriber.update(subscriber_params)
+    respond_to do |format|
+      format.json { render json: {message: "success"} }
+    end
+  end
+
+  def destroy
+    return redirect_to subscribers_path if @subscriber.nil?
+
+    if @subscriber.admin?
+      subscriber = Subscriber.find(params[:id])
+      if subscriber != @subscriber
+        subscriber.subscriptions.each { |s| s.delete }
+        subscriber.destroy
+      end
+      return redirect_to admin_subscribers_path
+    elsif params[:token] == @subscriber.confirmation_token
+      @subscriber.subscriptions.each { |s| s.delete }
+      @subscriber.destroy
+      return redirect_to subscribers_path
+    end
+    return redirect_to manage_subscribers_path
+  end
+
+
+  ## New methods ##
 
   def manage
     # is there a subscriber in the session? If so they have already validated.
@@ -41,24 +92,6 @@ class SubscribersController < ApplicationController
     else
       @email_address = params[:email_address]
       redirect_to new_subscriber_path(email: @email_address)
-    end
-  end
-
-  def new
-    @subscriber = Subscriber.new(email: params[:email])
-  end
-
-  def create
-    @subscriber = Subscriber.new(subscriber_params)
-
-    if Subscriber.email_find(params[:subscriber][:email])
-      @subscriber.errors.add(:email, "is already registered")
-      render action: "new"
-    elsif @subscriber.save
-      SubscriptionMailer.confirm(@subscriber).deliver
-      redirect_to confirm_notice_subscriber_path(@subscriber), notice: "Subscriber was successfully created."
-    else
-      render action: "new"
     end
   end
 
@@ -112,7 +145,7 @@ class SubscribersController < ApplicationController
     return render json: {message: "error"} if @subscriber.nil?
     token = params[:token]
     if token == @subscriber.confirmation_token
-      Subscriber.send_subscriptions(@subscriber)
+      Subscriber.send_subscriptions(Subscriber.where(id: @subscriber))
     end
     redirect_to action: :manage
   end
@@ -217,34 +250,6 @@ class SubscribersController < ApplicationController
     respond_to do |format|
       format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv" }
     end
-  end
-
-  def update
-    return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
-
-    subscriber = Subscriber.find(params[:id])
-    subscriber.update(subscriber_params)
-    respond_to do |format|
-      format.json { render json: {message: "success"} }
-    end
-  end
-
-  def destroy
-    return redirect_to subscribers_path if @subscriber.nil?
-
-    if @subscriber.admin?
-      subscriber = Subscriber.find(params[:id])
-      if subscriber != @subscriber
-        subscriber.subscriptions.each { |s| s.delete }
-        subscriber.destroy
-      end
-      return redirect_to admin_subscribers_path
-    elsif params[:token] == @subscriber.confirmation_token
-      @subscriber.subscriptions.each { |s| s.delete }
-      @subscriber.destroy
-      return redirect_to subscribers_path
-    end
-    return redirect_to manage_subscribers_path
   end
 
   private

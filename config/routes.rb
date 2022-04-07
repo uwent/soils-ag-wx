@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   match "/navigation", to: "navigation#index", via: :get
   get "/navigation/*path", to: redirect("/navigation") unless Rails.env.development?
 
-  resources :subscribers do
+  resources :subscribers, only: [:index, :new, :create, :update, :destroy] do
     collection do
       get "admin"
       get "manage"
@@ -52,17 +52,17 @@ Rails.application.routes.draw do
       get "confirm"
       get "confirm_notice"
       get "unsubscribe"
+      get "send_email"
       post "validate"
       post "resend_confirmation"
       post "add_subscription"
       post "remove_subscription"
       post "enable_subscription"
       post "disable_subscription"
-      get "send_email"
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/*path", to: redirect("/subscribers") unless Rails.env.development?
+  get "/subscribers/*path", to: redirect("/subscribers") #unless Rails.env.development?
 
   resources :sun_water, only: :index do
     collection do
