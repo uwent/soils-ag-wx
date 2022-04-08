@@ -13,7 +13,7 @@ class SubscriptionMailer < ApplicationMailer
     @url = confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token)
     mail(
       to: @subscriber.email,
-      subject: "UW AgWeather subscription validation code"
+      subject: "UW AgWeather login validation code"
     )
   end
 
@@ -23,7 +23,7 @@ class SubscriptionMailer < ApplicationMailer
     @data = data
     mail(
       to: @subscriber.email,
-      subject: "UW AgWeather ET Mailer Report"
+      subject: "UW AgWeather Daily Weather Report"
     )
   end
 
