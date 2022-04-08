@@ -6,7 +6,14 @@
   table {
     border-collapse: collapse;
   }
+
+  @media only screen and (max-width: 600px) {
+    table {
+      width: 100% !important;
+    }
+  }
 </style>
+
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
   <tr>
     <td align="center">
@@ -67,7 +74,10 @@
         </tr>
         <tr>
           <td bgcolor="#f7f5ee" style="background: #f7f5ee; font-size: 0.8em; color: grey;">
-            <i>Each year the first ET email will arrive in your inbox on <%= Subscription.dates_active.first.strftime("%b %-d") %> and the last on <%= Subscription.dates_active.last.strftime("%b %-d") %>. To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to unsubscribe.</i>
+            <% if @data.to_s.downcase.include? "no data" %>
+              <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
+            <% end %>
+            <p><i>Each year the first ET email will arrive in your inbox on <%= Subscription.dates_active.first.strftime("%b %-d") %> and the last on <%= Subscription.dates_active.last.strftime("%b %-d") %>. To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to unsubscribe.</i></p>
           </td>
         </tr>
       </table>
