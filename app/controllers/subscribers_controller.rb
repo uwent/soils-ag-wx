@@ -106,7 +106,7 @@ class SubscribersController < ApplicationController
 
   def validate
     @subscriber = Subscriber.find(params[:id])
-    validation_code = params[:validation_code]
+    validation_code = params[:validation_code]&.strip
     # check the validation code....
     if @subscriber.is_validation_token_old?
       @subscriber.generate_validation_token
