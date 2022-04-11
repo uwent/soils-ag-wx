@@ -5,13 +5,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<title><%= @title ? @title : "AgWeather" -%></title>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-H9J1XBG94G"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-MEH20NN6K8"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
-		gtag('config', 'UA-112403097-3');
-		gtag('config', 'G-H9J1XBG94G');
+		gtag('config', 'UA-112403097-3'); // Groves Lab UA
+		gtag('config', 'G-H9J1XBG94G'); // Groves Lab GA4
+		gtag('config', 'G-MEH20NN6K8'); // AgWeather GA4
 	</script>
   <%= csrf_meta_tags %>
 	<%= javascript_include_tag "application" %>
