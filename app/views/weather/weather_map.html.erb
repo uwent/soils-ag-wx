@@ -13,9 +13,11 @@
 
 <hr>
 
+<h4>Introduction</h4>
+
 <p>This gridded weather data is imported daily from the <%= link_to "National Oceanic and Atmospheric Administration", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %> and includes air temperatures and dew points. From these data we compute vapor pressure and relative humidity. The map below shows mean daily air temperature, but all weather parameters may be viewed by clicking on the map or selecting a specific Latitude/Longitude and clicking 'Get Data Series' in the box below. Use the buttons above the map to view a different date.</p>
 
-<br>
+<h4>Temperature Map</h4>
 
 <div class="form-box" id="map-form">
   <b>Select air temperature map:</b>
@@ -63,11 +65,9 @@
 
 <hr>
 
-<h4>Get Weather Data Time Series</h4>
+<h4>Get Weather Data</h4>
 
-<div class="note">
-  Note: You can click on the map to set the latitude and longitude to within half a degree.
-</div>
+<p>Choose a location and date range then click "Get Data Series". Daily min/max/average temperature, dew point, vapor pressure, hours high humidity, and average temperature during periods of high humidity will be shown in either Fahrenheit or Celsius. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
 
 <%= render partial: "partials/grid_selector", locals: { target: "/weather/weather_data.js" } %>
 

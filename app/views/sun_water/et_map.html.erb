@@ -14,17 +14,28 @@
 
 <hr>
 
+<h4>Introduction</h4>
+
 <p>The maps of potential evapotranspiration (ET) shown below are calculated from satellite-derived measurements of <%= link_to "solar radiation", action: :insol_map %> and <%= link_to "average air temperatures", controller: :weather, action: :weather_map %>. The ET values on the maps are a reasonable estimate of daily crop water use for most crops that have reached at least 80% coverage of the ground. Prior to 80% or greater coverage, ET will be a fraction of the map value in proportion to the amount of coverage. The map values may vary slightly from ET estimates from AWON and other more site-specific models, but these differences are believed to be within the uncertainty of even measurements of actual water use made directly in a given field.</p>
 
 <p>For more details on the science behind these products, see Diak et al, "Agricultural Management Decision Aids Driven by Real-Time Satellite Data", <span style="font-style: italic">Bulletin of the American Meteorological Society</span> 79 (1998): 1345-1355. <%= link_to "Link to article", "https://doi.org/10.1175/1520-0477(1998)079%3C1345:AMDADB%3E2.0.CO;2" %>. <%= link_to "Download PDF", "/Diak-et-al-1998.pdf", target: "_blank" %>.</p>
 
-<br>
+<h4>Evapotranspiration Maps</h4>
+
+<p>Daily evapotranspiration maps in the default units are already rendered by our server and can be browsed quicly. Changing the units or using the cumulative map tool below will take around 10 seconds to render the image</p>
 
 <%= render partial: "partials/map_navigator" %>
 
 <%= render_async "map_image",
   method: "POST",
-  data: { endpoint: @endpoint, id: @date, query: {units: @units, start_date: @start_date}.compact }.to_json,
+  data: {
+    endpoint: @endpoint,
+    id: @date,
+    query: {
+      units: @units,
+      start_date: @start_date
+    }.compact
+  }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
   <%= render layout: "partials/loading" do %>
     <p>
@@ -36,7 +47,7 @@
 <% end %>
 
 <div class="note">
-  Note: Single-day map color scale is based on min/max values for the entire year. <%= link_to "Download the entire grid of data in CSV format", action: :et_map, format: :csv, params: { date: @date } %>.
+  Note: Single-day map color scale is based on min/max values for the entire year. <%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :et_map, format: :csv, params: {date: @date} %>. Currently it is only possible to download a daily grid, not a cumulative evapotranspiration grid.
 </div>
 
 <hr>
@@ -50,12 +61,6 @@
 <%= render partial: "partials/grid_selector", locals: { target: "/sun_water/et_data" } %>
 
 <div id="map-data"></div>
-
-<hr>
-
-<h4>ET Mailer Subscription</h4>
-
-<p>Click <%= link_to "here", subscribers_path %> to subscribe to daily ET emails from April 1 - Sep 30, or to edit an existing subscription.</p>
 
 <br>
 

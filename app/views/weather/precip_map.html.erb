@@ -13,7 +13,13 @@
 
 <hr>
 
-<p>Use this page to access precipitation data for the upper Midwest. This data is collected daily from NOAA gridded datasets.</p>
+<h4>Introduction</h4>
+
+<p>Use this page to access gridded precipitation data for the upper Midwest. This data is collected daily from NOAA datasets, which are generated from a combination of real-world observations and computer modeling. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). Precpitation can be highly localized, so these data may not completely match observations from rain gauges or weather stations, but should be relatively close. Consider checking <%= link_to "weather.gov", "https://www.weather.gov", target: "_blank" %> or <%= link_to "wunderground.com", "https://www.wunderground.com", target: "_blank" %> for weather/precipitation history or forecasts from an individual weather station.</p>
+
+<h4>Precipitation Maps</h4>
+
+<p>Daily maps in the default units are already rendered by our server and can be browsed quickly. Changing units or using the cumulative map tool below will take around 10 seconds to render the image.</p>
 
 <%= render partial: "partials/map_navigator" %>
 
@@ -31,16 +37,14 @@
 <% end %>
 
 <div class="note">
-  Note: Map color scale is based on min/max daily precipitation across region. Precipitation data is not available for Canada from our data source. <%= link_to "Download the entire grid of data in CSV format", action: :precip_map, format: :csv, params: { date: @date } %>.
+  Note: Map color scale is based on min/max daily precipitation across region. Precipitation data is not available for Canada from our data source. <%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :precip_map, format: :csv, params: { date: @date } %>. Currently it is only possible to download a daily grid, not a cumulative precipitation grid.
 </div>
 
 <hr>
 
-<h4>Get Precipitation Data Time Series</h4>
+<h4>Get Precipitation Data</h4>
 
-<div class="note">
-  Note: You can click on the map to set the latitude and longitude.
-</div>
+<p>Choose a location and date range then click "Get Data Series". Daily and cumulative precipitation will be displayed in mm and inches. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
 
 <%= render partial: "partials/grid_selector", locals: { target: "/weather/precip_data.js" } %>
 
