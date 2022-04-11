@@ -51,7 +51,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test "validation" do
     mail = SubscriptionMailer.validation(@rick)
-    assert_equal "UW AgWeather subscription validation code", mail.subject
+    assert_equal "UW AgWeather login validation code", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "Dear AgWeather Subscriber,", mail.body.encoded
@@ -59,7 +59,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test "daily mail" do
     mail = SubscriptionMailer.daily_mail(@rick, Date.today, [])
-    assert_equal "UW AgWeather ET Mailer Report", mail.subject
+    assert_equal "UW AgWeather Daily Weather Report", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
     assert_match "AgWeather automated mailer", mail.body.encoded
