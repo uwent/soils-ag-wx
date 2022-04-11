@@ -9,12 +9,15 @@
 
 <hr>
 
+<%= render partial: "notices" %>
+
 <div class="subscriber">
   <%= will_paginate @subscribers, class: :apple_pagination %>
   <br>
   <table class="simple-table">
     <thead>
       <tr style="border-bottom: 1px solid grey">
+        <th>ID</th>
         <th>Name</th>
         <th>Email</th>
         <th>Locations</th>
@@ -25,13 +28,16 @@
     <tbody>
       <% @subscribers.each do |subscriber| %>
         <tr>
-          <td><%= best_in_place subscriber, :name, :as => :input %></td>
-          <td><%= best_in_place subscriber, :email, :as => :input %></td>
+          <td><%= subscriber.id %></td>
+          <td><%= best_in_place subscriber, :name, as: :input %></td>
+          <td><%= best_in_place subscriber, :email, as: :input %></td>
           <td align="center"><%= subscriber.subscriptions.size %></td>
           <td align="center"><%= subscriber.admin? ? "Yes" : "" %></td>
           <td>
             <%= link_to "<button>Manage locations</button>".html_safe, manage_subscribers_path(to_edit_id: subscriber.id) %>
-            <%= link_to "<button>Delete account</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure?"} %>
+            <% unless @subscriber.id == subscriber.id %>
+              <%= link_to "<button>Delete account</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure?"} %>
+            <% end %>
           </td>
       </tr>
       <% end %>
@@ -44,7 +50,7 @@
 <br>
 
 <div class="sub-controls">
-  <div><%= link_to "<button>Back</button>".html_safe, :back %></div>
+  <div><%= link_to "<button>Back</button>".html_safe, manage_subscribers_path %></div>
   <div><%= link_to "<button>Export Email CSV</button>".html_safe, export_emails_subscribers_path(format: :csv) %></div>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>

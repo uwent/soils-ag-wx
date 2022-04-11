@@ -58,7 +58,12 @@ $form-bg-color: #efefef;
   }
 }
 
-.error-explanation {
+.notice {
+  font-weight: bold;
+  color: rgb(0, 128, 0);
+}
+
+.alert {
   font-weight: bold;
   color: #c5050c;
 }

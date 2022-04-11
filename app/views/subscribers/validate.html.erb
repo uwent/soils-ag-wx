@@ -22,7 +22,7 @@
 <% end %>
 
 <% if @subscriber.errors.any? %>
-  <div class="error-explanation">
+  <div class="error">
     <% @subscriber.errors.full_messages.each do |msg| %>
       <%= msg %>
     <% end %>

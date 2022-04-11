@@ -34,7 +34,7 @@ class SubscribersController < ApplicationController
       render action: "new"
     elsif @subscriber.save
       SubscriptionMailer.confirm(@subscriber).deliver
-      redirect_to confirm_notice_subscriber_path(@subscriber), notice: "Subscriber was successfully created."
+      redirect_to confirm_notice_subscriber_path(@subscriber)
     else
       render action: "new"
     end
@@ -51,21 +51,26 @@ class SubscribersController < ApplicationController
   end
 
   def destroy
-    return redirect_to subscribers_path if @subscriber.nil?
-
-    if @subscriber.admin?
+    if @subscriber.nil? # not logged in
+      return redirect_to subscribers_path, alert: "You must be logged in to perform this action."
+    elsif @subscriber.admin? # admin is logged in
       subscriber = Subscriber.find(params[:id])
       if subscriber != @subscriber
         subscriber.subscriptions.each { |s| s.delete }
         subscriber.destroy
+        return redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
+      else
+        return redirect_to admin_subscribers_path, alert: "You can't delete yourself!"
       end
-      return redirect_to admin_subscribers_path
-    elsif params[:token] == @subscriber.confirmation_token
-      @subscriber.subscriptions.each { |s| s.delete }
-      @subscriber.destroy
-      return redirect_to subscribers_path
+    else
+      if params[:token] == @subscriber.confirmation_token
+        @subscriber.subscriptions.each { |s| s.delete }
+        @subscriber.destroy
+        return redirect_to subscribers_path, notice: "You successfully deleted your account."
+      else
+        return redirect_to manage_subscribers_path, alert: "Invalid token, check URL or try again."
+      end
     end
-    return redirect_to manage_subscribers_path
   end
 
 
@@ -113,14 +118,18 @@ class SubscribersController < ApplicationController
     else
       # add it to the session
       add_to_session(@subscriber.id)
-      redirect_to manage_subscribers_path, notice: "Subscriber was successfully created."
+      redirect_to manage_subscribers_path
     end
   end
 
   def confirm_notice
     @subscriber = Subscriber.find(params[:id])
     @email = @subscriber.email
-    return redirect_to subscribers_path if @subscriber.nil?
+    if @subscriber.nil?
+      return redirect_to subscribers_path
+    elsif !@subscriber.confirmed_at.nil?
+      return redirect_to manage_subscribers_path
+    end
   end
 
   def resend_confirmation
@@ -147,12 +156,16 @@ class SubscribersController < ApplicationController
   end
 
   def send_email
-    return redirect_to subscribers_path if @subscriber.nil?
-    token = params[:token]
-    if token == @subscriber.confirmation_token
-      Subscriber.send_subscriptions(Subscriber.where(id: @subscriber))
+    if @subscriber.nil?
+      return redirect_to subscribers_path, notice: "You must be logged in to perform that action."
     end
-    redirect_to action: :manage
+
+    if params[:token] == @subscriber.confirmation_token
+      Subscriber.send_subscriptions(Subscriber.where(id: @subscriber))
+      return redirect_to manage_subscribers_path, notice: "Test email sent!"
+    else
+      return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
+    end    
   end
 
   def add_subscription
@@ -227,13 +240,11 @@ class SubscribersController < ApplicationController
 
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
-    token = params[:token]
-    @unsubscribed = false
-    if token == @subscriber.confirmation_token
+    if params[:token] == @subscriber.confirmation_token
       @subscriber.subscriptions.all.update(enabled: false)
-      @unsubscribed = true
+      return redirect_to manage_subscribers_path, notice: "Successfully disabled all subscriptions."
     end
-    redirect_to action: :manage
+    return redirect_to manage_subscribers_path, alert: "Unable to disable subscriptions, refresh page and try again."
   end
 
   def logout
@@ -245,7 +256,7 @@ class SubscribersController < ApplicationController
     return redirect_to subscribers_path if @subscriber.nil?
     return redirect_to manage_subscribers_path unless @subscriber.admin?
 
-    @subscribers = Subscriber.order(:email).paginate(page: params[:page], per_page: 20)
+    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
   end
 
   def export_emails

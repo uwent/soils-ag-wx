@@ -130,6 +130,7 @@ $ ->
         subscription_id: sub_id
         to_edit_id: subscriber_id
       success: (data) ->
+        $("#notice").fadeOut()
         div = $("#sub-status-" + sub_id)
         if (data.message == "enabled")
           div.html("Yes")

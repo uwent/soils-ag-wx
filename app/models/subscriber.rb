@@ -5,7 +5,6 @@ class Subscriber < ApplicationRecord
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
 
-  before_save { |subscriber| subscriber.email = subscriber.email.downcase.strip }
   before_create :set_confirmation_token
 
   def self.fractional_part(float)
@@ -148,8 +147,9 @@ class Subscriber < ApplicationRecord
 
   def self.to_csv
     CSV.generate(headers: true) do |csv|
-      Subscriber.all.order(:email).each do |subscriber|
-        csv << [subscriber.email]
+      csv << %w[ID Name Email Created Admin]
+      Subscriber.all.order(:id).each do |s|
+        csv << [s.id, s.name, s.email, s.created_at, s.admin]
       end
     end
   end
