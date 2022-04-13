@@ -161,8 +161,12 @@ class SubscribersController < ApplicationController
     end
 
     if params[:token] == @subscriber.confirmation_token
-      Subscriber.send_subscriptions(Subscriber.where(id: @subscriber))
-      return redirect_to manage_subscribers_path, notice: "Test email sent!"
+      if Subscriber.find(@subscriber.id).subscriptions.enabled.size > 0
+        Subscriber.send_subscriptions([@subscriber])
+        return redirect_to manage_subscribers_path, notice: "Test email sent!"
+      else
+        return redirect_to manage_subscribers_path, alert: "You don't have any active subscriptions, so we couldn't send an email."
+      end
     else
       return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
     end    
