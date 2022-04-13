@@ -124,7 +124,6 @@ class SubscribersController < ApplicationController
 
   def confirm_notice
     @subscriber = Subscriber.find(params[:id])
-    @email = @subscriber.email
     if @subscriber.nil?
       return redirect_to subscribers_path
     elsif !@subscriber.confirmed_at.nil?
