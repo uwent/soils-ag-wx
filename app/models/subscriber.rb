@@ -61,7 +61,7 @@ class Subscriber < ApplicationRecord
     Subscription.disable_all if Date.current == Subscription.dates_active.last
   end
 
-  def self.fetch_weather(sites)
+  def self.fetch_weather(sites, dates)
     all_data = {}
     sites.each do |site|
       lat, long = site
@@ -114,7 +114,7 @@ class Subscriber < ApplicationRecord
     if all_subs.size > 0
       sites = all_subs.pluck(:latitude, :longitude).uniq
       Rails.logger.debug "Sites: #{sites}"
-      weather_data = fetch_weather(sites)
+      weather_data = fetch_weather(sites, dates)
 
       # send emails to each subscriber with their sites
       subscribers.each do |subscriber|

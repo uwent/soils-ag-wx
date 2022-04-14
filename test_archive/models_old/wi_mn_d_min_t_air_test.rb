@@ -13,7 +13,6 @@ class WiMnDMinTAirTest < ActiveSupport::TestCase
 
   test "daily series works" do
     # Some off-boundary numbers
-    # TODO feature not currently working on prod, skip tests until feature is removed or fixed  -BB 11/2
     skip
     assert(series = WiMnDMinTAir.daily_series("2020-09-20", "2020-10-20", -97.1, 44.5))
     assert_equal(Hash, series.class)
