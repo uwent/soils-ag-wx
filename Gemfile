@@ -17,8 +17,8 @@ gem "render_async", "~> 2.1" # for asynchronous loading of page elements
 gem "will_paginate", "~> 3.3"
 gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem "whenever", "~> 1.0"
-gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
-gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
+# gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
+# gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
 gem "terser", "~> 1.1" # for JS compression
 
 group :development do

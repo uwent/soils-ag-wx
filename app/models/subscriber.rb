@@ -1,6 +1,5 @@
 class Subscriber < ApplicationRecord
   has_many :subscriptions
-  has_many :products, through: :subscriptions
 
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
@@ -20,15 +19,12 @@ class Subscriber < ApplicationRecord
     where("lower(email) = ?", email.downcase).first
   end
 
-  def send_subscriptions(start_date = Date.today - 1, finish_date = Date.today - 1)
-  end
-
   def is_confirmed?
     !confirmed_at.nil?
   end
 
   def confirm!(token)
-    if confirmation_token == token
+    if token == confirmation_token
       self.confirmed_at = Time.current
       save!
       true
@@ -49,27 +45,63 @@ class Subscriber < ApplicationRecord
   end
 
   def validation_token_valid?(validation_code)
-    validation_token == validation_code
+    validation_code == validation_token
   end
 
   def self.send_daily_mail
-    Rails.logger.info "Subscriber :: Sending daily mail..."
-
-    if Date.current == Subscription.dates_active.first
-      Rails.logger.info "Subscriber :: Enabling all subscriptions at start of season"
-      Subscription.enable_all
-    end
-
-    if Date.current == Subscription.dates_active.last + 1.day
-      Rails.logger.info "Subscriber :: Disabling all subscriptions at end of season"
-      Subscription.disable_all
-    end
-
+    Rails.logger.info "Subscriber :: Sending daily mail for #{date.to_s}..."
+    Subscription.enable_all if Date.current == Subscription.dates_active.first
+    
     if Subscription.enabled.size > 0
       send_subscriptions(Subscriber.all)
     else
-      Rails.logger.info "Subscriber :: No subscriptions to send!"
+      Rails.logger.info "Subscriber :: No active subscriptions to send for #{date.to_s}"
     end
+
+    Subscription.disable_all if Date.current == Subscription.dates_active.last
+  end
+
+  def self.fetch_weather(sites)
+    all_data = {}
+    sites.each do |site|
+      lat, long = site
+
+      opts = {
+        lat: lat,
+        long: long,
+        start_date: dates.first,
+        end_date: dates.last
+      }
+
+      ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
+      precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
+      weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
+      Rails.logger.debug "Ets: #{ets}"
+      Rails.logger.debug "Precips: #{precips}"
+      Rails.logger.debug "Weather: #{weathers}"
+
+      # collect and format data for each date
+      site_data = {}
+      dates.each do |date|
+        datestring = date.to_formatted_s
+        weather = weathers.find { |h| h[:date] == datestring }
+        precip = precips.find { |h| h[:date] == datestring }
+        et = ets.find { |h| h[:date] == datestring }
+        site_data[datestring] = {
+          date: date.strftime("%a, %b %-d"),
+          min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
+          max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
+          precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
+          et: et.nil? ? "No data": sprintf("%.3f", et[:value])
+        }
+      end
+
+      Rails.logger.debug "Site data: #{site_data}"
+
+      # add site's weekly data to main hash
+      all_data[[lat, long].to_s] = site_data
+    end
+    all_data
   end
 
   def self.send_subscriptions(subscribers)
@@ -82,46 +114,7 @@ class Subscriber < ApplicationRecord
     if all_subs.size > 0
       sites = all_subs.pluck(:latitude, :longitude).uniq
       Rails.logger.debug "Sites: #{sites}"
-
-      all_data = {}
-      sites.each do |site|
-        lat, long = site
-
-        opts = {
-          lat: lat,
-          long: long,
-          start_date: dates.first,
-          end_date: dates.last
-        }
-
-        ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
-        precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
-        weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
-        Rails.logger.debug "Ets: #{ets}"
-        Rails.logger.debug "Precips: #{precips}"
-        Rails.logger.debug "Weather: #{weathers}"
-
-        # collect and format data for each date
-        site_data = {}
-        dates.each do |date|
-          datestring = date.to_formatted_s
-          weather = weathers.find { |h| h[:date] == datestring }
-          precip = precips.find { |h| h[:date] == datestring }
-          et = ets.find { |h| h[:date] == datestring }
-          site_data[datestring] = {
-            date: date.strftime("%a, %b %-d"),
-            min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
-            max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
-            precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
-            et: et.nil? ? "No data": sprintf("%.3f", et[:value])
-          }
-        end
-
-        Rails.logger.debug "Site data: #{site_data}"
-
-        # add site's weekly data to main hash
-        all_data[[lat, long].to_s] = site_data
-      end
+      weather_data = fetch_weather(sites)
 
       # send emails to each subscriber with their sites
       subscribers.each do |subscriber|
@@ -136,7 +129,7 @@ class Subscriber < ApplicationRecord
               site_name: subscription.name,
               lat: lat,
               long: long,
-              site_data: all_data[site_key]
+              site_data: weather_data[site_key]
             }
           end
           SubscriptionMailer.daily_mail(subscriber, date, data).deliver

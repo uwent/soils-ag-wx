@@ -5,9 +5,9 @@ Rails.application.routes.draw do
       # get "awon_seven_day"
       get "select_data"
       get "station_info"
-      get "graphs"
-      get "graphs_soiltemp"
-      get "blog"
+      # get "graphs"
+      # get "graphs_soiltemp"
+      # get "blog"
       get "download_data"
       post "download_data"
     end
@@ -62,7 +62,7 @@ Rails.application.routes.draw do
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/*path", to: redirect("/subscribers") #unless Rails.env.development?
+  get "/subscribers/*path", to: redirect("/subscribers") unless Rails.env.development?
 
   resources :sun_water, only: :index do
     collection do
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
   match "/sun_water", to: "sun_water#index", via: [:get, :post]
   get "/sun_water/*path", to: redirect("/sun_water") unless Rails.env.development?
 
-  get "t411s/last"
+  # get "t411s/last"
 
   resources :thermal_models, only: :index do
     collection do
