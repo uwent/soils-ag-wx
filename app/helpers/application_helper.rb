@@ -21,7 +21,7 @@ module ApplicationHelper
 
   def format_temp(temp)
     return "" if temp.nil?
-    temp_text = sprintf_nilsafe(temp, 2)
+    temp_text = sprintf_nilsafe(temp, 1)
     if temp <= freeze_temp
       color = "red"
     elsif temp <= frost_temp

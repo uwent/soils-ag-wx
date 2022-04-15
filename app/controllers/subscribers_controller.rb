@@ -6,10 +6,10 @@ class SubscribersController < ApplicationController
     :admin,
     :destroy,
     :send_email,
-    :add_subscription,
-    :remove_subscription,
-    :enable_subscription,
-    :disable_subscription,
+    :add_site,
+    :remove_site,
+    :enable_site,
+    :disable_site,
     :export_emails
   ]
 
@@ -56,7 +56,7 @@ class SubscribersController < ApplicationController
     elsif @subscriber.admin? # admin is logged in
       subscriber = Subscriber.find(params[:id])
       if subscriber != @subscriber
-        subscriber.subscriptions.each { |s| s.delete }
+        subscriber.sites.each { |s| s.delete }
         subscriber.destroy
         return redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
       else
@@ -64,7 +64,7 @@ class SubscribersController < ApplicationController
       end
     else
       if params[:token] == @subscriber.confirmation_token
-        @subscriber.subscriptions.each { |s| s.delete }
+        @subscriber.sites.each { |s| s.delete }
         @subscriber.destroy
         return redirect_to subscribers_path, notice: "You successfully deleted your account."
       else
@@ -160,18 +160,18 @@ class SubscribersController < ApplicationController
     end
 
     if params[:token] == @subscriber.confirmation_token
-      if Subscriber.find(@subscriber.id).subscriptions.enabled.size > 0
+      if Subscriber.find(@subscriber.id).sites.enabled.size > 0
         Subscriber.send_subscriptions([@subscriber])
         return redirect_to manage_subscribers_path, notice: "Test email sent!"
       else
-        return redirect_to manage_subscribers_path, alert: "You don't have any active subscriptions, so we couldn't send an email."
+        return redirect_to manage_subscribers_path, alert: "You don't have any active sites, so we couldn't send an email."
       end
     else
       return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
     end    
   end
 
-  def add_subscription
+  def add_site
     return render json: {message: "error"} if @subscriber.nil?
 
     if @subscriber.admin? && params[:to_edit_id]
@@ -183,59 +183,57 @@ class SubscribersController < ApplicationController
     long = params[:longitude]
 
     # check for existing
-    if @subscriber.subscriptions.where(latitude: lat, longitude: long).size > 0
+    if @subscriber.sites.where(latitude: lat, longitude: long).size > 0
       return render json: {
         message: "Subscription already exists for a site at #{lat}, #{long}."
       }
     end
 
-    # product = Product.where(name: "Evapotranspiration").first
     respond_to do |format|
-      subscription = Subscription.new(
+      site = Site.new(
         name: site_name,
         latitude: lat,
-        longitude: long,
-        product_id: 1
+        longitude: long
       )
-      @subscriber.subscriptions << subscription
-      format.json { render json: subscription }
+      @subscriber.sites << site
+      format.json { render json: site }
     end
   end
 
-  def remove_subscription
+  def remove_site
     return render json: {message: "error"} if @subscriber.nil?
 
     if @subscriber.admin? && params[:to_edit_id]
       @subscriber = Subscriber.find(params[:to_edit_id])
     end
-    subscription_id = params[:subscription_id]
-    @subscriber.subscriptions.where(id: subscription_id).first.delete
+    site_id = params[:site_id]
+    @subscriber.sites.find(site_id).delete
     respond_to do |format|
       format.json { render json: {message: "success"} }
     end
   end
 
-  def enable_subscription
+  def enable_site
     return render json: {message: "error"} if @subscriber.nil?
 
     if @subscriber.admin? && params[:to_edit_id]
       @subscriber = Subscriber.find(params[:to_edit_id])
     end
-    subscription_id = params[:subscription_id]
-    @subscriber.subscriptions.where(id: subscription_id).first.update(enabled: true)
+    site_id = params[:site_id]
+    @subscriber.sites.find(site_id).update(enabled: true)
     respond_to do |format|
       format.json { render json: {message: "enabled"} }
     end
   end
 
-  def disable_subscription
+  def disable_site
     return render json: {message: "error"} if @subscriber.nil?
 
     if @subscriber.admin? && params[:to_edit_id]
       @subscriber = Subscriber.find(params[:to_edit_id])
     end
-    subscription_id = params[:subscription_id]
-    @subscriber.subscriptions.where(id: subscription_id).first.update(enabled: false)
+    site_id = params[:site_id]
+    @subscriber.sites.find(site_id).update(enabled: false)
     respond_to do |format|
       format.json { render json: {message: "disabled"} }
     end
@@ -244,10 +242,10 @@ class SubscribersController < ApplicationController
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
     if params[:token] == @subscriber.confirmation_token
-      @subscriber.subscriptions.all.update(enabled: false)
-      return redirect_to manage_subscribers_path, notice: "Successfully disabled all subscriptions."
+      @subscriber.sites.all.update(enabled: false)
+      return redirect_to manage_subscribers_path, notice: "Successfully disabled all site subscriptions."
     end
-    return redirect_to manage_subscribers_path, alert: "Unable to disable subscriptions, refresh page and try again."
+    return redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
   end
 
   def logout
@@ -259,7 +257,7 @@ class SubscribersController < ApplicationController
     return redirect_to subscribers_path if @subscriber.nil?
     return redirect_to manage_subscribers_path unless @subscriber.admin?
 
-    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
+    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 2)
   end
 
   def export_emails

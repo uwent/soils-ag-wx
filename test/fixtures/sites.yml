@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  name: MyString
+  name: Site1
   subscriber_id: 1
-  latitude: 1.5
-  longitude: 1.5
+  latitude: 10
+  longitude: 10
 
 two:
-  name: MyString
+  name: Site2
   subscriber_id: 1
-  latitude: 1.5
-  longitude: 1.5
+  latitude: 15
+  longitude: 15

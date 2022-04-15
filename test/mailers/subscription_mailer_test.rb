@@ -12,28 +12,19 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   DAYS_AGO = 10
 
   def setup
-    # @etgrid = Product.create!(
-    #   name: "ET",
-    #   data_table_name: "wi_mn_dets",
-    #   type: "GridProduct",
-    #   subscribable: true
-    # )
     @rick = Subscriber.create!(
       name: USER,
       email: USER_EMAIL,
       confirmation_token: Subscriber.confirmation_number
     )
-    @rick_subs = Subscription.create!(
+    @rick_sites = Site.create!(
       latitude: LATITUDE,
       longitude: LONGITUDE,
-      # product_id: GridProduct.first[:id],
-      doy_start: 1,
-      doy_end: 365,
       subscriber_id: @rick.id
     )
     # ETS.each_with_index { |et, ii| WiMnDet.create!(date: days_back(ii), latitude: LATITUDE, w892: et) }
     # WiMnDet.create!(date: days_back(DAYS_AGO), latitude: LATITUDE, w892: AGO_ET)
-    @rick.subscriptions << @rick_subs
+    @rick.sites << @rick_sites
     @rick.save!
   end
 

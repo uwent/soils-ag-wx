@@ -9,9 +9,9 @@ $ ->
   min_long = -98.0
   max_long = -82.0
 
-  sub_count = 0
-  if $("#sub_count").length > 0
-    sub_count = parseInt($("#sub_count").val())
+  site_count = 0
+  if $("#site_count").length > 0
+    site_count = parseInt($("#site_count").val())
 
   validate_lat = (lat) ->
     if !$.isNumeric(lat)
@@ -83,7 +83,7 @@ $ ->
 
     $.ajax
       type: "POST"
-      url:  $("#add_url").val()
+      url:  $("#add_site_url").val()
       data:
         site_name: site_name
         latitude: parseFloat(lat).toFixed(1)
@@ -96,14 +96,14 @@ $ ->
           alert(data.message)
 
   $("[id^=delete-site]").on "click", (event) ->
-    sub_id = $(event.target).closest("tr").data("subscription-id")
+    site_id = $(event.target).closest("tr").data("site-id")
     parent_row = $(event.target).closest("tr")
     subscriber_id = $("#subscriber_id").val()
     $.ajax
       type: "POST"
-      url: $("#remove_url").val()
+      url: $("#remove_site_url").val()
       data:
-        subscription_id: sub_id
+        site_id: site_id
         to_edit_id: subscriber_id
       success: (data) ->
         if (data.message == "success")
@@ -116,22 +116,22 @@ $ ->
         #     $(this).remove())
         # $("#submit_site").prop("disabled", false)
   
-  $("[id^=sub-toggle]").on "change", (event) ->
-    sub_id = $(event.target).closest("tr").data("subscription-id")
+  $("[id^=site-toggle]").on "change", (event) ->
+    site_id = $(event.target).closest("tr").data("site-id")
     subscriber_id = $("#subscriber_id").val()
     if (event.target.checked)
-      url = $("#enable_url").val()
+      url = $("#enable_site_url").val()
     else
-      url = $("#disable_url").val()
+      url = $("#disable_site_url").val()
     $.ajax
       type: "POST"
       url: url
       data:
-        subscription_id: sub_id
+        site_id: site_id
         to_edit_id: subscriber_id
       success: (data) ->
         $("#notice").fadeOut()
-        div = $("#sub-status-" + sub_id)
+        div = $("#site-status-" + site_id)
         if (data.message == "enabled")
           div.html("Yes")
         else

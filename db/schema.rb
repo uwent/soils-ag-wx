@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_14_191518) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_15_154234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,6 +101,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_14_191518) do
     t.datetime "updated_at", precision: nil
   end
 
+  create_table "sites", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.integer "subscriber_id"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.boolean "enabled", default: true
+  end
+
   create_table "subscribers", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -111,18 +121,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_14_191518) do
     t.string "validation_token"
     t.datetime "validation_created_at", precision: nil
     t.boolean "admin", default: false
-  end
-
-  create_table "subscriptions", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.integer "subscriber_id"
-    t.float "latitude"
-    t.float "longitude"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
     t.integer "doy_start"
     t.integer "doy_end"
-    t.boolean "enabled", default: true
   end
 
   create_table "t401s", id: :serial, force: :cascade do |t|

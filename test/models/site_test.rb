@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SubscriberTest < ActiveSupport::TestCase
+class SiteTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

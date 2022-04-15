@@ -2,7 +2,7 @@
 <% @welcome_image = "awon.png" %>
 
 <script>
-  let subscriptions_count = <%= @subscriber.subscriptions.count %>
+  let site_count = <%= @subscriber.sites.count %>
 
   function getGeoLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -12,7 +12,7 @@
     })
   }
 
-  if (subscriptions_count > 0) {
+  if (site_count > 0) {
     setTimeout(() => {document.getElementById("send-email").disabled = false}, 5000)
   }
 
@@ -25,11 +25,11 @@
 <% end %>
 
 <%= hidden_field_tag "subscriber_id", @subscriber.id %>
-<%= hidden_field_tag "add_url", url_for(add_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "remove_url", url_for(remove_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "enable_url", url_for(enable_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "disable_url", url_for(disable_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "sub_count", @subscriber.subscriptions.count %>
+<%= hidden_field_tag "add_site_url", url_for(add_site_subscriber_path(@subscriber.id)) %>
+<%= hidden_field_tag "remove_site_url", url_for(remove_site_subscriber_path(@subscriber.id)) %>
+<%= hidden_field_tag "enable_site_url", url_for(enable_site_subscriber_path(@subscriber.id)) %>
+<%= hidden_field_tag "disable_site_url", url_for(disable_site_subscriber_path(@subscriber.id)) %>
+<%= hidden_field_tag "site_count", @subscriber.sites.count %>
 <%= hidden_field_tag "delete-cross", image_path("cross.png") %>
 
 <h2>Automated daily emails</h2>
@@ -43,16 +43,16 @@
 
 <p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km).</p>
 
-<p>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude. Any subscriptions you have will be automatically enabled on <%= Subscription.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscription.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
+<p>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude. Any subscriptions you have will be automatically enabled on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
 
 <div class="location-container">
   <div><button onclick="getGeoLocation()">Get my location</button></div>
   <div id="location-display"></div>
 </div>
 
-<h4>Your subscriptions:</h4>
+<h4>Your sites (from North to South):</h4>
 
-<div class="sub-box">
+<div class="site-box">
   <div class="tbl-container">
     <table>
       <thead>
@@ -60,30 +60,30 @@
           <th>Site Name</th>
           <th>Latitude</th>
           <th>Longitude</th>
-          <th><%= @subscriber.subscriptions.size > 0 ? "Enabled?" : ""%></th>
+          <th><%= @subscriber.sites.size > 0 ? "Enabled?" : ""%></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <% @subscriber.subscriptions.order(:name).each do |subscription| %>
-          <tr data-subscription-id=<%= subscription.id %>>
-            <td><%= subscription.name %></td>
-            <td><%= subscription.latitude %></td>
-            <td><%= subscription.longitude %></td>
+        <% @subscriber.sites.order(latitude: :desc).each do |site| %>
+          <tr data-site-id=<%= site.id %>>
+            <td><%= site.name %></td>
+            <td><%= site.latitude %></td>
+            <td><%= site.longitude %></td>
             <td>
               <label>
                 <div class="toggle-site">
                   <div>
-                    <%= check_box_tag "sub-toggle-#{subscription.id}", subscription.id, subscription.enabled %>
+                    <%= check_box_tag "site-toggle-#{site.id}", site.id, site.enabled %>
                   </div>
-                  <div id=<%= "sub-status-#{subscription.id}" %>>
-                    <%= subscription.enabled ? "Yes" : "No" %>
+                  <div id=<%= "site-status-#{site.id}" %>>
+                    <%= site.enabled ? "Yes" : "No" %>
                   </div>
                 </div>
               </label>
             </td>
             <td>
-              <button class="delete-site" id="delete-site-<%= subscription.id %>">
+              <button class="delete-site" id="delete-site-<%= site.id %>">
                 <div><%= image_tag("cross.png", class:'delete-cross') %></div>
                 <div>Delete</div>
               </button>
@@ -94,14 +94,14 @@
           <td><%= text_field_tag "site_name", "", maxlength: 25, size: 25 %></td>
           <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6 %></td>
           <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6 %></td>
-          <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 15 ? "disabled" : ""%>> Add</button></td>
+          <td><button id="submit_site" <%= @subscriber.sites.count >= 15 ? "disabled" : ""%>> Add</button></td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div class="sub-controls">
+<div class="site-controls">
   <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
   <div><%= link_to("<button>Disable all subscriptions</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
   <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>

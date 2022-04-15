@@ -1,11 +1,19 @@
 class Subscriber < ApplicationRecord
-  has_many :subscriptions
+  has_many :sites
 
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
 
   before_create :set_confirmation_token
 
+  def self.dates_active
+    Date.new(Date.current.year, 4, 1)..Date.new(Date.current.year, 9, 30)
+  end
+
+  def self.active?
+    dates_active === Date.current
+  end
+  
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/
     $1
@@ -109,24 +117,24 @@ class Subscriber < ApplicationRecord
     dates = (date - 6.days)..date
 
     # collect data
-    all_subs = Subscription.where(subscriber: subscribers, enabled: true)
+    all_sites = Site.where(subscriber: subscribers, enabled: true)
 
-    if all_subs.size > 0
-      sites = all_subs.pluck(:latitude, :longitude).uniq
+    if all_sites.size > 0
+      sites = all_sites.pluck(:latitude, :longitude).uniq
       Rails.logger.debug "Sites: #{sites}"
       weather_data = fetch_weather(sites, dates)
 
       # send emails to each subscriber with their sites
       subscribers.each do |subscriber|
-        subscriptions = subscriber.subscriptions.enabled.order(:name)
+        sites = subscriber.sites.enabled.order(:name)
 
-        if subscriptions.size > 0
-          data = subscriptions.collect do |subscription|
-            lat = subscription.latitude
-            long = subscription.longitude
+        if sites.size > 0
+          data = sites.collect do |site|
+            lat = site.latitude
+            long = site.longitude
             site_key = [lat, long].to_s
             {
-              site_name: subscription.name,
+              site_name: site.name,
               lat: lat,
               long: long,
               site_data: weather_data[site_key]
