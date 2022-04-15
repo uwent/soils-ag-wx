@@ -1,6 +1,18 @@
 <% @title = "Email Subscriptions" %>
 <% @welcome_image = "awon.png" %>
 
+<script>
+$(document).ready(() => {
+  $("#resend_confirmation").click((event) => {
+    sub_id = $(event.target).data("sub-id")
+    url = "/subscribers/" + sub_id + "/resend_confirmation"
+    $.post(url)
+      .done(() => {alert("We have resent the confirmation. Check your email.")})
+      .error(() => {alert("ERROR: We were unable to resend your confirmation.")})
+  })
+})
+</script>
+
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
 <% end %>
