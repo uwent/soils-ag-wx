@@ -2,7 +2,7 @@ require "test_helper"
 
 class SubscriptionMailerTest < ActionMailer::TestCase
   USER_EMAIL = "user@example.com"
-  SENDER_EMAIL = "agweather@cals.wisc.edu"
+  SENDER_EMAIL = "noreply@cals.wisc.edu"
   USER = "Jane Smith"
   LATITUDE = 42.0
   LONGITUDE = -89.0
