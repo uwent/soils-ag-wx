@@ -104,7 +104,7 @@
       })
     })
 
-    // Handle enable/disable checkboxes
+    // Handle enable/disable checkboxes for sites
     $("[id^=site-toggle]").change((event) => {
       let site_id = $(event.target).closest("tr").data("site-id")
       let subscriber_id = $("#subscriber-id").val()
@@ -122,6 +122,25 @@
         data.message == "enabled" ? div.html("Yes") : div.html("No")
       })
     })
+
+    // Handle enable/disable checkboxes for subscriptions
+    $("[id^=sub-toggle]").change((event) => {
+      let site_id = $(event.target).closest("tr").data("site-id")
+      let subscriber_id = $("#subscriber-id").val()
+      let sub_id = $(event.target).val()
+      let url = event.target.checked ? $("#enable-sub-url").val() : $("#disable-sub-url").val()
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+          to_edit_id: subscriber_id,
+          site_id: site_id,
+          sub_id: sub_id
+        }
+      }).success((data) => {
+        $("#notice").fadeOut()
+      })
+    })
   })
 </script>
 
@@ -135,6 +154,8 @@
 <%= hidden_field_tag "remove-site-url", url_for(remove_site_subscriber_path(@subscriber.id)) %>
 <%= hidden_field_tag "enable-site-url", url_for(enable_site_subscriber_path(@subscriber.id)) %>
 <%= hidden_field_tag "disable-site-url", url_for(disable_site_subscriber_path(@subscriber.id)) %>
+<%= hidden_field_tag "enable-sub-url", url_for(enable_subscription_subscriber_path(@subscriber.id)) %>
+<%= hidden_field_tag "disable-sub-url", url_for(disable_subscription_subscriber_path(@subscriber.id)) %>
 <%= hidden_field_tag "site-count", @subscriber.sites.count %>
 <%= hidden_field_tag "delete-cross", image_path("cross.png") %>
 
@@ -171,7 +192,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @subscriber.sites.order(latitude: :desc).each do |site| %>
+        <% @sites.each do |site| %>
           <tr data-site-id=<%= site.id %>>
             <td><%= site.name %></td>
             <td><%= site.latitude %></td>
@@ -200,8 +221,35 @@
           <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25 %></td>
           <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6 %></td>
           <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6 %></td>
-          <td><button id="submit-site" <%= @subscriber.sites.count >= 15 ? "disabled" : ""%>> Add</button></td>
+          <td><button id="submit-site" <%= @subscriber.sites.size >= 15 ? "disabled" : ""%>> Add</button></td>
         </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h4>Edit subscriptions for each site:</h4>
+
+<div class="site-box">
+  <div class="tbl-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Site Name</th>
+          <% @subs.each do |s| %>
+            <th><%= s.name %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sites.each do |site| %>
+          <tr data-site-id=<%= site.id %>>
+            <td><%= site.name %></td>
+            <% @subs.each do |s| %>
+              <td align="center"><%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %></td>
+            <% end %>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>

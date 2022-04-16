@@ -1,21 +1,23 @@
 class SubscribersController < ApplicationController
-  before_action :get_subscriber_from_session, only: [
-    :index,
-    :manage,
-    :update,
-    :admin,
-    :destroy,
-    :send_email,
-    :add_site,
-    :remove_site,
-    :enable_site,
-    :disable_site,
-    :export_emails
+  before_action :get_subscriber_from_session, only: %i[
+    index
+    manage
+    update
+    admin
+    destroy
+    send_email
+    add_site
+    remove_site
+    enable_site
+    disable_site
+    enable_subscription
+    disable_subscription
+    export_emails
   ]
 
   before_action :fix_email, if: -> { params[:email].present? }
 
-  rescue_from ActiveRecord::RecordNotFound, with: :logout
+  rescue_from ActiveRecord::RecordNotFound, with: :index
 
   def index
     # remove_from_session
@@ -85,9 +87,11 @@ class SubscribersController < ApplicationController
         redirect_to manage_subscribers_path(email:)
       else
         @admin = @subscriber.admin?
-        if @subscriber.admin? && params[:to_edit_id]
+        if @admin && params[:to_edit_id]
           @subscriber = Subscriber.find(params[:to_edit_id])
         end
+        @sites = @subscriber.sites.order(latitude: :desc)
+        @subs = Subscription.enabled.order(:id)
         render
       end
     elsif email.nil?
@@ -239,6 +243,7 @@ class SubscribersController < ApplicationController
     end
   end
 
+  # actually just disables all sites
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
     if params[:token] == @subscriber.confirmation_token
@@ -246,6 +251,50 @@ class SubscribersController < ApplicationController
       return redirect_to manage_subscribers_path, notice: "Successfully disabled all site subscriptions."
     end
     return redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
+  end
+
+  def enable_subscription
+    return reject if @subscriber.nil?
+
+    if @subscriber.admin? && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
+
+    site = Site.find(params[:site_id])
+    subscription = Subscription.find(params[:sub_id])
+
+    return reject if !@subscriber.sites.include?(site)
+    unless site.subscriptions.include?(subscription)
+      site.subscriptions << subscription
+    end
+
+    respond_to do |format|
+      format.json { render json: {message: "enabled", status: 200} }
+    end
+  end
+
+  def disable_subscription
+    return reject if @subscriber.nil?
+
+    if @subscriber.admin? && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
+
+    site = Site.find(params[:site_id])
+    subscription = Subscription.find(params[:sub_id])
+
+    # reject if !@subscriber.sites.include? site
+    if site.subscriptions.include?(subscription)
+      site.subscriptions.delete(subscription)
+    end
+
+    respond_to do |format|
+      format.json { render json: {message: "disabled", status: 200} }
+    end
+  end
+
+  def reject(error = "error")
+    render json: {message: error, status: 500}
   end
 
   def logout
@@ -257,7 +306,7 @@ class SubscribersController < ApplicationController
     return redirect_to subscribers_path if @subscriber.nil?
     return redirect_to manage_subscribers_path unless @subscriber.admin?
 
-    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 2)
+    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
   end
 
   def export_emails

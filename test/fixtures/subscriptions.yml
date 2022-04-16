@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: "Foo"
+  options: 
+  enabled: true
+
+two:
+  name: "Bar"
+  options: 
+  enabled: false

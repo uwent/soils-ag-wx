@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :subscriptions
   resources :awon, only: :index do
     collection do
       get "awon_check_boxes"
@@ -59,6 +60,8 @@ Rails.application.routes.draw do
       post "remove_site"
       post "enable_site"
       post "disable_site"
+      post "enable_subscription"
+      post "disable_subscription"
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_15_154234) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_15_182816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -94,11 +94,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_15_154234) do
     t.datetime "updated_at", precision: nil
   end
 
-  create_table "regions", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "abbrev"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+  create_table "site_subscriptions", force: :cascade do |t|
+    t.integer "site_id"
+    t.integer "subscription_id"
+    t.index ["site_id", "subscription_id"], name: "index_site_subscriptions_on_site_id_and_subscription_id", unique: true
   end
 
   create_table "sites", id: :serial, force: :cascade do |t|
@@ -123,6 +122,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_15_154234) do
     t.boolean "admin", default: false
     t.integer "doy_start"
     t.integer "doy_end"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "type"
+    t.string "name"
+    t.jsonb "options"
+    t.boolean "enabled", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "t401s", id: :serial, force: :cascade do |t|

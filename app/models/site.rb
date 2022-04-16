@@ -1,15 +1,15 @@
 class Site < ApplicationRecord
   belongs_to :subscriber
+  has_many :site_subscriptions, dependent: :destroy
+  has_many :subscriptions, through: :site_subscriptions
+  default_scope {order(:name)}
+  scope :enabled, -> {where(enabled: true)}
 
   # def within_doy_range(range_start_doy, range_end_doy = range_start_doy)
   #   return true unless doy_start && doy_end
   #   return true unless doy_start < doy_end
   #   (doy_start <= range_start_doy) && (range_end_doy <= doy_end)
   # end
-
-  def self.enabled
-    where(enabled: true)
-  end
 
   def self.enable_all
     all.update(enabled: true)

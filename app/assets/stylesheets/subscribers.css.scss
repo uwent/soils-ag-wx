@@ -32,6 +32,14 @@ $form-bg-color: #efefef;
   th, td {
     padding: 0 5px;
   }
+
+  th, td:first-child {
+    padding: 5px 5px;
+  }
+
+  th {
+    text-decoration: underline;
+  }
 }
 
 .toggle-site {

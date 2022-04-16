@@ -1,5 +1,6 @@
 class Subscriber < ApplicationRecord
-  has_many :sites
+  has_many :sites, dependent: :destroy
+  has_many :subscriptions, through: :sites
 
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
@@ -69,48 +70,48 @@ class Subscriber < ApplicationRecord
     Subscription.disable_all if Date.current == Subscription.dates_active.last
   end
 
-  def self.fetch_weather(sites, dates)
-    all_data = {}
-    sites.each do |site|
-      lat, long = site
+  # def self.fetch_weather(sites, dates)
+  #   all_data = {}
+  #   sites.each do |site|
+  #     lat, long = site
 
-      opts = {
-        lat: lat,
-        long: long,
-        start_date: dates.first,
-        end_date: dates.last
-      }
+  #     opts = {
+  #       lat: lat,
+  #       long: long,
+  #       start_date: dates.first,
+  #       end_date: dates.last
+  #     }
 
-      ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
-      precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
-      weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
-      Rails.logger.debug "Ets: #{ets}"
-      Rails.logger.debug "Precips: #{precips}"
-      Rails.logger.debug "Weather: #{weathers}"
+  #     ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
+  #     precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
+  #     weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
+  #     Rails.logger.debug "Ets: #{ets}"
+  #     Rails.logger.debug "Precips: #{precips}"
+  #     Rails.logger.debug "Weather: #{weathers}"
 
-      # collect and format data for each date
-      site_data = {}
-      dates.each do |date|
-        datestring = date.to_formatted_s
-        weather = weathers.find { |h| h[:date] == datestring }
-        precip = precips.find { |h| h[:date] == datestring }
-        et = ets.find { |h| h[:date] == datestring }
-        site_data[datestring] = {
-          date: date.strftime("%a, %b %-d"),
-          min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
-          max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
-          precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
-          et: et.nil? ? "No data": sprintf("%.3f", et[:value])
-        }
-      end
+  #     # collect and format data for each date
+  #     site_data = {}
+  #     dates.each do |date|
+  #       datestring = date.to_formatted_s
+  #       weather = weathers.find { |h| h[:date] == datestring }
+  #       precip = precips.find { |h| h[:date] == datestring }
+  #       et = ets.find { |h| h[:date] == datestring }
+  #       site_data[datestring] = {
+  #         date: date.strftime("%a, %b %-d"),
+  #         min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
+  #         max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
+  #         precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
+  #         et: et.nil? ? "No data": sprintf("%.3f", et[:value])
+  #       }
+  #     end
 
-      Rails.logger.debug "Site data: #{site_data}"
+  #     Rails.logger.debug "Site data: #{site_data}"
 
-      # add site's weekly data to main hash
-      all_data[[lat, long].to_s] = site_data
-    end
-    all_data
-  end
+  #     # add site's weekly data to main hash
+  #     all_data[[lat, long].to_s] = site_data
+  #   end
+  #   all_data
+  # end
 
   def self.send_subscriptions(subscribers)
     date = Date.yesterday
@@ -153,6 +154,29 @@ class Subscriber < ApplicationRecord
         csv << [s.id, s.name, s.email, s.created_at, s.admin]
       end
     end
+  end
+
+  def self.report
+    msg = ["Subscribers report"]
+    subscribers = Subscriber.all
+    summary = {
+      subscribers: subscribers.size,
+      sites: Site.all.size,
+      subscriptions: Subscription.all.size
+    }
+    subscribers.order(:id).each do |subscriber|
+      msg << "\n#{subscriber.id}. #{subscriber.name} (#{subscriber.email})"
+      sites = subscriber.sites
+      sites.order(:id).each do |site|
+        msg << "   #{site.id}. #{site.name} (#{site.latitude}, #{site.longitude})"
+        subscriptions = site.subscriptions
+        subscriptions.order(:id).each do |subscription|
+          msg << "      #{subscription.id}. #{subscription.name}"
+        end
+      end
+    end
+    msg.each { |m| puts m }
+    summary
   end
 
   private
