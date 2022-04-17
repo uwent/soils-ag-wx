@@ -49,11 +49,11 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   end
 
   test "daily mail" do
-    mail = SubscriptionMailer.daily_mail(@rick, Date.today, [])
+    mail = SubscriptionMailer.daily_mail(@rick, Date.today, {})
     assert_equal "UW AgWeather Daily Weather Report", mail.subject
     assert_equal [USER_EMAIL], mail.to
     assert_equal [SENDER_EMAIL], mail.from
-    assert_match "AgWeather automated mailer", mail.body.encoded
+    assert_match "UW Extension Ag Weather Automated Mailer", mail.body.encoded
   end
 
   test "special" do
