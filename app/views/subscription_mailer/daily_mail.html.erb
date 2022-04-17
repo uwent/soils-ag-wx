@@ -28,36 +28,9 @@
         </tr>
         <tr>
           <td bgcolor="#f7f5ee;" align="center" style="background: #f7f5ee;">
-            <% @data.each do |site| %>
-              <p>
-                <b><%= "#{site[:site_name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
-              </p>
-              <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a;">
-                <thead>
-                  <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
-                    <th style="text-align: left;">Date</th>
-                    <th style="text-align: right;">Min temp<br>(&deg;F)</th>
-                    <th style="text-align: right;">Max temp<br>(&deg;F)</th>
-                    <th style="text-align: right;">Precip<br>(in)</th>
-                    <th style="text-align: right;">Pot. ET<br>(in)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% site[:site_data].values.each_with_index do |day, i| %>
-                    <% weight = (day == site[:site_data].values.last) ? "font-weight: bold;" : "" %>
-                    <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
-                    <tr style="<%= weight + background %>">
-                      <td style="white-space: nowrap"><%= day[:date] %></td>
-                      <td style="text-align: right;"><%= day[:min_temp] %></td>
-                      <td style="text-align: right;"><%= day[:max_temp] %></td>
-                      <td style="text-align: right;"><%= day[:precip] %></td>
-                      <td style="text-align: right;"><%= day[:et] %></td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-              <br>
-            <% end %>
+            <%= render partial: "weather_data", locals: {data: @data[:weather_data]} %>
+            <%= render partial: "oak_wilt_data", locals: {data: @data[:ow_data]} %>
+            <%= render partial: "degree_day_data", locals: {data: @data[:dd_data]} %>
           </td>
         </tr>
         <tr>

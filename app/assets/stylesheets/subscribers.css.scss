@@ -66,6 +66,12 @@ $form-bg-color: #efefef;
   }
 }
 
+.notice-container {
+  display: flex;
+  padding: 1em 0;
+  min-height: 2em;
+}
+
 .notice {
   font-weight: bold;
   color: rgb(0, 128, 0);

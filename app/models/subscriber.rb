@@ -58,8 +58,8 @@ class Subscriber < ApplicationRecord
   end
 
   def self.send_daily_mail
-    Rails.logger.info "Subscriber :: Sending daily mail for #{date.to_s}..."
-    Subscription.enable_all if Date.current == Subscription.dates_active.first
+    Rails.logger.info "Subscriber :: Sending daily mail for #{Date.current.to_s}..."
+    Subscription.enable_all if Date.current == dates_active.first
     
     if Subscription.enabled.size > 0
       send_subscriptions(Subscriber.all)
@@ -67,53 +67,12 @@ class Subscriber < ApplicationRecord
       Rails.logger.info "Subscriber :: No active subscriptions to send for #{date.to_s}"
     end
 
-    Subscription.disable_all if Date.current == Subscription.dates_active.last
+    Subscription.disable_all if Date.current == dates_active.last
   end
 
-  # def self.fetch_weather(sites, dates)
-  #   all_data = {}
-  #   sites.each do |site|
-  #     lat, long = site
-
-  #     opts = {
-  #       lat: lat,
-  #       long: long,
-  #       start_date: dates.first,
-  #       end_date: dates.last
-  #     }
-
-  #     ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
-  #     precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
-  #     weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
-  #     Rails.logger.debug "Ets: #{ets}"
-  #     Rails.logger.debug "Precips: #{precips}"
-  #     Rails.logger.debug "Weather: #{weathers}"
-
-  #     # collect and format data for each date
-  #     site_data = {}
-  #     dates.each do |date|
-  #       datestring = date.to_formatted_s
-  #       weather = weathers.find { |h| h[:date] == datestring }
-  #       precip = precips.find { |h| h[:date] == datestring }
-  #       et = ets.find { |h| h[:date] == datestring }
-  #       site_data[datestring] = {
-  #         date: date.strftime("%a, %b %-d"),
-  #         min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
-  #         max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
-  #         precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
-  #         et: et.nil? ? "No data": sprintf("%.3f", et[:value])
-  #       }
-  #     end
-
-  #     Rails.logger.debug "Site data: #{site_data}"
-
-  #     # add site's weekly data to main hash
-  #     all_data[[lat, long].to_s] = site_data
-  #   end
-  #   all_data
-  # end
-
   def self.send_subscriptions(subscribers)
+    subscribers = subscribers.is_a?(Subscriber) ? [subscribers] : subscribers
+
     date = Date.yesterday
     dates = (date - 6.days)..date
 
@@ -121,29 +80,53 @@ class Subscriber < ApplicationRecord
     all_sites = Site.where(subscriber: subscribers, enabled: true)
 
     if all_sites.size > 0
-      sites = all_sites.pluck(:latitude, :longitude).uniq
-      Rails.logger.debug "Sites: #{sites}"
-      weather_data = fetch_weather(sites, dates)
+      weather_data = WeatherSub.first.fetch(all_sites)
+      ow_data = OakWiltSub.first.fetch(all_sites)
 
       # send emails to each subscriber with their sites
       subscribers.each do |subscriber|
-        sites = subscriber.sites.enabled.order(:name)
+        sites = subscriber.sites.enabled.joins(:subscriptions)
+        data = {}
+        weather_sites = sites.where(subscriptions: {type: "WeatherSub"})
+        ow_sites = sites.where(subscriptions: {type: "OakWiltSub"})
 
-        if sites.size > 0
-          data = sites.collect do |site|
-            lat = site.latitude
-            long = site.longitude
-            site_key = [lat, long].to_s
-            {
-              site_name: site.name,
-              lat: lat,
-              long: long,
-              site_data: weather_data[site_key]
-            }
-          end
-          SubscriptionMailer.daily_mail(subscriber, date, data).deliver
+        data[:weather_data] = weather_sites.collect do |site|
+          name, lat, long = site.name, site.latitude, site.longitude
+          {
+            name:, lat:, long:,
+            data: weather_data[[lat, long].to_s]
+          }
         end
+        
+        data[:ow_data] = ow_sites.collect do |site|
+          name, lat, long = site.name, site.latitude, site.longitude
+          {
+            name:, lat:, long:,
+            data: ow_data[[lat, long].to_s]
+          }
+        end
+
+        SubscriptionMailer.daily_mail(subscriber, date, data).deliver
       end
+    end
+  end
+
+  def fetch_sites(sites)
+    weather_data = WeatherSub.first.fetch
+    ow_data = OakWiltSub.first.fetch
+    # dd_data = Degree
+    data = sites.collect do |site|
+      lat = site.latitude
+      long = site.longitude
+      site_key = [lat, long].to_s
+      {
+        site_name: site.name,
+        lat: lat,
+        long: long,
+        weather_data: weather_data[site_key],
+        oak_wilt_data: ow_data[site_key],
+        dd_data: dd_data[site_key]
+      }
     end
   end
 

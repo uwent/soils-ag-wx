@@ -1,0 +1,30 @@
+<% if data %>
+  <h4>Oak Wilt Risk Model Subscriptions:</h4>
+  <% data.each do |site| %>
+    <p>
+      <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
+    </p>
+    <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a;">
+      <thead>
+        <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
+          <th style="text-align: left;">Date</th>
+          <th style="text-align: right;">Degree Days</th>
+          <th style="text-align: right;">Risk Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% site[:data].each_with_index do |day, i| %>
+          <% weight = (i == 0) ? "font-weight: bold;" : "" %>
+          <% style = (i > 0) ? "font-style: italic;" : "" %>
+          <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
+          <tr style="<%= weight + style + background %>">
+            <td style="white-space: nowrap"><%= day[:date] %></td>
+            <td style="text-align: right;"><%= day[:dd] %></td>
+            <td style="text-align: right;"><%= day[:risk] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+  <% end %>
+<% end %>

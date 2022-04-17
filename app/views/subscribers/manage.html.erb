@@ -2,7 +2,8 @@
 <% @welcome_image = "awon.png" %>
 
 <script>
-  site_count = <%= @subscriber.sites.count %>
+  subscriber_id = <%= @subscriber.id %>
+  site_count = <%= @site_count %>
   min_lat = <%= latitudes.min %>
   max_lat = <%= latitudes.max %>
   min_long = <%= longitudes.min %>
@@ -51,7 +52,6 @@
 
     // Handle add site button
     $("#submit-site").click((event) => {
-      let subscriber_id = $("#subscriber-id").val()
       let site_name = $("#site-name").val()
       let lat = $("#latitude").val()
       let long = $("#longitude").val()
@@ -64,7 +64,7 @@
 
       $.ajax({
         type: "POST",
-        url:  $("#add-site-url").val(),
+        url:  "<%= url_for(add_site_subscriber_path(@subscriber.id)) %>",
         data: {
           site_name: site_name,
           latitude: parseFloat(lat).toFixed(1),
@@ -89,10 +89,9 @@
       if (!confirm("Are you sure you want to delete this site?")) return
       let site_id = $(event.target).closest("tr").data("site-id")
       let parent_row = $(event.target).closest("tr")
-      let subscriber_id = $("#subscriber-id").val()
       $.ajax({
         type: "POST",
-        url: $("#remove-site-url").val(),
+        url: "<%= url_for(remove_site_subscriber_path(@subscriber.id)) %>",
         data: {
           site_id: site_id,
           to_edit_id: subscriber_id
@@ -108,8 +107,12 @@
     // Handle enable/disable checkboxes for sites
     $("[id^=site-toggle]").change((event) => {
       let site_id = $(event.target).closest("tr").data("site-id")
-      let subscriber_id = $("#subscriber-id").val()
-      let url = event.target.checked ? $("#enable-site-url").val() : $("#disable-site-url").val()
+      let url
+      if (event.target.checked) {
+        url = "<%= url_for(enable_site_subscriber_path(@subscriber.id)) %>"
+      } else {
+        url = "<%= url_for(disable_site_subscriber_path(@subscriber.id)) %>"
+      }
       $.ajax({
         type: "POST",
         url: url,
@@ -127,9 +130,13 @@
     // Handle enable/disable checkboxes for subscriptions
     $("[id^=sub-toggle]").change((event) => {
       let site_id = $(event.target).closest("tr").data("site-id")
-      let subscriber_id = $("#subscriber-id").val()
       let sub_id = $(event.target).val()
-      let url = event.target.checked ? $("#enable-sub-url").val() : $("#disable-sub-url").val()
+      let url
+      if (event.target.checked) {
+        url = "<%= url_for(enable_subscription_subscriber_path(@subscriber.id)) %>"
+      } else {
+        url = "<%= url_for(disable_subscription_subscriber_path(@subscriber.id)) %>"
+      }
       $.ajax({
         type: "POST",
         url: url,
@@ -149,16 +156,6 @@
   <h2><%= @title %></h2>
   <p>Add, remove, or manage your email subscriptions here.</p>
 <% end %>
-
-<%= hidden_field_tag "subscriber-id", @subscriber.id %>
-<%= hidden_field_tag "add-site-url", url_for(add_site_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "remove-site-url", url_for(remove_site_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "enable-site-url", url_for(enable_site_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "disable-site-url", url_for(disable_site_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "enable-sub-url", url_for(enable_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "disable-sub-url", url_for(disable_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "site-count", @subscriber.sites.count %>
-<%= hidden_field_tag "delete-cross", image_path("cross.png") %>
 
 <h2>Automated daily emails</h2>
 
@@ -226,7 +223,7 @@
           <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25 %></td>
           <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6 %></td>
           <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6 %></td>
-          <td><button id="submit-site" <%= @subscriber.sites.size >= 15 ? "disabled" : ""%>> Add</button></td>
+          <td><button id="submit-site">Add</button></td>
         </tr>
       </tbody>
     </table>
@@ -276,4 +273,4 @@
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>
 
-<p><%= render partial: "notices" %>&nbsp;</p>
+<%= render partial: "notices" %>

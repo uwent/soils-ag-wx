@@ -3,15 +3,15 @@ class WeatherSub < Subscription
     (Date.yesterday - 6.days)..Date.yesterday
   end
 
-  def fetch(sites = self.sites)
+  def fetch(sites = self.sites.enabled)
     sites = sites.is_a?(Site) ? [sites] : sites
-    if sites.size > 0
-      all_data = {}
-      sites.each do |site|
-        name = site.name
-        lat, long = site.latitude, site.longitude
-        # Rails.logger.debug "\nSite: #{name} (#{lat}, #{long})"
 
+    if sites.size > 0
+      sites = sites.collect { |site| [site.latitude, site.longitude] }
+      all_data = {}
+
+      sites.each do |site|
+        lat, long = site
         opts = {
           lat: lat,
           long: long,
@@ -22,9 +22,6 @@ class WeatherSub < Subscription
         ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
         precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
         weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
-        # Rails.logger.debug "Ets: #{ets}"
-        # Rails.logger.debug "Precips: #{precips}"
-        # Rails.logger.debug "Weather: #{weathers}"
 
         # collect and format data for each date
         site_data = {}
@@ -41,10 +38,6 @@ class WeatherSub < Subscription
             et: et.nil? ? "No data": sprintf("%.3f", et[:value])
           }
         end
-
-        # Rails.logger.debug "Site data: #{site_data}"
-
-        # add site's weekly data to main hash
         all_data[[lat, long].to_s] = site_data
       end
       all_data

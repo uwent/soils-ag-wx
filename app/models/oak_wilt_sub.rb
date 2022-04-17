@@ -31,16 +31,15 @@ class OakWiltSub < Subscription
     end
   end
 
-  def fetch(sites = self.sites)
+  def fetch(sites = self.sites.enabled)
     sites = sites.is_a?(Site) ? [sites] : sites
-    Rails.logger.debug "Fetching Oak Wilt subscription data for #{sites.size} sites..."
-    if sites.size > 0
-      all_data = {}
-      sites.each do |site|
-        name = site.name
-        lat, long = site.latitude, site.longitude
-        Rails.logger.debug "Site: #{name} (#{lat}, #{long})"
 
+    if sites.size > 0
+      sites = sites.collect { |site| [site.latitude, site.longitude] }
+      all_data = {}
+
+      sites.each do |site|
+        lat, long = site
         opts = {
           lat:,
           long:,
@@ -50,8 +49,8 @@ class OakWiltSub < Subscription
           units: "F"
         }
 
-        json = AgWeather.get(AgWeather::DD_URL, query: opts)
-        data = json[:data]
+        data = AgWeather.get(AgWeather::DD_URL, query: opts)[:data]
+
         if data.size > 0
           today = Date.parse(data.last[:date])
           dd = data.last[:cumulative_value]
@@ -61,7 +60,7 @@ class OakWiltSub < Subscription
           site_data = (today..(today + 6.days)).collect do |date|
             proj_dd = (dd + last_7_avg * i).round(1)
             hash = {
-              date: date,
+              date: date.strftime("%a, %b %-d"),
               dd: proj_dd,
               risk: oak_wilt_risk(oak_wilt_scenario(proj_dd, date))
             }

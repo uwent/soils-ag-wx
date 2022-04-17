@@ -2,7 +2,7 @@ class Site < ApplicationRecord
   belongs_to :subscriber
   has_many :site_subscriptions, dependent: :destroy
   has_many :subscriptions, through: :site_subscriptions
-  default_scope {order(:name)}
+  default_scope {order(latitude: :desc)}
   scope :enabled, -> {where(enabled: true)}
 
   # def within_doy_range(range_start_doy, range_end_doy = range_start_doy)
