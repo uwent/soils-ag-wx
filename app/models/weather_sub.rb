@@ -10,7 +10,7 @@ class WeatherSub < Subscription
       sites.each do |site|
         name = site.name
         lat, long = site.latitude, site.longitude
-        Rails.logger.debug "\nSite: #{name} (#{lat}, #{long})"
+        # Rails.logger.debug "\nSite: #{name} (#{lat}, #{long})"
 
         opts = {
           lat: lat,
@@ -22,9 +22,9 @@ class WeatherSub < Subscription
         ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
         precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
         weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
-        Rails.logger.debug "Ets: #{ets}"
-        Rails.logger.debug "Precips: #{precips}"
-        Rails.logger.debug "Weather: #{weathers}"
+        # Rails.logger.debug "Ets: #{ets}"
+        # Rails.logger.debug "Precips: #{precips}"
+        # Rails.logger.debug "Weather: #{weathers}"
 
         # collect and format data for each date
         site_data = {}
@@ -42,7 +42,7 @@ class WeatherSub < Subscription
           }
         end
 
-        Rails.logger.debug "Site data: #{site_data}"
+        # Rails.logger.debug "Site data: #{site_data}"
 
         # add site's weekly data to main hash
         all_data[[lat, long].to_s] = site_data

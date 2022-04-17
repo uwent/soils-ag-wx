@@ -86,6 +86,7 @@
 
     // Handle delete site button
     $("[id^=delete-site]").click((event) => {
+      if (!confirm("Are you sure you want to delete this site?")) return
       let site_id = $(event.target).closest("tr").data("site-id")
       let parent_row = $(event.target).closest("tr")
       let subscriber_id = $("#subscriber-id").val()
@@ -163,6 +164,10 @@
 
 <hr>
 
+<% if @subscriber.id != session[:subscriber] %>
+  <p class="alert">ADMIN: You are editing another user's subscriptions.</p>
+<% end %>
+
 <b>Name: </b><%= @subscriber.name %><br>
 <b>Email: </b><%= @subscriber.email %>
 
@@ -187,7 +192,7 @@
           <th>Site Name</th>
           <th>Latitude</th>
           <th>Longitude</th>
-          <th><%= @subscriber.sites.size > 0 ? "Enabled?" : ""%></th>
+          <th><%= @site_count > 0 ? "Enabled?" : ""%></th>
           <th></th>
         </tr>
       </thead>
@@ -228,43 +233,47 @@
   </div>
 </div>
 
-<h4>Edit subscriptions for each site:</h4>
+<% if @site_count > 0 %>
+  <h4>Select your data subscriptions for each site:</h4>
 
-<div class="site-box">
-  <div class="tbl-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Site Name</th>
-          <% @subs.each do |s| %>
-            <th><%= s.name %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <% @sites.each do |site| %>
-          <tr data-site-id=<%= site.id %>>
-            <td><%= site.name %></td>
+  <div class="site-box">
+    <div class="tbl-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Site Name</th>
             <% @subs.each do |s| %>
-              <td align="center"><%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %></td>
+              <th><%= s.name %></th>
             <% end %>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @sites.each do |site| %>
+            <tr data-site-id=<%= site.id %>>
+              <td><%= site.name %></td>
+              <% @subs.each do |s| %>
+                <td align="center"><%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class="site-controls">
   <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
-  <div><%= link_to("<button>Disable all subscriptions</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
-  <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+  <% if @site_count > 0 %>
+    <div><%= link_to("<button>Disable all sites</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+    <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+  <% end %>
   <% if @admin %>
     <div><%= link_to("<button>Admin</button>".html_safe, admin_subscribers_path) if @admin %></div>
   <% else %>
-    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.confirmation_token), method: :delete, data: {confirm: "Are you sure?"} %></div>
+    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.confirmation_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} %></div>
   <% end %>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>
 
-<%= render partial: "notices" %>
+<p><%= render partial: "notices" %>&nbsp;</p>

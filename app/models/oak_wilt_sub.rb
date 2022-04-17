@@ -33,11 +33,13 @@ class OakWiltSub < Subscription
 
   def fetch(sites = self.sites)
     sites = sites.is_a?(Site) ? [sites] : sites
+    Rails.logger.debug "Fetching Oak Wilt subscription data for #{sites.size} sites..."
     if sites.size > 0
-      sites.collect do |site|
+      all_data = {}
+      sites.each do |site|
         name = site.name
         lat, long = site.latitude, site.longitude
-        Rails.logger.debug "\nSite: #{name} (#{lat}, #{long})"
+        Rails.logger.debug "Site: #{name} (#{lat}, #{long})"
 
         opts = {
           lat:,
@@ -46,22 +48,30 @@ class OakWiltSub < Subscription
           end_date: dates.last,
           base: 41,
           units: "F"
-          }.compact
+        }
 
         json = AgWeather.get(AgWeather::DD_URL, query: opts)
-        data = json[:data].each do |day|
-          scenario = oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date]))
-          day[:risk] = oak_wilt_risk(scenario)
-        end
+        data = json[:data]
         if data.size > 0
+          today = Date.parse(data.last[:date])
           dd = data.last[:cumulative_value]
-          scenario = oak_wilt_scenario(dd, dates.last)
-          risk = oak_wilt_risk(scenario)
-          "#{lat}, #{long}: #{dd} = #{risk}"
-        else
-          "No data"
+          last_7 = data.last(7).map { |day| day[:value] }.compact
+          last_7_avg = last_7.sum / last_7.count
+          i = 0
+          site_data = (today..(today + 6.days)).collect do |date|
+            proj_dd = (dd + last_7_avg * i).round(1)
+            hash = {
+              date: date,
+              dd: proj_dd,
+              risk: oak_wilt_risk(oak_wilt_scenario(proj_dd, date))
+            }
+            i += 1
+            hash
+          end
+          all_data[[lat, long].to_s] = site_data
         end
       end
+      all_data
     else
       "No sites"
     end
