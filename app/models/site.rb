@@ -11,6 +11,10 @@ class Site < ApplicationRecord
   #   (doy_start <= range_start_doy) && (range_end_doy <= doy_end)
   # end
 
+  def full_name
+    "#{name} (#{latitude}, #{longitude})"
+  end
+
   def self.enable_all
     all.update(enabled: true)
   end

@@ -1,0 +1,44 @@
+<% border = "1px solid #8b846a" %>
+<% bg = "#e9e4d0"%>
+
+<% if subscription %>
+  <% @data = subscription[:data].values.first %>
+  <% @opts = subscription[:options] %>
+  <% @base = @opts["base"] %>
+  <% @upper = @opts["upper"] %>
+  <% @units = @opts["units"] %>
+
+  <h5 style="margin-bottom: 0.5em;"><i>Degree day model: base <%= @base %>&deg;<%= @units%><%= @upper.nil? ? "" : ", upper #{@upper}°#{@units}" %></i></h5>
+
+  <% if @data.values.last[:cum_dd].to_f > 0 %>
+    <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; font-size: smaller;">
+      <thead>
+        <tr bgcolor=<%= bg %> style="background: <%= bg %>; border-top: <%= border %>; border-bottom: <%= border %>;">
+          <th align="left">Date</th>
+          <th align="center">Min temp<br>(&deg;<%= @units %>)</th>
+          <th align="center">Max temp<br>(&deg;<%= @units %>)</th>
+          <th align="center">Degree<br>days</th>
+          <th align="center">Cumul.<br>DD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @data.values.each_with_index do |day, i| %>
+          <% style = "" %>
+          <% style += "font-weight: bold;" if day == @data.values.last %>
+          <% style += "background: #{bg};" if i.odd? %>
+          <% style += "border-bottom: #{border};" if i == @data.size - 1 %>
+          <tr style="<%= style %>">
+            <td style="white-space: nowrap"><%= day[:date] %></td>
+            <td align="center"><%= day[:min] %></td>
+            <td align="center"><%= day[:max] %></td>
+            <td align="center">+<%= day[:dd] %></td>
+            <td align="center"><%= day[:cum_dd] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+  <% else %>
+    <p style="font-size: smaller;"><i>No degree days accumulated yet this year.</i></p>
+  <% end %>
+<% end %>

@@ -7,18 +7,23 @@ $form-bg-color: #efefef;
   align-items: center;
 }
 
-.site-box {
+.site-container {
+  display: flex;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.grey-box {
   border: 1px solid $form-border-color;
   background-color: $form-bg-color;
   border-radius: 3px;
   margin-bottom: 1em;
   padding: 10px 10px 5px 10px;
-  max-width: 100%;
+  width: fit-content;
 }
 
 .tbl-container {
   max-width: 100%;
-  overflow: auto;
   padding-bottom: 10px;
 
   thead tr {
@@ -36,10 +41,6 @@ $form-bg-color: #efefef;
   th, td:first-child {
     padding: 5px 5px;
   }
-
-  th {
-    text-decoration: underline;
-  }
 }
 
 .toggle-site {
@@ -53,8 +54,23 @@ $form-bg-color: #efefef;
   padding: 2px;
   cursor: pointer;
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
-  gap: 5px;
+
+  div {
+    min-width: 1em;
+    margin-right: 5px;
+  }
+}
+
+.sub-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+
+  p {
+    line-height: 1.5em;
+  }
 }
 
 .site-controls {

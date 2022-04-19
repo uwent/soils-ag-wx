@@ -1,30 +1,41 @@
-<% if data %>
-  <h4>Oak Wilt Risk Model Subscriptions:</h4>
-  <% data.each do |site| %>
-    <p>
-      <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
-    </p>
-    <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a;">
+<% border = "1px solid #8b846a" %>
+<% bg = "#e9e4d0"%>
+
+<% if subscription %>
+  <% @data = subscription[:data].values.first %>
+
+  <h5 style="margin-bottom: 0.5em;"><i>Oak wilt risk model and forecast:</i></h5>
+
+  <% if @data.values.last[:cum_dd].to_f > 0 %>
+
+    <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; font-size: smaller;">
       <thead>
-        <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
-          <th style="text-align: left;">Date</th>
-          <th style="text-align: right;">Degree Days</th>
-          <th style="text-align: right;">Risk Recommendation</th>
+        <tr style="background: <%= bg %>; border-top: <%= border %>; border-bottom: <%= border %>;">
+          <th align="left">Date</th>
+          <th align="center">Degree days</th>
+          <th align="center">Risk recommendation</th>
         </tr>
       </thead>
       <tbody>
-        <% site[:data].each_with_index do |day, i| %>
-          <% weight = (i == 0) ? "font-weight: bold;" : "" %>
-          <% style = (i > 0) ? "font-style: italic;" : "" %>
-          <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
-          <tr style="<%= weight + style + background %>">
+        <% @data.values.each_with_index do |day, i| %>
+          <% style = "" %>
+          <% style += "font-weight: bold;" if i == 0 %>
+          <% style += "font-style: italic;" if i > 0 %>
+          <% style += "background: #e9e4d0" if i.odd? %>
+          <% style += "border-bottom: #{border};" if i == @data.size - 1 %>
+          <tr style="<%= style %>">
             <td style="white-space: nowrap"><%= day[:date] %></td>
-            <td style="text-align: right;"><%= day[:dd] %></td>
-            <td style="text-align: right;"><%= day[:risk] %></td>
+            <td align="center"><%= day[:cum_dd] %></td>
+            <td align="center"><%= day[:risk] %></td>
           </tr>
         <% end %>
+        <tr>
+          <td colspan=3><i>Note: Dates in italic reflect the estimated one-week forecast for oak wilt risk based on the previous week's average daily degree-day accumulation. This forecast will change daily. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></td>
+        </tr>
       </tbody>
     </table>
     <br>
+  <% else %>
+    <p style="font-size: smaller;"><i>No degree days accumulated yet this year. The high risk oak wilt transmission period begins at 230 degree days and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
   <% end %>
 <% end %>

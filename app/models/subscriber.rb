@@ -14,6 +14,23 @@ class Subscriber < ApplicationRecord
   def self.active?
     dates_active === Date.current
   end
+
+  def self.enable_weather_subscriptions
+    msg = []
+    Subscriber.all.each do |subscriber|
+      msg << "Subscriber: #{subscriber.name}"
+      subscriber.sites.each do |site|
+        begin
+          site.subscriptions << Subscription.weather
+          msg << "  Added weather subscription to " + site.name
+        rescue
+          msg << "  " + site.name + " is already subscribed"
+          next
+        end
+      end
+    end
+    puts msg.join("\n")
+  end
   
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/
@@ -73,93 +90,95 @@ class Subscriber < ApplicationRecord
   def self.send_subscriptions(subscribers)
     subscribers = subscribers.is_a?(Subscriber) ? [subscribers] : subscribers
 
+    all_sites = Site.where(subscriber: subscribers, enabled: true)
+    return "No sites enabled!" unless all_sites.size > 0
+
     date = Date.yesterday
     dates = (date - 6.days)..date
 
-    # collect data
-    all_sites = Site.where(subscriber: subscribers, enabled: true)
+    # send emails to each subscriber with their sites
+    subscribers.each do |subscriber|
+      Rails.logger.debug "\n# Subscriber: #{subscriber.name} #\n"
+      sites = subscriber.sites.enabled
 
-    if all_sites.size > 0
-      weather_data = WeatherSub.first.fetch(all_sites)
-      ow_data = OakWiltSub.first.fetch(all_sites)
+      # data is an array of hashes where each site is a hash
+      data = sites.collect do |site|
+        Rails.logger.debug "\n## Site: #{site.full_name} ##\n"
 
-      # send emails to each subscriber with their sites
-      subscribers.each do |subscriber|
-        sites = subscriber.sites.enabled.joins(:subscriptions)
-        data = {}
-        weather_sites = sites.where(subscriptions: {type: "WeatherSub"})
-        ow_sites = sites.where(subscriptions: {type: "OakWiltSub"})
-
-        data[:weather_data] = weather_sites.collect do |site|
-          name, lat, long = site.name, site.latitude, site.longitude
+        # subscriptions for each site is an array of hashes
+        site_data = site.subscriptions.collect do |s|
+          Rails.logger.debug "\n### Subscription: #{s.name}, partial: #{s.partial} ###"
           {
-            name:, lat:, long:,
-            data: weather_data[[lat, long].to_s]
-          }
-        end
-        
-        data[:ow_data] = ow_sites.collect do |site|
-          name, lat, long = site.name, site.latitude, site.longitude
-          {
-            name:, lat:, long:,
-            data: ow_data[[lat, long].to_s]
+            name: s.name,
+            partial: s.partial,
+            options: s.options,
+            data: s.fetch(site)
           }
         end
 
-        SubscriptionMailer.daily_mail(subscriber, date, data).deliver
+        {
+          name: site.name,
+          lat: site.latitude,
+          long: site.longitude,
+          data: site_data
+        }
       end
-    end
-  end
 
-  def fetch_sites(sites)
-    weather_data = WeatherSub.first.fetch
-    ow_data = OakWiltSub.first.fetch
-    # dd_data = Degree
-    data = sites.collect do |site|
-      lat = site.latitude
-      long = site.longitude
-      site_key = [lat, long].to_s
-      {
-        site_name: site.name,
-        lat: lat,
-        long: long,
-        weather_data: weather_data[site_key],
-        oak_wilt_data: ow_data[site_key],
-        dd_data: dd_data[site_key]
-      }
+      SubscriptionMailer.daily_mail(subscriber, date, data).deliver
     end
   end
 
   def self.to_csv
     CSV.generate(headers: true) do |csv|
-      csv << %w[ID Name Email Created Admin]
+      csv << %w[ID Name Email DateCreated Admin? Sites SitesEnabled Subscriptions]
       Subscriber.all.order(:id).each do |s|
-        csv << [s.id, s.name, s.email, s.created_at, s.admin]
+        csv << [s.id, s.name, s.email, s.created_at, s.admin, s.sites.size, s.sites.enabled.size, s.subscriptions.size]
       end
     end
   end
 
   def self.report
-    msg = ["Subscribers report"]
+    msg = ["\n### Subscribers report ###"]
     subscribers = Subscriber.all
+    subscriptions = Subscription.all
+
     summary = {
       subscribers: subscribers.size,
       sites: Site.all.size,
-      subscriptions: Subscription.all.size
+      subs: subscriptions.size,
+      site_subs: SiteSubscription.all.size
     }
+
     subscribers.order(:id).each do |subscriber|
-      msg << "\n#{subscriber.id}. #{subscriber.name} (#{subscriber.email})"
       sites = subscriber.sites
+
+      msg << "\n#{subscriber.id}. #{subscriber.name} (#{subscriber.email}) - " + sites.size.to_s + " sites"
+      pad1 = " " * (subscriber.id.to_s.length + 2)
+
       sites.order(:id).each do |site|
-        msg << "   #{site.id}. #{site.name} (#{site.latitude}, #{site.longitude})"
-        subscriptions = site.subscriptions
-        subscriptions.order(:id).each do |subscription|
-          msg << "      #{subscription.id}. #{subscription.name}"
+        site_subs = site.subscriptions
+
+        msg << pad1 + "#{site.id}. #{site.name} (#{site.latitude}, #{site.longitude}) - " + site_subs.size.to_s + " subs"
+        pad2 = pad1 + " " * (site.id.to_s.length + 2)
+        
+        site_subs.order(:id).each do |s|
+          msg << pad2 + "#{s.id}. #{s.name}"
         end
       end
     end
-    msg.each { |m| puts m }
-    summary
+
+    msg << "\n### Subscriptions available ###\n"
+    subscriptions.order(:id).each do |s|
+      msg << "#{s.id}. #{s.name} (#{s.type}) - " + s.sites.size.to_s + " sites"
+    end
+
+    msg << "\n### Summary ###\n"
+    msg << "Subscribers: #{summary[:subscribers]}"
+    msg << "Sites: #{summary[:sites]}"
+    msg << "Subscriptions available: #{summary[:subs]}"
+    msg << "Site subscriptions: #{summary[:site_subs]}"
+
+    puts msg.join("\n")
   end
 
   private

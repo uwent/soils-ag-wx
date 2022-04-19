@@ -24,13 +24,19 @@
           </td>
         </tr>
         <tr>
-          <td bgcolor="#f7f5ee" style="background: #f7f5ee;">The past week's weather data for the site(s) you've requested are shown below:</td>
+          <td bgcolor="#f7f5ee" style="background: #f7f5ee;">Your data subscriptions for <%= Date.current.strftime("%a, %b %-d") %> shown below:</td>
         </tr>
         <tr>
-          <td bgcolor="#f7f5ee;" align="center" style="background: #f7f5ee;">
-            <%= render partial: "weather_data", locals: {data: @data[:weather_data]} %>
-            <%= render partial: "oak_wilt_data", locals: {data: @data[:ow_data]} %>
-            <%= render partial: "degree_day_data", locals: {data: @data[:dd_data]} %>
+          <td bgcolor="#f7f5ee;" style="background: #f7f5ee;">
+          <% @data.each do |site| %>
+            <p style="border-bottom: 2px solid #e9e4d0;">
+              <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
+            </p>
+            <% site[:data].each do |subscription| %>
+              <%= render partial: subscription[:partial], locals: {subscription:} %>
+            <% end %>
+            <br>
+          <% end %>
           </td>
         </tr>
         <tr>

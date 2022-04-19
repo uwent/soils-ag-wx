@@ -1,33 +1,35 @@
-<% if data %>
-  <h4>Weather Data Subscriptions:</h4>
-  <% data.each do |site| %>
-    <p>
-      <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
-    </p>
-    <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a;">
-      <thead>
-        <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
-          <th style="text-align: left;">Date</th>
-          <th style="text-align: right;">Min temp<br>(&deg;F)</th>
-          <th style="text-align: right;">Max temp<br>(&deg;F)</th>
-          <th style="text-align: right;">Precip<br>(in)</th>
-          <th style="text-align: right;">Pot. ET<br>(in)</th>
+<% border = "1px solid #8b846a" %>
+<% bg = "#e9e4d0"%>
+
+<% if subscription %>
+  <% @data = subscription[:data].values.first %>
+
+  <h5 style="margin-bottom: 0.5em;"><i>7-day weather report:</i></h5>
+
+  <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; font-size: smaller">
+    <thead>
+      <tr bgcolor=<%= bg %> style="background: <%= bg %>; border-top: <%= border %>; border-bottom: <%= border %>;">
+        <th align="left;">Date</th>
+        <th align="right">Min temp<br>(&deg;F)</th>
+        <th align="right">Max temp<br>(&deg;F)</th>
+        <th align="right">Precip<br>(in)</th>
+        <th align="right">Pot. ET<br>(in)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @data.values.each_with_index do |day, i| %>
+        <% style = "" %>
+        <% style += "background: #{bg};" if i.odd? %>
+        <% style += "font-weight: bold; border-bottom: #{border};" if day == @data.values.last %>
+        <tr style="<%= style %>">
+          <td style="white-space: nowrap"><%= day[:date] %></td>
+          <td align="right"><%= day[:min_temp] %></td>
+          <td align="right"><%= day[:max_temp] %></td>
+          <td align="right"><%= day[:precip] %></td>
+          <td align="right"><%= day[:et] %></td>
         </tr>
-      </thead>
-      <tbody>
-        <% site[:data].values.each_with_index do |day, i| %>
-          <% weight = (day == site[:data].values.last) ? "font-weight: bold;" : "" %>
-          <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
-          <tr style="<%= weight + background %>">
-            <td style="white-space: nowrap"><%= day[:date] %></td>
-            <td style="text-align: right;"><%= day[:min_temp] %></td>
-            <td style="text-align: right;"><%= day[:max_temp] %></td>
-            <td style="text-align: right;"><%= day[:precip] %></td>
-            <td style="text-align: right;"><%= day[:et] %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <br>
-  <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
 <% end %>

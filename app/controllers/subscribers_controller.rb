@@ -188,15 +188,16 @@ class SubscribersController < ApplicationController
     long = params[:longitude]
 
     # check for existing
-    if @subscriber.sites.where(latitude: lat, longitude: long).size > 0
-      return render json: {message: "You already have a site at #{lat}, #{long}."}
+    errors = []
+    if @subscriber.sites.where(name: site_name).size > 0
+      errors << "You already have a site named #{site_name}."
     end
+    if @subscriber.sites.where(latitude: lat, longitude: long).size > 0
+      errors << "You already have a site at #{lat}, #{long}."
+    end
+    return render json: {message: errors.join("\n"), status: 500} if errors.size > 0
 
-    site = Site.new(
-      name: site_name,
-      latitude: lat,
-      longitude: long
-    )
+    site = Site.new(name: site_name, latitude: lat, longitude: long)
     @subscriber.sites << site
     site.subscriptions << WeatherSub.first
     

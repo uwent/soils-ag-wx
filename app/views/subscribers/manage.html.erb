@@ -13,7 +13,9 @@
     navigator.geolocation.getCurrentPosition((position) => {
       let lat = position.coords.latitude.toFixed(1)
       let long = position.coords.longitude.toFixed(1)
-      $("#location-display").html("Your closest lat/long coordinates are: " + lat + ", " + long)
+      let msg = "Your closest lat/long coordinates are: <b>" + lat + ", " + long + "</b>"
+      if (!validateLat(lat) || !validateLong(long)) msg += ". Unfortunately this is outside of our data range."
+      $("#location-display").html(msg)
     })
   }
   
@@ -36,11 +38,11 @@
   function validate(site_name, lat, long) {
     let validations = []
     if (!validateName(site_name))
-      validations.push("Invalid site name.")
+      validations.push("Invalid site name, try something different.")
     if (!validateLat(lat))
-      validations.push("Invalid latitude. Must be a number between " + min_lat + " and " + max_lat)
+      validations.push("Latitude must be a number between " + min_lat + " and " + max_lat)
     if (!validateLong(long))
-      validations.push("Invalid longitude. Must be a number between " + min_long + " and " + max_long)
+      validations.push("Longitude must be a number between " + min_long + " and " + max_long)
     return validations
   }
 
@@ -50,8 +52,13 @@
       setTimeout(() => {$("#send-email").prop("disabled", false)}, 5000)
     }
 
+    // Disable the send email button on click
+    $("#send-email").click(() => {
+      $("#send-email").prop("disabled", true)
+    })
+
     // Handle add site button
-    $("#submit-site").click((event) => {
+    $("#submit-site").submit(() => {
       let site_name = $("#site-name").val()
       let lat = $("#latitude").val()
       let long = $("#longitude").val()
@@ -74,14 +81,12 @@
       }).success((data) => {
         data.id ? window.location.reload() : alert(data.message)
       })
+      return false
     })
 
     // Allow enter key to trigger add
-    $('#add-controls').keypress((k) => {
-      if (k.which == 13) {
-        $("#submit-site").click()
-        return false
-      }
+    $('#submit-site').keypress((k) => {
+      if (k.which == 13) $(this).closest("form").submit();
     })
 
     // Handle delete site button
@@ -129,7 +134,7 @@
 
     // Handle enable/disable checkboxes for subscriptions
     $("[id^=sub-toggle]").change((event) => {
-      let site_id = $(event.target).closest("tr").data("site-id")
+      let site_id = $(event.target).closest("div").data("site-id")
       let sub_id = $(event.target).val()
       let url
       if (event.target.checked) {
@@ -168,11 +173,11 @@
 <b>Name: </b><%= @subscriber.name %><br>
 <b>Email: </b><%= @subscriber.email %>
 
-<p>Each morning you can receive email updates for up to 15 locations across our data coverage area. For each site we report the past week of daily high/low temperatures, precipitation, and potential evapotranspiration.</p>
+<p>Each morning you can receive email updates for sites of your choosing within our data coverage area. For each site you can choose which data subscriptions your want, including the 7-day weather report, several degree-day models, and pest risk models. The weather report includes daily high/low temperatures, precipitation, and potential evapotranspiration.</p>
 
-<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km).</p>
+<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). <b>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</b></p>
 
-<p>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude. Any subscriptions you have will be automatically enabled on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
+<p>Any subscriptions you have will be automatically enabled on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
 
 <div class="location-container">
   <div><button onclick="getGeoLocation()">Get my location</button></div>
@@ -181,83 +186,96 @@
 
 <h4>Your sites (from North to South):</h4>
 
-<div class="site-box">
-  <div class="tbl-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Site Name</th>
-          <th>Latitude</th>
-          <th>Longitude</th>
-          <th><%= @site_count > 0 ? "Enabled?" : ""%></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @sites.each do |site| %>
-          <tr data-site-id=<%= site.id %>>
-            <td><%= site.name %></td>
-            <td><%= site.latitude %></td>
-            <td><%= site.longitude %></td>
-            <td>
-              <label>
-                <div class="toggle-site">
-                  <div>
-                    <%= check_box_tag "site-toggle-#{site.id}", site.id, site.enabled %>
-                  </div>
-                  <div id=<%= "site-status-#{site.id}" %>>
-                    <%= site.enabled ? "Yes" : "No" %>
-                  </div>
-                </div>
-              </label>
-            </td>
-            <td>
-              <button class="delete-site" id="delete-site-<%= site.id %>">
-                <div><%= image_tag("cross.png", class:'delete-cross') %></div>
-                <div>Delete</div>
-              </button>
-            </td>
-          </tr>
-        <% end %>
-        <tr id="add-controls">
-          <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25 %></td>
-          <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6 %></td>
-          <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6 %></td>
-          <td><button id="submit-site">Add</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<% if @site_count > 0 %>
-  <h4>Select your data subscriptions for each site:</h4>
-
-  <div class="site-box">
+<div class="site-container">
+  <div class="grey-box">
     <div class="tbl-container">
       <table>
         <thead>
           <tr>
             <th>Site Name</th>
-            <% @subs.each do |s| %>
-              <th><%= s.name %></th>
-            <% end %>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th><%= @site_count > 0 ? "Enabled?" : ""%></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <% @sites.each do |site| %>
             <tr data-site-id=<%= site.id %>>
               <td><%= site.name %></td>
-              <% @subs.each do |s| %>
-                <td align="center"><%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %></td>
-              <% end %>
+              <td><%= site.latitude %></td>
+              <td><%= site.longitude %></td>
+              <td>
+                <label>
+                  <div class="toggle-site">
+                    <div>
+                      <%= check_box_tag "site-toggle-#{site.id}", site.id, site.enabled %>
+                    </div>
+                    <div id=<%= "site-status-#{site.id}" %>>
+                      <%= site.enabled ? "Yes" : "No" %>
+                    </div>
+                  </div>
+                </label>
+              </td>
+              <td>
+                <button class="delete-site" id="delete-site-<%= site.id %>">
+                  <div><%= image_tag("cross.png", class:'delete-cross') %></div>
+                  <div>Delete</div>
+                </button>
+              </td>
             </tr>
           <% end %>
+          <tr id="add-controls">
+            <%= form_tag add_site_subscriber_path(@subscriber.id), id: "submit-site" do %>
+              <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25, required: true %></td>
+              <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6, required: true %></td>
+              <td><%= button_tag "Add" %></td>
+            <% end %>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
+</div>
+
+<% if @site_count > 0 %>
+  <h4>Select your data subscriptions for each site:</h4>
+
+  <div class="sub-container">
+    <% @sites.each do |site| %>
+      <div class="grey-box" data-site-id=<%= site.id %>>
+        <b><%= site.name %></b>
+        <p>
+          <i>Weather data:</i><br>
+          <label><%= check_box_tag "sub-toggle-#{Subscription.weather.id}", Subscription.weather.id, site.subscriptions.include?(Subscription.weather) %> 7-day weather</label>
+        </p>
+        <p>
+          <i>Degree day models:</i><br>
+          <% Subscription.degree_days.each do |s| %>
+            <label>
+              <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
+              Base <%= s.options["base"] %>&deg;<%= s.options["units"]%>
+            </label>
+            <br>
+          <% end %>
+        </p>
+        <p>
+          <i>Pest risk models:</i><br>
+          <% Subscription.pests.each do |s| %>
+            <label>
+              <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
+              <%= s.name %>
+            </label>
+            </br>
+          <% end %>
+        </p>
+      </div>
+    <% end %>
+  </div>
 <% end %>
+
+<br>
 
 <div class="site-controls">
   <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
