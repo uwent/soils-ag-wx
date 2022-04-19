@@ -21,44 +21,44 @@
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
     <td align="center">
-      <table role="presentation" width="600" cellpadding="15" cellspacing="0" style="border-collapse: collapse; table-width: fixed; width: 600px; border: 1px solid <%= bg_drk %>">
-        <thead bgcolor=<%= bg_drk %>>
+      <table role="presentation" width="600" cellpadding="15" cellspacing="0" style="border-collapse: collapse; table-width: fixed;">
+        <thead>
           <tr>
-            <td style="font-family: verdana, sans-serif; font-size: 1.2em; text-align: center; border: 1px solid <%= bg_drk %>">
+            <td bgcolor=<%= bg_drk %> style="font-family: verdana, sans-serif; font-size: 1.2em; text-align: center;">
               <b>UW Extension Ag Weather Automated Mailer</b>
             </td>
           </tr>
         </thead>
-        <tbody bgcolor=<%= bg_lt %>>
+        <tbody>
           <tr>
-            <td>
+            <td bgcolor=<%= bg_lt %>>
               Your data subscriptions for <%= Date.current.strftime("%A, %B %-d") %> are shown below. To enable, disable, or edit your sites or subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>.
             </td>
           </tr>
           <tr>
-            <td>
-            <% @data.each do |site| %>
-              <br>
-              <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border: 2px solid #8b846a;">
-                <tr>
-                  <td>
-                    <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
-                  </td>
-                </tr>
-              </table>
-              <% if site[:data].size > 0 %>
-                <% site[:data].each do |subscription| %>
-                  <%= render partial: subscription[:partial], locals: {subscription:} %>
+            <td bgcolor=<%= bg_lt %>>
+              <% @data.each do |site| %>
+                <br>
+                <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border: 2px solid #8b846a;">
+                  <tr>
+                    <td>
+                      <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
+                    </td>
+                  </tr>
+                </table>
+                <% if site[:data].size > 0 %>
+                  <% site[:data].each do |subscription| %>
+                    <%= render partial: subscription[:partial], locals: {subscription:} %>
+                  <% end %>
+                <% else %>
+                  <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>
                 <% end %>
-              <% else %>
-                <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>
+                <br>
               <% end %>
-              <br>
-            <% end %>
             </td>
           </tr>
           <tr>
-            <td>
+            <td bgcolor=<%= bg_lt %>>
               <h4>More information:</h4>
               <ul>
                 <li><%= link_to "AgWeather homepage", root_url, style: "color: inherit" %></li>
@@ -70,7 +70,7 @@
             </td>
           </tr>
           <tr>
-            <td style="font-size: 0.8em; color: grey;">
+            <td bgcolor=<%= bg_lt %> style="font-size: 0.8em; color: grey;">
               <% if @data.to_s.downcase.include? "no data" %>
                 <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
               <% end %>

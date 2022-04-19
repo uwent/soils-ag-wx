@@ -14,7 +14,7 @@
     <% if @data.values.last[:max_cum_dd].to_f > 0 %>
       <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
         <thead>
-          <tr bgcolor=<%= bg %> style="background: <%= bg %>; border-top: <%= border %>; border-bottom: <%= border %>;">
+          <tr bgcolor=<%= bg %> style="border: <%= border %>;">
             <th align="left">Date</th>
             <th align="center">Low (&deg;<%= @units %>)</th>
             <th align="center">High (&deg;<%= @units %>)</th>
