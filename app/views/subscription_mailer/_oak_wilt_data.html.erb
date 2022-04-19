@@ -8,7 +8,7 @@
 
   <% if @data.values.last[:cum_dd].to_f > 0 %>
 
-    <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; font-size: smaller;">
+    <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
       <thead>
         <tr style="background: <%= bg %>; border-top: <%= border %>; border-bottom: <%= border %>;">
           <th align="left">Date</th>
@@ -36,6 +36,6 @@
     </table>
     <br>
   <% else %>
-    <p style="font-size: smaller;"><i>No degree days accumulated yet this year. The high risk oak wilt transmission period begins at 230 degree days and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
+    <p><i>No degree days accumulated yet this year. The high risk oak wilt transmission period begins at 230 degree days and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
   <% end %>
 <% end %>

@@ -27,6 +27,7 @@ group :development do
   gem "capistrano-rbenv"
   gem "capistrano-bundler"
   gem "capistrano-rails"
+  gem "capistrano-rails-collection"
   gem "letter_opener"
   gem "letter_opener_web"
   gem "listen"
