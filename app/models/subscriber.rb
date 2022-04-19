@@ -105,14 +105,16 @@ class Subscriber < ApplicationRecord
       data = sites.collect do |site|
         Rails.logger.debug "\n## Site: #{site.full_name} ##\n"
 
-        # subscriptions for each site is an array of hashes
+        # subscription list for each site is an array of hashes
+        # subscription data is a hash
         site_data = site.subscriptions.collect do |s|
           Rails.logger.debug "\n### Subscription: #{s.name}, partial: #{s.partial} ###"
+          sub_data = s.fetch(site)
           {
             name: s.name,
             partial: s.partial,
             options: s.options,
-            data: s.fetch(site)
+            data: sub_data || {}
           }
         end
 

@@ -18,6 +18,6 @@ module SoilsAgWx
     
     config.time_zone = "Central Time (US & Canada)"
 
-    config.autoload_paths += Dir[Rails.root.join("app", "models", "{*/}")]
+    config.autoload_paths << Rails.root.join("app/models/subscriptions")
   end
 end

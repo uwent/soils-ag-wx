@@ -34,19 +34,24 @@ class DegreeDaySub < Subscription
       dds = AgWeather.get(AgWeather::DD_URL, query: opts)[:data]
 
       # collect and format data for each date
+      max_cum_dd = dds.map { |day| day[:cumulative_value] }.compact.max || 0.0
       site_data = {}
       report_dates.each do |date|
-        dd = dds.find { |h| h[:date] == date.to_s }
+        dd = dds.find { |h| h[:date] == date.to_s } || {}
         site_data[date.to_s] = {
           date: date_fmt(date),
-          min: dd[:min_temp],
-          max: dd[:max_temp],
+          min: num_fmt(dd[:min_temp]),
+          max: num_fmt(dd[:max_temp]),
           dd: num_fmt(dd[:value]),
-          cum_dd: num_fmt(dd[:cumulative_value])
+          cum_dd: num_fmt(dd[:cumulative_value]),
+          max_cum_dd: max_cum_dd
         }
       end
       all_data[[lat, long].to_s] = site_data
     end
     all_data
+  rescue
+    Rails.logger.error "DegreeDaySub :: Failed to retrieve data for sites."
+    {}
   end
 end
