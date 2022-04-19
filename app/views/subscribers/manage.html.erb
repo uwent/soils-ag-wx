@@ -93,7 +93,7 @@
     $("[id^=delete-site]").click((event) => {
       if (!confirm("Are you sure you want to delete this site?")) return
       let site_id = $(event.target).closest("tr").data("site-id")
-      let parent_row = $(event.target).closest("tr")
+
       $.ajax({
         type: "POST",
         url: "<%= url_for(remove_site_subscriber_path(@subscriber.id)) %>",
@@ -118,6 +118,7 @@
       } else {
         url = "<%= url_for(disable_site_subscriber_path(@subscriber.id)) %>"
       }
+
       $.ajax({
         type: "POST",
         url: url,
@@ -128,7 +129,14 @@
       }).success((data) => {
         $("#notice").fadeOut()
         let div = $("#site-status-" + site_id)
-        data.message == "enabled" ? div.html("Yes") : div.html("No")
+        let box = $("#site-box-" + site_id)
+        if (data.message == "enabled") {
+          div.html("Yes")
+          box.css("opacity", 1)
+        } else {
+          div.html("No")
+          box.css("opacity", 0.5)
+        }
       })
     })
 
@@ -169,6 +177,8 @@
 <% if @subscriber.id != session[:subscriber] %>
   <p class="alert">ADMIN: You are editing another user's subscriptions.</p>
 <% end %>
+
+<%= render "notices" %>
 
 <b>Name: </b><%= @subscriber.name %><br>
 <b>Email: </b><%= @subscriber.email %>
@@ -244,7 +254,7 @@
 
   <div class="sub-container">
     <% @sites.each do |site| %>
-      <div class="grey-box" data-site-id=<%= site.id %>>
+      <div class="grey-box" id="site-box-<%= site.id %>" data-site-id=<%= site.id %> style="opacity: <%= site.enabled ? 1 : 0.5 %>">
         <b><%= site.name %></b>
         <p>
           <i>Weather data:</i><br>
@@ -290,5 +300,3 @@
   <% end %>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>
-
-<%= render partial: "notices" %>

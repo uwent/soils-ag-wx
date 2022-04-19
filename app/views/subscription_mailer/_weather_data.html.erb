@@ -6,7 +6,7 @@
 
   <h5 style="margin-bottom: 0.5em;"><i>7-day weather report:</i></h5>
 
-  <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
+  <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
     <thead>
       <tr bgcolor=<%= bg %> style="background: <%= bg %>; border-top: <%= border %>; border-bottom: <%= border %>;">
         <th align="left;">Date</th>
@@ -20,7 +20,7 @@
       <% @data.values.each_with_index do |day, i| %>
         <% style = "" %>
         <% style += "background: #{bg};" if i.odd? %>
-        <% style += "font-weight: bold; border-bottom: #{border};" if day == @data.values.last %>
+        <% style += "font-weight: bold;" if day == @data.values.last %>
         <tr style="<%= style %>">
           <td style="white-space: nowrap"><%= day[:date] %></td>
           <td align="right"><%= day[:min_temp] %></td>

@@ -8,7 +8,7 @@ class Subscriber < ApplicationRecord
   before_create :set_confirmation_token
 
   def self.dates_active
-    Date.new(Date.current.year, 4, 1)..Date.new(Date.current.year, 9, 30)
+    Date.new(Date.current.year, 3, 15)..Date.new(Date.current.year, 11, 1)
   end
 
   def self.active?

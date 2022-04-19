@@ -170,16 +170,16 @@ class SubscribersController < ApplicationController
   end
 
   def send_email
-    if params[:token] == @subscriber.confirmation_token
-      if Subscriber.find(@subscriber.id).sites.enabled.size > 0
-        Subscriber.send_subscriptions([@subscriber])
-        return redirect_to manage_subscribers_path, notice: "Test email sent!"
-      else
-        return redirect_to manage_subscribers_path, alert: "You don't have any active sites, so we couldn't send an email."
-      end
-    else
+    if params[:token] != @subscriber.confirmation_token
       return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
-    end    
+    end
+
+    if @subscriber.sites.enabled.size == 0
+      return redirect_to manage_subscribers_path, alert: "You don't have any active sites, so we couldn't send an email."
+    end
+
+    Subscriber.send_subscriptions([@subscriber])
+    redirect_to manage_subscribers_path, notice: "Test email sent!"
   end
 
   def add_site
