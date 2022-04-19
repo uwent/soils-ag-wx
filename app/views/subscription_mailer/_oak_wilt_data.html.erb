@@ -4,7 +4,7 @@
 <% if subscription %>
   <% @data = subscription[:data].values.first %>
 
-  <h5 style="margin-bottom: 0.5em;"><i>Oak wilt risk model and forecast:</i></h5>
+  <h5 style="margin-bottom: 0.5em;">Oak wilt risk model and forecast:</h5>
 
   <% if @data.values.last[:cum_dd].to_f > 0 %>
 

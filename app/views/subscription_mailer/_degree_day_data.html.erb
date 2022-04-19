@@ -8,7 +8,7 @@
   <% @upper = @opts["upper"] %>
   <% @units = @opts["units"] %>
 
-  <h5 style="margin-bottom: 0.5em;"><i>Degree day model: base <%= @base %>&deg;<%= @units%><%= @upper.nil? ? "" : ", upper #{@upper}°#{@units}" %></i></h5>
+  <h5 style="margin-bottom: 0.5em;">Degree day model: base <%= @base %>&deg;<%= @units%><%= @upper.nil? ? "" : ", upper #{@upper}°#{@units}" %></h5>
 
   <% if @data.values.last[:cum_dd].to_f > 0 %>
     <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
