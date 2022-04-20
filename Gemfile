@@ -11,7 +11,7 @@ gem "jquery-ui-rails", "~> 6.0"
 gem "rails-ujs", "~> 0.1"
 gem "uglifier", "~> 4.2"
 gem "turbolinks", "~> 5.2"
-gem "jbuilder", "~> 2.11"
+# gem "jbuilder", "~> 2.11"
 gem "httparty", "~> 0.20"
 gem "render_async", "~> 2.1" # for asynchronous loading of page elements
 gem "will_paginate", "~> 3.3"
