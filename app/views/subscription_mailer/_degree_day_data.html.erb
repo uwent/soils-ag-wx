@@ -1,0 +1,49 @@
+<% border = "1px solid #8b846a" %>
+<% bg = "#e9e4d0"%>
+
+<% if subscription %>
+  <% @data = subscription[:data].values.first %>
+  <% @opts = subscription[:options] %>
+  <% @base = @opts["base"] %>
+  <% @upper = @opts["upper"] %>
+  <% @units = @opts["units"] %>
+
+  <h5 style="margin-bottom: 0.5em;">Degree day model: base <%= @base %>&deg;<%= @units%><%= @upper.nil? ? "" : ", upper #{@upper}°#{@units}" %></h5>
+
+  <% if @data %>
+    <% if @data.values.last[:max_cum_dd].to_f > 0 %>
+      <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
+        <thead>
+          <tr bgcolor=<%= bg %> style="border: <%= border %>;">
+            <th align="left">Date</th>
+            <th align="center">Low (&deg;<%= @units %>)</th>
+            <th align="center">High (&deg;<%= @units %>)</th>
+            <th align="center">DDs</th>
+            <th align="center">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @data.values.each_with_index do |day, i| %>
+            <% style = "" %>
+            <% style += "font-weight: bold;" if day == @data.values.last %>
+            <% style += "background: #{bg};" if i.odd? %>
+            <tr style="<%= style %>">
+              <td style="white-space: nowrap"><%= day[:date] %></td>
+              <td align="center"><%= day[:min] %></td>
+              <td align="center"><%= day[:max] %></td>
+              <td align="center"><%= day[:dd] %></td>
+              <td align="center"><%= day[:cum_dd] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <p style="font-size: 0.8em;"><i>Degree day totals reflect accumulation since Jan 1 of the present year. For more information on degree days or to calculate a custom degree day model or date range, <%= link_to "click here", degree_days_thermal_models_url %>.</i></p>
+      <br>
+    <% else %>
+      <p style="font-size: 0.8em;"><i>No degree days accumulated yet this year. For more information on degree days or to calculate a custom degree day model or date range, <%= link_to "click here", degree_days_thermal_models_url %>.</i></p>
+    <% end %>
+  <% else %>
+    <% Rails.logger.error "_degree_day_data :: No data sent to partial." %>
+    <p style="font-size: 0.8em;"><i>Unable to retrieve the degree day data for this site.</i></p>
+  <% end %>
+<% end %>

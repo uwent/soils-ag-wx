@@ -55,9 +55,8 @@ class WeatherControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get webcam" do
-    skip "deprecated"
-    get :webcam
-    assert_response :success
-  end
+  # test "should get webcam" do
+  #   get :webcam
+  #   assert_response :success
+  # end
 end

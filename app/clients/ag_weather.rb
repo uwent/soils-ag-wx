@@ -14,6 +14,7 @@ module AgWeather
     JSON.parse(response.body, symbolize_names: true)
   rescue
     Rails.logger.error "Failed to retrieve endpoint #{url}"
+    {}
   end
 
   def self.get_map(endpoint, id, query)
@@ -42,15 +43,15 @@ module AgWeather
   #   []
   # end
 
-  def self.get_et_values(lat, long, date, start_date = nil)
-    url = ET_URL
-    opts = {
-      lat: lat,
-      long: long,
-      start_date: start_date,
-      end_date: date
-    }.compact
-    json = get(url, query: opts)
-    data = json[:data]
-  end
+  # def self.get_et_values(lat, long, date, start_date = nil)
+  #   url = ET_URL
+  #   opts = {
+  #     lat: lat,
+  #     long: long,
+  #     start_date: start_date,
+  #     end_date: date
+  #   }.compact
+  #   json = get(url, query: opts)
+  #   data = json[:data]
+  # end
 end

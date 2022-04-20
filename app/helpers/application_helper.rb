@@ -21,7 +21,7 @@ module ApplicationHelper
 
   def format_temp(temp)
     return "" if temp.nil?
-    temp_text = sprintf_nilsafe(temp, 2)
+    temp_text = sprintf_nilsafe(temp, 1)
     if temp <= freeze_temp
       color = "red"
     elsif temp <= frost_temp
@@ -35,7 +35,11 @@ module ApplicationHelper
   end
 
   def latitudes
-    (38.0..50.0).step(0.1).collect { |lat| [lat.round(1), lat.round(1)] }
+    (38.0..50.0).step(0.1)
+  end
+
+  def latitude_labels
+    latitudes.collect { |lat| [lat.round(1), lat.round(1)] }
   end
 
   def default_latitude
@@ -43,7 +47,11 @@ module ApplicationHelper
   end
 
   def longitudes
-    (-98.0..-82.0).step(0.1).collect { |long| [long.round(1), long.round(1)] }
+    (-98.0..-82.0).step(0.1)
+  end
+
+  def longitude_labels
+    longitudes.collect { |long| [long.round(1), long.round(1)] }
   end
 
   def default_longitude

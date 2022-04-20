@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
+  resources :subscriptions
   resources :awon, only: :index do
     collection do
       get "awon_check_boxes"
       # get "awon_seven_day"
       get "select_data"
       get "station_info"
-      get "graphs"
-      get "graphs_soiltemp"
-      get "blog"
+      # get "graphs"
+      # get "graphs_soiltemp"
+      # get "blog"
       get "download_data"
       post "download_data"
     end
@@ -55,14 +56,16 @@ Rails.application.routes.draw do
       get "send_email"
       post "validate"
       post "resend_confirmation"
-      post "add_subscription"
-      post "remove_subscription"
+      post "add_site"
+      post "remove_site"
+      post "enable_site"
+      post "disable_site"
       post "enable_subscription"
       post "disable_subscription"
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/*path", to: redirect("/subscribers") #unless Rails.env.development?
+  get "/subscribers/*path", to: redirect("/subscribers") unless Rails.env.development?
 
   resources :sun_water, only: :index do
     collection do
@@ -80,7 +83,7 @@ Rails.application.routes.draw do
   match "/sun_water", to: "sun_water#index", via: [:get, :post]
   get "/sun_water/*path", to: redirect("/sun_water") unless Rails.env.development?
 
-  get "t411s/last"
+  # get "t411s/last"
 
   resources :thermal_models, only: :index do
     collection do

@@ -11,17 +11,16 @@ class AwonControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get blog" do
-    blogs(:one)
-    get :blog
-    assert_response :success
-  end
+  # test "should get blog" do
+  #   blogs(:one)
+  #   get :blog
+  #   assert_response :success
+  # end
 
-  test "should get awon_seven_day" do
-    skip "deprecated"
-    get :awon_seven_day
-    assert_response :success
-  end
+  # test "should get awon_seven_day" do
+  #   get :awon_seven_day
+  #   assert_response :success
+  # end
 
   test "should get download_data" do
     get :download_data

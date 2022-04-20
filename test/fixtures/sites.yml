@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: Site1
+  subscriber_id: 1
+  latitude: 10
+  longitude: 10
+
+two:
+  name: Site2
+  subscriber_id: 1
+  latitude: 15
+  longitude: 15

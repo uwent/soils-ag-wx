@@ -1,21 +1,35 @@
 class SubscribersController < ApplicationController
-  before_action :get_subscriber_from_session, only: [
-    :index,
-    :manage,
-    :update,
-    :admin,
-    :destroy,
-    :send_email,
-    :add_subscription,
-    :remove_subscription,
-    :enable_subscription,
-    :disable_subscription,
-    :export_emails
+  before_action :get_subscriber_from_session, only: %i[
+    index
+    manage
+    update
+    admin
+    destroy
+    send_email
+    add_site
+    remove_site
+    enable_site
+    disable_site
+    enable_subscription
+    disable_subscription
+    export_emails
+    unsubscribe
   ]
 
   before_action :fix_email, if: -> { params[:email].present? }
 
-  rescue_from ActiveRecord::RecordNotFound, with: :logout
+  before_action :check_editor, only: %i[
+    add_site
+    remove_site
+    enable_site
+    disable_site
+    enable_subscription
+    disable_subscription
+    send_email
+    unsubscribe
+  ]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :index unless Rails.env.development?
 
   def index
     # remove_from_session
@@ -37,88 +51,6 @@ class SubscribersController < ApplicationController
       redirect_to confirm_notice_subscriber_path(@subscriber)
     else
       render action: "new"
-    end
-  end
-
-  def update
-    return render json: {message: "error"} if @subscriber.nil? || !@subscriber.admin?
-
-    subscriber = Subscriber.find(params[:id])
-    subscriber.update(subscriber_params)
-    respond_to do |format|
-      format.json { render json: {message: "success"} }
-    end
-  end
-
-  def destroy
-    if @subscriber.nil? # not logged in
-      return redirect_to subscribers_path, alert: "You must be logged in to perform this action."
-    elsif @subscriber.admin? # admin is logged in
-      subscriber = Subscriber.find(params[:id])
-      if subscriber != @subscriber
-        subscriber.subscriptions.each { |s| s.delete }
-        subscriber.destroy
-        return redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
-      else
-        return redirect_to admin_subscribers_path, alert: "You can't delete yourself!"
-      end
-    else
-      if params[:token] == @subscriber.confirmation_token
-        @subscriber.subscriptions.each { |s| s.delete }
-        @subscriber.destroy
-        return redirect_to subscribers_path, notice: "You successfully deleted your account."
-      else
-        return redirect_to manage_subscribers_path, alert: "Invalid token, check URL or try again."
-      end
-    end
-  end
-
-
-  ## New methods ##
-
-  def manage
-    email = params[:email]
-    # is there a subscriber in the session? If so they have already validated.
-    if !@subscriber.nil?
-      if email && email != @subscriber.email
-        remove_from_session
-        redirect_to manage_subscribers_path(email:)
-      else
-        @admin = @subscriber.admin?
-        if @subscriber.admin? && params[:to_edit_id]
-          @subscriber = Subscriber.find(params[:to_edit_id])
-        end
-        render
-      end
-    elsif email.nil?
-      redirect_to subscribers_path
-    elsif (@subscriber = Subscriber.email_find(email))
-      if @subscriber.is_confirmed?
-        @subscriber.generate_validation_token
-        render :validate
-      else
-        render :confirm_notice
-      end
-    else
-      redirect_to new_subscriber_path(email:)
-    end
-  end
-
-  def validate
-    @subscriber = Subscriber.find(params[:id])
-    validation_code = params[:validation_code]&.strip
-    # check the validation code....
-    if @subscriber.is_validation_token_old?
-      @subscriber.generate_validation_token
-      @subscriber.errors.add(:validation_code, "is too old. We've sent a new one. Check your email.")
-      render
-    elsif !@subscriber.validation_token_valid?(validation_code)
-      @subscriber.errors.add(:validation_code, "is incorrect.")
-      render
-    else
-      # add it to the session
-      add_to_session(@subscriber.id)
-      redirect_to manage_subscribers_path
     end
   end
 
@@ -154,100 +86,185 @@ class SubscribersController < ApplicationController
     end
   end
 
-  def send_email
-    if @subscriber.nil?
-      return redirect_to subscribers_path, notice: "You must be logged in to perform that action."
-    end
-
-    if params[:token] == @subscriber.confirmation_token
-      if Subscriber.find(@subscriber.id).subscriptions.enabled.size > 0
-        Subscriber.send_subscriptions([@subscriber])
-        return redirect_to manage_subscribers_path, notice: "Test email sent!"
-      else
-        return redirect_to manage_subscribers_path, alert: "You don't have any active subscriptions, so we couldn't send an email."
-      end
+  def validate
+    @subscriber = Subscriber.find(params[:id])
+    validation_code = params[:validation_code]&.strip
+    # check the validation code....
+    if @subscriber.is_validation_token_old?
+      @subscriber.generate_validation_token
+      @subscriber.errors.add(:validation_code, "is too old. We've sent a new one. Check your email.")
+      render
+    elsif !@subscriber.validation_token_valid?(validation_code)
+      @subscriber.errors.add(:validation_code, "is incorrect.")
+      render
     else
-      return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
-    end    
+      # add it to the session
+      add_to_session(@subscriber.id)
+      redirect_to manage_subscribers_path
+    end
   end
 
-  def add_subscription
-    return render json: {message: "error"} if @subscriber.nil?
+  def update
+    return reject if @subscriber.nil? || !@subscriber.admin?
+    subscriber = Subscriber.find(params[:id])
+    subscriber.update(subscriber_params)
+    render json: {message: "success"}
+  end
 
-    if @subscriber.admin? && params[:to_edit_id]
-      @subscriber = Subscriber.find(params[:to_edit_id])
+  def destroy
+    if @subscriber.nil? # not logged in
+      return redirect_to subscribers_path, alert: "You must be logged in to perform this action."
+    elsif @subscriber.admin? # admin is logged in
+      subscriber = Subscriber.find(params[:id])
+      if subscriber != @subscriber
+        # subscriber.sites.each { |s| s.delete }
+        subscriber.destroy
+        return redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
+      end
+    else
+      if params[:token] == @subscriber.confirmation_token
+        # @subscriber.sites.each { |s| s.delete }
+        @subscriber.destroy
+        return redirect_to subscribers_path, notice: "You successfully deleted your account."
+      else
+        return redirect_to manage_subscribers_path, alert: "Invalid token, check URL or try again."
+      end
+    end
+  end
+
+  def admin
+    return redirect_to subscribers_path if @subscriber.nil?
+    return redirect_to manage_subscribers_path unless @subscriber.admin?
+    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
+  end
+
+  def manage
+    email = params[:email]
+    # is there a subscriber in the session? If so they have already validated.
+    if !@subscriber.nil?
+      if email && email != @subscriber.email
+        remove_from_session
+        redirect_to manage_subscribers_path(email:)
+      else
+        @admin = @subscriber.admin?
+        if @admin && params[:to_edit_id]
+          @subscriber = Subscriber.find(params[:to_edit_id])
+        end
+        @sites = @subscriber.sites.order(latitude: :desc)
+        @site_count = @sites.size
+        @subs = Subscription.enabled.order(:id)
+        render
+      end
+    elsif email.nil?
+      redirect_to subscribers_path
+    elsif (@subscriber = Subscriber.email_find(email))
+      if @subscriber.is_confirmed?
+        @subscriber.generate_validation_token
+        render :validate
+      else
+        render :confirm_notice
+      end
+    else
+      redirect_to new_subscriber_path(email:)
+    end
+  end
+
+  def send_email
+    if params[:token] != @subscriber.confirmation_token
+      return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
     end
 
+    if @subscriber.sites.enabled.size == 0
+      return redirect_to manage_subscribers_path, alert: "You don't have any active sites, so we couldn't send an email."
+    end
+
+    Subscriber.send_subscriptions([@subscriber])
+    redirect_to manage_subscribers_path, notice: "Test email sent!"
+  end
+
+  def add_site
     site_name = params[:site_name]
     lat = params[:latitude]
     long = params[:longitude]
 
     # check for existing
-    if @subscriber.subscriptions.where(latitude: lat, longitude: long).size > 0
-      return render json: {
-        message: "Subscription already exists for a site at #{lat}, #{long}."
-      }
+    errors = []
+    if @subscriber.sites.where(name: site_name).size > 0
+      errors << "You already have a site named #{site_name}."
     end
+    if @subscriber.sites.where(latitude: lat, longitude: long).size > 0
+      errors << "You already have a site at #{lat}, #{long}."
+    end
+    return render json: {message: errors.join("\n"), status: 500} if errors.size > 0
 
-    # product = Product.where(name: "Evapotranspiration").first
-    respond_to do |format|
-      subscription = Subscription.new(
-        name: site_name,
-        latitude: lat,
-        longitude: long,
-        product_id: 1
-      )
-      @subscriber.subscriptions << subscription
-      format.json { render json: subscription }
-    end
+    site = Site.new(name: site_name, latitude: lat, longitude: long)
+    @subscriber.sites << site
+    site.subscriptions << WeatherSub.first
+    
+    render json: site
+  rescue
+    reject
   end
 
-  def remove_subscription
-    return render json: {message: "error"} if @subscriber.nil?
+  def remove_site
+    site_id = params[:site_id]
+    @subscriber.sites.find(site_id).destroy
+    render json: {message: "success"}
+  end
 
-    if @subscriber.admin? && params[:to_edit_id]
-      @subscriber = Subscriber.find(params[:to_edit_id])
+  def enable_site
+    site_id = params[:site_id]
+    @subscriber.sites.find(site_id).update(enabled: true)
+    render json: {message: "enabled"}
+  end
+
+  def disable_site
+    site_id = params[:site_id]
+    @subscriber.sites.find(site_id).update(enabled: false)
+    render json: {message: "disabled"}
+  end
+
+  # actually just disables all sites
+  def unsubscribe
+    # @subscriber = Subscriber.find(params[:id])
+    if params[:token] == @subscriber.confirmation_token
+      @subscriber.sites.all.update(enabled: false)
+      path = if Subscriber.find(session[:subscriber]).admin?
+        manage_subscribers_path(to_edit_id: @subscriber.id)
+      else
+        manage_subscribers_path
+      end
+      return redirect_to path, notice: "Successfully disabled all site subscriptions."
     end
-    subscription_id = params[:subscription_id]
-    @subscriber.subscriptions.where(id: subscription_id).first.delete
-    respond_to do |format|
-      format.json { render json: {message: "success"} }
-    end
+    return redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
   end
 
   def enable_subscription
-    return render json: {message: "error"} if @subscriber.nil?
+    site = Site.find(params[:site_id])
+    subscription = Subscription.find(params[:sub_id])
 
-    if @subscriber.admin? && params[:to_edit_id]
-      @subscriber = Subscriber.find(params[:to_edit_id])
+    return reject if !@subscriber.sites.include?(site)
+    unless site.subscriptions.include?(subscription)
+      site.subscriptions << subscription
     end
-    subscription_id = params[:subscription_id]
-    @subscriber.subscriptions.where(id: subscription_id).first.update(enabled: true)
-    respond_to do |format|
-      format.json { render json: {message: "enabled"} }
-    end
+
+    render json: {message: "enabled"}
+  rescue
+    reject
   end
 
   def disable_subscription
-    return render json: {message: "error"} if @subscriber.nil?
+    site = Site.find(params[:site_id])
+    subscription = Subscription.find(params[:sub_id])
 
-    if @subscriber.admin? && params[:to_edit_id]
-      @subscriber = Subscriber.find(params[:to_edit_id])
+    return reject if !@subscriber.sites.include? site
+    if site.subscriptions.include?(subscription)
+      site.subscriptions.delete(subscription)
     end
-    subscription_id = params[:subscription_id]
-    @subscriber.subscriptions.where(id: subscription_id).first.update(enabled: false)
-    respond_to do |format|
-      format.json { render json: {message: "disabled"} }
-    end
-  end
 
-  def unsubscribe
-    @subscriber = Subscriber.find(params[:id])
-    if params[:token] == @subscriber.confirmation_token
-      @subscriber.subscriptions.all.update(enabled: false)
-      return redirect_to manage_subscribers_path, notice: "Successfully disabled all subscriptions."
-    end
-    return redirect_to manage_subscribers_path, alert: "Unable to disable subscriptions, refresh page and try again."
+    render json: {message: "disabled"}
+  rescue
+    reject
   end
 
   def logout
@@ -255,12 +272,7 @@ class SubscribersController < ApplicationController
     redirect_to root_path
   end
 
-  def admin
-    return redirect_to subscribers_path if @subscriber.nil?
-    return redirect_to manage_subscribers_path unless @subscriber.admin?
 
-    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
-  end
 
   def export_emails
     return redirect_to subscribers_path if @subscriber.nil?
@@ -272,6 +284,24 @@ class SubscribersController < ApplicationController
   end
 
   private
+
+  def check_editor
+    if @subscriber.nil?
+      return redirect_to subscribers_path, alert: "You must be logged in to perform this action."
+    end
+
+    if @subscriber.admin?
+      if params[:to_edit_id]
+        @subscriber = Subscriber.find(params[:to_edit_id])
+      elsif params[:id]
+        @subscriber = Subscriber.find(params[:id])
+      end
+    end
+  end
+
+  def reject(error = "error")
+    render json: {message: error, status: 500}
+  end
 
   def fix_email
     params[:email] = params[:email]&.downcase&.strip

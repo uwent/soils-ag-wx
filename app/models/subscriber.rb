@@ -1,12 +1,20 @@
 class Subscriber < ApplicationRecord
-  has_many :subscriptions
-  has_many :products, through: :subscriptions
+  has_many :sites, dependent: :destroy
+  has_many :subscriptions, through: :sites
 
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
 
   before_create :set_confirmation_token
 
+  def self.dates_active
+    Date.new(Date.current.year, 3, 15)..Date.new(Date.current.year, 11, 1)
+  end
+
+  def self.active?
+    dates_active === Date.current
+  end
+  
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/
     $1
@@ -20,15 +28,12 @@ class Subscriber < ApplicationRecord
     where("lower(email) = ?", email.downcase).first
   end
 
-  def send_subscriptions(start_date = Date.today - 1, finish_date = Date.today - 1)
-  end
-
   def is_confirmed?
     !confirmed_at.nil?
   end
 
   def confirm!(token)
-    if confirmation_token == token
+    if token == confirmation_token
       self.confirmed_at = Time.current
       save!
       true
@@ -49,109 +54,113 @@ class Subscriber < ApplicationRecord
   end
 
   def validation_token_valid?(validation_code)
-    validation_token == validation_code
+    validation_code == validation_token
   end
 
   def self.send_daily_mail
-    Rails.logger.info "Subscriber :: Sending daily mail..."
-
-    if Date.current == Subscription.dates_active.first
-      Rails.logger.info "Subscriber :: Enabling all subscriptions at start of season"
-      Subscription.enable_all
-    end
-
-    if Date.current == Subscription.dates_active.last + 1.day
-      Rails.logger.info "Subscriber :: Disabling all subscriptions at end of season"
-      Subscription.disable_all
-    end
-
-    if Subscription.enabled.size > 0
-      send_subscriptions(Subscriber.all)
-    else
-      Rails.logger.info "Subscriber :: No subscriptions to send!"
-    end
+    Rails.logger.info "Subscriber :: Sending daily mail for #{Date.current.to_s}..."
+    Subscription.enable_all if Date.current == dates_active.first
+    send_subscriptions(Subscriber.all)
+    Subscription.disable_all if Date.current == dates_active.last
   end
 
   def self.send_subscriptions(subscribers)
     date = Date.yesterday
     dates = (date - 6.days)..date
+    subscribers = subscribers.is_a?(Subscriber) ? [subscribers] : subscribers
+    all_sites = Site.where(subscriber: subscribers, enabled: true)
 
-    # collect data
-    all_subs = Subscription.where(subscriber: subscribers, enabled: true)
+    if all_sites.size == 0
+      Rails.logger.warn "Subscriber :: Unable to send any subscriptions, no sites enabled."
+      return
+    end
 
-    if all_subs.size > 0
-      sites = all_subs.pluck(:latitude, :longitude).uniq
-      Rails.logger.debug "Sites: #{sites}"
+    # send emails to each subscriber with their sites
+    subscribers.each do |subscriber|
+      Rails.logger.debug "\n# Subscriber: #{subscriber.name} #\n"
+      sites = subscriber.sites.enabled
+      next if sites.size == 0
 
-      all_data = {}
-      sites.each do |site|
-        lat, long = site
+      # data is an array of hashes where each site is a hash
+      data = sites.collect do |site|
+        Rails.logger.debug "\n## Site: #{site.full_name} ##\n"
 
-        opts = {
-          lat: lat,
-          long: long,
-          start_date: dates.first,
-          end_date: dates.last
-        }
-
-        ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
-        precips = AgWeather.get(AgWeather::PRECIP_URL, query: opts.merge({units: "in"}))[:data]
-        weathers = AgWeather.get(AgWeather::WEATHER_URL, query: opts.merge({units: "F"}))[:data]
-        Rails.logger.debug "Ets: #{ets}"
-        Rails.logger.debug "Precips: #{precips}"
-        Rails.logger.debug "Weather: #{weathers}"
-
-        # collect and format data for each date
-        site_data = {}
-        dates.each do |date|
-          datestring = date.to_formatted_s
-          weather = weathers.find { |h| h[:date] == datestring }
-          precip = precips.find { |h| h[:date] == datestring }
-          et = ets.find { |h| h[:date] == datestring }
-          site_data[datestring] = {
-            date: date.strftime("%a, %b %-d"),
-            min_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:min_temp]),
-            max_temp: weather.nil? ? "No data" : sprintf("%.1f", weather[:max_temp]),
-            precip: precip.nil? ? "No data" : sprintf("%.2f", precip[:value]),
-            et: et.nil? ? "No data": sprintf("%.3f", et[:value])
+        # subscription list for each site is an array of hashes
+        # subscription data is a hash
+        site_data = site.subscriptions.collect do |s|
+          Rails.logger.debug "\n### Subscription: #{s.name}, partial: #{s.partial} ###"
+          sub_data = s.fetch(site)
+          {
+            name: s.name,
+            partial: s.partial,
+            options: s.options,
+            data: sub_data || {}
           }
         end
 
-        Rails.logger.debug "Site data: #{site_data}"
-
-        # add site's weekly data to main hash
-        all_data[[lat, long].to_s] = site_data
+        {
+          name: site.name,
+          lat: site.latitude,
+          long: site.longitude,
+          data: site_data
+        }
       end
 
-      # send emails to each subscriber with their sites
-      subscribers.each do |subscriber|
-        subscriptions = subscriber.subscriptions.enabled.order(:name)
-
-        if subscriptions.size > 0
-          data = subscriptions.collect do |subscription|
-            lat = subscription.latitude
-            long = subscription.longitude
-            site_key = [lat, long].to_s
-            {
-              site_name: subscription.name,
-              lat: lat,
-              long: long,
-              site_data: all_data[site_key]
-            }
-          end
-          SubscriptionMailer.daily_mail(subscriber, date, data).deliver
-        end
-      end
+      SubscriptionMailer.daily_mail(subscriber, date, data).deliver
     end
   end
 
   def self.to_csv
     CSV.generate(headers: true) do |csv|
-      csv << %w[ID Name Email Created Admin]
+      csv << %w[ID Name Email DateCreated Admin? Sites SitesEnabled Subscriptions]
       Subscriber.all.order(:id).each do |s|
-        csv << [s.id, s.name, s.email, s.created_at, s.admin]
+        csv << [s.id, s.name, s.email, s.created_at, s.admin, s.sites.size, s.sites.enabled.size, s.subscriptions.size]
       end
     end
+  end
+
+  def self.report
+    msg = ["\n### Subscribers report ###"]
+    subscribers = Subscriber.all
+    subscriptions = Subscription.all
+
+    summary = {
+      subscribers: subscribers.size,
+      sites: Site.all.size,
+      subs: subscriptions.size,
+      site_subs: SiteSubscription.all.size
+    }
+
+    subscribers.order(:id).each do |subscriber|
+      sites = subscriber.sites
+
+      msg << "\n#{subscriber.id}. #{subscriber.name} (#{subscriber.email}) - " + sites.size.to_s + " sites"
+      pad1 = " " * (subscriber.id.to_s.length + 2)
+
+      sites.order(:id).each do |site|
+        site_subs = site.subscriptions
+
+        msg << pad1 + "#{site.id}. #{site.name} (#{site.latitude}, #{site.longitude}) - " + site_subs.size.to_s + " subs"
+        pad2 = pad1 + " " * (site.id.to_s.length + 2)
+        
+        site_subs.order(:id).each do |s|
+          msg << pad2 + "#{s.id}. #{s.name}"
+        end
+      end
+    end
+
+    msg << "\n### Subscriptions available ###\n"
+    subscriptions.order(:id).each do |s|
+      msg << "#{s.id}. #{s.name} (#{s.type}) - " + s.sites.size.to_s + " sites"
+    end
+
+    msg << "\n### Summary ###\n"
+    msg << "Subscribers: #{summary[:subscribers]}"
+    msg << "Sites: #{summary[:sites]}"
+    msg << "Subscriptions available: #{summary[:subs]}"
+    msg << "Site subscriptions: #{summary[:site_subs]}"
+
+    puts msg.join("\n")
   end
 
   private

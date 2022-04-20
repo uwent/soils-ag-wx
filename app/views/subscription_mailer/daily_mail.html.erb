@@ -1,3 +1,7 @@
+<% border = "1px solid #8b846a" %>
+<% bg_drk = "#e9e4d0" %>
+<% bg_lt = "#f7f5ee" %>
+
 <style>
   body {
     font-family: tahoma, sans-serif;
@@ -14,72 +18,65 @@
   }
 </style>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
     <td align="center">
-      <table role="presentation" width="600" cellpadding="15" cellspacing="0" style="border-collapse:collapse; table-width:fixed; width: 600px; border: 1px solid #8b846a;">
-        <tr>
-          <td bgcolor="#e9e4d0" style="font-family: verdana, sans-serif; font-size: 1.2em; background: #e9e4d0; text-align: center; border-bottom: 1px solid #8b846a;">
-            <b>UW Extension Ag Weather Automated Mailer</b>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#f7f5ee" style="background: #f7f5ee;">The past week's weather data for the site(s) you've requested are shown below:</td>
-        </tr>
-        <tr>
-          <td bgcolor="#f7f5ee;" align="center" style="background: #f7f5ee;">
-            <% @data.each do |site| %>
-              <p>
-                <b><%= "#{site[:site_name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
-              </p>
-              <table role="presentation" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: 1px solid #8b846a;">
-                <thead>
-                  <tr style="background: #e9e4d0; border-bottom: 1px solid #8b846a;">
-                    <th style="text-align: left;">Date</th>
-                    <th style="text-align: right;">Min temp<br>(&deg;F)</th>
-                    <th style="text-align: right;">Max temp<br>(&deg;F)</th>
-                    <th style="text-align: right;">Precip<br>(in)</th>
-                    <th style="text-align: right;">Pot. ET<br>(in)</th>
+      <table role="presentation" width="600" cellpadding="15" cellspacing="0" style="border-collapse: collapse; table-width: fixed;">
+        <thead>
+          <tr>
+            <td bgcolor=<%= bg_drk %> style="font-family: verdana, sans-serif; font-size: 1.2em; text-align: center;">
+              <b>UW Extension Ag Weather Automated Mailer</b>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td bgcolor=<%= bg_lt %>>
+              Your data subscriptions for <%= Date.current.strftime("%A, %B %-d") %> are shown below. To enable, disable, or edit your sites or subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>.
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor=<%= bg_lt %>>
+              <% @data.each do |site| %>
+                <br>
+                <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border: 2px solid #8b846a;">
+                  <tr>
+                    <td>
+                      <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  <% site[:site_data].values.each_with_index do |day, i| %>
-                    <% weight = (day == site[:site_data].values.last) ? "font-weight: bold;" : "" %>
-                    <% background = (i.odd?) ? "background: #e9e4d0" : "" %>
-                    <tr style="<%= weight + background %>">
-                      <td style="white-space: nowrap"><%= day[:date] %></td>
-                      <td style="text-align: right;"><%= day[:min_temp] %></td>
-                      <td style="text-align: right;"><%= day[:max_temp] %></td>
-                      <td style="text-align: right;"><%= day[:precip] %></td>
-                      <td style="text-align: right;"><%= day[:et] %></td>
-                    </tr>
+                </table>
+                <% if site[:data].size > 0 %>
+                  <% site[:data].each do |subscription| %>
+                    <%= render partial: subscription[:partial], locals: {subscription:} %>
                   <% end %>
-                </tbody>
-              </table>
-              <br>
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#f7f5ee;" style="background: #f7f5ee;">
-            <h4>More information:</h4>
-            <ul>
-              <li><%= link_to "AgWeather homepage", root_url, style: "color: inherit" %></li>
-              <li><%= link_to "Daily weather map", {controller: :weather, action: :weather_map}, style: "color: inherit" %></li>
-              <li><%= link_to "Precipitation map", {controller: :weather, action: :precip_map}, style: "color: inherit" %></li>
-              <li><%= link_to "Evapotranspiration map", {controller: :sun_water, action: :et_map}, style: "color: inherit" %></li>
-              <li><%= link_to "Insolation map", {controller: :sun_water, action: :insol_map}, style: "color: inherit" %></li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#f7f5ee" style="background: #f7f5ee; font-size: 0.8em; color: grey;">
-            <% if @data.to_s.downcase.include? "no data" %>
-              <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
-            <% end %>
-            <p><i>Each year your subscriptions will be automaticallly activated on <%= Subscription.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscription.dates_active.last.strftime("%b %-d") %>, though you can enable or disable your subscriptions at any time. To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to disable all your subscriptions. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
-          </td>
-        </tr>
+                <% else %>
+                  <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>
+                <% end %>
+                <br>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor=<%= bg_lt %>>
+              <h4>More information:</h4>
+              <ul>
+                <li><%= link_to "AgWeather homepage", root_url, style: "color: inherit" %></li>
+                <li><%= link_to "Daily weather map", {controller: :weather, action: :weather_map}, style: "color: inherit" %></li>
+                <li><%= link_to "Precipitation map", {controller: :weather, action: :precip_map}, style: "color: inherit" %></li>
+                <li><%= link_to "Evapotranspiration map", {controller: :sun_water, action: :et_map}, style: "color: inherit" %></li>
+                <li><%= link_to "Insolation map", {controller: :sun_water, action: :insol_map}, style: "color: inherit" %></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor=<%= bg_lt %> style="font-size: 0.8em; color: grey;">
+              <% if @data.to_s.downcase.include? "no data" %>
+                <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
+              <% end %>
+              <p><i>Each year your sites will be automaticallly activated on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, though you can enable or disable your sites and data subscriptions at any time. To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to disable all your subscriptions. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
+            </td>
+          </tr>
       </table>
     </td>
   </tr>

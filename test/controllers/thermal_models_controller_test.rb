@@ -55,11 +55,10 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get get_dds_many_locations" do
-    skip "requires params"
-    get :get_dds_many_locations
-    assert_response :success
-  end
+  # test "should get get_dds_many_locations" do
+  #   get :get_dds_many_locations
+  #   assert_response :success
+  # end
 
   test "should get get_dds" do
     params = {
@@ -95,11 +94,10 @@ class ThermalModelsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get many_degree_days_for_date" do
-    skip "deprecated"
-    get :many_degree_days_for_date
-    assert_response :success
-  end
+  # test "should get many_degree_days_for_date" do
+  #   get :many_degree_days_for_date
+  #   assert_response :success
+  # end
 
   test "should get oak_wilt" do
     get :oak_wilt
@@ -170,9 +168,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
   # end
 
   # test "rising-temp DDs should inflect above zero on April 3" do
-  #   # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
-  #   skip
-
   #   create_rising_temperatures
   #   assert_in_delta(9.3, WiMnDMinTAir.where(date: "2011-04-03", latitude: LATITUDE).first[LONG_SYM], 2**-20)
   #   assert_in_delta(11.3, WiMnDMaxTAir.where(date: "2011-04-03", latitude: LATITUDE).first[LONG_SYM], 2**-20)
@@ -204,9 +199,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
   # end
 
   # test "accumulation of same temperature adds up correctly" do
-  #   # TODO feature not currently working on prod, skip tests until feature is removed or fixed  -BB 11/2
-  #   skip
-
   #   create_stable_temperatures
   #   get :get_dds,
   #     grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
@@ -229,9 +221,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
   # end
 
   # test "same-temp accumulation works when one day is missing" do
-  #   skip
-  #   # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
-
   #   create_stable_with_missing_day
   #   get :get_dds,
   #     grid_date: {"start_date(1i)" => YEAR, "start_date(2i)" => 1, "start_date(3i)" => 1,
@@ -299,9 +288,6 @@ class ThermalModelsControllerTest < ActionController::TestCase
   # end
 
   # test "permalink" do
-  #   # TODO feature not currently working on prod, skip tests until multi-degree days feature is removed or fixed  -BB 11/2
-  #   skip
-
   #   today_str = Date.today.strftime("%m/%d/%Y")
   #   yesterday_str = (Date.today - 1).strftime("%m/%d/%Y")
   #   params = {

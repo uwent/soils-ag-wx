@@ -1,15 +1,11 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  subscriber_id: 1
-  latitude: 1.5
-  longitude: 1.5
-  product_id: 1
+  name: "Foo"
+  options: 
+  enabled: true
 
 two:
-  name: MyString
-  subscriber_id: 1
-  latitude: 1.5
-  longitude: 1.5
-  product_id: 1
+  name: "Bar"
+  options: 
+  enabled: false

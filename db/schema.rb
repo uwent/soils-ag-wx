@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_150034) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_04_15_182816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,7 +19,7 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -33,7 +32,7 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum"
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -43,32 +42,6 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "asos_data", id: :serial, force: :cascade do |t|
-    t.date "date"
-    t.time "nominal_time"
-    t.time "actual_time"
-    t.integer "asos_station_id"
-    t.float "t_dew"
-    t.float "t_air"
-    t.float "windspeed"
-    t.float "pressure"
-    t.float "precip"
-    t.float "wind_dir"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "asos_stations", id: :serial, force: :cascade do |t|
-    t.string "stnid"
-    t.string "state"
-    t.string "name"
-    t.string "stn_type"
-    t.float "latitude"
-    t.float "longitude"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "awon_field_descrips", id: :serial, force: :cascade do |t|
     t.integer "rec_id"
     t.integer "column_num"
@@ -76,15 +49,15 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.string "field_abbrev"
     t.string "units"
     t.integer "decimals"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "awon_record_types", id: :serial, force: :cascade do |t|
     t.integer "rec_id"
     t.string "rec_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "awon_stations", id: :serial, force: :cascade do |t|
@@ -102,27 +75,9 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.boolean "has_411"
     t.boolean "has_412"
     t.boolean "has_404"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["stnid"], name: "index_awon_stations_on_stnid", unique: true
-  end
-
-  create_table "blogs", id: :serial, force: :cascade do |t|
-    t.date "date"
-    t.text "content"
-    t.string "tags", array: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "degree_day_stations", id: :serial, force: :cascade do |t|
-    t.string "abbrev"
-    t.string "name"
-    t.float "latitude"
-    t.float "longitude"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "region_id"
   end
 
   create_table "hyds", id: :serial, force: :cascade do |t|
@@ -135,51 +90,47 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "pcpn"
     t.float "new_snow"
     t.float "snow_depth"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
-  create_table "products", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "data_table_name"
-    t.string "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean "subscribable"
-    t.integer "default_doy_start"
-    t.integer "default_doy_end"
+  create_table "site_subscriptions", force: :cascade do |t|
+    t.integer "site_id"
+    t.integer "subscription_id"
+    t.index ["site_id", "subscription_id"], name: "index_site_subscriptions_on_site_id_and_subscription_id", unique: true
   end
 
-  create_table "regions", id: :serial, force: :cascade do |t|
+  create_table "sites", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.string "abbrev"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "subscriber_id"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.boolean "enabled", default: true
   end
 
   create_table "subscribers", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "confirmation_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "confirmed_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.datetime "confirmed_at", precision: nil
     t.string "validation_token"
-    t.datetime "validation_created_at"
+    t.datetime "validation_created_at", precision: nil
     t.boolean "admin", default: false
-  end
-
-  create_table "subscriptions", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.integer "subscriber_id"
-    t.float "latitude"
-    t.float "longitude"
-    t.integer "product_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer "doy_start"
     t.integer "doy_end"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "type"
+    t.string "name"
+    t.jsonb "options"
     t.boolean "enabled", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "t401s", id: :serial, force: :cascade do |t|
@@ -189,8 +140,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "M5Pcpn"
     t.float "M5Pcpn2"
     t.float "M5Wind"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "t403s", id: :serial, force: :cascade do |t|
@@ -212,8 +163,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "HAvPAR"
     t.float "HMxWnd1"
     t.float "HAvTDew"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "t406s", id: :serial, force: :cascade do |t|
@@ -235,8 +186,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "HhAvPAR"
     t.float "HhMxWnd1"
     t.float "HhAvTDew"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "t411s", id: :serial, force: :cascade do |t|
@@ -275,8 +226,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "DTnTdew"
     t.float "DRefET"
     t.float "DPctClr"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "t412s", id: :serial, force: :cascade do |t|
@@ -299,17 +250,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "DMnTS50"
     t.float "DTnTS50"
     t.float "DAvTS1m"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "webcam_images", id: :serial, force: :cascade do |t|
-    t.datetime "timestamp"
-    t.string "fname"
-    t.string "sequence_fname"
-    t.integer "size"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "wi_mn_d_ave_t_airs", id: :serial, force: :cascade do |t|
@@ -347,8 +289,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "w868"
     t.float "w864"
     t.float "w860"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "wi_mn_d_ave_vaprs", id: :serial, force: :cascade do |t|
@@ -386,8 +328,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "w868"
     t.float "w864"
     t.float "w860"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "wi_mn_d_max_t_airs", id: :serial, force: :cascade do |t|
@@ -425,8 +367,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "w868"
     t.float "w864"
     t.float "w860"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "wi_mn_d_min_t_airs", id: :serial, force: :cascade do |t|
@@ -464,8 +406,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "w868"
     t.float "w864"
     t.float "w860"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "wi_mn_dets", id: :serial, force: :cascade do |t|
@@ -503,8 +445,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_150034) do
     t.float "w868"
     t.float "w864"
     t.float "w860"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

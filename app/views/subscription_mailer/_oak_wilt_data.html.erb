@@ -1,0 +1,42 @@
+<% border = "1px solid #8b846a" %>
+<% bg = "#e9e4d0"%>
+
+<% if subscription %>
+  <% @data = subscription[:data].values.first %>
+
+  <h5 style="margin-bottom: 0.5em;">Oak wilt risk model and forecast:</h5>
+
+  <% if @data %>
+    <% if @data.values.last[:cum_dd].to_f > 0 %>
+      <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
+        <thead>
+          <tr bgcolor=<%= bg %> style="border: <%= border %>;">
+            <th align="left">Date</th>
+            <th align="center">Degree days</th>
+            <th align="center">Risk recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @data.values.each_with_index do |day, i| %>
+            <% style = "" %>
+            <% style += "font-weight: bold;" if i == 0 %>
+            <% style += "font-style: italic;" if i > 0 %>
+            <% style += "background: #e9e4d0" if i.odd? %>
+            <tr style="<%= style %>">
+              <td style="white-space: nowrap"><%= day[:date] %></td>
+              <td align="center"><%= day[:cum_dd] %></td>
+              <td align="center"><%= day[:risk] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <p style="font-size: 0.8em;"><i>The high risk oak wilt transmission period begins at 231 degree days and ends on July 15. Dates in italics reflect the estimated one-week forecast for oak wilt risk based on the previous week's average daily degree-day accumulation. This forecast will change daily. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
+      <br>
+    <% else %>
+      <p style="font-size: 0.8em;"><i>No degree days accumulated yet this year. The high risk oak wilt transmission period begins at 231 degree days and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
+    <% end %>
+  <% else %>
+    <% Rails.logger.error "_oak_wilt_data :: No data sent to partial." %>
+    <p style="font-size: 0.8em;"><i>Unable to retrieve the oak wilt risk model for this site.</i></p>
+  <% end %>
+<% end %>

@@ -1,6 +1,5 @@
 class AwonController < ApplicationController
   def index
-    @blogs = Blog.all.order("date DESC")
     select_data
   end
 
@@ -20,10 +19,6 @@ class AwonController < ApplicationController
       end
       stn_hash.merge(stn[:id] => arr)
     end
-  end
-
-  def blog
-    @blogs = Blog.all.order("date DESC")
   end
 
   def awon_seven_day

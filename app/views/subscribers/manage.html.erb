@@ -2,21 +2,167 @@
 <% @welcome_image = "awon.png" %>
 
 <script>
-  let subscriptions_count = <%= @subscriber.subscriptions.count %>
+  subscriber_id = <%= @subscriber.id %>
+  site_count = <%= @site_count %>
+  min_lat = <%= latitudes.min %>
+  max_lat = <%= latitudes.max %>
+  min_long = <%= longitudes.min %>
+  max_long = <%= longitudes.max %>
 
   function getGeoLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
-    lat = position.coords.latitude.toFixed(1)
-    long = position.coords.longitude.toFixed(1)
-      document.getElementById("location-display").innerHTML = "Your closest lat/long coordinates are: " + lat + ", " + long
+      let lat = position.coords.latitude.toFixed(1)
+      let long = position.coords.longitude.toFixed(1)
+      let msg = "Your closest lat/long coordinates are: <b>" + lat + ", " + long + "</b>"
+      if (!validateLat(lat) || !validateLong(long)) msg += ". Unfortunately this is outside of our data range."
+      $("#location-display").html(msg)
     })
   }
-
-  if (subscriptions_count > 0) {
-    setTimeout(() => {document.getElementById("send-email").disabled = false}, 5000)
+  
+  function validateName(site_name) {
+    return $.trim(site_name)
   }
 
-  setTimeout(() => {document.getElementById("notice").fadeOut()}, 5000)
+  function validateLat(lat) {
+    if (!$.isNumeric(lat)) return false
+    let lat_num = parseFloat(lat)
+    return (lat_num >= min_lat && lat_num <= max_lat)
+  }
+
+  function validateLong(long) {
+    if (!$.isNumeric(long)) return false
+    let long_num = parseFloat(long)
+    return (long_num >= min_long && long_num <= max_long)
+  }
+
+  function validate(site_name, lat, long) {
+    let validations = []
+    if (!validateName(site_name))
+      validations.push("Invalid site name, try something different.")
+    if (!validateLat(lat))
+      validations.push("Latitude must be a number between " + min_lat + " and " + max_lat)
+    if (!validateLong(long))
+      validations.push("Longitude must be a number between " + min_long + " and " + max_long)
+    return validations
+  }
+
+  $(document).ready(() => {
+    // Enable the 'send email' button after 5 seconds
+    if (site_count > 0) {
+      setTimeout(() => {$("#send-email").prop("disabled", false)}, 5000)
+    }
+
+    // Disable the send email button on click
+    $("#send-email").click(() => {
+      $("#send-email").prop("disabled", true)
+    })
+
+    // Handle add site button
+    $("#submit-site").submit(() => {
+      let site_name = $("#site-name").val()
+      let lat = $("#latitude").val()
+      let long = $("#longitude").val()
+      let valid = validate(site_name, lat, long)
+
+      if (valid.length > 0) {
+        alert(valid.join("\n"))
+        return false
+      }
+
+      $.ajax({
+        type: "POST",
+        url:  "<%= url_for(add_site_subscriber_path(@subscriber.id)) %>",
+        data: {
+          site_name: site_name,
+          latitude: parseFloat(lat).toFixed(1),
+          longitude: parseFloat(long).toFixed(1),
+          to_edit_id: subscriber_id
+        }
+      }).success((data) => {
+        data.id ? window.location.reload() : alert(data.message)
+      })
+      return false
+    })
+
+    // Allow enter key to trigger add
+    $('#submit-site').keypress((k) => {
+      if (k.which == 13) $(this).closest("form").submit();
+    })
+
+    // Handle delete site button
+    $("[id^=delete-site]").click((event) => {
+      if (!confirm("Are you sure you want to delete this site?")) return
+      let site_id = $(event.target).closest("tr").data("site-id")
+
+      $.ajax({
+        type: "POST",
+        url: "<%= url_for(remove_site_subscriber_path(@subscriber.id)) %>",
+        data: {
+          site_id: site_id,
+          to_edit_id: subscriber_id
+        }
+      }).success((data) => {
+        if (data.message == "success")
+          window.location.reload()
+        else
+          alert("Unable to delete site, try reloading the page.")
+      })
+    })
+
+    // Handle enable/disable checkboxes for sites
+    $("[id^=site-toggle]").change((event) => {
+      let site_id = $(event.target).closest("tr").data("site-id")
+      let url
+      if (event.target.checked) {
+        url = "<%= url_for(enable_site_subscriber_path(@subscriber.id)) %>"
+      } else {
+        url = "<%= url_for(disable_site_subscriber_path(@subscriber.id)) %>"
+      }
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+          site_id: site_id,
+          to_edit_id: subscriber_id
+        }
+      }).success((data) => {
+        $("#notice").fadeOut()
+        let div = $("#site-status-" + site_id)
+        let box = $("#site-box-" + site_id)
+        if (data.message == "enabled") {
+          div.html("Yes")
+          box.css("opacity", 1)
+        } else {
+          div.html("No")
+          box.css("opacity", 0.5)
+        }
+      })
+    })
+
+    // Handle enable/disable checkboxes for subscriptions
+    $("[id^=sub-toggle]").change((event) => {
+      let site_id = $(event.target).closest("div").data("site-id")
+      let sub_id = $(event.target).val()
+      let url
+      if (event.target.checked) {
+        url = "<%= url_for(enable_subscription_subscriber_path(@subscriber.id)) %>"
+      } else {
+        url = "<%= url_for(disable_subscription_subscriber_path(@subscriber.id)) %>"
+      }
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+          to_edit_id: subscriber_id,
+          site_id: site_id,
+          sub_id: sub_id
+        }
+      }).success((data) => {
+        $("#notice").fadeOut()
+      })
+    })
+  })
 </script>
 
 <% content_for :welcome do %>
@@ -24,93 +170,133 @@
   <p>Add, remove, or manage your email subscriptions here.</p>
 <% end %>
 
-<%= hidden_field_tag "subscriber_id", @subscriber.id %>
-<%= hidden_field_tag "add_url", url_for(add_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "remove_url", url_for(remove_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "enable_url", url_for(enable_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "disable_url", url_for(disable_subscription_subscriber_path(@subscriber.id)) %>
-<%= hidden_field_tag "sub_count", @subscriber.subscriptions.count %>
-<%= hidden_field_tag "delete-cross", image_path("cross.png") %>
-
 <h2>Automated daily emails</h2>
 
 <hr>
 
+<% if @subscriber.id != session[:subscriber] %>
+  <p class="alert">ADMIN: You are editing another user's subscriptions.</p>
+<% end %>
+
+<%= render "notices" %>
+
 <b>Name: </b><%= @subscriber.name %><br>
 <b>Email: </b><%= @subscriber.email %>
 
-<p>Each morning you can receive email updates for up to 15 locations across our data coverage area. For each site we report the past week of daily high/low temperatures, precipitation, and potential evapotranspiration.</p>
+<p>Each morning you can receive email updates for sites of your choosing within our data coverage area. For each site you can choose which data subscriptions your want, including the 7-day weather report, several degree-day models, and pest risk models. The weather report includes daily high/low temperatures, precipitation, and potential evapotranspiration.</p>
 
-<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km).</p>
+<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). <b>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</b></p>
 
-<p>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude. Any subscriptions you have will be automatically enabled on <%= Subscription.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscription.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
+<p>Any subscriptions you have will be automatically enabled on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
 
 <div class="location-container">
   <div><button onclick="getGeoLocation()">Get my location</button></div>
   <div id="location-display"></div>
 </div>
 
-<h4>Your subscriptions:</h4>
+<h4>Your sites (from North to South):</h4>
 
-<div class="sub-box">
-  <div class="tbl-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Site Name</th>
-          <th>Latitude</th>
-          <th>Longitude</th>
-          <th><%= @subscriber.subscriptions.size > 0 ? "Enabled?" : ""%></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @subscriber.subscriptions.order(:name).each do |subscription| %>
-          <tr data-subscription-id=<%= subscription.id %>>
-            <td><%= subscription.name %></td>
-            <td><%= subscription.latitude %></td>
-            <td><%= subscription.longitude %></td>
-            <td>
-              <label>
-                <div class="toggle-site">
-                  <div>
-                    <%= check_box_tag "sub-toggle-#{subscription.id}", subscription.id, subscription.enabled %>
-                  </div>
-                  <div id=<%= "sub-status-#{subscription.id}" %>>
-                    <%= subscription.enabled ? "Yes" : "No" %>
-                  </div>
-                </div>
-              </label>
-            </td>
-            <td>
-              <button class="delete-site" id="delete-site-<%= subscription.id %>">
-                <div><%= image_tag("cross.png", class:'delete-cross') %></div>
-                <div>Delete</div>
-              </button>
-            </td>
+<div class="site-container">
+  <div class="grey-box">
+    <div class="tbl-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Site Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th><%= @site_count > 0 ? "Enabled?" : ""%></th>
+            <th></th>
           </tr>
-        <% end %>
-        <tr id="add-controls">
-          <td><%= text_field_tag "site_name", "", maxlength: 25, size: 25 %></td>
-          <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6 %></td>
-          <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6 %></td>
-          <td><button id="submit_site" <%= @subscriber.subscriptions.count >= 15 ? "disabled" : ""%>> Add</button></td>
-        </tr>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @sites.each do |site| %>
+            <tr data-site-id=<%= site.id %>>
+              <td><%= site.name %></td>
+              <td><%= site.latitude %></td>
+              <td><%= site.longitude %></td>
+              <td>
+                <label>
+                  <div class="toggle-site">
+                    <div>
+                      <%= check_box_tag "site-toggle-#{site.id}", site.id, site.enabled %>
+                    </div>
+                    <div id=<%= "site-status-#{site.id}" %>>
+                      <%= site.enabled ? "Yes" : "No" %>
+                    </div>
+                  </div>
+                </label>
+              </td>
+              <td>
+                <button class="delete-site" id="delete-site-<%= site.id %>">
+                  <div><%= image_tag("cross.png", class:'delete-cross') %></div>
+                  <div>Delete</div>
+                </button>
+              </td>
+            </tr>
+          <% end %>
+          <tr id="add-controls">
+            <%= form_tag add_site_subscriber_path(@subscriber.id), id: "submit-site" do %>
+              <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25, required: true %></td>
+              <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6, required: true %></td>
+              <td><%= button_tag "Add" %></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
-<div class="sub-controls">
+<% if @site_count > 0 %>
+  <h4>Select your data subscriptions for each site:</h4>
+
+  <div class="sub-container">
+    <% @sites.each do |site| %>
+      <div class="grey-box" id="site-box-<%= site.id %>" data-site-id=<%= site.id %> style="opacity: <%= site.enabled ? 1 : 0.5 %>">
+        <b><%= site.name %></b>
+        <p>
+          <i>Weather data:</i><br>
+          <label><%= check_box_tag "sub-toggle-#{Subscription.weather.id}", Subscription.weather.id, site.subscriptions.include?(Subscription.weather) %> 7-day weather</label>
+        </p>
+        <p>
+          <i>Degree day models:</i><br>
+          <% Subscription.degree_days.each do |s| %>
+            <label>
+              <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
+              Base <%= s.options["base"] %>&deg;<%= s.options["units"]%>
+            </label>
+            <br>
+          <% end %>
+        </p>
+        <p>
+          <i>Pest risk models:</i><br>
+          <% Subscription.pests.each do |s| %>
+            <label>
+              <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
+              <%= s.name %>
+            </label>
+            </br>
+          <% end %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<br>
+
+<div class="site-controls">
   <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
-  <div><%= link_to("<button>Disable all subscriptions</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
-  <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+  <% if @site_count > 0 %>
+    <div><%= link_to("<button>Disable all sites</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+    <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+  <% end %>
   <% if @admin %>
     <div><%= link_to("<button>Admin</button>".html_safe, admin_subscribers_path) if @admin %></div>
   <% else %>
-    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.confirmation_token), method: :delete, data: {confirm: "Are you sure?"} %></div>
+    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.confirmation_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} %></div>
   <% end %>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>
-
-<%= render partial: "notices" %>
