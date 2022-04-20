@@ -14,23 +14,6 @@ class Subscriber < ApplicationRecord
   def self.active?
     dates_active === Date.current
   end
-
-  def self.enable_weather_subscriptions
-    msg = []
-    Subscriber.all.each do |subscriber|
-      msg << "Subscriber: #{subscriber.name}"
-      subscriber.sites.each do |site|
-        begin
-          site.subscriptions << Subscription.weather
-          msg << "  Added weather subscription to " + site.name
-        rescue
-          msg << "  " + site.name + " is already subscribed"
-          next
-        end
-      end
-    end
-    puts msg.join("\n")
-  end
   
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/
@@ -77,29 +60,26 @@ class Subscriber < ApplicationRecord
   def self.send_daily_mail
     Rails.logger.info "Subscriber :: Sending daily mail for #{Date.current.to_s}..."
     Subscription.enable_all if Date.current == dates_active.first
-    
-    if Subscription.enabled.size > 0
-      send_subscriptions(Subscriber.all)
-    else
-      Rails.logger.info "Subscriber :: No active subscriptions to send for #{date.to_s}"
-    end
-
+    send_subscriptions(Subscriber.all)
     Subscription.disable_all if Date.current == dates_active.last
   end
 
   def self.send_subscriptions(subscribers)
-    subscribers = subscribers.is_a?(Subscriber) ? [subscribers] : subscribers
-
-    all_sites = Site.where(subscriber: subscribers, enabled: true)
-    return "No sites enabled!" unless all_sites.size > 0
-
     date = Date.yesterday
     dates = (date - 6.days)..date
+    subscribers = subscribers.is_a?(Subscriber) ? [subscribers] : subscribers
+    all_sites = Site.where(subscriber: subscribers, enabled: true)
+
+    if all_sites.size == 0
+      Rails.logger.warn "Subscriber :: Unable to send any subscriptions, no sites enabled."
+      return
+    end
 
     # send emails to each subscriber with their sites
     subscribers.each do |subscriber|
       Rails.logger.debug "\n# Subscriber: #{subscriber.name} #\n"
       sites = subscriber.sites.enabled
+      next if sites.size == 0
 
       # data is an array of hashes where each site is a hash
       data = sites.collect do |site|

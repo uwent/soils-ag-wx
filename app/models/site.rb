@@ -23,6 +23,20 @@ class Site < ApplicationRecord
     all.update(enabled: false)
   end
 
+  def self.add_weather_to_all
+    msg = []
+    Site.all.each do |site|
+      begin
+        site.subscriptions << Subscription.weather
+        msg << "  Added weather subscription to " + site.name
+      rescue
+        msg << "  " + site.name + " is already subscribed"
+        next
+      end
+    end
+    puts msg.join("\n")
+  end
+
   # Create a report for a set of subscriptions. Usually this will be for a single user, but that's
   # not built in. A report is a hash keyed by product; each product maps to an array of point subscriptions,
   # which are in turn hashes keyed by the subscription; each subscription (lat/long point) maps to an array
