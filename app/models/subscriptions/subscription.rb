@@ -5,7 +5,7 @@ class Subscription < ApplicationRecord
   scope :enabled, -> {where(enabled: true)}
 
   def self.weather
-    select { |s| s.is_a? WeatherSub }.first
+    select { |s| s.is_a? WeatherSub }
   end
 
   def self.degree_days

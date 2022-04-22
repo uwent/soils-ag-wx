@@ -139,34 +139,35 @@ class SubscribersController < ApplicationController
   end
 
   def manage
-    email = params[:email]
-    # is there a subscriber in the session? If so they have already validated.
-    if !@subscriber.nil?
-      if email && email != @subscriber.email
-        remove_from_session
-        redirect_to manage_subscribers_path(email:)
-      else
-        @admin = @subscriber.admin?
-        if @admin && params[:to_edit_id]
-          @subscriber = Subscriber.find(params[:to_edit_id])
-        end
-        @sites = @subscriber.sites.order(latitude: :desc)
-        @site_count = @sites.size
-        @subs = Subscription.enabled.order(:id)
-        render
-      end
-    elsif email.nil?
-      redirect_to subscribers_path
-    elsif (@subscriber = Subscriber.email_find(email))
+    # not logged in
+    if @subscriber.nil?
+      email = params[:email]
+      return redirect_to subscribers_path if email.nil?
+
+      @subscriber = Subscriber.email_find(email)
+      
+      # no matching subscriber with that email
+      return redirect_to new_subscriber_path(email:) if @subscriber.nil?
+
+      # render validation or confirmation notice
       if @subscriber.is_confirmed?
         @subscriber.generate_validation_token
         render :validate
       else
         render :confirm_notice
       end
-    else
-      redirect_to new_subscriber_path(email:)
     end
+
+    @admin = @subscriber.admin?
+    if @admin && params[:to_edit_id]
+      @subscriber = Subscriber.find(params[:to_edit_id])
+    end
+
+    @sites = @subscriber.sites.order(latitude: :desc)
+    @site_count = @sites.size
+    @weather_subs = Subscription.weather
+    @dd_subs = Subscription.degree_days
+    @pest_subs = Subscription.pests
   end
 
   def send_email

@@ -258,21 +258,26 @@
         <b><%= site.name %></b>
         <p>
           <i>Weather data:</i><br>
-          <label><%= check_box_tag "sub-toggle-#{Subscription.weather.id}", Subscription.weather.id, site.subscriptions.include?(Subscription.weather) %> 7-day weather</label>
+          <% @weather_subs.each do |s| %>
+            <label>
+              <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
+              <%= s.name %>
+            </label>
+          <% end %>
         </p>
         <p>
           <i>Degree day models:</i><br>
-          <% Subscription.degree_days.each do |s| %>
+          <% @dd_subs.each do |s| %>
             <label>
               <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
-              Base <%= s.options["base"] %>&deg;<%= s.options["units"]%>
+              <%= s.name %>
             </label>
             <br>
           <% end %>
         </p>
         <p>
           <i>Pest risk models:</i><br>
-          <% Subscription.pests.each do |s| %>
+          <% @pest_subs.each do |s| %>
             <label>
               <%= check_box_tag "sub-toggle-#{s.id}", s.id, site.subscriptions.include?(s) %>
               <%= s.name %>

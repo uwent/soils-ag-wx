@@ -39,14 +39,24 @@ AwonStation.upsert(
   unique_by: :stnid
 )
 
+## Subscriptions ##
+subs = []
+
 # Weather subscriptions
-WeatherSub.upsert({id: 10, name: "7-day weather"})
+subs << WeatherSub.upsert({id: 1, name: "7-day weather"})
 
 # Degree day subscriptions
-DegreeDaySub.upsert({id: 20, name: "DD 32/86 F", options: {base: 32, upper: 86, units: "F"}})
-DegreeDaySub.upsert({id: 30, name: "DD 39.2/86 F", options: {base: 39.2, upper: 86, units: "F"}})
-DegreeDaySub.upsert({id: 40, name: "DD 41/86 F", options: {base: 41, upper: 86, units: "F"}})
-DegreeDaySub.upsert({id: 50, name: "DD 50/86 F", options: {base: 50, upper: 86, units: "F"}})
+subs << DegreeDaySub.upsert_all([
+  {id: 32, name: "Base 32°F", options: {base: 32, upper: 86, units: "F"}},
+  {id: 39, name: "Base 39.2°F", options: {base: 39.2, upper: 86, units: "F"}},
+  {id: 41, name: "Base 41°F", options: {base: 41, upper: 86, units: "F"}},
+  {id: 50, name: "Base 50°F", options: {base: 50, upper: 86, units: "F"}},
+  {id: 52, name: "Base 52°F", options: {base: 52, upper: 86, units: "F"}}
+])
 
 # Pest subscriptions
-OakWiltSub.upsert({id: 60, name: "Oak wilt risk"})
+subs << OakWiltSub.upsert({id: 100, name: "Oak wilt risk"})
+
+# clear out old subscriptions
+valid_subs = subs.collect { |s| s.rows }.flatten
+Subscription.where.not(id: valid_subs).destroy_all
