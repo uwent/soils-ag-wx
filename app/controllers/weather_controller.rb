@@ -1,7 +1,6 @@
 # require "grid_controller"
 
 class WeatherController < ApplicationController
-  
   def index
   end
 

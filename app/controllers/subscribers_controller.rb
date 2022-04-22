@@ -57,9 +57,9 @@ class SubscribersController < ApplicationController
   def confirm_notice
     @subscriber = Subscriber.find(params[:id])
     if @subscriber.nil?
-      return redirect_to subscribers_path
+      redirect_to subscribers_path
     elsif !@subscriber.confirmed_at.nil?
-      return redirect_to manage_subscribers_path
+      redirect_to manage_subscribers_path
     end
   end
 
@@ -113,22 +113,20 @@ class SubscribersController < ApplicationController
 
   def destroy
     if @subscriber.nil? # not logged in
-      return redirect_to subscribers_path, alert: "You must be logged in to perform this action."
+      redirect_to subscribers_path, alert: "You must be logged in to perform this action."
     elsif @subscriber.admin? # admin is logged in
       subscriber = Subscriber.find(params[:id])
       if subscriber != @subscriber
         # subscriber.sites.each { |s| s.delete }
         subscriber.destroy
-        return redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
+        redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
       end
+    elsif params[:token] == @subscriber.confirmation_token
+      @subscriber.destroy
+      redirect_to subscribers_path, notice: "You successfully deleted your account."
+    # @subscriber.sites.each { |s| s.delete }
     else
-      if params[:token] == @subscriber.confirmation_token
-        # @subscriber.sites.each { |s| s.delete }
-        @subscriber.destroy
-        return redirect_to subscribers_path, notice: "You successfully deleted your account."
-      else
-        return redirect_to manage_subscribers_path, alert: "Invalid token, check URL or try again."
-      end
+      redirect_to manage_subscribers_path, alert: "Invalid token, check URL or try again."
     end
   end
 
@@ -145,7 +143,7 @@ class SubscribersController < ApplicationController
       return redirect_to subscribers_path if email.nil?
 
       @subscriber = Subscriber.email_find(email)
-      
+
       # no matching subscriber with that email
       return redirect_to new_subscriber_path(email:) if @subscriber.nil?
 
@@ -201,7 +199,7 @@ class SubscribersController < ApplicationController
     site = Site.new(name: site_name, latitude: lat, longitude: long)
     @subscriber.sites << site
     site.subscriptions << WeatherSub.first
-    
+
     render json: site
   rescue
     reject
@@ -237,7 +235,7 @@ class SubscribersController < ApplicationController
       end
       return redirect_to path, notice: "Successfully disabled all site subscriptions."
     end
-    return redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
+    redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
   end
 
   def enable_subscription
@@ -272,8 +270,6 @@ class SubscribersController < ApplicationController
     remove_from_session
     redirect_to root_path
   end
-
-
 
   def export_emails
     return redirect_to subscribers_path if @subscriber.nil?

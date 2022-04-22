@@ -158,8 +158,8 @@ class ThermalModelsController < ApplicationController
       @scenario = oak_wilt_scenario(@data.last[:cumulative_value], @end_date)
       @risk = oak_wilt_risk(@scenario)
     end
-  # rescue
-  #   redirect_to action: :oak_wilt
+    # rescue
+    #   redirect_to action: :oak_wilt
   end
 
   def potato
@@ -244,7 +244,7 @@ class ThermalModelsController < ApplicationController
   #   end
   # end
 
-   # def locations_for(ids)
+  # def locations_for(ids)
   #   ids = ids.collect { |id| id.to_i }
   #   DegreeDayStation.all.select { |stn| ids.include? stn[:id] }.inject({}) { |hash, stn| hash.merge({stn.abbrev => {"longitude" => stn.longitude, "latitude" => stn.latitude, "region" => stn.region}}) }
   # end
@@ -363,5 +363,4 @@ class ThermalModelsController < ApplicationController
   #     maxes: WiMnDMaxTAir.daily_series(start_date, end_date, longitude, latitude)
   #   }
   # end
-
 end

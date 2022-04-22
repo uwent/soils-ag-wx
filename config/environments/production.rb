@@ -32,7 +32,7 @@ Rails.application.configure do
     host: ENV["AG_WEATHER_HOST"] || "agweather.cals.wisc.edu",
     protocol: "https"
   }
-  
+
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 

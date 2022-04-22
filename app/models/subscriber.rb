@@ -14,7 +14,7 @@ class Subscriber < ApplicationRecord
   def self.active?
     dates_active === Date.current
   end
-  
+
   def self.fractional_part(float)
     float.to_s =~ /0\.(.+)$/
     $1
@@ -58,7 +58,7 @@ class Subscriber < ApplicationRecord
   end
 
   def self.send_daily_mail
-    Rails.logger.info "Subscriber :: Sending daily mail for #{Date.current.to_s}..."
+    Rails.logger.info "Subscriber :: Sending daily mail for #{Date.current}..."
     Subscription.enable_all if Date.current == dates_active.first
     send_subscriptions(Subscriber.all)
     Subscription.disable_all if Date.current == dates_active.last

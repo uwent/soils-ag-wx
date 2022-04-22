@@ -2,8 +2,8 @@ class Site < ApplicationRecord
   belongs_to :subscriber
   has_many :site_subscriptions, dependent: :destroy
   has_many :subscriptions, through: :site_subscriptions
-  default_scope {order(latitude: :desc)}
-  scope :enabled, -> {where(enabled: true)}
+  default_scope { order(latitude: :desc) }
+  scope :enabled, -> { where(enabled: true) }
 
   def full_name
     "#{name} (#{latitude}, #{longitude})"

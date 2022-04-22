@@ -8,7 +8,7 @@ module OakWilt
     return "d" if dd_value < 913 # 50-75% flight
     return "e" if dd_value < 2172 # 75-95% flight
     return "f" if dd_value >= 2172 # > 95% flight
-    return "a"
+    "a"
   end
 
   def oak_wilt_risk(scenario)
@@ -25,7 +25,7 @@ module OakWilt
       "Low - after July 15"
     end
   end
-  
+
   def oak_wilt_links
     {
       dnr_page: "https://dnr.wisconsin.gov/topic/foresthealth/oakwilt",

@@ -3,7 +3,6 @@
 require "date"
 
 class CalMatrix
-
   # default to making a calendar for this year
   def initialize(date = Date.today)
     year = date.year

@@ -15,7 +15,7 @@ module SoilsAgWx
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
-    
+
     config.time_zone = "Central Time (US & Canada)"
 
     config.autoload_paths << Rails.root.join("app/models/subscriptions")

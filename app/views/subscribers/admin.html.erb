@@ -15,7 +15,10 @@
 
 <%= render partial: "notices" %>
 
-<div>
+<b>Name: </b><%= @subscriber.name %><br>
+<b>Email: </b><%= @subscriber.email %>
+
+<div class="apple_pagination">
   <%= will_paginate @subscribers, class: :apple_pagination %>
   <br>
   <table class="simple-table" style="width: 100%">
@@ -39,7 +42,7 @@
           <td align="center"><%= subscriber.admin? ? "Yes" : "" %></td>
           <td>
             <%= link_to "<button>Manage</button>".html_safe, manage_subscribers_path(to_edit_id: subscriber.id) %>
-            <% unless @subscriber.id == subscriber.id %>
+            <% unless @subscriber.id == subscriber.id || subscriber.admin? %>
               <%= link_to "<button>Delete</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure?"} %>
             <% end %>
           </td>

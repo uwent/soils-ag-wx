@@ -1,6 +1,6 @@
 class T403 < ApplicationRecord
   include Reportable
-  
+
   belongs_to :awon_station
 
   def self.attr_human_readables

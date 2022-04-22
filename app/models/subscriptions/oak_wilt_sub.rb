@@ -1,11 +1,10 @@
-
 class OakWiltSub < PestSub
   include OakWilt
 
   def partial
     "oak_wilt_data"
   end
-  
+
   def dates
     Date.current.beginning_of_year..Date.yesterday
   end

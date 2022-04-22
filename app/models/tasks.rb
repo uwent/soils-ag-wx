@@ -22,7 +22,7 @@ module Tasks
 
         msg << pad1 + "#{site.id}. #{site.name} (#{site.latitude}, #{site.longitude}) - " + site_subs.size.to_s + " subs"
         pad2 = pad1 + " " * (site.id.to_s.length + 2)
-        
+
         site_subs.order(:id).each do |s|
           msg << pad2 + "#{s.id}. #{s.name}"
         end
@@ -46,15 +46,12 @@ module Tasks
   def self.subscribe_all_sites_to_weather
     msg = []
     Site.all.each do |site|
-      begin
-        site.subscriptions << Subscription.weather.first
-        msg << "  Added weather subscription to " + site.name
-      rescue
-        msg << "  " + site.name + " is already subscribed"
-        next
-      end
+      site.subscriptions << Subscription.weather.first
+      msg << "  Added weather subscription to " + site.name
+    rescue
+      msg << "  " + site.name + " is already subscribed"
+      next
     end
     puts msg.join("\n")
   end
-
 end
