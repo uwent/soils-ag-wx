@@ -66,7 +66,6 @@ class Subscriber < ApplicationRecord
 
   def self.send_subscriptions(subscribers)
     date = Date.yesterday
-    dates = (date - 6.days)..date
     subscribers = subscribers.is_a?(Subscriber) ? [subscribers] : subscribers
     all_sites = Site.where(subscriber: subscribers, enabled: true)
 
