@@ -7,13 +7,13 @@
   <% @data = subscription[:data].values.first %>
   <% if @data %>
     <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
-      <thead bgcolor=<%= bg %> style="border-bottom: <%= border %>;">
-        <tr>
-          <th align="left">Date</th>
-          <th align="center">Min temp<br>(&deg;F)</th>
-          <th align="center">Max temp<br>(&deg;F)</th>
-          <th align="center">Precip<br>(in)</th>
-          <th align="center">Pot. ET<br>(in)</th>
+      <thead>
+        <tr bgcolor=<%= bg %>>
+          <th align="left" style="border-bottom: <%= border %>;">Date</th>
+          <th align="center" style="border-bottom: <%= border %>;">Min temp<br>(&deg;F)</th>
+          <th align="center" style="border-bottom: <%= border %>;">Max temp<br>(&deg;F)</th>
+          <th align="center" style="border-bottom: <%= border %>;">Precip<br>(in)</th>
+          <th align="center" style="border-bottom: <%= border %>;">Pot. ET<br>(in)</th>
         </tr>
       </thead>
       <tbody>

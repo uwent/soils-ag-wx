@@ -14,12 +14,12 @@
     <% if @data.values.last[:max_cum_dd].to_f > 0 %>
       <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
         <thead>
-          <tr bgcolor=<%= bg %> style="border: <%= border %>;">
-            <th align="left">Date</th>
-            <th align="center">Low (&deg;<%= @units %>)</th>
-            <th align="center">High (&deg;<%= @units %>)</th>
-            <th align="center">DDs</th>
-            <th align="center">Total</th>
+          <tr bgcolor=<%= bg %>>
+            <th align="left" style="border-bottom: <%= border %>;">Date</th>
+            <th align="center" style="border-bottom: <%= border %>;">Low (&deg;<%= @units %>)</th>
+            <th align="center" style="border-bottom: <%= border %>;">High (&deg;<%= @units %>)</th>
+            <th align="center" style="border-bottom: <%= border %>;">DDs</th>
+            <th align="center" style="border-bottom: <%= border %>;">Total</th>
           </tr>
         </thead>
         <tbody>

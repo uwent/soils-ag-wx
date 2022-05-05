@@ -18,8 +18,8 @@
     <% if (cur_dd > 0) && (Date.current < Date.new(Date.current.year, 7, 15)) %>
       <% if cur_dd < 231 %>
         <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
-          <thead bgcolor=<%= bg %>>
-            <tr>
+          <thead>
+            <tr bgcolor=<%= bg %>>
               <th align="left" style="border-bottom: <%= border %>;">Date</th>
               <th align="center" style="border-bottom: <%= border %>;">Degree days</th>
               <th align="center" style="border-bottom: <%= border %>;">Risk recommendation</th>
