@@ -39,7 +39,7 @@
             <td bgcolor=<%= bg_lt %>>
               <% @data.each do |site| %>
                 <br>
-                <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border: 2px solid #8b846a;">
+                <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border-top: 2px solid #8b846a; border-bottom: 2px solid #8b846a;">
                   <tr>
                     <td>
                       <b><%= "#{site[:name]} (#{site[:lat]}, #{site[:long]})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{site[:lat]}%2C+#{site[:long]}", target: "_blank" %></i></span>
@@ -49,6 +49,7 @@
                 <% if site[:data].size > 0 %>
                   <% site[:data].each do |subscription| %>
                     <%= render partial: subscription[:partial], locals: {subscription:} %>
+                    <br>
                   <% end %>
                 <% else %>
                   <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>

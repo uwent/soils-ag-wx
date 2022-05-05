@@ -15,7 +15,7 @@
       <p style="font-size: 0.8em;"><i>No degree days accumulated yet this year. The high risk oak wilt transmission period begins at 231 degree days (base 41&deg;F) and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
     <% end %>
 
-    <% if (cur_dd > 0) && (Date.current < Date.new(Date.current.year, 7, 15)) %>
+    <% if (cur_dd > 0) %>
       <% if cur_dd < 231 %>
         <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
           <thead>
@@ -40,9 +40,11 @@
           </tbody>
         </table>
         <p style="font-size: 0.8em;"><i>The high risk oak wilt transmission period begins at 231 degree days (base 41&deg;F) and ends on July 15. Dates in italics reflect the estimated one-week forecast for oak wilt risk based on the previous week's average daily degree-day accumulation. This forecast will change daily. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
-        <br>
-      <% else %>
+      <% elsif Date.current < Date.new(Date.current.year, 7, 15) %>
         <p style="color: #c5050c"><%= risk %>. Wounding/pruning/harvesting oaks should be avoided.</p>
+        <p style="font-size: 0.8em;"><i>Approximately <%= cur_dd %> degree days have accumulated at this location. The oak wilt transmission period begins at 231 degree days (base 41&deg;F) and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
+      <% else %>
+        <p style="color: #008000">The risk of overland transmission of oak wilt is greatly reduced after July 15th. Pruning or harvesting oaks can be considered at this time.<p>
         <p style="font-size: 0.8em;"><i>Approximately <%= cur_dd %> degree days have accumulated at this location. The oak wilt transmission period begins at 231 degree days (base 41&deg;F) and ends on July 15. Visit the <%= link_to "Oak Wilt page", oak_wilt_thermal_models_url %> to learn more.</i></p>
       <% end %>
     <% end %>
