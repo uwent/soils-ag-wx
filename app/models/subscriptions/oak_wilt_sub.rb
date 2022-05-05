@@ -41,10 +41,12 @@ class OakWiltSub < PestSub
       site_data = {}
       (today..(today + 6.days)).each do |date|
         proj_dd = (dd + last_7_avg * i).round(1)
+        scenario = oak_wilt_scenario(proj_dd, date)
+        risk = oak_wilt_risk(scenario)
         site_data[date.to_s] = {
           date: date_fmt(date),
           cum_dd: num_fmt(proj_dd),
-          risk: oak_wilt_risk(oak_wilt_scenario(proj_dd, date))
+          risk:,
         }
         i += 1
       end
