@@ -49,7 +49,6 @@
                 <% if site[:data].size > 0 %>
                   <% site[:data].each do |subscription| %>
                     <%= render partial: subscription[:partial], locals: {subscription:} %>
-                    <br>
                   <% end %>
                 <% else %>
                   <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>

@@ -2,18 +2,19 @@
 <% bg = "#e9e4d0"%>
 
 <% if subscription %>
-  <h5 style="margin-bottom: 0.5em;">7-day weather report:</h5>
-
   <% @data = subscription[:data].values.first %>
+  
+  <h4 style="margin: 2em 0 0.5em 0;">7-day weather report:</h4>
+
   <% if @data %>
     <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
       <thead>
         <tr bgcolor=<%= bg %>>
           <th align="left" style="border-bottom: <%= border %>;">Date</th>
-          <th align="center" style="border-bottom: <%= border %>;">Min temp<br>(&deg;F)</th>
-          <th align="center" style="border-bottom: <%= border %>;">Max temp<br>(&deg;F)</th>
-          <th align="center" style="border-bottom: <%= border %>;">Precip<br>(in)</th>
-          <th align="center" style="border-bottom: <%= border %>;">Pot. ET<br>(in)</th>
+          <th align="center" style="border-bottom: <%= border %>;">Low (&deg;F)</th>
+          <th align="center" style="border-bottom: <%= border %>;">High (&deg;F)</th>
+          <th align="center" style="border-bottom: <%= border %>;">Precip (in)</th>
+          <th align="center" style="border-bottom: <%= border %>;">Pot. ET (in)</th>
         </tr>
       </thead>
       <tbody>

@@ -1,11 +1,10 @@
 <% border = "1px solid #8b846a" %>
 <% bg = "#e9e4d0"%>
 
-
 <% if subscription %>
   <% @data = subscription[:data].values.first %>
 
-  <h5 style="margin-bottom: 0.5em;">Oak wilt risk model and forecast:</h5>
+  <h4 style="margin: 2em 0 0.5em 0;">Oak wilt risk model and forecast:</h4>
 
   <% if @data %>
     <% cur_dd = @data.values.first[:cum_dd].to_f %>

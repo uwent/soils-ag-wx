@@ -4,6 +4,7 @@ module AgWeather
 
   PRECIP_URL = BASE_URL + "/precips"
   WEATHER_URL = BASE_URL + "/weather"
+  FORECAST_URL = WEATHER_URL + "/forecast"
   INSOL_URL = BASE_URL + "/insolations"
   ET_URL = BASE_URL + "/evapotranspirations"
   DD_URL = BASE_URL + "/degree_days"
