@@ -46,7 +46,7 @@ class OakWiltSub < PestSub
         site_data[date.to_s] = {
           date: date_fmt(date),
           cum_dd: num_fmt(proj_dd),
-          risk:,
+          risk:
         }
         i += 1
       end
