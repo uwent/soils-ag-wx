@@ -167,10 +167,13 @@ class ThermalModelsController < ApplicationController
 
   def potato_data
     @locations = [
+      {name: "Rhinelander", lat: 45.7, long: -89.2},
       {name: "Antigo", lat: 45.2, long: -89.1},
       {name: "Plover", lat: 44.4, long: -89.6},
       {name: "Hancock", lat: 44.1, long: -89.5},
-      {name: "Grand Marsh", lat: 43.9, long: -89.7}
+      {name: "Grand Marsh", lat: 43.9, long: -89.7},
+      {name: "Arlington", lat: 43.3, long: -89.3},
+      {name: "Spring Green", lat: 43.2, long: -90.2}
     ]
 
     @models = [

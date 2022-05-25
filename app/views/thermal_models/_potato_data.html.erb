@@ -22,18 +22,14 @@
       <tbody>
         <% cur_data.each do |k, v| %>
           <tr>
-            <td><%= "#{k}" %></td>
+            <td><%= k %></td>
             <% v.each do |val| %>
               <td align=center>
-                <% if val < 0 %>
-                  -
-                <% else %>
-                  <% if val >= model[:threshold] %>
-                    <span class=high-risk><%= val %></span>
-                  <% else %>
-                    <%= val%>
-                  <% end %>
-                <% end %>
+                <%=
+                  val < 0 ? "-" :
+                    val >= model[:threshold] ?
+                      "<span class=high-risk>#{val}</span>".html_safe : val
+                %>
               </td>
             <% end %>
           </tr>
@@ -49,7 +45,7 @@
 <h4>Location details:</h4>
 <ul>
   <% @locations.each do |loc| %>
-    <li><%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:long] %>)</li>
+    <li><%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:long] %>) - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{loc[:lat]}%2C+#{loc[:long]}", target: "_blank" %></i></span></li>
   <% end %>
 </ul>
 
