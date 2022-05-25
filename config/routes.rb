@@ -107,6 +107,7 @@ Rails.application.routes.draw do
       get "oak_wilt_dd"
       post "oak_wilt_dd"
       get "potato"
+      get "potato_data"
       get "scm"
       # get "tree"
       get "western_bean_cutworm"

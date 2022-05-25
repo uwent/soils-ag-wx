@@ -342,6 +342,29 @@ input, select, button {
 	}
 }
 
+.normal-table {
+	thead {
+		border: 1px solid $nav-bg-color;
+		background: $table-row-highlight-color;
+	}
+
+	tbody {
+		border: 1px solid $nav-bg-color;
+	}
+
+	td, th {
+		padding: 0.25em 1em 0.25em 1em;
+	}
+
+	th {
+		border-bottom: 1px solid $nav-bg-color;
+	}
+
+	tbody tr:nth-child(even) {
+		background: $table-row-highlight-color;
+	}
+}
+
 .simple-table {
 	tbody {
 		border: 1px solid $nav-bg-color;

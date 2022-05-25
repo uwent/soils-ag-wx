@@ -1,0 +1,55 @@
+<style>
+  .high-risk {
+    font-weight: bold;
+    color: #c5050c;
+  }
+</style>
+
+<div id=data-container>
+<% @models.each do |model| %>
+  <% cur_data = @data[model[:pest]] %>
+  <div class=center-div>
+    <b><i><%= model[:name] %></i></b>
+    <table class=normal-table>
+      <thead>
+        <tr>
+          <th>Location</th>
+          <% @dates.each do |date| %>
+            <th align=center><%= date %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% cur_data.each do |k, v| %>
+          <tr>
+            <td><%= "#{k}" %></td>
+            <% v.each do |val| %>
+              <td align=center>
+                <% if val < 0 %>
+                  -
+                <% else %>
+                  <% if val > model[:threshold] %>
+                    <span class=high-risk><%= val %></span>
+                  <% else %>
+                    <%= val%>
+                  <% end %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <i>Any cumulative values above the preventive action threshold of <%= model[:threshold] %> <%= model[:units] %> are highlighted in <span class=high-risk>red</span>.</i>
+  </div>
+  <br><br>
+<% end %>
+</div>
+
+<h4>Location details:</h4>
+<ul>
+  <% @locations.each do |loc| %>
+    <li><%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:long] %>)</li>
+  <% end %>
+</ul>
+

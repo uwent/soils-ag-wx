@@ -165,6 +165,64 @@ class ThermalModelsController < ApplicationController
   def potato
   end
 
+  def potato_data
+    @locations = [
+      {name: "Antigo", lat: 45.2, long: -89.1},
+      {name: "Plover", lat: 44.4, long: -89.6},
+      {name: "Hancock", lat: 44.1, long: -89.5},
+      {name: "Grand Marsh", lat: 43.9, long: -89.7}
+    ]
+
+    @models = [
+      {
+        name: "Cumulative disease severity values (DSV) since date:",
+        pest: "potato_blight_dsv",
+        threshold: 18,
+        units: "DSV"
+      },
+      {
+        name: "Cumulative potato physiological days (P-days) since date:",
+        pest: "potato_p_days",
+        threshold: 300,
+        units: "P-days"
+      }
+    ]
+
+    year = Date.current.year
+    emerg_dates = [10, 15, 20, 25].collect { |day| Date.new(year, 5, day) }
+    recent_dates = [Date.current - 14.days, Date.current - 7.days]
+    dates = emerg_dates + recent_dates
+    @dates = emerg_dates.map { |d| d.strftime("%b %-d") } + ["Last 14 days", "Last 7 days"]
+
+    @data = {}
+
+    @models.each do |model|
+      mod = model[:pest]
+      @data[mod] = {}
+      @locations.each do |loc|
+        loc_name = loc[:name]
+        query = {
+          pest: model[:pest],
+          lat: loc[:lat],
+          long: loc[:long]
+        }
+        json = AgWeather.get(AgWeather::PEST_URL + "/point_details", query:)
+        data = json[:data]
+
+        @data[mod][loc_name] = dates.collect do |date|
+          if data.size == 0
+            -1
+          else
+            days = data.select { |v| v[:date].to_date >= date }
+            days.size > 0 ? days.map { |day| day[:value] }.sum : -1
+          end
+        end
+      end
+    end
+    puts @data.inspect
+    render partial: "potato_data"
+  end
+
   def scm
   end
 

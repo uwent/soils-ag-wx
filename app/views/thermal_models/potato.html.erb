@@ -1,22 +1,30 @@
-<% @title = "Potato Development" %>
+<% @title = "Potato Pests & Diseases" %>
 <% @welcome_image = "potato.png" %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
-  <p>Our potato Pday model lets you predict plant development of this pest to better manage production.</p>
+  <p>Our potato early blight P-day model and late blight DSV model lets you anticipate disease risk and take preventive action.</p>
 <% end %>
 
 <h2><%= link_to(@title, "") %></h2>
 
 <hr>
 
-<h4>Potato development and diseases</h4>
+<h4>Potato development and disease risk</h4>
 
 <p>P-Days are the unit of thermal time used in a number of University of Wisconsin-Extension potato management products. Accumulation of potato p-days is particularly useful in assessing the risk of early blight development. To learn more, visit the <%= link_to "Vegetable Pathology Lab website", "https://vegpath.plantpath.wisc.edu" %> or the <%= link_to "Integrated Pest and Crop Management website", "http://ipcm.wisc.edu/" %>. To view potato disease risk models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %>.</p>
 
 <h4>Potato Pests</h4>
 
 <p>For information on potato pests such as the Colorado Potato Beetle, see our <%= link_to "degree-day calculator", action: :degree_days %> page or visit the <%= link_to "UW Vegetable Entomology website", vegento_url %>. To view potato insect development models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %></p>
+
+<h4>Current DSV and P-Day values for select locations:</h4>
+
+<%= render_async "potato_data", container_id: "data-container" do %>
+  <p>Loading data...</p>
+<% end %>
+
+<div id=data-container></div>
 
 <br>
 
