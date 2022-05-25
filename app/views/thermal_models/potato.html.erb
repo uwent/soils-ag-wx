@@ -10,13 +10,13 @@
 
 <hr>
 
-<h4>Potato development and disease risk</h4>
+<h4>Potato disease risk</h4>
 
-<p>P-Days are the unit of thermal time used in a number of University of Wisconsin-Extension potato management products. Accumulation of potato p-days is particularly useful in assessing the risk of early blight development. To learn more, visit the <%= link_to "Vegetable Pathology Lab website", "https://vegpath.plantpath.wisc.edu" %> or the <%= link_to "Integrated Pest and Crop Management website", "http://ipcm.wisc.edu/" %>. To view potato disease risk models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %>.</p>
+<p><b>Late blight</b> risk in potato can be modeled using cumulative <b>disease severity values (DSVs)</b>, which are generated during periods of high temperatures and humidities. When 18 or more DSVs accumulate since emergence or since the last fungicide application, preventive action should be considered. Late blight is a rare but serious disease and the accumulation of DSVs only reflects a high risk of disease development <b>when spores are present</b>. </p>
 
-<h4>Potato Pests</h4>
+<p>Unlike late blight, <b>early blight</b> spores are assumed to be present in the soil, so once the <b>potato physiological day (p-day)</b> total exceeds 300 since emergence, preventive action for early blight should be considered because disease development risk is elevated.</p>
 
-<p>For information on potato pests such as the Colorado Potato Beetle, see our <%= link_to "degree-day calculator", action: :degree_days %> page or visit the <%= link_to "UW Vegetable Entomology website", vegento_url %>. To view potato insect development models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %></p>
+<p>Learn more about <%= link_to "late blight", "https://vegpath.plantpath.wisc.edu/resources/potato-late-blight/", target: "_blank" %>, <%= link_to "early blight", "https://vegpath.plantpath.wisc.edu/resources/early-blight/", target: "_blank" %> or visit the UW Vegetable Pathology website <%= link_to "here", "https://vegpath.plantpath.wisc.edu/", target: "_blank" %>.
 
 <h4>Current DSV and P-Day values for select locations:</h4>
 
@@ -26,6 +26,12 @@
 
 <div id=data-container></div>
 
+<h4>Potato Insect Pests</h4>
+
+<p>For information on potato pests such as the Colorado Potato Beetle, see our <%= link_to "degree-day calculator", action: :degree_days %> page or visit the <%= link_to "UW Vegetable Entomology website", vegento_url %>. To view potato insect development models, visit the <%= link_to "Vegetable Disease and Insect Forecasting Network website", vdifn_path %></p>
+
 <br>
+
+<hr>
 
 <%= link_to "Back", :back %>
