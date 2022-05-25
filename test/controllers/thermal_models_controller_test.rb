@@ -84,13 +84,8 @@ class ThermalModelsControllerTest < ActionController::TestCase
     end
   end
 
-  test "should get gypsy" do
-    get :gypsy
-    assert_response :success
-  end
-
-  test "should get gypsy_info" do
-    get :gypsy_info
+  test "should get spongy moth" do
+    get :spongy_moth
     assert_response :success
   end
 
