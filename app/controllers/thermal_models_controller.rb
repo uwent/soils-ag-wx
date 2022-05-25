@@ -204,7 +204,8 @@ class ThermalModelsController < ApplicationController
         query = {
           pest: model[:pest],
           lat: loc[:lat],
-          long: loc[:long]
+          long: loc[:long],
+          start_date: dates.min
         }
         json = AgWeather.get(AgWeather::PEST_URL + "/point_details", query:)
         data = json[:data]
@@ -220,7 +221,6 @@ class ThermalModelsController < ApplicationController
         end
       end
     end
-    puts @data.inspect
     render partial: "potato_data"
   end
 
