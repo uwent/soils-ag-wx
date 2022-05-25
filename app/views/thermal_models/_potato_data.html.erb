@@ -28,7 +28,7 @@
                 <% if val < 0 %>
                   -
                 <% else %>
-                  <% if val > model[:threshold] %>
+                  <% if val >= model[:threshold] %>
                     <span class=high-risk><%= val %></span>
                   <% else %>
                     <%= val%>

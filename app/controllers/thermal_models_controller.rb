@@ -214,7 +214,8 @@ class ThermalModelsController < ApplicationController
             -1
           else
             days = data.select { |v| v[:date].to_date >= date }
-            days.size > 0 ? days.map { |day| day[:value] }.sum : -1
+            value = days.size > 0 ? days.map { |day| day[:value] }.sum : -1
+            value.is_a?(Float) ? value.round(1) : value
           end
         end
       end
