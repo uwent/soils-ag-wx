@@ -49,22 +49,22 @@ class ForecastSub < WeatherSub
         end
 
         # precip
-        rain_chance = day[:daily_chance_of_rain]
-        snow_chance = day[:daily_chance_of_snow]
+        # rain_chance = day[:daily_chance_of_rain]
+        # snow_chance = day[:daily_chance_of_snow]
         total_precip = day[:totalprecip_in]
         forecast << "Total precip #{num_fmt(total_precip, 2)} in"
 
         # humidity
-        hums = hourly.map { |h| h[:humidity]}
+        hums = hourly.map { |h| h[:humidity] }
         min_hum = num_fmt(hums.min, 0)
         max_hum = num_fmt(hums.max, 0)
         humidity = min_hum == max_hum ? min_hum : "#{min_hum}-#{max_hum}"
         forecast << "Humidity #{humidity}%"
 
         # wind
-        wind_vecs = hourly.map { |h| Complex.polar(h[:wind_mph], h[:wind_degree] * 2 * Math::PI / 360)}
-        wind_spd, wind_radian = (wind_vecs.sum / wind_vecs.size).polar
-        puts wind_deg = 360 * wind_radian / (2 * Math::PI)
+        wind_vecs = hourly.map { |h| Complex.polar(h[:wind_mph], h[:wind_degree] * 2 * Math::PI / 360) }
+        _, wind_radian = (wind_vecs.sum / wind_vecs.size).polar
+        wind_deg = 360 * wind_radian / (2 * Math::PI)
         wind_bearing = get_bearing(wind_deg)
 
         wind_speeds = hourly.map { |h| h[:wind_mph] }
@@ -75,7 +75,7 @@ class ForecastSub < WeatherSub
         max_wind = num_fmt(wind_speeds.max, 0)
         wind = min_wind == max_wind ? min_wind : "#{min_wind}-#{max_wind}"
         forecast << "Wind #{wind_bearing} #{wind} mph, gusts up to #{num_fmt(wind_gusts.max, 0)} mph"
-        
+
         # uv
         uv_index = day[:uv].to_i
         uv_risk = uv_severity(uv_index)
@@ -94,9 +94,9 @@ class ForecastSub < WeatherSub
       all_data[[lat, long].to_s] = site_data
     end
     all_data
-  # rescue
-  #   Rails.logger.error "ForecastSub :: Failed to retrieve data for sites."
-  #   {}
+    # rescue
+    #   Rails.logger.error "ForecastSub :: Failed to retrieve data for sites."
+    #   {}
   end
 
   def median(arr)
@@ -105,7 +105,7 @@ class ForecastSub < WeatherSub
     size = arr.size
     return arr[0] if size <= 1
     return arr.sum / 2.0 if size == 2
-    return arr[size / 2]
+    arr[size / 2]
   end
 
   def bearings
