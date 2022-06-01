@@ -2,11 +2,11 @@
 <% bg = "#e9e4d0"%>
 
 <% if subscription %>
-  <% @data = subscription[:data].values.first %>
+  <% data = subscription[:data].values.first %>
 
   <h4 style="margin: 2em 0 0.5em 0;">5-day forecast:</h4>
 
-  <% if @data %>
+  <% if data %>
     <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
       <thead>
         <tr bgcolor=<%= bg %>>
@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @data.values.each_with_index do |day, i| %>
+        <% data.values.each_with_index do |day, i| %>
           <% style = "" %>
           <% style += "background: #{bg};" if i.odd? %>
           <tr style="<%= style %>">
@@ -33,9 +33,9 @@
         <% end %>
       </tbody>
     </table>
-    <% @totals = @data.values.last[:totals] %>
-    <% if @totals %>
-      <p style="font-size: 0.8em;"><i>Weather summary for the next 5 days: <%= @totals[:total_min_temp] %> low, <%= @totals[:total_max_temp] %> high, <%= @totals[:total_precip] %> total precipitation, and <%= @totals[:total_wind] %> maximum windspeed. Data sourced from <%= link_to "openweathermap.org", "https://openweathermap.org" %>.</i></p>
+    <% totals = data.values.last[:totals] %>
+    <% if totals %>
+      <p style="font-size: 0.8em;"><i>Weather summary for the next 5 days: <%= totals[:total_min_temp] %> low, <%= totals[:total_max_temp] %> high, <%= totals[:total_precip] %> in. total precipitation, and <%= totals[:total_wind] %> maximum windspeed. Data sourced from <%= link_to "openweathermap.org", "https://openweathermap.org" %>.</i></p>
     <% end %>
   <% else %>
     <% Rails.logger.error "_forecast_data :: No data sent to partial." %>

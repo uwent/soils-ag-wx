@@ -44,7 +44,7 @@ subs = []
 
 # Weather subscriptions
 subs << WeatherSub.upsert({id: 1, name: "7-day weather"})
-subs << ForecastSub.upsert({id: 2, name: "5-day forecast"})
+subs << ForecastSub.upsert({id: 2, name: "3-day forecast"})
 
 # Degree day subscriptions
 subs << DegreeDaySub.upsert_all([
