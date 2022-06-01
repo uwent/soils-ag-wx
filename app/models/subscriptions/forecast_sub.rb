@@ -40,8 +40,8 @@ class ForecastSub < WeatherSub
         forecast << condition
 
         # temperature
-        min_temp = day[:mintemp_f] - 40
-        max_temp = day[:maxtemp_f] - 40
+        min_temp = day[:mintemp_f]
+        max_temp = day[:maxtemp_f]
         forecast << "High #{num_fmt(max_temp, 1)}°F, low #{num_fmt(min_temp, 1)}°F"
         if (max_temp > 32) && (min_temp <= 32)
           forecast << "Frost expected" if min_temp === (28..32)
