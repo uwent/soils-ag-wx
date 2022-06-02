@@ -49,8 +49,6 @@ class ForecastSub < WeatherSub
         end
 
         # precip
-        # rain_chance = day[:daily_chance_of_rain]
-        # snow_chance = day[:daily_chance_of_snow]
         total_precip = day[:totalprecip_in]
         forecast << "Total precip #{num_fmt(total_precip, 2)} in"
 
@@ -61,16 +59,13 @@ class ForecastSub < WeatherSub
         humidity = min_hum == max_hum ? min_hum : "#{min_hum}-#{max_hum}"
         forecast << "Humidity #{humidity}%"
 
-        # wind
+        # wind. Use vector addition to find the speed-weighted average wind direction for the day
         wind_vecs = hourly.map { |h| Complex.polar(h[:wind_mph], h[:wind_degree] * 2 * Math::PI / 360) }
         _, wind_radian = (wind_vecs.sum / wind_vecs.size).polar
         wind_deg = 360 * wind_radian / (2 * Math::PI)
         wind_bearing = get_bearing(wind_deg)
-
         wind_speeds = hourly.map { |h| h[:wind_mph] }
         wind_gusts = hourly.map { |h| h[:gust_mph] }
-        # wind_dirs = hourly.map { |h| h[:wind_degree] }
-        # wind_bearing = get_bearing(median(wind_dirs))
         min_wind = num_fmt(wind_speeds.min, 0)
         max_wind = num_fmt(wind_speeds.max, 0)
         wind = min_wind == max_wind ? min_wind : "#{min_wind}-#{max_wind}"
@@ -94,9 +89,9 @@ class ForecastSub < WeatherSub
       all_data[[lat, long].to_s] = site_data
     end
     all_data
-    # rescue
-    #   Rails.logger.error "ForecastSub :: Failed to retrieve data for sites."
-    #   {}
+  rescue
+    Rails.logger.error "ForecastSub :: Failed to retrieve data for sites."
+    {}
   end
 
   def median(arr)

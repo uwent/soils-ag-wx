@@ -183,8 +183,8 @@ class SubscribersController < ApplicationController
 
   def add_site
     site_name = params[:site_name]
-    lat = params[:latitude]
-    long = params[:longitude]
+    lat = params[:latitude].to_f.round(1)
+    long = params[:longitude].to_f.round(1)
 
     # check for existing
     errors = []
@@ -198,11 +198,11 @@ class SubscribersController < ApplicationController
 
     site = Site.new(name: site_name, latitude: lat, longitude: long)
     @subscriber.sites << site
-    site.subscriptions << WeatherSub.first
+    site.subscriptions << Subscription.select { |s| s.is_a? WeatherSub }
 
     render json: site
-  rescue
-    reject
+  rescue => e
+    reject(e)
   end
 
   def remove_site
@@ -248,8 +248,8 @@ class SubscribersController < ApplicationController
     end
 
     render json: {message: "enabled"}
-  rescue
-    reject
+  rescue => e
+    reject(e)
   end
 
   def disable_subscription
@@ -262,8 +262,8 @@ class SubscribersController < ApplicationController
     end
 
     render json: {message: "disabled"}
-  rescue
-    reject
+  rescue => e
+    reject(e)
   end
 
   def logout
