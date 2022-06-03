@@ -1,5 +1,6 @@
 <% border = "1px solid #8b846a" %>
-<% bg = "#e9e4d0"%>
+<% bg_drk = "#e9e4d0" %>
+<% bg_lt = "#f7f5ee" %>
 
 <% if subscription %>
   <% @data = subscription[:data].values.first %>
@@ -18,7 +19,7 @@
       <% if cur_dd < 231 %>
         <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
           <thead>
-            <tr bgcolor=<%= bg %>>
+            <tr bgcolor=<%= bg_drk %>>
               <th align="left" style="border-bottom: <%= border %>;">Date</th>
               <th align="center" style="border-bottom: <%= border %>;">Degree days</th>
               <th align="center" style="border-bottom: <%= border %>;">Risk recommendation</th>

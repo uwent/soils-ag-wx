@@ -29,10 +29,11 @@ class WeatherSub < Subscription
       ets = AgWeather.get(AgWeather::ET_URL, query: opts)[:data]
 
       # totals
-      total_min_temp = num_fmt(weathers.map { |day| day[:min_temp] }.compact.min) + "°F" || "unknown"
-      total_max_temp = num_fmt(weathers.map { |day| day[:max_temp] }.compact.max) + "°F" || "unknown"
-      total_precip = num_fmt(precips.map { |day| day[:value] }.compact.sum, 2) + " in" || "unknown"
-      total_et = num_fmt(ets.map { |day| day[:value] }.compact.sum, 3) + " in" || "unknown"
+      total_min_temp = weathers.map { |day| day[:min_temp] }.compact.min
+      total_max_temp = weathers.map { |day| day[:max_temp] }.compact.max
+      total_precip = precips.map { |day| day[:value] }.compact.sum
+      total_et = ets.map { |day| day[:value] }.compact.sum
+      total_deficit = total_precip - total_et if total_precip && total_et
 
       # collect and format data for each date
       site_data = {}
@@ -47,7 +48,13 @@ class WeatherSub < Subscription
           max_temp: num_fmt(weather[:max_temp]),
           precip: num_fmt(precip[:value], 2),
           et: num_fmt(et[:value], 3),
-          totals: {total_min_temp:, total_max_temp:, total_precip:, total_et:}
+          totals: {
+            min_temp: num_fmt(total_min_temp) + "°F" || "unknown",
+            max_temp: num_fmt(weathers.map { |day| day[:max_temp] }.compact.max) + "°F" || "unknown",
+            precip: num_fmt(precips.map { |day| day[:value] }.compact.sum, 2) + " in." || "unknown",
+            et: num_fmt(ets.map { |day| day[:value] }.compact.sum, 3) + " in." || "unknown",
+            deficit: num_fmt(total_deficit, 2) + ((total_deficit < 0) ? " in. water deficit" : " in recharge")
+          }
         }
       end
 

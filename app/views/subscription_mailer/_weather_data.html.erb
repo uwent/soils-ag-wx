@@ -1,5 +1,6 @@
 <% border = "1px solid #8b846a" %>
-<% bg = "#e9e4d0"%>
+<% bg_drk = "#e9e4d0" %>
+<% bg_lt = "#f7f5ee" %>
 
 <% if subscription %>
   <% @data = subscription[:data].values.first %>
@@ -9,7 +10,7 @@
   <% if @data %>
     <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
       <thead>
-        <tr bgcolor=<%= bg %>>
+        <tr bgcolor=<%= bg_drk %>>
           <th align="left" style="border-bottom: <%= border %>;">Date</th>
           <th align="center" style="border-bottom: <%= border %>;">Low (&deg;F)</th>
           <th align="center" style="border-bottom: <%= border %>;">High (&deg;F)</th>
@@ -20,7 +21,7 @@
       <tbody>
         <% @data.values.each_with_index do |day, i| %>
           <% style = "" %>
-          <% style += "background: #{bg};" if i.odd? %>
+          <% style += "background: #{bg_drk};" if i.odd? %>
           <% style += "font-weight: bold;" if day == @data.values.last %>
           <tr style="<%= style %>">
             <td style="white-space: nowrap"><%= day[:date] %></td>
@@ -34,7 +35,7 @@
     </table>
     <% @totals = @data.values.last[:totals] %>
     <% if @totals %>
-      <p style="font-size: 0.8em;"><i>Weather summary for the past week: <%= @totals[:total_min_temp] %> low, <%= @totals[:total_max_temp] %> high, <%= @totals[:total_precip] %> total precipitation, and <%= @totals[:total_et] %> total potential evapotranspiration.</i></p>
+      <p style="font-size: 0.8em;"><i>Weather summary for the past week: <%= @totals[:min_temp] %> low, <%= @totals[:max_temp] %> high, <%= @totals[:precip] %> total precipitation, and <%= @totals[:et] %> total potential evapotranspiration (<%= @totals[:deficit] %>).</i></p>
     <% end %>
   <% else %>
     <% Rails.logger.error "_weather_data :: No data sent to partial." %>

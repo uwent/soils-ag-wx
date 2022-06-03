@@ -1,23 +1,33 @@
+<% border = "1px solid #8b846a" %>
+<% bg_drk = "#e9e4d0" %>
+<% bg_lt = "#f7f5ee" %>
+
 <% if subscription %>
+  <% data = subscription[:data].values.first %>
+
   <h4 style="margin: 2em 0 0.5em 0;">3-day forecast:</h4>
 
-  <% data = subscription[:data].values.first %>
   <% if data %>
-    <ul>
-      <% data.each do |day| %>
-        <li style="margin-bottom: 0.5em;"><b><%= day[:date] %>:</b> <%= day[:forecast] %></li>
-      <% end %>
-    </ul>
+    <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
+      <tbody>
+        <% data.each do |day| %>
+          <tr>
+            <td><%= image_tag "https:" + day[:icon] %></td>
+            <td align="left"><b><%= day[:date] %>:</b> <%= day[:forecast] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
     <%
       totals = {
-        min_temp: data.map { |d| d[:min_temp] }.min.round(1),
-        max_temp: data.map { |d| d[:max_temp] }.max.round(1),
-        total_precip: data.map { |d| d[:total_precip] }.sum,
+        min_temp: data.map { |d| d[:min_temp] }.min.round(0),
+        max_temp: data.map { |d| d[:max_temp] }.max.round(0),
+        total_precip: data.map { |d| d[:total_precip] }.sum.round(2),
         max_wind: data.map { |d| d[:max_wind] }.max
       }
     %>
-    <p style="font-size: 0.8em;"><i>Weather summary for the next 3 days: <%= totals[:min_temp] %>&deg; low, <%= totals[:max_temp] %>&deg;F high, <%= totals[:total_precip] %> in. total precipitation, and <%= totals[:max_wind] %> mph maximum windspeed. Data sourced from <%= link_to "weatherapi.com", "https://www.weatherapi.com" %>.</i></p>
+    <p style="font-size: 0.8em;"><i>Weather summary for the next 3 days: <%= totals[:min_temp] %>&deg; low, <%= totals[:max_temp] %>&deg;F high, <%= totals[:total_precip] > 0 ? "#{totals[:total_precip]} in. total " : "no" %> precipitation, and <%= totals[:max_wind] %> mph maximum windspeed. Data sourced from <%= link_to "weatherapi.com", "https://www.weatherapi.com" %>.</i></p>
   <% else %>
     <% Rails.logger.error "_forecast_data :: No data sent to partial." %>
     <p style="font-size: 0.8em;"><i>Unable to retrieve the forecast for this site.</i></p>

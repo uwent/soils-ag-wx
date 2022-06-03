@@ -37,12 +37,13 @@ class ForecastSub < WeatherSub
 
         # conditions
         condition = day[:condition][:text]
+        icon = day[:condition][:icon]
         forecast << condition
 
         # temperature
         min_temp = day[:mintemp_f]
         max_temp = day[:maxtemp_f]
-        forecast << "High #{num_fmt(max_temp, 1)}°F, low #{num_fmt(min_temp, 1)}°F"
+        forecast << "High #{num_fmt(max_temp, 0)}°F, low #{num_fmt(min_temp, 0)}°F"
         if (max_temp > 32) && (min_temp <= 32)
           forecast << "Frost expected" if min_temp === (28..32)
           forecast << "Hard freeze expected" if min_temp <= 28
@@ -50,7 +51,8 @@ class ForecastSub < WeatherSub
 
         # precip
         total_precip = day[:totalprecip_in]
-        forecast << "Total precip #{num_fmt(total_precip, 2)} in"
+        precip = (total_precip > 0) ? "Total precip #{num_fmt(total_precip, 2)} in" : "No precipitation expected"
+        forecast << precip
 
         # humidity
         hums = hourly.map { |h| h[:humidity] }
@@ -61,15 +63,17 @@ class ForecastSub < WeatherSub
 
         # wind. Use vector addition to find the speed-weighted average wind direction for the day
         wind_vecs = hourly.map { |h| Complex.polar(h[:wind_mph], h[:wind_degree] * 2 * Math::PI / 360) }
-        _, wind_radian = (wind_vecs.sum / wind_vecs.size).polar
+        wind_speed, wind_radian = (wind_vecs.sum / wind_vecs.size).polar
         wind_deg = 360 * wind_radian / (2 * Math::PI)
         wind_bearing = get_bearing(wind_deg)
         wind_speeds = hourly.map { |h| h[:wind_mph] }
         wind_gusts = hourly.map { |h| h[:gust_mph] }
         min_wind = num_fmt(wind_speeds.min, 0)
         max_wind = num_fmt(wind_speeds.max, 0)
-        wind = min_wind == max_wind ? min_wind : "#{min_wind}-#{max_wind}"
-        forecast << "Wind #{wind_bearing} #{wind} mph, gusts up to #{num_fmt(wind_gusts.max, 0)} mph"
+        avg_wind = num_fmt(wind_speed, 0)
+        # wind = min_wind == max_wind ? "#{min_wind} mph" : "#{min_wind}-#{max_wind} mph, average #{avg_wind} mph"
+        wind_range = min_wind == max_wind ? "" : "range #{min_wind}-#{max_wind} mph, "
+        forecast << "Wind #{wind_severity(wind_speed)} #{num_fmt(wind_speed, 0)} mph #{wind_bearing}, #{wind_range}gusts up to #{num_fmt(wind_gusts.max, 0)} mph"
 
         # uv
         uv_index = day[:uv].to_i
@@ -79,10 +83,11 @@ class ForecastSub < WeatherSub
         site_data << {
           date: date_fmt(Date.parse(datestring)),
           forecast: forecast.join(". ") + ".",
+          icon:,
           min_temp:,
           max_temp:,
           total_precip:,
-          max_wind:
+          max_wind:,
         }
       end
 
@@ -121,6 +126,17 @@ class ForecastSub < WeatherSub
     bearings.each do |k, v|
       return k.to_s if deg.between?(v, v + 45)
     end
+  end
+
+  def wind_severity(w)
+    return "unknown" if w.nil?
+    return "calm" if w <= 2
+    return "light" if w <= 5
+    return "breezy" if w <= 10
+    return "moderate" if w <= 15
+    return "strong" if w <= 20
+    return "heavy" if w <= 25
+    "severe"
   end
 
   def uv_severity(i)

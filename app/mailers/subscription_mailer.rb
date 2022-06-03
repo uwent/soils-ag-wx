@@ -15,6 +15,8 @@ class SubscriptionMailer < ApplicationMailer
     @subscriber = subscriber
     @date = date
     @data = data
+    @border = "1px solid #8b846a"
+    @bg = "#e9e4d0"
     mail(to: @subscriber.email, subject: "UW AgWeather Daily Weather Report")
   end
 

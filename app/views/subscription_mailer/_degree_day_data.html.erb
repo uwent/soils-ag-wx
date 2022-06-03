@@ -1,32 +1,33 @@
 <% border = "1px solid #8b846a" %>
-<% bg = "#e9e4d0"%>
+<% bg_drk = "#e9e4d0" %>
+<% bg_lt = "#f7f5ee" %>
 
 <% if subscription %>
-  <% @data = subscription[:data].values.first %>
-  <% @opts = subscription[:options] %>
-  <% @base = @opts["base"] %>
-  <% @upper = @opts["upper"] %>
-  <% @units = @opts["units"] %>
+  <% data = subscription[:data].values.first %>
+  <% opts = subscription[:options] %>
+  <% base = opts["base"] %>
+  <% upper = opts["upper"] %>
+  <% units = opts["units"] %>
 
-  <h4 style="margin: 2em 0 0.5em 0;">Base <%= @base %>&deg;<%= @units%><%= @upper.nil? ? "" : " / upper #{@upper}°#{@units} degree day model:" %></h4>
+  <h4 style="margin: 2em 0 0.5em 0;">Base <%= base %>&deg;<%= units%><%= upper.nil? ? "" : " / upper #{upper}°#{units} degree day model:" %></h4>
 
-  <% if @data %>
-    <% if @data.values.last[:max_cum_dd].to_f > 0 %>
+  <% if data %>
+    <% if data.values.last[:max_cum_dd].to_f > 0 %>
       <table role="presentation" width="100%" cellpadding="5" cellspacing="0" style="border-collapse: collapse; border: <%= border %>">
         <thead>
-          <tr bgcolor=<%= bg %>>
+          <tr bgcolor=<%= bg_drk %>>
             <th align="left" style="border-bottom: <%= border %>;">Date</th>
-            <th align="center" style="border-bottom: <%= border %>;">Low (&deg;<%= @units %>)</th>
-            <th align="center" style="border-bottom: <%= border %>;">High (&deg;<%= @units %>)</th>
+            <th align="center" style="border-bottom: <%= border %>;">Low (&deg;<%= units %>)</th>
+            <th align="center" style="border-bottom: <%= border %>;">High (&deg;<%= units %>)</th>
             <th align="center" style="border-bottom: <%= border %>;">DDs</th>
             <th align="center" style="border-bottom: <%= border %>;">Total</th>
           </tr>
         </thead>
         <tbody>
-          <% @data.values.each_with_index do |day, i| %>
+          <% data.values.each_with_index do |day, i| %>
             <% style = "" %>
-            <% style += "font-weight: bold;" if day == @data.values.last %>
-            <% style += "background: #{bg};" if i.odd? %>
+            <% style += "font-weight: bold;" if day == data.values.last %>
+            <% style += "background: #{bg_drk};" if i.odd? %>
             <tr style="<%= style %>">
               <td style="white-space: nowrap"><%= day[:date] %></td>
               <td align="center"><%= day[:min] %></td>

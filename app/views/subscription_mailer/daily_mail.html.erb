@@ -37,8 +37,8 @@
           </tr>
           <tr>
             <td bgcolor=<%= bg_lt %>>
-              <% @data.each do |site| %>
-                <br>
+              <% @data.each_with_index do |site, i| %>
+                <% if i > 0 %><p>&nbsp;</p><% else %><br><% end %>
                 <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border-top: 2px solid #8b846a; border-bottom: 2px solid #8b846a;">
                   <tr>
                     <td>
@@ -53,28 +53,33 @@
                 <% else %>
                   <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>
                 <% end %>
-                <br>
               <% end %>
             </td>
           </tr>
           <tr>
-            <td bgcolor=<%= bg_lt %>>
-              <h4>More information:</h4>
-              <ul>
-                <li><%= link_to "AgWeather homepage", root_url, style: "color: inherit" %></li>
-                <li><%= link_to "Daily weather map", {controller: :weather, action: :weather_map}, style: "color: inherit" %></li>
-                <li><%= link_to "Precipitation map", {controller: :weather, action: :precip_map}, style: "color: inherit" %></li>
-                <li><%= link_to "Evapotranspiration map", {controller: :sun_water, action: :et_map}, style: "color: inherit" %></li>
-                <li><%= link_to "Insolation map", {controller: :sun_water, action: :insol_map}, style: "color: inherit" %></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor=<%= bg_lt %> style="font-size: 0.8em; color: grey;">
+            <td bgcolor=<%= bg_drk %> style="font-size: 0.8em; color: grey;">
+              <p>
+                <b>More information:</b> 
+                <%= link_to "AgWeather", root_url, style: "color: inherit" %> - 
+                <%= link_to "UW Vegetable Entomology", vegento_url, style: "color: inherit" %> - 
+                <%= link_to "UW Vegetable Pathology", vegpath_url, style: "color: inherit" %>
+              </p>
+              <p>
+                <b>Maps and data:</b> 
+                <%= link_to "Weather", {controller: :weather, action: :weather_map}, style: "color: inherit" %> - 
+                <%= link_to "Precipitation", {controller: :weather, action: :precip_map}, style: "color: inherit" %> - 
+                <%= link_to "Evapotranspiration", {controller: :sun_water, action: :et_map}, style: "color: inherit" %> - 
+                <%= link_to "Insolation", {controller: :sun_water, action: :insol_map}, style: "color: inherit" %> - 
+                <%= link_to "Thermal Models", {controller: :thermal_models, action: :index}, style: "color: inherit" %>
+              </p>
+              <p>
+                <b>Degree days and pest models:</b> <%= link_to "VDIFN web app", vdifn_url, style: "color: inherit" %>
+              </p>
               <% if @data.to_s.downcase.include? "no data" %>
                 <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
               <% end %>
-              <p><i>Each year your sites will be automaticallly activated on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, though you can enable or disable your sites and data subscriptions at any time. To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to disable all your subscriptions. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
+              <br>
+              <p><i>To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token), style: "color: inherit" %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token), style: "color: inherit" %> to disable all your subscriptions. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu", style: "color: inherit" %>.</i></p>
             </td>
           </tr>
       </table>
