@@ -12,7 +12,7 @@
       <tbody>
         <% data.each do |day| %>
           <tr>
-            <td><%= image_tag "https:" + day[:icon] %></td>
+            <td><%= image_tag "https:" + day[:icon], width: 64, height: 64 %></td>
             <td align="left"><b><%= day[:date] %>:</b> <%= day[:forecast] %></td>
           </tr>
         <% end %>
