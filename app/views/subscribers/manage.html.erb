@@ -187,8 +187,6 @@
 
 <p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). <b>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</b></p>
 
-<p>Any subscriptions you have will be automatically enabled on <%= Subscriber.dates_active.first.strftime("%b %-d") %> and disabled on <%= Subscriber.dates_active.last.strftime("%b %-d") %>, but you can enable or disable them at any time.</p>
-
 <div class="location-container">
   <div><button onclick="getGeoLocation()">Get my location</button></div>
   <div id="location-display"></div>
