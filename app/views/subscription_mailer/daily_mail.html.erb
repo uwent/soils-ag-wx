@@ -28,7 +28,7 @@
       <table role="presentation" width="600" cellpadding="15" cellspacing="0" bgcolor=<%= bg_lt %> style="border-collapse: collapse; table-width: fixed;">
         <thead>
           <tr>
-            <td bgcolor=<%= bg_drk %> style="font-family: verdana, sans-serif; font-size: 1.2em; text-align: center;">
+            <td bgcolor=<%= bg_drk %> style="font-family: verdana, sans-serif; font-size: 1.2em; text-align: center; border-top: 4px solid #8b846a;">
               <b>UW Extension Ag Weather Automated Mailer</b>
             </td>
           </tr>
@@ -44,7 +44,7 @@
               <% @data.each_with_index do |site, i| %>
               <% name = site[:name]; lat = site[:lat]; long = site[:long] %>
                 <% if i > 0 %><p>&nbsp;</p><% else %><br><% end %>
-                <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border-top: 2px solid #8b846a; border-bottom: 2px solid #8b846a;">
+                <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border: 2px solid #8b846a;">
                   <tr>
                     <td>
                       <b><%= "#{name} (#{lat}, #{long})" %></b> - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{lat}%2C+#{long}" %></i></span>

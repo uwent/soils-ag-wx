@@ -23,7 +23,7 @@ class ForecastSub < WeatherSub
         aqi: "no",
         alerts: "no"
       }
-      response = HTTParty.get(url, query:)
+      response = HTTParty.get(url, query:, timeout: 5)
       json = JSON.parse(response.body, symbolize_names: true)
       forecasts = json[:forecast][:forecastday]
 
