@@ -28,6 +28,7 @@
       }
     %>
     <p style="font-size: 0.8em;"><i>Weather summary for the next 3 days: <%= totals[:min_temp] %>&deg; low, <%= totals[:max_temp] %>&deg;F high, <%= totals[:total_precip] > 0 ? "#{totals[:total_precip]} in. total " : "no" %> precipitation, and <%= totals[:max_wind] %> mph maximum windspeed. Data sourced from <%= link_to "weatherapi.com", "https://www.weatherapi.com" %>.</i></p>
+    <p style="font-size: 0.8em;"><i><%= link_to "Get current conditions and extended forecast for this site from Weather Underground.", "https://wunderground.com/weather/#{lat},#{long}" %></i>
   <% else %>
     <% Rails.logger.error "_forecast_data :: No data sent to partial." %>
     <p style="font-size: 0.8em;"><i>Unable to retrieve the forecast for this site.</i></p>

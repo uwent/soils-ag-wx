@@ -50,8 +50,14 @@ class ForecastSub < WeatherSub
         end
 
         # precip
-        total_precip = day[:totalprecip_in]
-        precip = (total_precip > 0) ? "Total precip #{num_fmt(total_precip, 2)} in" : "No precipitation expected"
+        rain_chance = day[:daily_chance_of_rain] || 0
+        snow_chance = day[:daily_chance_of_snow] || 0
+        total_precip = day[:totalprecip_in] || 0
+        precip = ""
+        precip += "#{rain_chance}% chance of rain, " if rain_chance > 0
+        precip += "#{snow_chance}% chance of snow, " if snow_chance > 0
+        precip += "total precip #{num_fmt(total_precip, 2)} in" if total_precip > 0
+        precip = "No precipitation expected" if precip == ""
         forecast << precip
 
         # humidity

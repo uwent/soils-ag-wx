@@ -9,7 +9,7 @@
   <% upper = opts["upper"] %>
   <% units = opts["units"] %>
 
-  <h4 style="margin: 2em 0 0.5em 0;">Base <%= base %>&deg;<%= units%><%= upper.nil? ? "" : " / upper #{upper}°#{units} degree day model:" %></h4>
+  <h4 style="margin: 2em 0 0.5em 0;">Degree day totals for base <%= base %>&deg;<%= units%><%= upper.nil? ? "" : " / upper #{upper}°#{units}:" %></h4>
 
   <% if data %>
     <% if data.values.last[:max_cum_dd].to_f > 0 %>
