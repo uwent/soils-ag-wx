@@ -36,14 +36,10 @@
         <tbody>
           <tr>
             <td bgcolor=<%= bg_lt %>>
-              Your data subscriptions for <%= Date.current.strftime("%A, %B %-d") %> are shown below. To enable, disable, or edit your sites or subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>.
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor=<%= bg_lt %>>
+              <p>Your data subscriptions for <%= Date.current.strftime("%A, %B %-d") %> are shown below. To enable, disable, or edit your sites or subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>.</p>
+              <p>&nbsp;</p>
               <% @data.each_with_index do |site, i| %>
-              <% name = site[:name]; lat = site[:lat]; long = site[:long] %>
-                <% if i > 0 %><p>&nbsp;</p><% else %><br><% end %>
+                <% name = site[:name]; lat = site[:lat]; long = site[:long] %>
                 <table bgcolor=<%= bg_drk %> width="100%" cellpadding=10 style="text-align: center; border: 2px solid #8b846a;">
                   <tr>
                     <td>
@@ -58,8 +54,8 @@
                 <% else %>
                   <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to edit your subscriptions.</i></p>
                 <% end %>
+                <p>&nbsp;</p>
               <% end %>
-              <br>
             </td>
           </tr>
           <tr>
