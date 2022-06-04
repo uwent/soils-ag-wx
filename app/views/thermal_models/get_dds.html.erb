@@ -4,7 +4,7 @@
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
   <p>Results of your specified degree day model are shown.</p>
-  <p><%= link_to "Go back", :back %> to run another model.</p>
+  <p><%= link_to "Go back", action: :degree_days %> to run another model.</p>
 <% end %>
 
 <% if @data %>
