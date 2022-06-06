@@ -477,7 +477,14 @@ input, select, button {
 #map-container {
 	position: relative;
 	width: fit-content;
-	border: 1px solid $form-border-color;
+	margin: auto;
+
+	img {
+		border: 1px solid $form-border-color;
+		max-height: 80vh;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
 #dot {
