@@ -56,7 +56,7 @@ class WeatherController < ApplicationController
     @is_post = request.method == "POST"
     @endpoint = AgWeather::PRECIP_URL
     parse_dates
-    @units = params[:units].presence || "mm"
+    @units = params[:units].presence || "in"
     @unit_options = ["mm", "in"]
 
     respond_to do |format|
