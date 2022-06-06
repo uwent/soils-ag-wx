@@ -52,12 +52,18 @@ class ForecastSub < WeatherSub
         # precip
         rain_chance = day[:daily_chance_of_rain] || 0
         snow_chance = day[:daily_chance_of_snow] || 0
+        total_precip = day[:totalprecip_in] || 0
         hourly_precips = hourly.select { |h| Time.parse(h[:time]) >= Time.current }.collect { |h| h[:precip_in] }
-        total_precip = hourly_precips.sum || 0
+        total_hourly_precip = hourly_precips.sum || 0
         precip = ""
         precip += "#{rain_chance}% chance of rain, " if rain_chance > 0
         precip += "#{snow_chance}% chance of snow, " if snow_chance > 0
-        precip += "total precip #{num_fmt(total_precip, 2)} in" if total_precip > 0
+        if total_precip > 0
+          precip += "total precip #{num_fmt(total_precip, 2)} in"
+          if Date.parse(datestring) == Date.current && total_hourly_precip < total_precip
+            precip += ". (#{num_fmt(total_hourly_precip, 2)} in. remaining)"
+          end
+        end
         precip = "No precipitation expected" if precip == ""
         forecast << precip
 
