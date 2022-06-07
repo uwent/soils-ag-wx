@@ -26,7 +26,6 @@ class SubscribersController < ApplicationController
     enable_subscription
     disable_subscription
     send_email
-    unsubscribe
   ]
 
   rescue_from ActiveRecord::RecordNotFound, with: :index unless Rails.env.development?
@@ -225,15 +224,15 @@ class SubscribersController < ApplicationController
 
   # actually just disables all sites
   def unsubscribe
-    # @subscriber = Subscriber.find(params[:id])
+    @subscriber = Subscriber.find(params[:id])
     if params[:token] == @subscriber.confirmation_token
       @subscriber.sites.all.update(enabled: false)
-      path = if Subscriber.find(session[:subscriber]).admin?
+      path = if session[:subscriber] && Subscriber.find(session[:subscriber]).admin?
         manage_subscribers_path(to_edit_id: @subscriber.id)
       else
         manage_subscribers_path
       end
-      return redirect_to path, notice: "Successfully disabled all site subscriptions."
+      return redirect_to path, notice: "Successfully disabled all subscriptions for #{@subscriber.name} (#{@subscriber.email})."
     end
     redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
   end
