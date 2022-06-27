@@ -74,7 +74,7 @@
                 <%= link_to "Insolation", {controller: :sun_water, action: :insol_map} %> - 
                 <%= link_to "Thermal Models", {controller: :thermal_models, action: :index} %>
               </p>
-              <p><b>Degree days and pest models:</b> <%= link_to "VDIFN web app", root_url + vdifn_url %></p>
+              <p><b>Degree days and pest models:</b> <%= link_to "VDIFN web app", root_url + "vdifn" %></p>
               <p><b>Irrigation scheduling:</b> <%= link_to "WISP web app", wisp_url %><p>
               <br>
               <% if @data.to_s.downcase.include? "no data" %>
