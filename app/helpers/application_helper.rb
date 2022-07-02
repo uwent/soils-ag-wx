@@ -1,15 +1,13 @@
 module ApplicationHelper
   def sprintf_nilsafe(num, digits)
-    num.nil? ? "" : sprintf("%.#{digits}f", num.round(digits))
-  rescue
-    num
+    return "" unless num.is_a? Numeric
+    sprintf("%.#{digits}f", num.round(digits))
   end
 
-  def c_to_f(c)
-    @units == "F" ? c * (9.0 / 5.0) + 32 : c
-  rescue
-    c
-  end
+  # def c_to_f(c)
+  #   return nil unless num.is_a? Numeric
+  #   @units == "F" ? c * (9.0 / 5.0) + 32 : c
+  # end
 
   def freeze_temp
     @units == "F" ? 28 : -2.22
@@ -27,7 +25,8 @@ module ApplicationHelper
     elsif temp <= frost_temp
       color = "blue"
     end
-    color ? "<span style='color:#{color}'>#{temp_text}</span>" : temp_text
+    string = color ? "<span style='color:#{color}'>#{temp_text}</span>" : temp_text
+    string.html_safe
   end
 
   def earliest_date
