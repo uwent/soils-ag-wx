@@ -81,10 +81,8 @@ class ForecastSub < WeatherSub
         wind_bearing = get_bearing(wind_deg)
         wind_speeds = hourly.map { |h| h[:wind_mph] }
         wind_gusts = hourly.map { |h| h[:gust_mph] }
-        min_wind = num_fmt(wind_speeds.min, 0)
-        max_wind = num_fmt(wind_speeds.max, 0)
-        avg_wind = num_fmt(wind_speed, 0)
-        # wind = min_wind == max_wind ? "#{min_wind} mph" : "#{min_wind}-#{max_wind} mph, average #{avg_wind} mph"
+        min_wind = wind_speeds.min.round(0)
+        max_wind = wind_speeds.max.round(0)
         wind_range = min_wind == max_wind ? "" : "range #{min_wind}-#{max_wind} mph, "
         forecast << "Wind #{wind_severity(wind_speed)} #{num_fmt(wind_speed, 0)} mph #{wind_bearing}, #{wind_range}gusts up to #{num_fmt(wind_gusts.max, 0)} mph"
 
@@ -103,7 +101,6 @@ class ForecastSub < WeatherSub
           max_wind:,
         }
       end
-
       all_data[[lat, long].to_s] = site_data
     end
     all_data
