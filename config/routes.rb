@@ -160,5 +160,9 @@ Rails.application.routes.draw do
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  get "*path", to: redirect("/") unless Rails.env.development?
+  unless Rails.env.development?
+    get "*unmatched", to: redirect("/")
+    post "*unmatched", to: "application#bad_request"
+    post "/", to: "application#bad_request"
+  end
 end

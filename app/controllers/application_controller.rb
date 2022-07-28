@@ -5,15 +5,15 @@ class ApplicationController < ActionController::Base
   before_action :set_tab_selected
   before_action :app_last_updated
 
-  def authenticate
-    false
-    # For now, pretty lame: We only check that it comes from localhost, redbird, andi, or my static VPN address
-    # request.remote_ip == "::1" ||
-    #   request.remote_ip == "127.0.0.1" ||
-    #   request.remote_ip == "128.104.33.225" ||
-    #   request.remote_ip == "128.104.33.224" ||
-    #   request.remote_ip == "146.151.214.80"
-  end
+  # def authenticate
+  #   false
+  #   # For now, pretty lame: We only check that it comes from localhost, redbird, andi, or my static VPN address
+  #   # request.remote_ip == "::1" ||
+  #   #   request.remote_ip == "127.0.0.1" ||
+  #   #   request.remote_ip == "128.104.33.225" ||
+  #   #   request.remote_ip == "128.104.33.224" ||
+  #   #   request.remote_ip == "146.151.214.80"
+  # end
 
   # def fix_nested_dates(param)
   #   if param.is_a? String
@@ -30,6 +30,14 @@ class ApplicationController < ActionController::Base
   #     param
   #   end
   # end
+
+  def bad_request
+    render json: {error: "Bad request"}, status: :bad_request
+  end
+
+  rescue_from ActionController::RoutingError do |e|
+    render json: {error: e.message}, status: :bad_request
+  end
 
   def map_image
     data = JSON.parse(request.raw_post, symbolize_names: true)
