@@ -4,7 +4,7 @@ module WeatherHelper
   def latest_hyd_link
     yesterday = 1.days.ago
     link = hyd_link_for(yesterday, "Yesterday's report")
-    link == "" ? "Not available." : link
+    (link == "") ? "Not available." : link
   end
 
   def hyd_link_for(date, text = date.mday)

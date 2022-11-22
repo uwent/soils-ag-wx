@@ -50,7 +50,7 @@ class WeatherSub < Subscription
           et: num_fmt(et[:value], 3),
           totals: {
             min_temp: num_fmt(total_min_temp) + "°F" || "unknown",
-            max_temp: num_fmt(weathers.map { |day| day[:max_temp] }.compact.max) + "°F" || "unknown",
+            max_temp: num_fmt(total_max_temp) + "°F" || "unknown",
             precip: num_fmt(precips.map { |day| day[:value] }.compact.sum, 2) + " in." || "unknown",
             et: num_fmt(ets.map { |day| day[:value] }.compact.sum, 2) + " in." || "unknown",
             deficit: num_fmt(total_deficit, 2) + ((total_deficit < 0) ? " in. water deficit" : " in. recharge")

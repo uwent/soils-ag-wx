@@ -3,7 +3,7 @@
 filename = "/home/deploy/soil_subs.csv"
 
 File.foreach(filename) do |line|
-  (name, email, field_name, lat, long) = line.split('|')
+  (name, email, field_name, lat, long) = line.split("|")
 
   s = Subscriber.where(email: email).first
   if s.nil?

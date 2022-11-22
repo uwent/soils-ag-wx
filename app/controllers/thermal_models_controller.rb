@@ -23,7 +23,7 @@ class ThermalModelsController < ApplicationController
     @dd_model = params[:dd_model].presence || "dd_50_86"
     @dsv_model = params[:dsv_model].presence || "potato_blight_dsv"
     @map_type = params[:map_type].presence || "dd"
-    @model = @map_type == "dsv" ? @dsv_model : @dd_model
+    @model = (@map_type == "dsv") ? @dsv_model : @dd_model
     @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
     @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
     @start = @end if @start > @end
@@ -218,7 +218,7 @@ class ThermalModelsController < ApplicationController
             -1
           else
             days = data.select { |v| v[:date].to_date >= date }
-            value = days.size > 0 ? days.map { |day| day[:value] }.sum : -1
+            value = (days.size > 0) ? days.map { |day| day[:value] }.sum : -1
             value.is_a?(Float) ? value.round(1) : value
           end
         end

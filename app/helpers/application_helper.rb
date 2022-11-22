@@ -10,11 +10,11 @@ module ApplicationHelper
   # end
 
   def freeze_temp
-    @units == "F" ? 28 : -2.22
+    (@units == "F") ? 28 : -2.22
   end
 
   def frost_temp
-    @units == "F" ? 32 : 0
+    (@units == "F") ? 32 : 0
   end
 
   def format_temp(temp)

@@ -29,7 +29,7 @@ def dates_from_jd_str(jd_str)
   yr = $1.to_i
   doy = $2.to_i
   # Hack, I know, but all AWON data is after 1985
-  yr = (yr < 80 ? 2000 + yr : 1900 + yr)
+  yr = ((yr < 80) ? 2000 + yr : 1900 + yr)
   # Note that since Jan 1 is DOY 1 and not 0, this give us the next day in the calendar from the
   # one passed in.
   date = Date.civil(yr, 1, 1) + doy
@@ -46,7 +46,7 @@ end
 # From an AWON timestamp ('30', '130', '2130') and a date, return a Time for that date, hour, and minute
 def time_from_date_and_timestamp(date, timestamp_str)
   return nil unless timestamp_str =~ /(\d{0,2})(\d{2})/
-  hour = $1 == "" ? 0 : $1.to_i
+  hour = ($1 == "") ? 0 : $1.to_i
   min = $2.to_i
   Time.local(date.year, date.month, date.day, hour, min)
 end

@@ -28,11 +28,11 @@ class ForecastOpenweatherSub < WeatherSub
 
         min_humidity = fc[:humidity][:min]
         max_humidity = fc[:humidity][:max]
-        humidity = min_humidity == max_humidity ? min_humidity : "#{min_humidity} - #{max_humidity}"
+        humidity = (min_humidity == max_humidity) ? min_humidity : "#{min_humidity} - #{max_humidity}"
 
         min_wind = num_fmt(fc[:wind][:min], 0)
         max_wind = num_fmt(fc[:wind][:max], 0)
-        wind = min_wind == max_wind ? min_wind : "#{min_wind}-#{max_wind}"
+        wind = (min_wind == max_wind) ? min_wind : "#{min_wind}-#{max_wind}"
 
         site_data[datestring] = {
           date: date_fmt(Date.parse(fc[:date])),

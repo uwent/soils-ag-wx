@@ -71,7 +71,7 @@ class ForecastSub < WeatherSub
         hums = hourly.map { |h| h[:humidity] }
         min_hum = num_fmt(hums.min, 0)
         max_hum = num_fmt(hums.max, 0)
-        humidity = min_hum == max_hum ? min_hum : "#{min_hum}-#{max_hum}"
+        humidity = (min_hum == max_hum) ? min_hum : "#{min_hum}-#{max_hum}"
         forecast << "Humidity #{humidity}%"
 
         # wind. Use vector addition to find the speed-weighted average wind direction for the day
@@ -83,7 +83,7 @@ class ForecastSub < WeatherSub
         wind_gusts = hourly.map { |h| h[:gust_mph] }
         min_wind = wind_speeds.min.round(0)
         max_wind = wind_speeds.max.round(0)
-        wind_range = min_wind == max_wind ? "" : "range #{min_wind}-#{max_wind} mph, "
+        wind_range = (min_wind == max_wind) ? "" : "range #{min_wind}-#{max_wind} mph, "
         forecast << "Wind #{wind_severity(wind_speed)} #{num_fmt(wind_speed, 0)} mph #{wind_bearing}, #{wind_range}gusts up to #{num_fmt(wind_gusts.max, 0)} mph"
 
         # uv
@@ -98,7 +98,7 @@ class ForecastSub < WeatherSub
           min_temp:,
           max_temp:,
           total_precip:,
-          max_wind:,
+          max_wind:
         }
       end
       all_data[[lat, long].to_s] = site_data

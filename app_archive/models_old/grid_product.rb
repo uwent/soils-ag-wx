@@ -4,15 +4,15 @@
 
 class Numeric
   def rdup(nearest = 10, d = 1)
-    self % nearest == 0 ? round(d) : (self + nearest - (self % nearest)).round(d)
+    (self % nearest == 0) ? round(d) : (self + nearest - (self % nearest)).round(d)
   end
 
   def rddown(nearest = 10, d = 1)
-    self % nearest == 0 ? round(d) : (self - (self % nearest)).round(d)
+    (self % nearest == 0) ? round(d) : (self - (self % nearest)).round(d)
   end
 
   def rdnearest(nearest = 10, d = 1)
-    ((rdup(nearest) - self).abs) < ((self - rddown(nearest)).abs) ? rdup(nearest, d) : rddown(nearest, d)
+    (((rdup(nearest) - self).abs) < ((self - rddown(nearest)).abs)) ? rdup(nearest, d) : rddown(nearest, d)
   end
 end
 
