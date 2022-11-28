@@ -58,6 +58,6 @@
 
 <div class="site-controls">
   <div><%= link_to "<button>Back</button>".html_safe, manage_subscribers_path %></div>
-  <div><%= link_to "<button>Export Email CSV</button>".html_safe, export_emails_subscribers_path(format: :csv) %></div>
+  <div><%= link_to "<button>Export Email CSV</button>".html_safe, export_subscribers_path(format: :csv) %></div>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>

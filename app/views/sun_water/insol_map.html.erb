@@ -25,7 +25,7 @@
 
 <%= render partial: "partials/map_navigator" %>
 
-<%= render_async "map_image",
+<%= render_async map_image_sun_water_index_path,
   method: "POST",
   data: { endpoint: @endpoint, id: @date, query: {units: @units, start_date: @start_date}.compact }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
@@ -48,7 +48,7 @@
 
 <p>Choose a location and date range then click "Get Data Series". Daily insolation data will be displayed in units of Mj and kWh. Note: You can click on the map to set the latitude and longitude to within half a degree.</p>
 
-<%= render partial: "partials/grid_selector", locals: { target: "/sun_water/insol_data" } %>
+<%= render partial: "partials/grid_selector", locals: { target: insol_data_sun_water_index_path } %>
 
 <div id="map-data"></div>
 

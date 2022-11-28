@@ -26,7 +26,7 @@
 
 <%= render partial: "partials/map_navigator" %>
 
-<%= render_async "map_image",
+<%= render_async map_image_sun_water_index_path,
   method: "POST",
   data: {
     endpoint: @endpoint,
@@ -58,7 +58,7 @@
   Note: You can click on the map to set the latitude and longitude. The 'adjusted' ET calculation method uses new coefficients under investigation by Ankur Desai and Ammara Talib at the UW Atmospheric and Oceanic Sciences department. The adjusted method will result in slightly lower ET values that may reflect real-world conditions in Wisconsin better than the old method.
 </div>
 
-<%= render partial: "partials/grid_selector", locals: { target: "/sun_water/et_data" } %>
+<%= render partial: "partials/grid_selector", locals: { target: et_data_sun_water_index_path } %>
 
 <div id="map-data"></div>
 

@@ -47,7 +47,7 @@
   <% end %>
 </div>
 
-<%= render_async "map_image",
+<%= render_async map_image_weather_index_path,
   method: "POST",
   data: { endpoint: @endpoint, id: @date, query: {units: @units}.compact }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
@@ -69,7 +69,7 @@
 
 <p>Choose a location and date range then click "Get Data Series". Daily min/max/average temperature, dew point, vapor pressure, hours high humidity, and average temperature during periods of high humidity will be shown in either Fahrenheit or Celsius. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
 
-<%= render partial: "partials/grid_selector", locals: { target: "/weather/weather_data.js" } %>
+<%= render partial: "partials/grid_selector", locals: { target: weather_data_weather_index_path } %>
 
 <div id="map-data"></div>
 
