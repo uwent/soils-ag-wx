@@ -151,11 +151,12 @@ class ApplicationController < ActionController::Base
     require "csv"
     Rails.logger.debug "ApplicationController :: Generating csv..."
     CSV.generate(headers: true) do |csv|
-      headers.each do |line|
-        csv << line
+      if headers
+        headers.each do |line|
+          csv << line
+        end
+        csv << {}
       end
-      csv << {} if headers
-
       csv << data.first.keys
       data.each do |h|
         csv << h.values
