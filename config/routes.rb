@@ -111,18 +111,18 @@ Rails.application.routes.draw do
       route "manage", :post
     end
     member do
-      get "confirm"
-      get "confirm_notice"
-      get "unsubscribe"
-      get "send_email"
-      post "validate"
-      post "resend_confirmation"
-      post "add_site"
-      post "remove_site"
-      post "enable_site"
-      post "disable_site"
-      post "enable_subscription"
-      post "disable_subscription"
+      route "confirm"
+      route "confirm_notice"
+      route "unsubscribe"
+      route "send_email"
+      route "validate", :post
+      route "resend_confirmation", :post
+      route "add_site", :post
+      route "remove_site", :post
+      route "enable_site", :post
+      route "disable_site", :post
+      route "enable_subscription", :post
+      route "disable_subscription", :post
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]

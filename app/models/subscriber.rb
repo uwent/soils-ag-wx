@@ -15,14 +15,14 @@ class Subscriber < ApplicationRecord
     dates_active === Date.current
   end
 
-  def self.fractional_part(float)
-    float.to_s =~ /0\.(.+)$/
-    $1
-  end
+  # def self.fractional_part(float)
+  #   float.to_s =~ /0\.(.+)$/
+  #   $1
+  # end
 
-  def self.confirmation_number
-    fractional_part(rand)
-  end
+  # def self.confirmation_number
+  #   fractional_part(rand)
+  # end
 
   def self.email_find(email)
     where("lower(email) = ?", email.downcase).first
@@ -121,7 +121,7 @@ class Subscriber < ApplicationRecord
   private
 
   def set_confirmation_token
-    self.confirmation_token = random_code
+    self.confirmation_token = SecureRandom.hex(10)
   end
 
   def random_code
