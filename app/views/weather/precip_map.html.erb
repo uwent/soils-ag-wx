@@ -23,7 +23,7 @@
 
 <%= render partial: "partials/map_navigator" %>
 
-<%= render_async "map_image",
+<%= render_async map_image_weather_index_path,
   method: "POST",
   data: { endpoint: @endpoint, id: @date, query: {units: @units, start_date: @start_date}.compact }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
@@ -46,7 +46,7 @@
 
 <p>Choose a location and date range then click "Get Data Series". Daily and cumulative precipitation will be displayed in mm and inches. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
 
-<%= render partial: "partials/grid_selector", locals: { target: "/weather/precip_data.js" } %>
+<%= render partial: "partials/grid_selector", locals: { target: precip_data_weather_index_path } %>
 
 <div id="map-data"></div>
 

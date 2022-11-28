@@ -15,7 +15,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     @rick = Subscriber.create!(
       name: USER,
       email: USER_EMAIL,
-      confirmation_token: Subscriber.confirmation_number
+      confirmation_token: 1234
     )
     @rick_sites = Site.create!(
       latitude: LATITUDE,

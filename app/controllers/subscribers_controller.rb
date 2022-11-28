@@ -12,7 +12,7 @@ class SubscribersController < ApplicationController
     disable_site
     enable_subscription
     disable_subscription
-    export_emails
+    export
     unsubscribe
   ]
 
@@ -270,7 +270,7 @@ class SubscribersController < ApplicationController
     redirect_to root_path
   end
 
-  def export_emails
+  def export
     return redirect_to subscribers_path if @subscriber.nil?
     return redirect_to manage_subscribers_path unless @subscriber.admin?
 
