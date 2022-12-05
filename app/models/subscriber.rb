@@ -43,7 +43,7 @@ class Subscriber < ApplicationRecord
   end
 
   def generate_validation_token
-    self.validation_token = random_code[0..5]
+    self.validation_token = rand.to_s[2..7]
     self.validation_created_at = Time.current
     save!
     SubscriptionMailer.validation(self).deliver
@@ -121,11 +121,5 @@ class Subscriber < ApplicationRecord
 
   def set_confirmation_token
     self.confirmation_token = SecureRandom.hex(10)
-  end
-
-  def random_code
-    f = rand
-    f.to_s =~ /0\.(.+)$/
-    $1
   end
 end
