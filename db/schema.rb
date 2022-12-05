@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_15_182816) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_05_173340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,18 +101,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_15_182816) do
   end
 
   create_table "sites", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.integer "subscriber_id"
-    t.float "latitude"
-    t.float "longitude"
+    t.float "latitude", null: false
+    t.float "longitude", null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.boolean "enabled", default: true
   end
 
   create_table "subscribers", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "email"
+    t.string "name", null: false
+    t.string "email", null: false
     t.string "confirmation_token"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -122,6 +122,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_15_182816) do
     t.boolean "admin", default: false
     t.integer "doy_start"
     t.integer "doy_end"
+    t.boolean "emails_enabled", default: true, null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|

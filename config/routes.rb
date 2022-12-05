@@ -123,6 +123,8 @@ Rails.application.routes.draw do
       route "disable_site", :post
       route "enable_subscription", :post
       route "disable_subscription", :post
+      route "enable_emails", :post
+      route "disable_emails", :post
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]

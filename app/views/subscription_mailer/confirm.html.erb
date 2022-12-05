@@ -1,7 +1,9 @@
-Dear <%= @subscriber.name%>,<br>
+Dear <%= @subscriber.name %>,<br>
 
 <p>The following email has been sent to you from <%= link_to "UW AgWeather", subscribers_url %> to confirm your request to register as a subscriber to the site's automated daily email data service. If you initiated this request simply click on the subscription registration link below to continue the registration process.</p>
 
-<p><b><%= link_to "Click here to activate your subscription", @url %></b></p>
+<p style="font-size: larger"><b><%= link_to "Click here to activate your subscription", @url %></b></p>
 
 <p>Once you are registered, you will be able to enter your site names and locations (latitude and longitude) for which you want daily weather data. If you <b>did not</b> initiate a registration request to the UW AgWeather data service simply delete this email now.</p>
+
+<p>Thank you,<br>The AgWeather Team</p>

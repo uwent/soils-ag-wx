@@ -6,6 +6,8 @@ class SubscribersController < ApplicationController
     admin
     destroy
     send_email
+    enable_emails
+    disable_emails
     add_site
     remove_site
     enable_site
@@ -19,6 +21,8 @@ class SubscribersController < ApplicationController
   before_action :fix_email, if: -> { params[:email].present? }
 
   before_action :check_editor, only: %i[
+    enable_emails
+    disable_emails
     add_site
     remove_site
     enable_site
@@ -185,6 +189,9 @@ class SubscribersController < ApplicationController
     lat = params[:latitude].to_f.round(1)
     long = params[:longitude].to_f.round(1)
 
+    return if site_name.nil?
+    site_name = site_name.gsub(/\r\n/m, "").strip
+
     # check for existing
     errors = []
     if @subscriber.sites.where(name: site_name).size > 0
@@ -210,6 +217,16 @@ class SubscribersController < ApplicationController
     render json: {message: "success"}
   end
 
+  def enable_emails
+    @subscriber.update(emails_enabled: true)
+    render json: {message: "enabled"}
+  end
+
+  def disable_emails
+    @subscriber.update(emails_enabled: false)
+    render json: {message: "disabled"}
+  end
+
   def enable_site
     site_id = params[:site_id]
     @subscriber.sites.find(site_id).update(enabled: true)
@@ -226,15 +243,15 @@ class SubscribersController < ApplicationController
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
     if params[:token] == @subscriber.confirmation_token
-      @subscriber.sites.all.update(enabled: false)
+      @subscriber.update(emails_enabled: false)
       path = if session[:subscriber] && Subscriber.find(session[:subscriber]).admin?
         manage_subscribers_path(to_edit_id: @subscriber.id)
       else
         manage_subscribers_path
       end
-      return redirect_to path, notice: "Successfully disabled all subscriptions for #{@subscriber.name} (#{@subscriber.email})."
+      return redirect_to path, notice: "Successfully unsubscribed from daily emails for #{@subscriber.name} (#{@subscriber.email})."
     end
-    redirect_to manage_subscribers_path, alert: "Unable to disable site subscriptions, refresh page and try again."
+    redirect_to manage_subscribers_path, alert: "Unable to unsubscribe from daily emails, please refresh page and try again."
   end
 
   def enable_subscription

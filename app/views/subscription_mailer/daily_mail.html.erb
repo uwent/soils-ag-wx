@@ -80,7 +80,7 @@
               <% if @data.to_s.downcase.include? "no data" %>
                 <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
               <% end %>
-              <p><i>To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to disable all your subscriptions. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
+              <p><i>To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.confirmation_token) %> to unsubscribe. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
               <p><i>Developed by the College of Agriculture and Life Sciences at the University of Wisconsin-Madison.</i></p>
             </td>
           </tr>

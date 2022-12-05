@@ -9,6 +9,11 @@ button {
   padding: 5px 10px;
 }
 
+h4 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
 .location-container {
   display: flex;
   gap: 1em;
@@ -68,6 +73,16 @@ button {
   div {
     min-width: 1em;
     margin-right: 5px;
+  }
+}
+
+#add-controls {
+  td {
+    padding-top: 5px;
+  }
+
+  button {
+    width: 100%;
   }
 }
 

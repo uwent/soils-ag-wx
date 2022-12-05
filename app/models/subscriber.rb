@@ -59,9 +59,8 @@ class Subscriber < ApplicationRecord
 
   def self.send_daily_mail
     Rails.logger.info "Subscriber :: Sending daily mail for #{Date.current}..."
-    # Subscription.enable_all if Date.current == dates_active.first
-    send_subscriptions(Subscriber.all)
-    # Subscription.disable_all if Date.current == dates_active.last
+    subscribers = Subscriber.where(emails_enabled: true)
+    send_subscriptions(subscribers)
   end
 
   def self.send_subscriptions(subscribers)
