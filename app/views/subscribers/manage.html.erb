@@ -75,15 +75,12 @@
         "<%= url_for(enable_emails_subscriber_path(@subscriber.id)) %>" :
         "<%= url_for(disable_emails_subscriber_path(@subscriber.id)) %>"
 
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: { to_edit_id: subscriber_id }
-      }).success((data) => {
-        $("#notice").fadeOut()
-        let div = $("#email-toggle-status")
-        data.message == "enabled" ? div.html("Subscribed") : div.html("Unsubscribed")
-      })
+      $.post(url, { to_edit_id: subscriber_id })
+        .success((data) => {
+          let status = (data.message == "enabled") ? "Subscribed" : "Unsubscribed"
+          $("#email-toggle-status").html(status)
+          $("#notice").fadeOut()
+        })
     })
 
     // Handle add site button
@@ -98,19 +95,15 @@
         return false
       }
 
-      $.ajax({
-        type: "POST",
-        url:  "<%= url_for(add_site_subscriber_path(@subscriber.id)) %>",
-        data: {
-          site_name: site_name,
-          latitude: parseFloat(lat).toFixed(1),
-          longitude: parseFloat(long).toFixed(1),
-          to_edit_id: subscriber_id
-        }
+      let url = "<%= url_for(add_site_subscriber_path(@subscriber.id)) %>"
+      $.post(url, {
+        site_name: site_name,
+        latitude: parseFloat(lat).toFixed(1),
+        longitude: parseFloat(long).toFixed(1),
+        to_edit_id: subscriber_id
       }).success((data) => {
         data.id ? window.location.reload() : alert(data.message)
       })
-      return false
     })
 
     // Allow enter key to trigger add
@@ -122,18 +115,14 @@
     $("[id^=delete-site]").click((event) => {
       if (!confirm("Are you sure you want to delete this site?")) return
       let site_id = $(event.target).closest("tr").data("site-id")
+      let url = "<%= url_for(remove_site_subscriber_path(@subscriber.id)) %>"
 
-      $.ajax({
-        type: "POST",
-        url: "<%= url_for(remove_site_subscriber_path(@subscriber.id)) %>",
-        data: {
-          site_id: site_id,
-          to_edit_id: subscriber_id
-        }
+      $.post(url, {
+        site_id: site_id,
+        to_edit_id: subscriber_id
       }).success((data) => {
-        if (data.message == "success")
-          window.location.reload()
-        else
+        (data.message == "success") ?
+          window.location.reload() :
           alert("Unable to delete site, try reloading the page.")
       })
     })
@@ -145,13 +134,9 @@
         "<%= url_for(enable_site_subscriber_path(@subscriber.id)) %>" :
         "<%= url_for(disable_site_subscriber_path(@subscriber.id)) %>"
 
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: {
-          site_id: site_id,
-          to_edit_id: subscriber_id
-        }
+      $.post(url, {
+        site_id: site_id,
+        to_edit_id: subscriber_id
       }).success((data) => {
         $("#notice").fadeOut()
         let div = $("#site-status-" + site_id)
@@ -174,14 +159,10 @@
         "<%= url_for(enable_subscription_subscriber_path(@subscriber.id)) %>" :
         "<%= url_for(disable_subscription_subscriber_path(@subscriber.id)) %>"
       
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: {
+      $.post(url, {
           to_edit_id: subscriber_id,
           site_id: site_id,
           sub_id: sub_id
-        }
       }).success((data) => {
         $("#notice").fadeOut()
       })
@@ -220,11 +201,16 @@
       <div>
         <%= check_box_tag "email-toggle", @subscriber.id, @subscriber.emails_enabled %>
       </div>
-      <div id="email-toggle-status">
+      <div id="email-toggle-status" style="font-weight: bold;">
         <%= @subscriber.emails_enabled ? "Subscribed" : "Unsubscribed" %>
       </div>
     </div>
   </label>
+  <% if @sites.length == 0 %>
+    <br>
+    <br>
+    <i>Note: You must have at least one site in the list below to receive daily emails.</i>
+  <% end %>
 </div>
 
 <h4>Your sites (from North to South):</h4>

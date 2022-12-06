@@ -1,42 +1,25 @@
 <% @title = "Day-of-Year Calendar" %>
 <% @welcome_image = "doy-cal.png" %>
 
-<% content_for :welcome do %>
-  <h2><%= @title %></h2>
-  <p>Easily convert any calendar date to the Julian date/day of year.</p>
-<% end %>
-
-<% content_for :scripts do %>
 <script>
   function update_grid() {
-    jQuery.ajax({
-      url: "doycal_grid",
-      type: "GET",
-      data: {"year" : year.value},
-      dataType: "html",
-      success: function(data) {
-        jQuery("#grid").html(data);
-      }
-    });
+    let url = "<%= doycal_grid_weather_index_url %>"
+    $.get(url, {year: year.value})
+      .success((data) => {
+        $("#grid").html(data)
+      })
 
-    if (year.value == year[year.length - 1].value) {
-      console.log("min year " + year.value)
-      prev_btn.disabled = true;
-    } else {
-      prev_btn.disabled = false;
-    }
-
-    if (year.value == year[0].value) {
-      console.log("max year" + year.value)
-      next_btn.disabled = true;
-    } else {
-      next_btn.disabled = false;
-    }
+    prev_btn.disabled = (year.value == year[year.length - 1].value)
+    next_btn.disabled = (year.value == year[0].value)
   }
 
   function prev_year() { year.value -= 1; update_grid(); }
   function next_year() { year.value -= -1; update_grid(); }
 </script>
+
+<% content_for :welcome do %>
+  <h2><%= link_to(@title, "") %></h2>
+  <p>Easily convert any calendar date to the Julian date/day of year.</p>
 <% end %>
 
 <% midyear = Date.today.year %>
