@@ -20,8 +20,9 @@ module AgWeather
 
   def self.get_map(endpoint, id, query)
     url = "#{endpoint}/#{id}"
-    json = get(url, query:, timeout: 30)
-    "#{HOST}#{json[:map]}"
+    json = get(url, query:, timeout: 60)
+    map = json[:map]
+    map ? "#{HOST}#{map}" : "/no_data.png"
   rescue
     Rails.logger.error "Failed to retrieve map image at #{url}"
     "/no_data.png"
