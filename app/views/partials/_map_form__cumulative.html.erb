@@ -1,0 +1,70 @@
+<style>
+  #date-warning {
+    font-style: italic;
+    color: red;
+    margin-top: 0.5em;
+  }
+</style>
+
+<script>
+  function parseDate(el) {
+    let year = el.querySelector("[id$='date_1i']").value
+    let month = el.querySelector("[id$='date_2i']").value
+    let day = el.querySelector("[id$='date_3i']").value
+    let date = new Date(`${month}-${day}-${year}`)
+    return (date.getDate() == day) ? date : false
+  }
+
+  function validateDates(el) {
+    let startDate = el.querySelector("#start-date")
+    let endDate = el.querySelector("#end-date")
+    let startDateValue = parseDate(startDate)
+    let endDateValue = parseDate(endDate)
+    let errors = ""
+    errors += startDateValue ? "" : "Invalid start date. "
+    errors += endDateValue ? "" : "Invalid end date. "
+
+    if (startDateValue && endDateValue) {
+      errors += (startDateValue < endDateValue) ? "" : "Start date must be before end date. "
+    }
+
+    if (errors.length > 0) {
+      el.querySelector("#date-warning").innerHTML = errors
+      el.querySelector("#submit").disabled = true
+    } else {
+      el.querySelector("#date-warning").innerHTML = ""
+      el.querySelector("#submit").disabled = false
+    }
+  }
+</script>
+
+<div class="box">
+  <b>Generate cumulative map:</b>
+  <div class="map-form" onChange="validateDates(this)">
+    <%= form_tag do %>
+      Date range:<br>
+      <div id="start-date">
+        <label><%= date_select :start_date_select, :date,
+          start_year: earliest_date.year,
+          end_year: Date.current.year,
+          default: @start_date || @date - 1.week %> Start</label>
+      </div>
+      <div id="end-date">
+        <label><%= date_select :end_date_select, :date,
+          start_year: earliest_date.year,
+          end_year: Date.current.year,
+          default: @date %> End</label>
+      </div>
+      <% if @unit_options %>
+        Units:
+        <% @unit_options.each do |unit| %>
+          <label><%= radio_button_tag :units, unit, @units == unit %><%= unit %></label>&nbsp;
+        <% end %>
+      <% end %>
+      <%= hidden_field_tag :cumulative, true %>
+      <br>
+      <%= submit_tag "Get cumulative map", id: "submit" %>
+      <div id="date-warning"></div>
+    <% end %>
+  </div>
+</div>

@@ -5,6 +5,8 @@
 
 $page-bg-color: #f7f5ee;
 $frame-bg-color: #8b846a;
+// $map-frame-bg-color: #d3caa9;
+$map-form-bg-color: #ddd6bf;
 $welcome-bg-color: #544e38;
 $welcome-title-color: #ceb085;
 $welcome-text-color: #f2f7f8;
@@ -298,6 +300,11 @@ input, select, button {
 	margin-bottom: 1em;
 }
 
+.error {
+	font-weight: bold;
+	color: red;
+}
+
 .copyright {
 	font: 13px arial, sans-serif;
 	color: $copyright-text-color;
@@ -399,6 +406,7 @@ input, select, button {
 	margin-left: auto;
 	margin-right: auto;
 	width: fit-content;
+	max-width: inherit;
 }
 
 .form-box {
@@ -449,9 +457,10 @@ input, select, button {
 		flex-direction: column;
 	}
 
-	.form-box {
-		width: 50%;
-		// margin: 0.5em;
+	.box {
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 auto;
 
 		@media #{$small-only} {
 			width: auto;
@@ -460,31 +469,74 @@ input, select, button {
 }
 
 .map-loading {
-	margin: 0.5em;
 	padding: 0.5em;
 	border: 1px solid $form-border-color;
+	border-radius: 5px;
 	background: $table-row-highlight-color;
 	display: flex;
+	margin-bottom: 1em;
+	height: 80vh;
+	flex: 1 1 auto;
 
 	div {
 		margin-right: 1em;
 	}
 }
 
+.form-items {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
 
-// --- IDs --- //
+	div {
+		border: 1px solid grey;
+		border-radius: 5px;
+		padding: 5px;
+		gap: 1em;
+	}
+}
 
-#map-container {
+
+// --- Map --- //
+
+.map-container {
+	margin-bottom: 1em;
+}
+
+.map-form {
+	padding: 10px;
+	border: 1px solid $form-border-color;
+	border-radius: 5px;
+	background: $map-form-bg-color;
+	flex: 1 1 auto;
+}
+
+.grey {
+	background: $form-bg-color;
+}
+
+#map-img {
 	position: relative;
-	width: fit-content;
-	margin: auto;
 
 	img {
 		border: 1px solid $form-border-color;
 		max-height: 80vh;
-		margin-left: auto;
-		margin-right: auto;
 	}
+}
+
+.map-fail {
+	padding: 2em;
+	font-style: italic;
+}
+
+.map-note {
+	font-style: italic;
+	text-align: center;
+	margin: 1em auto;
+}
+
+.no-border {
+	border: none !important;
 }
 
 #dot {
@@ -500,4 +552,8 @@ input, select, button {
 #data-container {
 	max-width: 100%;
 	overflow: auto;
+
+	h4 {
+		margin-top: 0px;
+	}
 }

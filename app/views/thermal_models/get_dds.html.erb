@@ -7,6 +7,9 @@
   <p><%= link_to "Go back", action: :degree_days %> to run another model.</p>
 <% end %>
 
+<h2>Degree Days Results</h2>
+<hr>
+
 <% if @data %>
   <div id="data-container">
     <h4>Degree days data series</h4>
@@ -54,4 +57,4 @@
   No data!
 <% end %>
 
-<p><%= link_to "Back", :back %></p>
+<%= link_to "Back", action: :index %>

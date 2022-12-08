@@ -84,7 +84,7 @@
     <%= hidden_field_tag "filename", "oak wilt risk for #{@end_date.to_formatted_s} at (#{@latitude}, #{@longitude})" %>
     <%= hidden_field_tag "format", "csv" %>
     <%= submit_tag("Download CSV", class: "link", id: "submit")%>
-  <% end %> | <%= link_to 'Back', :back %>
+  <% end %> | <%= link_to "Back", action: :oak_wilt %>
 
   <br>
 
@@ -95,7 +95,5 @@
 <% else %>
 
   <h3>Data for this date range is currently unavailable.</h3>
-
-  <%= link_to 'Back', :back %>
 
 <% end %>

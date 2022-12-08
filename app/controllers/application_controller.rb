@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   def map_image
     data = JSON.parse(request.raw_post, symbolize_names: true)
     @map_image = AgWeather.get_map(data[:endpoint], data[:id], data[:query])
+    @caption = data[:caption]
     render partial: "partials/map_image"
   end
 
