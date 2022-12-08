@@ -1,55 +1,35 @@
 <% @title = "Gridded Weather Data"%>
 <% @welcome_image = "mean-temps-250px.png" %>
-
-<% content_for :welcome do %>
-  <h2><%= @title %></h2>
-  <p>Weather data is collected daily from the National Atmospheric and Oceanic Administration's gridded datasets and provided here for easy access.</p>
+<%= javascript_include_tag "map_functions" %>
+<% if @is_post %>
+  <script>
+    elementReady("#map").then(() => { document.getElementById("map").scrollIntoView(); });
+  </script>
 <% end %>
 
-<%= javascript_include_tag "map_functions" %>
-<% if @is_post %><%= javascript_include_tag "scroll_to_form" %><% end %>
+<% content_for :welcome do %>
+  <h2><%= link_to(@title, action: :weather_map) %></h2>
+  <p>Weather data is collected daily from the National Atmospheric and Oceanic Administration's gridded datasets and provided here for easy access.</p>
+  <p>Click <%= link_to "here", subscribers_path %> to subscribe to our daily automated weather emails or to edit an existing subscription.</p>
+<% end %>
 
-<h2><%= link_to(@title, "") %></h2>
-
+<h2><%= link_to(@title, action: :weather_map) %></h2>
 <hr>
 
 <h4>Introduction</h4>
-
 <p>This gridded weather data is imported daily from the <%= link_to "National Oceanic and Atmospheric Administration", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %> and includes air temperatures and dew points. From these data we compute vapor pressure and relative humidity. The map below shows mean daily air temperature, but all weather parameters may be viewed by clicking on the map or selecting a specific Latitude/Longitude and clicking 'Get Data Series' in the box below. Use the buttons above the map to view a different date.</p>
+<p>Daily maps in the default units are already rendered by our server and can be browsed quickly. Changing units or using the cumulative map tool below will take around 10 seconds to render the image.</p>
 
-<h4>Temperature Map</h4>
-
-<div class="form-box" id="map-form">
-  <b>Select air temperature map:</b>
-  <p>Shown: <%= @date.strftime("%b %d, %Y") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</p>
-  <%= form_tag do %>
-    <%= hidden_field_tag :date, @date %>
-    <% if @unit_options %>
-      <p>
-        Units:
-        <% @unit_options.each do |unit| %>
-          <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %>&deg;<%= unit %></label>&nbsp;
-        <% end %>
-      </p>
-    <% end %>
-    <p>
-      Go:
-      <label><%= submit_tag "Prev: #{@date - 1}", name: :date %></label>&nbsp;
-      <% if @date < Date.current - 2.days %>
-        <label><%= submit_tag "Next: #{@date + 1}", name: :date %></label>&nbsp;
-      <% end %>
-      <% if @date < Date.yesterday %><label><%= submit_tag "Latest: #{Date.yesterday}", name: :date %></label><% end %>
-    </p>
-  <% end %>
-  <%= form_tag do %>
-    <%= hidden_field_tag :units, @units %>
-    <p>Or enter a specific date: <%= text_field_tag :date %>&nbsp;<%= submit_tag "Go" %></p>
-  <% end %>
-</div>
+<h4 id="map">Air temperature map for <%= @date.strftime("%b %-d, %Y") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
 
 <%= render_async map_image_weather_index_path,
   method: "POST",
-  data: { endpoint: @endpoint, id: @date, query: {units: @units}.compact }.to_json,
+  data: {
+    endpoint: @endpoint,
+    id: @date,
+    query: { units: @units }.compact,
+    caption: "Note: Map color scale is based on min/max temp across region."
+  }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
   <%= render layout: "partials/loading" do %>
     <p>
@@ -59,20 +39,18 @@
   <% end %>
 <% end %>
 
-<div class="note">
-  Note: Map color scale is based on min/max temp across region. <%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv, params: { date: @date } %>.
+<div class="two-box">
+  <%= render partial: "partials/map_form__browse" %>
+  <div class="box" style="width: 50%"></div>
 </div>
 
-<hr>
-
-<h4>Get Weather Data</h4>
-
+<h4>Get weather data for a single location</h4>
 <p>Choose a location and date range then click "Get Data Series". Daily min/max/average temperature, dew point, vapor pressure, hours high humidity, and average temperature during periods of high humidity will be shown in either Fahrenheit or Celsius. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
-
 <%= render partial: "partials/grid_selector", locals: { target: weather_data_weather_index_path } %>
-
 <div id="map-data"></div>
 
-<br>
+<h4>Download weather data grid</h4>
+<p><%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv, params: { date: @date } %>.</p>
 
-<%= link_to "Back", :back %>
+<br>
+<%= link_to "Back", action: :index %>

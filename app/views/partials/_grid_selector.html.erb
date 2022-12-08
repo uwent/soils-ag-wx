@@ -1,4 +1,4 @@
-<div class="form-box">
+<div class="form-box" onChange="validateDates(this)">
   <%= form_tag target, method: "get", remote: true do %>
     <div class="title">Enter parameters:</div>
 
@@ -14,14 +14,18 @@
 
     <fieldset>
       <legend>Date range:</legend>
-      <label><%= date_select :start_date_select, :date,
-        start_year: Date.current.year - 4,
-        end_year: Date.current.year,
-        default: @date - 1.month %> Start</label><br>
-      <label><%= date_select :end_date_select, :date,
-        start_year: Date.current.year - 4,
-        end_year: Date.current.year,
-        default: @date %> End</label>
+      <div id="start-date">
+        <label><%= date_select :start_date_select, :date,
+          start_year: Date.current.year - 4,
+          end_year: Date.current.year,
+          default: @date - 1.month %> Start</label>
+      </div>
+      <div id="end-date">
+        <label><%= date_select :end_date_select, :date,
+          start_year: Date.current.year - 4,
+          end_year: Date.current.year,
+          default: @date %> End</label>
+      </div>
     </fieldset>
 
     <% if @temp_selector %>
@@ -41,6 +45,8 @@
       </fieldset>
     <% end %>
 
-    <%= button_tag "Get Data Series", name: "format", value: "js", class: "submit" %>
+    <%= button_tag "Get Data Series", name: "format", value: "js", class: "submit", id: "submit" %>
+
+    <div id="date-warning"></div>
   <% end %>
 </div>

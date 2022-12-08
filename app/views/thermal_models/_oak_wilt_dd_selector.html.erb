@@ -1,3 +1,27 @@
+<script>
+  function validateDate(el) {
+    let date = parseDate(el)
+    let today = new Date()
+    let error = ""
+
+    if (date) {
+      if (date.setHours(0,0,0,0) > today.setHours(0,0,0,0)) {
+        error = "Date of interest must be prior to the current date"
+      }
+    } else {
+      error = "Invalid date."
+    }
+
+    if (error.length > 0) {
+      document.querySelector("#date-warning").innerHTML = error
+      document.querySelector("#submit").disabled = true
+    } else {
+      document.querySelector("#date-warning").innerHTML = ""
+      document.querySelector("#submit").disabled = false
+    }
+  }
+</script>
+
 <div class="form-box">
   <%= form_tag(action: :oak_wilt_dd) do %>
     <b>Select location and date of interest for Oak Wilt recommendation:</b><br>
@@ -10,15 +34,13 @@
       </div>
     </p>
     <p>
-      <div onChange="validateDate()">
+      <div onChange="validateDate(this)">
         Date of Interest:<br>
         <%= date_select(:end_date, "date", start_year: 2017, default: 1.day.ago, end_year: Time.now.year) %>
       </div>
     </p>
     <p>
-      <div id="date-warning" style="display:none;">
-        <p>Date of interest must be prior to the current date.<p>
-      </div>
+      <div id="date-warning" class="disclaimer"></div>
       <p class="disclaimer">Note: Date of interest must be prior to the current date. The degree day data in this system is available only up to the day before the current date for computation.</p>
     </p>
     <%= submit_tag("Compute Estimated Oak Wilt Vector Emergence Status", class: "button", id: "submit") %>

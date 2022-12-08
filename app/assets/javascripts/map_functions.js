@@ -2,7 +2,7 @@ $(document).ready(function () {
   // console.log("Loaded map functions");
   elementReady("#map-img").then(() => {
     // console.log("Map found!")
-    img = document.getElementById("map-img");
+    img = document.querySelector("#map-img");
     img.onmousedown = getCoordinates;
   });
 })
@@ -56,7 +56,7 @@ function drawDot(x, y) {
   div.class = "dot";
   div.style.top = (y - size / 2.0).toFixed() + units;
   div.style.left = (x - size / 2.0).toFixed() + units;
-  document.getElementById("map-container").appendChild(div);
+  img.appendChild(div);
   // console.log("Dot placed at x:" + x + " y:" + y)
 }
 
@@ -89,6 +89,8 @@ function findLatLong(x, y) {
 }
 
 function moveDot() {
+  if (typeof img === 'undefined') return
+  
   var lat = latitude.value;
   var long = longitude.value;
   var imgSize = findSize(img);

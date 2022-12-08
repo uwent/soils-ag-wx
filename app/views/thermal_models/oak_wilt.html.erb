@@ -1,8 +1,9 @@
 <% @title = "Oak Wilt Vectors Emergence Thermal Model" %>
 <% @welcome_image = "oak-wilt.png" %>
+<%= javascript_include_tag "map_functions" %>
 
 <% content_for :welcome do %>
-  <h2><%= link_to(@title, "") %></h2>
+  <h2><%= link_to @title %></h2>
   <p>This oak wilt degree-day model estimates cumulative emergence of the two most important insects that transmit oak wilt (<i>Colopterus truncatus</i> and <i>Carpophilus sayi</i>) in the spring across Wisconsin. The degree-day model was constructed based on recent vector trapping data in Wisconsin (Jagemann et al., 2018). This model is a useful tool to refine the beginning of the periods when pruning, wounding, and/or harvesting of oaks should be avoided to reduce the risk of introduction of oak wilt.</p>
   <div class="user-guide">
     <%= link_to "User guide", @links[:user_guide], target:"_blank" %>
@@ -10,28 +11,7 @@
   </div>
 <% end %>
 
-<%= content_for :scripts do %>
-<script>
-function validateDate() {
-  let year = document.getElementById("end_date_date_1i").value
-  let month = document.getElementById("end_date_date_2i").value
-  let day = document.getElementById("end_date_date_3i").value
-  let date = new Date(`${month}-${day}-${year}`)
-  let today = new Date()
-  if (date.setHours(0,0,0,0) >= today.setHours(0,0,0,0)) {
-    document.getElementById("date-warning").style.display = "block";
-    document.getElementById("submit").disabled = true;
-  } else {
-    document.getElementById("date-warning").style.display = "none";
-    document.getElementById("submit").disabled = false;
-  }
-}
-</script>
-<% end %>
-
-<%= javascript_include_tag "map_functions" %>
-
-<h2><%= link_to(@title, "") %></h2>
+<h2><%= link_to @title %></h2>
 
 <hr>
 
@@ -104,5 +84,4 @@ function validateDate() {
 </ol>
 
 <br>
-
-<%= link_to "Back", :back %>
+<%= link_to "Back", action: :index %>

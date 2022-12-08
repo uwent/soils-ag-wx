@@ -1,33 +1,36 @@
 <% @title = "Solar Insolation Map" %>
 <% @welcome_image = "equinox.jpg" %>
+<%= javascript_include_tag "map_functions" %>
+<% if @is_post %>
+  <script>
+    elementReady("#map").then(() => { document.getElementById("map").scrollIntoView(); });
+  </script>
+<% end %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
   <p>UW Space Sciences model provides excellent insolation estimates during most of the year (snow cover looks like clouds to the satellite).</p>
+  <p>Click <%= link_to "here", subscribers_path %> to subscribe to our daily automated weather and evapotranspiration emails or to edit an existing subscription.</p>
 <% end %>
 
-<%= javascript_include_tag "map_functions" %>
-<% if @is_post %><%= javascript_include_tag "scroll_to_form" %><% end %>
-
 <h2><%= link_to(@title, "") %></h2>
-
 <hr>
 
 <h4>Introduction</h4>
-
 <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
-
 <p>The gridded insolation estimates shown below are imported daily from <%= link_to "UW Madison's Space Science Engineering Center", "https://ssec.wisc.edu" %> and provided on this page for easy access. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). We use this data, in combination with <%= link_to "gridded daily temperature datasets", controller: :weather, action: :weather_map %>, to generate our <%= link_to "evapotranspiration estimates", action: :et_map %>.</p>
 
-<h4>Insolation Maps</h4>
-
+<h4 id="map">Insolation Maps</h4>
 <p>Daily insolation maps in the default units are already rendered by our server and can be browsed quickly. Changing the units or using the cumulative map tool below will take around 10 seconds to render the image</p>
-
-<%= render partial: "partials/map_navigator" %>
 
 <%= render_async map_image_sun_water_index_path,
   method: "POST",
-  data: { endpoint: @endpoint, id: @date, query: {units: @units, start_date: @start_date}.compact }.to_json,
+  data: {
+    endpoint: @endpoint,
+    id: @date,
+    query: { units: @units, start_date: @start_date }.compact,
+    caption: "Note: Single-day map color scale is based on min/max values for the entire year.",
+  }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
   <%= render layout: "partials/loading" do %>
     <p>
@@ -38,20 +41,18 @@
   <% end %>
 <% end %>
 
-<div class="note">
-  Note: Single-day map color scale is based on min/max values for the entire year. <%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :insol_map, format: :csv, params: { date: @date } %>. Currently it is only possible to download a daily grid, not a cumulative insolation grid.
+<div class="two-box">
+  <%= render partial: "partials/map_form__browse" %>
+  <%= render partial: "partials/map_form__cumulative" %>
 </div>
 
-<hr>
-
-<h4>Get Insolation Data Time Series</h4>
-
+<h4>Get insolation data for a single location</h4>
 <p>Choose a location and date range then click "Get Data Series". Daily insolation data will be displayed in units of Mj and kWh. Note: You can click on the map to set the latitude and longitude to within half a degree.</p>
-
 <%= render partial: "partials/grid_selector", locals: { target: insol_data_sun_water_index_path } %>
-
 <div id="map-data"></div>
 
-<br>
+<h4>Download insolation data grid</h4>
+<p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :insol_map, format: :csv, params: { date: @date } %>. Currently it is only possible to download a daily grid, not a cumulative insolation grid.</p>
 
-<%= link_to "Back", :back %>
+<br>
+<%= link_to "Back", action: :index %>
