@@ -525,14 +525,17 @@ input, select, button {
 }
 
 .map-fail {
-	padding: 2em;
+	padding: 1em;
 	font-style: italic;
+	font-weight: bold;
+	color: #c5050c;
 }
 
 .map-note {
 	font-style: italic;
 	text-align: center;
-	margin: 1em auto;
+	margin: 1em;
+	font-size: small;
 }
 
 .no-border {

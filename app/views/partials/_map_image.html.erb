@@ -1,16 +1,16 @@
 <div class="map-container">
   <% if @map_image.include? "no_data" %>
     <div class="map-form map-fail">
-      Sorry, we were unable to find or render the specified map image. Please try again or select another date.
+      Sorry, we were unable to load the map. There may be no data for the selected date(s), or another error occurred. Try reloading the page.
     </div>
   <% else %>
     <div class="center-div">
       <div id="map-img">
         <%= image_tag @map_image %>
       </div>
-      <div class="map-note">
-        <%= @caption %>
-      </div>
+    </div>
+    <div class="map-note">
+      <%= @caption %>
     </div>
   <% end %>
 </div>
