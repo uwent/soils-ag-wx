@@ -4,7 +4,6 @@ def route(action, verb = :get, *other_verbs)
 end
 
 Rails.application.routes.draw do
-
   # TODO: change this to home controller?
   resources :navigation, path: "", only: :index do
     collection do
@@ -13,14 +12,13 @@ Rails.application.routes.draw do
     end
   end
   get "/", to: "navigation#index" # default action
-  get "/navigation/(*path)", to: redirect("/") unless Rails.env.development?
+  get "/navigation/(*path)", to: redirect("/", status: 404) unless Rails.env.development?
 
   resources :awon, only: :index do
     collection do
       route "awon_check_boxes"
       route "select_data"
       route "station_info"
-      route "download_data"
       route "download_data", :get, :post
       # get "awon_seven_day"
       # get "graphs"
@@ -29,7 +27,7 @@ Rails.application.routes.draw do
     end
   end
   get "/awon", to: "awon#index" # default action
-  get "/awon/(*path)", to: redirect("/awon") unless Rails.env.development?
+  get "/awon/(*path)", to: redirect("/awon", status: 404) unless Rails.env.development?
 
   # resources :heartbeat, only: :index do
   #   collection do
@@ -62,7 +60,7 @@ Rails.application.routes.draw do
     end
   end
   get "/weather", to: "weather#index" # default action
-  get "/weather/(*path)", to: redirect("/weather") unless Rails.env.development?
+  get "/weather/(*path)", to: redirect("/weather", status: 404) unless Rails.env.development?
 
   resources :sun_water, path: "/sun-water", only: :index do
     collection do
@@ -74,8 +72,7 @@ Rails.application.routes.draw do
     end
   end
   get "/sun-water", to: "sun_water#index" # default action
-  get "/sun-water/(*path)", to: redirect("/sun-water") unless Rails.env.development?
-  get "/sun_water/(*path)", to: redirect("/sun-water") unless Rails.env.development? # catch old underscores
+  get "/sun-water/(*path)", to: redirect("/sun-water", status: 404) unless Rails.env.development?
 
   resources :thermal_models, path: "/thermal-models", only: :index do
     collection do
@@ -99,8 +96,8 @@ Rails.application.routes.draw do
     end
   end
   get "/thermal-models", to: "thermal_models#index" # default action
-  get "/thermal-models/(*path)", to: redirect("/thermal-models") unless Rails.env.development?
-  get "/thermal_models/(*path)", to: redirect("/thermal-models") unless Rails.env.development? # catch old underscores
+  get "/thermal-models/(*path)", to: redirect("/thermal-models", status: 404) unless Rails.env.development?
+
 
   resources :subscribers, only: [:index, :new, :create, :update, :destroy] do
     collection do
@@ -128,7 +125,7 @@ Rails.application.routes.draw do
     end
   end
   match "/subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/(*path)", to: redirect("/subscribers") unless Rails.env.development?
+  get "/subscribers/(*path)", to: redirect("/subscribers", status: 404) unless Rails.env.development?
 
   resources :subscriptions
 
@@ -142,7 +139,11 @@ Rails.application.routes.draw do
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  get "*unmatched", to: redirect("/") unless Rails.env.development?
+  # catch old underscored URLs
+  get "/thermal_models/(*path)", to: redirect("/thermal-models")
+  get "/sun_water/(*path)", to: redirect("/sun-water")
+
+  get "*unmatched", to: redirect("/", status: 404) unless Rails.env.development?
   post "*unmatched", to: "application#bad_request" unless Rails.env.development?
   post "/", to: "application#bad_request" unless Rails.env.development?
 end
