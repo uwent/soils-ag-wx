@@ -29,7 +29,7 @@
 
   function changeYear() {
     jQuery.ajax({
-      url: "hyd_grid",
+      url: "<%= hyd_grid_weather_index_url %>",
       type: "GET",
       data: {"year" : year.value},
       dataType: "html",
