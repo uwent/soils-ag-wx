@@ -44,12 +44,22 @@ function validateDates(el) {
   let endDate = el.querySelector("#end-date")
   let startDateValue = parseDate(startDate)
   let endDateValue = parseDate(endDate)
+  let today = new Date().setHours(0, 0, 0, 0)
   let errors = ""
-  errors += startDateValue ? "" : "Invalid start date. "
-  errors += endDateValue ? "" : "Invalid end date. "
 
+  if (startDateValue) {
+    startDateValue = startDateValue.setHours(0, 0, 0, 0)
+  } else {
+    errors += "Invalid start date. "
+  }
+  if (endDateValue) {
+    endDateValue = endDateValue.setHours(0, 0, 0, 0)
+    if (endDateValue >= today) errors += "End date must be prior to today's date."
+  } else {
+    errors += "Invalid end date. "
+  }
   if (startDateValue && endDateValue) {
-    errors += (startDateValue < endDateValue) ? "" : "Start date must be before end date. "
+    if (startDateValue > endDateValue) errors += "Start date must be before end date. "
   }
 
   if (errors.length > 0) {
@@ -58,5 +68,26 @@ function validateDates(el) {
   } else {
     el.querySelector("#date-warning").innerHTML = ""
     el.querySelector("#submit").disabled = false
+  }
+}
+
+function validateDate(el) {
+  let date = parseDate(el)
+  let today = new Date().setHours(0, 0, 0, 0)
+  let error = ""
+
+  if (date) {
+    date = date.setHours(0, 0, 0, 0)
+    if (date >= today) error = "Date must be prior to the current date."
+  } else {
+    error = "Invalid date."
+  }
+
+  if (error.length > 0) {
+    document.querySelector("#date-warning").innerHTML = error
+    document.querySelector("#submit").disabled = true
+  } else {
+    document.querySelector("#date-warning").innerHTML = ""
+    document.querySelector("#submit").disabled = false
   }
 }

@@ -1,27 +1,3 @@
-<script>
-  function validateDate(el) {
-    let date = parseDate(el)
-    let today = new Date()
-    let error = ""
-
-    if (date) {
-      if (date.setHours(0,0,0,0) > today.setHours(0,0,0,0)) {
-        error = "Date of interest must be prior to the current date"
-      }
-    } else {
-      error = "Invalid date."
-    }
-
-    if (error.length > 0) {
-      document.querySelector("#date-warning").innerHTML = error
-      document.querySelector("#submit").disabled = true
-    } else {
-      document.querySelector("#date-warning").innerHTML = ""
-      document.querySelector("#submit").disabled = false
-    }
-  }
-</script>
-
 <div class="form-box">
   <%= form_tag(action: :oak_wilt_dd) do %>
     <b>Select location and date of interest for Oak Wilt recommendation:</b><br>

@@ -518,9 +518,9 @@ input, select, button {
 
 #map-img {
 	position: relative;
+	border: 1px solid $form-border-color;
 
 	img {
-		border: 1px solid $form-border-color;
 		max-height: 80vh;
 	}
 }
