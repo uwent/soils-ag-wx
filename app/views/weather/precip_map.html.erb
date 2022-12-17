@@ -20,7 +20,11 @@
 <p>Use this page to access gridded precipitation data for the upper Midwest. This data is collected daily from NOAA datasets, which are generated from a combination of real-world observations and computer modeling. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). Precpitation can be highly localized, so these data may not completely match observations from rain gauges or weather stations, but should be relatively close. Consider checking <%= link_to "weather.gov", "https://www.weather.gov", target: "_blank" %> or <%= link_to "wunderground.com", "https://www.wunderground.com", target: "_blank" %> for weather/precipitation history or forecasts from an individual weather station.</p>
 <p>Daily maps in the default units are already rendered by our server and can be browsed quickly. Changing units or using the cumulative map tool below will take around 10 seconds to render the image.</p>
 
-<h4 id="map">Precipitation map for <%= @date.strftime("%b %-d, %Y") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
+<% if @start_date %>
+  <h4 id="map">Cumulative precipitation map for <%= @start_date.strftime("%b %-d") %> to <%= @date.strftime("%b %-d") %> (<%= pluralize((@start_date..@date).count, "day") %>)</h4>
+<% else %>
+  <h4 id="map">Precipiation map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
+<% end %>
 
 <%= render_async map_image_weather_index_path,
   method: "POST",
@@ -29,8 +33,7 @@
     id: @date,
     query: { units: @units, start_date: @start_date }.compact,
     caption: "Note: Map color scale is based on min/max daily precipitation across region. Precipitation data is not available for Canada from our data source (NOAA)."
-  }.to_json,
-  error_message: "Sorry, unable to load map. Please try again." do %>
+  }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p>
       Date: <%= @date %><br>

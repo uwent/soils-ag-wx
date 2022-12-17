@@ -475,7 +475,8 @@ input, select, button {
 	background: $table-row-highlight-color;
 	display: flex;
 	margin-bottom: 1em;
-	height: 80vh;
+	width: inherit;
+	aspect-ratio: 1;
 	flex: 1 1 auto;
 
 	div {

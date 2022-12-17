@@ -19,9 +19,13 @@
 <h4>Introduction</h4>
 <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
 <p>The gridded insolation estimates shown below are imported daily from <%= link_to "UW Madison's Space Science Engineering Center", "https://ssec.wisc.edu" %> and provided on this page for easy access. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). We use this data, in combination with <%= link_to "gridded daily temperature datasets", controller: :weather, action: :weather_map %>, to generate our <%= link_to "evapotranspiration estimates", action: :et_map %>.</p>
-
-<h4 id="map">Insolation Maps</h4>
 <p>Daily insolation maps in the default units are already rendered by our server and can be browsed quickly. Changing the units or using the cumulative map tool below will take around 10 seconds to render the image</p>
+
+<% if @start_date %>
+  <h4 id="map">Cumulative solar insolation map for <%= @start_date.strftime("%b %-d") %> to <%= @date.strftime("%b %-d") %> (<%= pluralize((@start_date..@date).count, "day") %>)</h4>
+<% else %>
+  <h4 id="map">Solar insolation map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
+<% end %>
 
 <%= render_async map_image_sun_water_index_path,
   method: "POST",
@@ -30,8 +34,7 @@
     id: @date,
     query: { units: @units, start_date: @start_date }.compact,
     caption: "Note: Single-day map color scale is based on min/max values for the entire year.",
-  }.to_json,
-  error_message: "Sorry, unable to load map. Please try again." do %>
+  }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p>
       Date: <%= @date %><br>
