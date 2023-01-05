@@ -169,6 +169,13 @@ class SubscribersController < ApplicationController
     @weather_subs = Subscription.weather
     @dd_subs = Subscription.degree_days
     @pest_subs = Subscription.pests
+
+    # pre-fill for new site
+    if params[:lat] && params[:long]
+      @new_name = "My Site"
+      @new_lat = params[:lat]
+      @new_long = params[:long]
+    end
   end
 
   def send_email
@@ -331,9 +338,5 @@ class SubscribersController < ApplicationController
 
   def remove_from_session
     session.delete(:subscriber)
-  end
-
-  def get_subscriber_from_session
-    @subscriber = Subscriber.where(id: session[:subscriber]).first
   end
 end

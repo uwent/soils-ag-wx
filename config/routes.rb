@@ -4,6 +4,15 @@ def route(action, verb = :get, *other_verbs)
 end
 
 Rails.application.routes.draw do
+
+  get "site/:lat,:long(,:etc)", to: "sites#index", constraints: {
+    lat: /[-+]?\d+\.?\d*/,
+    long: /[-+]?\d+\.?\d*/
+  }
+  get "sites", to: "sites#index"
+  get "site", to: redirect("/sites")
+  get "site/(*path)", to: redirect("/sites")
+
   # TODO: change this to home controller?
   resources :navigation, path: "", only: :index do
     collection do
@@ -102,10 +111,9 @@ Rails.application.routes.draw do
   resources :subscribers, only: [:index, :new, :create, :update, :destroy] do
     collection do
       route "admin"
-      route "manage"
+      route "manage", :get, :post
       route "logout"
       route "export"
-      route "manage", :post
     end
     member do
       route "confirm"

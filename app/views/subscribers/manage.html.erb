@@ -256,9 +256,9 @@
           <% end %>
           <tr id="add-controls">
             <%= form_tag add_site_subscriber_path(@subscriber.id), id: "submit-site" do %>
-              <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25, required: true %></td>
-              <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6, required: true %></td>
-              <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "site-name", @new_name, maxlength: 25, size: 25, required: true %></td>
+              <td><%= text_field_tag "latitude", @new_lat, maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "longitude", @new_long, maxlength: 6, size: 6, required: true %></td>
               <td><%= button_tag "Add" %></td>
             <% end %>
             <td><button onclick="clearSite()">Clear</button></td>

@@ -567,3 +567,19 @@ input, select, button {
 	color: red;
 	margin-top: 0.5em;
 }
+
+
+// --- Sites --- //
+
+.site-row h4 {
+	margin-bottom: 2px;
+}
+
+.site-box {
+	padding: 0.5em;
+	border: 1px solid $form-border-color;
+	border-radius: 5px;
+	background: $table-row-highlight-color;
+	margin-bottom: 1em;
+	width: inherit;
+}

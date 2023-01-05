@@ -34,7 +34,7 @@ module ApplicationHelper
   end
 
   def latitudes
-    (38.0..50.0).step(0.1)
+    LAT_RANGE.step(0.1)
   end
 
   def latitude_labels
@@ -46,7 +46,7 @@ module ApplicationHelper
   end
 
   def longitudes
-    (-98.0..-82.0).step(0.1)
+    LONG_RANGE.step(0.1)
   end
 
   def longitude_labels

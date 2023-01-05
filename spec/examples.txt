@@ -1,0 +1,6 @@
+example_id                                     | status  | run_time        |
+---------------------------------------------- | ------- | --------------- |
+./spec/helpers/application_helper_spec.rb[1:1] | pending | 0 seconds       |
+./spec/helpers/sites_helper_spec.rb[1:1]       | pending | 0 seconds       |
+./spec/requests/sites_spec.rb[1:1:1]           | passed  | 1.27 seconds    |
+./spec/views/sites/index.html.erb_spec.rb[1:1] | pending | 0.00001 seconds |

@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :set_tab_selected
-  before_action :app_last_updated
 
   def authenticate
     request.remote_ip == "127.0.0.1"
@@ -58,7 +57,8 @@ class ApplicationController < ActionController::Base
       subscriptions: :subscriptions,
       sun_water: :sun_water,
       thermal_models: :thermal_models,
-      weather: :weather
+      weather: :weather,
+      sites: :sites
     }
     if params[:controller]
       @tab_selected = {selects[params[:controller].to_sym] => "yes"}
@@ -93,14 +93,6 @@ class ApplicationController < ActionController::Base
   #   Rails.logger.warn "ApplicationController :: Date parsing error: #{e}"
   #   [nil, nil]
   # end
-
-  def app_last_updated
-    @app_last_updated = if File.exist?(File.join(Rails.root, "REVISION"))
-      File.mtime(File.join(Rails.root, "REVISION")).to_date
-    else
-      "Unknown"
-    end
-  end
 
   # def fetch(endpoint)
   #   response = HTTParty.get(endpoint, timeout: 10)
@@ -166,5 +158,18 @@ class ApplicationController < ActionController::Base
   rescue => e
     Rails.logger.error "ApplicationController :: Failed to create csv: #{e.message}"
     "no data"
+  end
+
+  def get_subscriber_from_session
+    id = session[:subscriber]
+    @subscriber = id.nil? ? nil : Subscriber.where(id:).first
+  end
+
+  def validate_lat(lat)
+    LAT_RANGE === lat
+  end
+
+  def validate_long(long)
+    LONG_RANGE === long
   end
 end
