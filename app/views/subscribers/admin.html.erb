@@ -3,6 +3,14 @@
 
 <script>
   $(".best_in_place").best_in_place()
+  $(document).on("best_in_place:error", (event, request, error) => {
+    let msg = JSON.parse(request.responseText).message;
+    $("#bip-notice").css("display", "unset").html(msg).delay(2000).fadeOut()
+  });
+
+  $(document).on('best_in_place:success', () => {
+    $("#bip-notice").css("display", "none").html("");
+  });
 </script>
 
 <% content_for :welcome do %>
@@ -15,8 +23,12 @@
 
 <%= render partial: "notices" %>
 
-<b>Name: </b><%= @subscriber.name %><br>
-<b>Email: </b><%= @subscriber.email %>
+<p>
+  <b>Name:</b> <%= @subscriber.name %><br>
+  <b>Email:</b> <%= @subscriber.email %>
+</p>
+
+<span id="bip-notice" class="error"></span>
 
 <div class="apple_pagination">
   <%= will_paginate @subscribers, class: :apple_pagination %>
@@ -34,10 +46,10 @@
     </thead>
     <tbody>
       <% @subscribers.each do |subscriber| %>
-        <tr>
+        <tr style="<%= @subscriber.id == subscriber.id ? 'font-weight:bold;' : '' %>">
           <td><%= subscriber.id %></td>
           <td><%= best_in_place subscriber, :name, as: :input %></td>
-          <td><%= best_in_place subscriber, :email, as: :input %></td>
+          <td><%= @subscriber.id == subscriber.id ? subscriber.email : best_in_place(subscriber, :email, as: :input) %></td>
           <td align="center"><%= subscriber.sites.size %></td>
           <td align="center"><%= subscriber.admin? ? "Yes" : "" %></td>
           <td>

@@ -1,18 +1,12 @@
-<%= javascript_include_tag "map_functions" %>
-
 <% content_for :welcome do %>
-  <h2><%= link_to "Point data", action: :index %></h2>
+  <h2><%= link_to "Site data", action: :index %></h2>
   <p>These pages provide quick access to several kinds of recent weather data for any grid point in our datatabase. These data are updated daily from NOAA grids, who generate these data from advanced weather models that integrate real-world observations from across the country.</p>
 <% end %>
 
 <h2><%= @title %></h2>
-
-<%= render partial: "my_sites" %>
-
 <%= render partial: "site_selector" %>
-
+<%= render partial: "my_sites" %>
 <hr>
-
 <div class="site-row">
   <% if @valid.nil? %>
     <p>No location provided. Please select a location with the form below:</p>
@@ -22,5 +16,3 @@
     <%= render partial: "site_data" %>
   <% end %>
 </div>
-
-

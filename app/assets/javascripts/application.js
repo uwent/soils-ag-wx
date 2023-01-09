@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery-ui/widgets/datepicker
 //= require best_in_place
+//= require jquery.purr
 
 function elementReady(selector) {
   return new Promise((resolve, reject) => {

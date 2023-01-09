@@ -4,6 +4,7 @@ class Site < ApplicationRecord
   has_many :subscriptions, through: :site_subscriptions
   default_scope { order(latitude: :desc) }
   scope :enabled, -> { where(enabled: true) }
+  validates_uniqueness_of :name, scope: :subscriber
 
   def full_name
     "#{name} (#{latitude}, #{longitude})"
@@ -19,5 +20,9 @@ class Site < ApplicationRecord
 
   def as_json(options = {})
     {id:, name:, latitude:, longitude:}
+  end
+
+  def lat_lon
+    "#{latitude},#{longitude}"
   end
 end

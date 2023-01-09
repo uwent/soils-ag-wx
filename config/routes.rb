@@ -4,40 +4,15 @@ def route(action, verb = :get, *other_verbs)
 end
 
 Rails.application.routes.draw do
+  
+  root to: "navigation#index"
 
-  get "site/:lat,:long(,:etc)", to: "sites#show", constraints: {
-    lat: /[-+]?\d+\.?\d*/,
-    long: /[-+]?\d+\.?\d*/
-  }
-  get "sites", to: "sites#index"
-  get "site", to: redirect("/sites")
-  get "site/(*path)", to: redirect("/sites")
+  # Navigation controller
+  get "about", to: "navigation#about"
+  get "king-hall", to: "navigation#king_hall"
+  get "navigation", to: redirect("")
 
-  # TODO: change this to home controller?
-  resources :navigation, path: "", only: :index do
-    collection do
-      route "about"
-      route "king_hall"
-    end
-  end
-  get "/", to: "navigation#index" # default action
-  get "/navigation/(*path)", to: redirect("/", status: 404) unless Rails.env.development?
-
-  resources :awon, only: :index do
-    collection do
-      route "awon_check_boxes"
-      route "select_data"
-      route "station_info"
-      route "download_data", :get, :post
-      # get "awon_seven_day"
-      # get "graphs"
-      # get "graphs_soiltemp"
-      # get "blog"
-    end
-  end
-  get "/awon", to: "awon#index" # default action
-  get "/awon/(*path)", to: redirect("/awon", status: 404) unless Rails.env.development?
-
+  # Weather controller
   resources :weather, only: :index do
     collection do
       route "awon"
@@ -56,25 +31,39 @@ Rails.application.routes.draw do
       route "doycal_grid"
     end
   end
-  get "/weather", to: "weather#index" # default action
-  get "/weather/(*path)", to: redirect("/weather", status: 404) unless Rails.env.development?
+  get "weather", to: "weather#index" # default action
+  get "weather/(*path)", to: redirect("weather")
+  get "sun-water/(*path)", to: redirect("weather", status: 301)
+  get "sun_water/(*path)", to: redirect("weather", status: 301)
 
-  resources :sun_water, path: "/sun-water", only: :index do
+  # Sites controller
+  get "sites/:lat,:long", to: "sites#show", constraints: {
+    lat: /[-+]?\d+\.?\d*/,
+    long: /[-+]?\d+\.?\d*/
+  }
+  get "sites", to: "sites#index"
+  get "sites/(*path)", to: redirect("sites")
+  resources :sites, only: :update
+
+  # AWON controller
+  resources :awon, only: :index do
     collection do
-
-      route "map_image", :get, :post
+      route "awon_check_boxes"
+      route "station_info"
+      route "download_data", :post
     end
   end
-  get "/sun-water", to: "sun_water#index" # default action
-  get "/sun-water/(*path)", to: redirect("/sun-water", status: 404) unless Rails.env.development?
+  get "awon", to: "awon#index"
+  get "awon/(*path)", to: redirect("/awon")
 
-  resources :thermal_models, path: "/thermal-models", only: :index do
+  # Thermal models controller
+  resources :thermal_models, path: "thermal-models", only: :index do
     collection do
-      route "dd_map", :get, :post
-      route "degree_days"
       route "alfalfa_weevil"
       route "corn_dev"
       route "corn_stalk_borer"
+      route "dd_map", :get, :post
+      route "degree_days"
       route "ecb"
       route "frost_map"
       route "get_dds", :get, :post
@@ -89,11 +78,12 @@ Rails.application.routes.draw do
       route "download_csv", :post
     end
   end
-  get "/thermal-models", to: "thermal_models#index" # default action
-  get "/thermal-models/(*path)", to: redirect("/thermal-models", status: 404) unless Rails.env.development?
+  get "thermal-models", to: "thermal_models#index" # default action
+  get "thermal-models/(*path)", to: redirect("/thermal-models")
+  get "thermal_models/(*path)", to: redirect("/thermal-models", status: 301)
 
-
-  resources :subscribers, only: [:index, :new, :create, :update, :destroy] do
+  # Subscribers controller
+  resources :subscribers do
     collection do
       route "admin"
       route "manage", :get, :post
@@ -115,12 +105,11 @@ Rails.application.routes.draw do
       route "disable_subscription", :post
       route "enable_emails", :post
       route "disable_emails", :post
+      route "edit", :post
     end
   end
-  match "/subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/(*path)", to: redirect("/subscribers", status: 404) unless Rails.env.development?
-
-  resources :subscriptions
+  match "subscribers", to: "subscribers#index", via: [:get, :post]
+  get "/subscribers/(*path)", to: redirect("/subscribers")
 
   # Custom URLs
   direct :vdifn do "/vdifn" end
@@ -128,15 +117,9 @@ Rails.application.routes.draw do
   direct :vegpath do "https://vegpath.plantpath.wisc.edu" end
   direct :vegento do "https://vegento.russell.wisc.edu" end
 
-  root to: "navigation#index"
-
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  # catch old underscored URLs
-  get "/thermal_models/(*path)", to: redirect("/thermal-models")
-  get "/sun_water/(*path)", to: redirect("/sun-water")
-
-  get "*unmatched", to: redirect("/", status: 404) unless Rails.env.development?
+  get "*unmatched", to: redirect("/")
   post "*unmatched", to: "application#bad_request" unless Rails.env.development?
   post "/", to: "application#bad_request" unless Rails.env.development?
 end

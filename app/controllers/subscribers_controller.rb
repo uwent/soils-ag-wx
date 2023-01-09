@@ -110,8 +110,10 @@ class SubscribersController < ApplicationController
   def update
     return reject if @subscriber.nil? || !@subscriber.admin?
     subscriber = Subscriber.find(params[:id])
-    subscriber.update(subscriber_params)
-    render json: {message: "success"}
+    subscriber.update!(subscriber_params.compact)
+    render json: { message: "success" }
+  rescue => e
+    render json: { message: e }, status: 422
   end
 
   def destroy
@@ -317,10 +319,6 @@ class SubscribersController < ApplicationController
         @subscriber = Subscriber.find(params[:id])
       end
     end
-  end
-
-  def reject(error = "error")
-    render json: {message: error, status: 500}
   end
 
   def fix_email

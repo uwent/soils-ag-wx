@@ -6,10 +6,10 @@
         <ul>
           <% @sites.each do |site| %>
             <li><strong><%= site.name %></strong>: <%= site.latitude %>, <%= site.longitude %>
-            <% if @lat == site.latitude && @long = site.longitude %>
-               << Current site
+            <% if (@lat == site.latitude) && (@long == site.longitude) %>
+              <strong> << Current site</strong>
             <% else %>
-               - <%= link_to "View site", "#{site_path}/#{site.latitude},#{site.longitude}" %></li>
+               - <%= link_to "View site", "#{url_for(controller: :sites)}/#{site.latitude},#{site.longitude}" %></li>
             <% end %>
           <% end %>
         </ul>

@@ -34,28 +34,13 @@ html, body, h1, h2 {
 	padding: 0px;
 }
 
-// * {
-// 	font-family: "Red Hat Display", sans-serif;
-// }
-
-// h1, h2, h3, h4, h5, h6 {
-// 	font-family: "Red Hat Text", sans-serif;
-// }
-
 * {
 	font-family: 'Lato', sans-serif;
 }
 
-// h1, h2, h3, h4, h5, h6 {
-// 	font-family: 'Lato', sans-serif;
-
-// 	* {
-// 		font-family: inherit;
-// 	}
-// }
-
 body {
 	background: $page-bg-color;
+	font-size: 15px;
 }
 
 h2 {
@@ -311,7 +296,41 @@ input, select, button {
 
 .error {
 	font-weight: bold;
-	color: red;
+	color: #c5050c;
+}
+
+div .error {
+	border: 1px solid #c5050c;
+	border-radius: 5px;
+	background-color: rgb(255, 240, 240);
+	padding: 10px;
+	margin-bottom: 1em;
+	width: fit-content;
+}
+
+.success {
+  font-weight: bold;
+  color: #008000;
+}
+
+div .success {
+	border: 1px solid #008000;
+	border-radius: 5px;
+	background-color: rgb(240, 255, 240);
+	padding: 10px;
+	margin-bottom: 1em;
+	width: fit-content;
+}
+
+.notice {
+  font-weight: bold;
+  color: #008000;
+}
+
+.notice-container {
+  display: flex;
+  padding: 1em 0;
+  min-height: 2em;
 }
 
 .copyright {

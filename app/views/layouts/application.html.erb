@@ -34,7 +34,7 @@
 					<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>Thermal Models</div>
 				<% end %>
 				<%= link_to controller: :sites do %>
-					<div class="nav-button" selected=<%= @tab_selected[:sites] %>>Point Data</div>
+					<div class="nav-button" selected=<%= @tab_selected[:sites] %>>Site Data</div>
 				<% end %>
 				<%= link_to controller: :subscribers do %>
 					<div class="nav-button" selected=<%= @tab_selected[:subscriptions] %>>Emails</div>
@@ -56,6 +56,7 @@
 				</div>
 				<div class="content-box">
 					<div class="content">
+						<span class='bip-flash-error'></span>
 						<%= yield -%>
 					</div>
 				</div>

@@ -1,6 +1,8 @@
+<%= javascript_include_tag "get_location" %>
+
 <script>
   function goToSite() {
-    let path = "<%= site_path %>" + `/${latitude.value},${longitude.value}`
+    let path = "<%= url_for(controller: :sites) %>" + `/${latitude.value},${longitude.value}`
     window.location.href = path
   }
 </script>

@@ -14,8 +14,12 @@ class ApplicationController < ActionController::Base
     #   request.remote_ip == "146.151.214.80"
   end
 
+  def reject(error = "error")
+    render json: { error: error }, status: 422
+  end
+
   def bad_request
-    render json: {error: "Bad request"}, status: :bad_request
+    render json: { error: "Bad request" }, status: :bad_request
   end
 
   rescue_from ActionController::RoutingError do |e|

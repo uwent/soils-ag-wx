@@ -2,7 +2,7 @@ class SitesController < ApplicationController
   before_action :get_subscriber_from_session, :get_sites
 
   def index
-    @title = "Point data"
+    @title = "Site data"
     @welcome_image = "awon.png"
   end
 
@@ -16,15 +16,28 @@ class SitesController < ApplicationController
       end
     end
 
-    @title = @lat && @long && @valid ? "Point data for #{@lat}, #{@long}" : "Point data"
+    @title = @lat && @long && @valid ? "Data dashboard for location #{@lat}, #{@long}" : "Site data"
     @welcome_image = "awon.png"
   end
 
+  def update
+    return reject if @subscriber.nil? || !@subscriber.admin?
+    site = Site.find(params[:id])
+    return reject unless @subscriber.sites.include? site
+    site.update!(site_params.compact)
+    render json: { message: "success" }
+  rescue => e
+    render json: { message: e }, status: 422
+  end
 
   private
 
   def get_sites
     @sites = @subscriber.sites.order(:latitude) if @subscriber
+  end
+
+  def site_params
+    params.require(:site).permit(:name, :latitude, :longitude)
   end
 
 end
