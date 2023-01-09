@@ -68,10 +68,10 @@
               </p>
               <p>
                 <b>Maps and data:</b> 
-                <%= link_to "Weather", {controller: :weather, action: :weather_map} %> - 
-                <%= link_to "Precipitation", {controller: :weather, action: :precip_map} %> - 
-                <%= link_to "Evapotranspiration", {controller: :sun_water, action: :et_map} %> - 
-                <%= link_to "Insolation", {controller: :sun_water, action: :insol_map} %> - 
+                <%= link_to "Weather", {controller: :weather, action: :weather} %> - 
+                <%= link_to "Precipitation", {controller: :weather, action: :precip} %> - 
+                <%= link_to "Evapotranspiration", {controller: :weather, action: :et} %> - 
+                <%= link_to "Insolation", {controller: :weather, action: :insol} %> - 
                 <%= link_to "Thermal Models", {controller: :thermal_models, action: :index} %>
               </p>
               <p><b>Degree days and pest models:</b> <%= link_to "VDIFN web app", root_url + "vdifn" %></p>

@@ -1,3 +1,5 @@
+<%= javascript_include_tag "map_functions" %>
+
 <% content_for :welcome do %>
   <h2><%= link_to "Point data", action: :index %></h2>
   <p>These pages provide quick access to several kinds of recent weather data for any grid point in our datatabase. These data are updated daily from NOAA grids, who generate these data from advanced weather models that integrate real-world observations from across the country.</p>
@@ -5,9 +7,20 @@
 
 <h2><%= @title %></h2>
 
-<p>Please select a location from within our data coverage area with the form below:</p>
-
 <%= render partial: "my_sites" %>
 
 <%= render partial: "site_selector" %>
+
+<hr>
+
+<div class="site-row">
+  <% if @valid.nil? %>
+    <p>No location provided. Please select a location with the form below:</p>
+  <% elsif @valid == false %>
+    <div class="error">Invalid site specified, try another one.</div>
+  <% elsif @valid %>
+    <%= render partial: "site_data" %>
+  <% end %>
+</div>
+
 

@@ -5,7 +5,7 @@ end
 
 Rails.application.routes.draw do
 
-  get "site/:lat,:long(,:etc)", to: "sites#index", constraints: {
+  get "site/:lat,:long(,:etc)", to: "sites#show", constraints: {
     lat: /[-+]?\d+\.?\d*/,
     long: /[-+]?\d+\.?\d*/
   }
@@ -38,34 +38,22 @@ Rails.application.routes.draw do
   get "/awon", to: "awon#index" # default action
   get "/awon/(*path)", to: redirect("/awon", status: 404) unless Rails.env.development?
 
-  # resources :heartbeat, only: :index do
-  #   collection do
-  #     get "awon"
-  #     get "asos"
-  #     get "hyd"
-  #     get "dd"
-  #     get "et"
-  #     get "insol"
-  #     get "ping"
-  #     get "webapps"
-  #     get "asos_grids"
-  #   end
-  # end
-  # match "/heartbeat", to: "heartbeat#index", via: [:get, :post]
-  # get "/heartbeat/*path", to: redirect("/heartbeat") unless Rails.env.development?
-
   resources :weather, only: :index do
     collection do
       route "awon"
-      route "doycal"
-      route "doycal_grid"
-      route "weather_map", :get, :post
+      route "weather", :get, :post
+      route "precip", :get, :post
+      route "et", :get, :post
+      route "insol", :get, :post
+      route "map_image", :get, :post
       route "weather_data"
+      route "precip_data"
+      route "et_data"
+      route "insol_data"
       route "hyd"
       route "hyd_grid"
-      route "precip_map", :get, :post
-      route "precip_data"
-      route "map_image", :post
+      route "doycal"
+      route "doycal_grid"
     end
   end
   get "/weather", to: "weather#index" # default action
@@ -73,10 +61,7 @@ Rails.application.routes.draw do
 
   resources :sun_water, path: "/sun-water", only: :index do
     collection do
-      route "insol_map", :get, :post
-      route "insol_data"
-      route "et_map", :get, :post
-      route "et_data"
+
       route "map_image", :get, :post
     end
   end

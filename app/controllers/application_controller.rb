@@ -14,22 +14,6 @@ class ApplicationController < ActionController::Base
     #   request.remote_ip == "146.151.214.80"
   end
 
-  # def fix_nested_dates(param)
-  #   if param.is_a? String
-  #     # convert to hash
-  #     slen = "start_date".length + 5
-  #     elen = "end_date".length
-  #     start_date_index = param.index("start_date") + slen
-  #     end_date_index = param.index("end_date") + elen
-  #     {
-  #       start_date: param[start_date_index, start_date_index + 10],
-  #       end_date: param[end_date_index, end_date_index + 10]
-  #     }
-  #   else
-  #     param
-  #   end
-  # end
-
   def bad_request
     render json: {error: "Bad request"}, status: :bad_request
   end
@@ -50,15 +34,11 @@ class ApplicationController < ActionController::Base
   def set_tab_selected
     selects = {
       awon: :weather,
-      drought: :drought,
-      navigation: :about,
-      products: :subscriptions,
-      subscribers: :subscriptions,
-      subscriptions: :subscriptions,
-      sun_water: :sun_water,
-      thermal_models: :thermal_models,
       weather: :weather,
-      sites: :sites
+      thermal_models: :thermal_models,
+      sites: :sites,
+      subscribers: :subscriptions,
+      navigation: :about
     }
     if params[:controller]
       @tab_selected = {selects[params[:controller].to_sym] => "yes"}
@@ -74,31 +54,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # def parse_dates(p)
-  #   # p is e.g. the result from params["grid_date"]
-  #   if p["start_date(1i)"] # it's the old three-element date style
-  #     [
-  #       Date.civil(p["start_date(1i)"].to_i, p["start_date(2i)"].to_i, p["start_date(3i)"].to_i),
-  #       Date.civil(p["end_date(1i)"].to_i, p["end_date(2i)"].to_i, p["end_date(3i)"].to_i)
-  #     ]
-  #   elsif p["start_date"] && p["end_date"]
-  #     [
-  #       Date.parse(p["start_date"]),
-  #       Date.parse(p["end_date"])
-  #     ]
-  #   else
-  #     [nil, nil]
-  #   end
-  # rescue => e
-  #   Rails.logger.warn "ApplicationController :: Date parsing error: #{e}"
-  #   [nil, nil]
-  # end
-
-  # def fetch(endpoint)
-  #   response = HTTParty.get(endpoint, timeout: 10)
-  #   JSON.parse(response.body, symbolize_names: true)
-  # end
-
   def default_date
     Time.now.in_time_zone("US/Central").yesterday.to_date
   end
@@ -106,10 +61,19 @@ class ApplicationController < ActionController::Base
   def parse_map_params
     @lat = params[:latitude].to_f
     @long = params[:longitude].to_f
-    @start_date = Date.new(*params[:start_date_select].values.map(&:to_i))
-    @end_date = Date.new(*params[:end_date_select].values.map(&:to_i))
     @units = params[:units]
     @method = params[:method]
+    @start_date = if params[:start_date_select].present?
+      Date.new(*params[:start_date_select].values.map(&:to_i))
+    else
+      params[:start_date]
+    end
+    @end_date = if params[:end_date_select].present?
+      Date.new(*params[:end_date_select].values.map(&:to_i))
+    else
+      params[:end_date]
+    end
+
     {
       lat: @lat,
       long: @long,

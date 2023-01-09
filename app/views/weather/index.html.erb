@@ -3,16 +3,31 @@
 
 <% content_for :welcome do %>
   <h2>Weather Observations</h2>
-  <p>Weather-related pages and data are available here.</p>
+  <p>Weather-related pages and data are available here, including temperature, precipitation, evapotranspiration, and insolation. Data are available from 2016-present for gridded data; earlier for AWON station data.</p>
+  <%= render partial: "quick_links" %>
 <% end %>
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("dd-map-150px.png"), action: :weather_map %>
+    <%= link_to image_tag("dd-map-150px.png"), action: :weather %>
   </div>
   <div>
-    <h2><%= link_to "Gridded Weather Data", action: :weather_map %></h2>
-    <p>View daily maps and access single point or whole-grid data series for weather parameters including daily min, max, and mean temperatures, dewpoints, vapor pressures, and humidity.</p>
+    <h2><%= link_to "Weather Data", action: :weather %></h2>
+    <p>View daily maps and access single point or whole-grid data series for weather parameters including daily min, max, and mean temperatures, dewpoints, vapor pressures, and humidity. These data are collected daily from NOAA-generated grids. These grids are computed using advanced weather models informed by real-world weather observations and have superseded our old methodology of interpolating weather observations at airports across Wisconsin.</p>
+  </div>
+  <ul><li><%= link_to "View or download weather data", action: :weather %></li></ul>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("precip-map-250px.png"), action: :precip %>
+  </div>
+  <div>
+    <h2><%= link_to "Precipitation Data", action: :precip %></h2>
+    <p>View daily maps and access single point or whole-grid data series for daily precipitation totals. Data is derived from NOAA-generated datasets.</p>
+    <ul><li><%= link_to "View or download precipitation data", action: :precip %></li></ul>
   </div>
 </div>
 
@@ -20,11 +35,29 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("precip-map-250px.png"), action: :precip_map %>
+    <%= link_to image_tag("insol-150px.png"), action: :insol %>
   </div>
   <div>
-    <h2><%= link_to "Gridded Daily Precipitation Data", action: :precip_map %></h2>
-    <p>View daily maps and access single point or whole-grid data series for daily precipitation totals. Data is derived from NOAA-generated datasets.</p>
+    <h2><%= link_to "Insolation Data", action: :insol %></h2>
+    <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
+    <ul>
+      <li><%= link_to "View or download solar insolation data", action: :insol %></li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("sunwater-150px.png"), action: :et %>
+  </div>
+  <div>
+    <h2><%= link_to "Evapotranspiration Data", action: :et %></h2>
+    <p>Maps of potential evapotranspiration (ET) are calculated from satellite-derived measurements of solar radiation and average air temperatures. The ET values on the maps are a reasonable estimate of daily crop water use for most crops that have reached at least 80% coverage of the ground. Prior to 80% or greater coverage, ET will be a fraction of the map value in proportion to the amount of coverage. The map values may vary slightly from ET estimates from AWON and other more site-specific models, but these differences are believed to be within the uncertainty of even measurements of actual water use made directly in a given field.</p>
+    <ul>
+      <li><%= link_to "View ET map or download data", action: :et %></li>
+    </ul>
   </div>
 </div>
 

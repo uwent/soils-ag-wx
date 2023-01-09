@@ -16,7 +16,7 @@
   </div>
   <div class="text">
     <h2><%= link_to "Weather", controller: :weather %></h2>
-    <p>We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", controller: :awon %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", controller: :weather, action: :weather_map %>.</p>
+    <p>Our <%= link_to "weather", controller: :weather %> page offers maps and data for <%= link_to "weather", controller: :weather, action: :weather %>, <%= link_to "precipitation", controller: :weather, action: :precip %>, <%= link_to "evapotranspiration", controller: :weather, action: :et %>, and <%= link_to "solar insolation", controller: :weather, action: :insol %>, derived from NOAA daily grids and satellite observations. We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", controller: :awon %> archive offers a record of hourly weather observations at Hancock and Arlington from 1985-2017.</p>
   </div>
 </div>
 
@@ -41,6 +41,21 @@
   <div>
     <h2><%= link_to "Thermal Models", controller: :thermal_models %></h2>
     <p>Using our database of temperatures gridded across the Midwest, we create degree-day style thermal models for a variety of purposes such as predicting pest emergence.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("pivot-150px.png"), wisp_url, target: "_blank" %>
+  </div>
+  <div>
+    <h2><%= link_to "Irrigation Scheduling Program", wisp_url, target: "_blank" %></h2>
+    <p>An online irrigation scheduling application is available to calculate the allowable-depletion balance. The tool automatically pulls evapotranspiration and degree day data where coverage exists, but rainfall must be entered manually. The program was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science.</p>
+    <ul>
+      <li><%= link_to "Irrigation Scheduling Program", wisp_url, target: "_blank" %></li>
+    </ul>
   </div>
 </div>
 

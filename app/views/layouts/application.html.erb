@@ -30,14 +30,11 @@
 				<%= link_to controller: :weather do %>
 					<div class="nav-button" selected=<%= @tab_selected[:weather] %>>Weather</div>
 				<% end %>
-				<%= link_to controller: :sun_water do %>
-					<div class="nav-button" selected=<%= @tab_selected[:sun_water] %>>Sun/Water</div>
-				<% end %>
 				<%= link_to controller: :thermal_models do %>
 					<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>Thermal Models</div>
 				<% end %>
 				<%= link_to controller: :sites do %>
-					<div class="nav-button" selected=<%= @tab_selected[:sites] %>>Sites</div>
+					<div class="nav-button" selected=<%= @tab_selected[:sites] %>>Point Data</div>
 				<% end %>
 				<%= link_to controller: :subscribers do %>
 					<div class="nav-button" selected=<%= @tab_selected[:subscriptions] %>>Emails</div>

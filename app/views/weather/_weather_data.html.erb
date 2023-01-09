@@ -1,8 +1,6 @@
 <% if @data %>
 
-<hr>
-
-<div id="data-container">
+<div id="weather-container">
   <h4>Weather data series</h4>
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
@@ -46,8 +44,8 @@
 </p>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
-  <span id="copy-confirm" style="display:none;"> Copied!</span>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('weather')" %>
+  <span id="weather-confirm" style="display:none;"> Copied!</span>
 </p>
 
 <% else %>

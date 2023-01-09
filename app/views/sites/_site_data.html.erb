@@ -1,0 +1,21 @@
+<% @common_params = {
+    controller: :weather,
+    latitude: @lat,
+    longitude: @long,
+    start_date: Date.current - 7.days,
+    end_date: Date.current - 1.day
+  }
+%>
+<% @weather_url = url_for({action: :weather_data}.merge(@common_params).merge({units: "F"})) %>
+<% @precip_url = url_for({action: :precip_data}.merge(@common_params).merge({units: "in"})) %>
+<% @et_url = url_for({action: :et_data}.merge(@common_params)) %>
+<% @insol_url = url_for({action: :insol_data}.merge(@common_params)) %>
+
+
+<%= render_async @weather_url %>
+<hr>
+<%= render_async @precip_url %>
+<hr>
+<%= render_async @et_url %>
+<hr>
+<%= render_async @insol_url %>
