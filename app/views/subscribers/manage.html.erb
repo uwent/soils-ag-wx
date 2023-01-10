@@ -187,7 +187,7 @@
 </script>
 
 <% content_for :welcome do %>
-  <h2><%= @title %></h2>
+  <h2><%= link_to @title, action: :manage %></h2>
   <p>Add, remove, or manage your email subscriptions here.</p>
 <% end %>
 

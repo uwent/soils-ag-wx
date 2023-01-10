@@ -77,7 +77,7 @@ class WeatherController < ApplicationController
     query = parse_map_params
     @units = params[:units]
     json = AgWeather.get(AgWeather::WEATHER_URL, query:)
-    p @data = json[:data]
+    @data = json[:data]
 
     respond_to do |format|
       format.html {

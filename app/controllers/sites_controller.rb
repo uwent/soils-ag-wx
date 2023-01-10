@@ -16,8 +16,11 @@ class SitesController < ApplicationController
       end
     end
 
-    @title = @lat && @long && @valid ? "Data dashboard for location #{@lat}, #{@long}" : "Site data"
+    @title = @lat && @long && @valid ? "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe : "Site data"
     @welcome_image = "awon.png"
+    if @valid && @subscriber
+      @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first
+    end
   end
 
   def update
