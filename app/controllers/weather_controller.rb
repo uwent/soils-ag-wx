@@ -78,6 +78,20 @@ class WeatherController < ApplicationController
     @units = params[:units]
     json = AgWeather.get(AgWeather::WEATHER_URL, query:)
     @data = json[:data]
+    @cols = %i[min_temp avg_temp max_temp dew_point pressure hours_rh_over_90 avg_temp_rh_over_90]
+
+    if @data
+      @totals = {min: {}, avg: {}, max: {}}
+      @data.first.keys.each do |k|
+        vals = @data.map { |h| h[k] }.compact
+        if vals.first.is_a? Numeric
+          @totals[:min][k] = vals.min.round(2)
+          @totals[:avg][k] = (vals.sum.to_f / vals.size).round(2)
+          @totals[:max][k] = vals.max.round(2)
+        end
+      end
+      puts @totals.inspect
+    end
 
     respond_to do |format|
       format.html {

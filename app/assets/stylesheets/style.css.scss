@@ -375,6 +375,13 @@ div .success {
 	tbody tr:nth-child(7n) {
 		border-bottom: 1px solid $table-row-underline-color;
 	}
+
+	tfoot {
+		border-top: 1px solid;
+		border-bottom: 1px solid;
+		font-weight: bold;
+		font-style: italic;
+	}
 }
 
 .normal-table {
