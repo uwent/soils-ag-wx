@@ -5,12 +5,12 @@ end
 
 Rails.application.routes.draw do
   
-  root to: "navigation#index"
+  root to: "home#index"
 
   # Navigation controller
-  get "about", to: "navigation#about"
-  get "king-hall", to: "navigation#king_hall"
-  get "navigation", to: redirect("")
+  get "about", to: "home#about"
+  get "king-hall", to: "home#king_hall"
+  get "home", to: redirect("")
 
   # Weather controller
   resources :weather, only: :index do

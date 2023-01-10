@@ -13,7 +13,7 @@
 <script lang="js">
   function report_changed(id) {
     $.ajax({
-      url: "<%= awon_path %>/awon_check_boxes?report_type=" + id,
+      url: "<%= url_for(controller: :awon, action: :awon_check_boxes) %>?report_type=" + id,
       success: function(response) { $("#check_boxes").html(response); }
     });
   }

@@ -62,18 +62,16 @@ h4 {
   gap: 5px;
 }
 
-.delete-site {
+.site-btn {
   margin: 5px;
-  padding: 2px;
+  padding: 2px 5px 0px 5px;
   cursor: pointer;
+}
+
+.delete-site {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-
-  div {
-    min-width: 1em;
-    margin-right: 5px;
-  }
 }
 
 #add-controls {

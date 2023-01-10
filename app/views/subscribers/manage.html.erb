@@ -188,7 +188,7 @@
 
 <% content_for :welcome do %>
   <h2><%= link_to @title, action: :manage %></h2>
-  <p>Add, remove, or manage your email subscriptions here.</p>
+  <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
 <% end %>
 
 <h2>Automated daily emails</h2>
@@ -231,7 +231,7 @@
   <% end %>
 </div>
 
-<h4>Your sites (from North to South):</h4>
+<h4>Manage your sites (listed North to South):</h4>
 
 <div class="site-container">
   <div class="grey-box">
@@ -242,16 +242,16 @@
             <th>Site Name</th>
             <th>Latitude</th>
             <th>Longitude</th>
-            <th><%= @site_count > 0 ? "Enabled?" : ""%></th>
-            <th></th>
+            <th align=center><%= @site_count > 0 ? "Subscribe?" : ""%></th>
+            <th align=center>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @sites.each do |site| %>
             <tr data-site-id=<%= site.id %>>
-              <td><%= best_in_place site, :name, as: :input %></td>
-              <td><%= best_in_place site, :latitude, as: :input %></td>
-              <td><%= best_in_place site, :longitude, as: :input %></td>
+              <td><%= best_in_place site, :name, as: :input, html_attrs: { maxlength: 25, size: 25 } %></td>
+              <td><%= best_in_place site, :latitude, as: :input, html_attrs: { maxlength: 6, size: 6 } %></td>
+              <td><%= best_in_place site, :longitude, as: :input, html_attrs: { maxlength: 6, size: 6 } %></td>
               <td>
                 <label>
                   <div class="toggle-site">
@@ -264,11 +264,9 @@
                   </div>
                 </label>
               </td>
-              <td>
-                <button class="delete-site" id="delete-site-<%= site.id %>">
-                  <div><%= image_tag("cross.png", class:'delete-cross') %></div>
-                  <div>Delete</div>
-                </button>
+              <td align=center>
+                <button class="site-btn" onclick="window.location.href='<%= url_for(controller: :sites, action: :show, lat: site.latitude, long: site.longitude) %>'">View</button>
+                <button class="site-btn" id="delete-site-<%= site.id %>">Delete</button>
               </td>
             </tr>
           <% end %>

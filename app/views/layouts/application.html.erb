@@ -24,23 +24,26 @@
 	<div class="wrapper">
 		<div class="nav-bar">
 			<div class="nav-title">
-				<h1><%= link_to "UW Extension AgWeather", controller: :navigation %></h1>
+				<h1><%= link_to "UW Extension AgWeather", controller: :home %></h1>
 			</div>
 			<div class="nav-buttons">
+				<%= link_to controller: :home do %>
+					<div class="nav-button <%= @tab_selected[:home] %>">Home</div>
+				<% end %>
 				<%= link_to controller: :weather do %>
-					<div class="nav-button" selected=<%= @tab_selected[:weather] %>>Weather</div>
+					<div class="nav-button <%= @tab_selected[:weather] %>">Weather</div>
 				<% end %>
 				<%= link_to controller: :thermal_models do %>
-					<div class="nav-button" selected=<%= @tab_selected[:thermal_models] %>>Thermal Models</div>
+					<div class="nav-button <%= @tab_selected[:thermal_models] %>">Thermal Models</div>
 				<% end %>
 				<%= link_to controller: :sites do %>
-					<div class="nav-button" selected=<%= @tab_selected[:sites] %>>Site Data</div>
+					<div class="nav-button <%= @tab_selected[:sites] %>">Site Data</div>
 				<% end %>
 				<%= link_to controller: :subscribers do %>
-					<div class="nav-button" selected=<%= @tab_selected[:subscriptions] %>>Emails</div>
+					<div class="nav-button <%= @tab_selected[:subscribers] %>">Emails</div>
 				<% end %>
-				<%= link_to controller: :navigation, action: :about do %>
-					<div class="nav-button" selected=<%= @tab_selected[:about] %>>About Us</div>
+				<%= link_to controller: :home, action: :about do %>
+					<div class="nav-button <%= @tab_selected[:about] %>">About Us</div>
 				<% end %>
 			</div>
 		</div>

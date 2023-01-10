@@ -162,7 +162,7 @@ input, select, button {
 	}
 }
 
-.nav-button:hover, .nav-button[selected=yes] {
+.nav-button:hover, .nav-button.selected {
 	background-color: $frame-bg-color;
 	color: $content-bg-color;
 }

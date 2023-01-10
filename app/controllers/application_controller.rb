@@ -36,26 +36,30 @@ class ApplicationController < ActionController::Base
   private
 
   def set_tab_selected
-    selects = {
-      awon: :weather,
-      weather: :weather,
-      thermal_models: :thermal_models,
-      sites: :sites,
-      subscribers: :subscriptions,
-      navigation: :about
-    }
-    if params[:controller]
-      @tab_selected = {selects[params[:controller].to_sym] => "yes"}
-      # "About" is special, we can get that for navigation#about for which we
-      # want to select that tab, or anything else we don't want any tab selected
-      if @tab_selected[:about]
-        if params[:action].to_sym != :about
-          @tab_selected = {}
+    @tab_selected = {}
+    controller = params[:controller]&.to_sym
+    action = params[:action]&.to_sym
+    
+    @tab_selected = case controller
+      when :home
+        if action == :index
+          { home: "selected" }
+        elsif action == :about
+          { about: "selected" }
+        else
+          {}
         end
+      when :weather, :awon
+        { weather: "selected" }
+      when :thermal_models
+        { thermal_models: "selected" }
+      when :sites
+        { sites: "selected" }
+      when :subscribers
+        { subscribers: "selected" }
+      else
+        {}
       end
-    else
-      @tab_selected = {}
-    end
   end
 
   def default_date
