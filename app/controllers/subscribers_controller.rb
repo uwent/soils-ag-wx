@@ -110,8 +110,10 @@ class SubscribersController < ApplicationController
   def update
     return reject if @subscriber.nil? || !@subscriber.admin?
     subscriber = Subscriber.find(params[:id])
-    subscriber.update(subscriber_params)
-    render json: {message: "success"}
+    subscriber.update!(subscriber_params.compact)
+    render json: { message: "success" }
+  rescue => e
+    render json: { message: e }, status: 422
   end
 
   def destroy
@@ -169,6 +171,13 @@ class SubscribersController < ApplicationController
     @weather_subs = Subscription.weather
     @dd_subs = Subscription.degree_days
     @pest_subs = Subscription.pests
+
+    # pre-fill for new site
+    if params[:lat] && params[:long]
+      @new_name = "My Site"
+      @new_lat = params[:lat]
+      @new_long = params[:long]
+    end
   end
 
   def send_email
@@ -312,10 +321,6 @@ class SubscribersController < ApplicationController
     end
   end
 
-  def reject(error = "error")
-    render json: {message: error, status: 500}
-  end
-
   def fix_email
     params[:email] = params[:email]&.downcase&.strip
   end
@@ -331,9 +336,5 @@ class SubscribersController < ApplicationController
 
   def remove_from_session
     session.delete(:subscriber)
-  end
-
-  def get_subscriber_from_session
-    @subscriber = Subscriber.where(id: session[:subscriber]).first
   end
 end

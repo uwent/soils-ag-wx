@@ -168,10 +168,26 @@
       })
     })
   })
+
+  $(".best_in_place").best_in_place()
+
+  $(document).on("best_in_place:error", () => {
+    let msg = "Unable to update site, cannot have duplicate names or locations."
+    let el = `<div id='bip-error' class='error'>${msg}</div>`
+    $("#bip-notice").html(el)
+    $("#bip-error").delay(10000).fadeOut()
+  });
+
+  $(document).on('best_in_place:success', () => {
+    let msg = "Successfully updated site"
+    let el = `<div id='bip-success' class='success'>${msg}</div>`
+    $("#bip-notice").html(el)
+    $("#bip-success").delay(10000).fadeOut()
+  });
 </script>
 
 <% content_for :welcome do %>
-  <h2><%= @title %></h2>
+  <h2><%= link_to @title, action: :manage %></h2>
   <p>Add, remove, or manage your email subscriptions here.</p>
 <% end %>
 
@@ -190,7 +206,9 @@
 
 <p>Each morning you can receive email updates for sites of your choosing within our data coverage area. For each site you can choose which data subscriptions your want, including the 7-day weather report, 3-day forecast, several degree-day models, and pest risk models. The weather report includes daily high/low temperatures, precipitation, and potential evapotranspiration.</p>
 
-<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). <b>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</b></p>
+<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). You can edit a site name or location after creation by clicking on the table.</p>
+
+<p><b>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</b></p>
 
 <h4>Email subscription settings</h4>
 
@@ -231,9 +249,9 @@
         <tbody>
           <% @sites.each do |site| %>
             <tr data-site-id=<%= site.id %>>
-              <td><%= site.name %></td>
-              <td><%= site.latitude %></td>
-              <td><%= site.longitude %></td>
+              <td><%= best_in_place site, :name, as: :input %></td>
+              <td><%= best_in_place site, :latitude, as: :input %></td>
+              <td><%= best_in_place site, :longitude, as: :input %></td>
               <td>
                 <label>
                   <div class="toggle-site">
@@ -256,9 +274,9 @@
           <% end %>
           <tr id="add-controls">
             <%= form_tag add_site_subscriber_path(@subscriber.id), id: "submit-site" do %>
-              <td><%= text_field_tag "site-name", "", maxlength: 25, size: 25, required: true %></td>
-              <td><%= text_field_tag "latitude", "", maxlength: 6, size: 6, required: true %></td>
-              <td><%= text_field_tag "longitude", "", maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "site-name", @new_name, maxlength: 25, size: 25, required: true %></td>
+              <td><%= text_field_tag "latitude", @new_lat, maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "longitude", @new_long, maxlength: 6, size: 6, required: true %></td>
               <td><%= button_tag "Add" %></td>
             <% end %>
             <td><button onclick="clearSite()">Clear</button></td>
@@ -268,6 +286,8 @@
     </div>
   </div>
 </div>
+
+<span id="bip-notice"></span>
 
 <div class="location-container">
   <div><button onclick="getGeoLocation()">Get my location</button></div>

@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery-ui/widgets/datepicker
 //= require best_in_place
+//= require jquery.purr
 
 function elementReady(selector) {
   return new Promise((resolve, reject) => {
@@ -22,9 +23,13 @@ function elementReady(selector) {
   });
 }
 
-function copy(id) {
-  navigator.clipboard.writeText(document.getElementById(id).outerHTML);
-  $('#copy-confirm').fadeIn();
+function copy(prefix) {
+  data = document.querySelector(`#${prefix}-container`).outerHTML;
+  navigator.clipboard.writeText(data);
+  document.querySelectorAll("[id$='confirm']").forEach((el) => {
+    el.setAttribute("style", "display: none;")
+  })
+  document.querySelector(`#${prefix}-confirm`).style.display = null;
 }
 
 if (window.history.replaceState) {

@@ -1,8 +1,6 @@
 <% if @data %>
 
-<hr>
-
-<div id="data-container">
+<div id="weather-container">
   <h4>Weather data series</h4>
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
@@ -24,30 +22,44 @@
       </tr>
     </thead>
     <tbody>
-    <% @data.each_with_index do |day, i| %>
-      <tr>
-        <td><%= i + 1 %>
-        <td><%= day[:date] %></td>
-        <td><%= format_temp(day[:min_temp]) %></td>
-        <td><%= format_temp(day[:avg_temp]) %></td>
-        <td><%= format_temp(day[:max_temp]) %></td>
-        <td><%= format_temp(day[:dew_point]) %></td>
-        <td><%= sprintf_nilsafe(day[:pressure], 3) %></td>
-        <td><%= day[:hours_rh_over_90] %></td>
-        <td><%= format_temp(day[:avg_temp_rh_over_90]) %></td>
-      </tr>
-    <% end %>
+      <% @data.each_with_index do |day, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= day[:date] %></td>
+          <td><%= format_temp(day[:min_temp]) %></td>
+          <td><%= format_temp(day[:avg_temp]) %></td>
+          <td><%= format_temp(day[:max_temp]) %></td>
+          <td><%= format_temp(day[:dew_point]) %></td>
+          <td><%= sprintf_nilsafe(day[:pressure], 3) %></td>
+          <td><%= day[:hours_rh_over_90] %></td>
+          <td><%= format_temp(day[:avg_temp_rh_over_90]) %></td>
+        </tr>
+      <% end %>
     </tbody>
+    <% if @totals %>
+      <tfoot>
+        <% %i[min avg max].each do |stat| %>
+          <tr>
+            <td></td><td><%= stat.capitalize %>:</td>
+            <% @cols.each do |col| %>
+              <td>
+                <%= col.to_s.include?("temp") ? format_temp(@totals[stat][col]) : sprintf_nilsafe(@totals[stat][col], col == :pressure ? 3 : 1) %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tfoot>
+    <% end %>
   </table>
 </div>
 
 <p class="note">
-  Note: Frost temperatures (&lt;<%= frost_temp %>&deg;<%= @units %>) shown in <span style="color:blue">blue</span>, freezing temperatures (&lt;<%= freeze_temp %>&deg;<%= @units %>) shown in <span style="color:red">red</span>.
+  <%= freeze_note %>
 </p>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
-  <span id="copy-confirm" style="display:none;"> Copied!</span>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('weather')" %>
+  <span id="weather-confirm" style="display:none;"> Copied!</span>
 </p>
 
 <% else %>

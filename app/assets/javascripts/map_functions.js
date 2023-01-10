@@ -1,3 +1,5 @@
+//= require map_functions
+
 $(document).ready(function () {
   // console.log("Loaded map functions");
   elementReady("#map-img").then(() => {
@@ -28,14 +30,14 @@ function getCoordinates(e) {
 }
 
 function findPosition(e) {
-  if(typeof( e.offsetParent ) != "undefined") {
-    for(var posX = 0, posY = 0; e; e = e.offsetParent) {
+  if (typeof (e.offsetParent) != "undefined") {
+    for (var posX = 0, posY = 0; e; e = e.offsetParent) {
       posX += e.offsetLeft;
       posY += e.offsetTop;
     }
-    return [ posX, posY ];
+    return [posX, posY];
   } else {
-    return [ e.x, e.y ];
+    return [e.x, e.y];
   }
 }
 
@@ -90,7 +92,7 @@ function findLatLong(x, y) {
 
 function moveDot() {
   if (typeof img === 'undefined') return
-  
+
   var lat = latitude.value;
   var long = longitude.value;
   var imgSize = findSize(img);
@@ -124,47 +126,3 @@ function updateSelector(lat, long) {
   $('#longitude').val(long);
 }
 
-function getGeoLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(handleGeoLocation, showError);
-  } else {
-    flashGeoMsg("Browser doesn't support location.");
-  }
-}
-
-function handleGeoLocation(position) {
-  var lat = position.coords.latitude.toFixed(1);
-  var long = position.coords.longitude.toFixed(1);
-  flashGeoMsg("Got location!");
-  console.log("Got location from browser: " + lat + ", " + long);
-  $('#latitude').val(lat);
-  $('#longitude').val(long);
-  moveDot();
-}
-
-function showError(error) {
-  switch(error.code) {
-    case error.PERMISSION_DENIED:
-      flashGeoMsg("User denied the request for Geolocation.")
-      break;
-    case error.POSITION_UNAVAILABLE:
-      flashGeoMsg("Location information is unavailable.")
-      break;
-    case error.TIMEOUT:
-      flashGeoMsg("The request to get user location timed out.")
-      break;
-    case error.UNKNOWN_ERROR:
-      flashGeoMsg("An unknown error occurred.")
-      break;
-  }
-}
-
-async function flashGeoMsg(msg) {
-  var e = document.getElementById("geo-loc-msg");
-  e.innerHTML = msg;
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  $(e).fadeOut(500);
-  await new Promise(resolve => setTimeout(resolve, 500));
-  e.innerHTML = "";
-  $(e).fadeIn();
-}

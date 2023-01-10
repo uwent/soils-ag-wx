@@ -26,4 +26,4 @@ jobs:
           command: bundle exec rails db:setup
       - run:
           name: Run tests
-          command: bundle exec rake test
+          command: bundle exec rspec

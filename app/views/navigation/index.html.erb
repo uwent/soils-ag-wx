@@ -2,9 +2,8 @@
 
 <% content_for :welcome do %>
   <h2>Welcome!</h2>
-  <p>For ET and insolation, see <%= link_to "Sun/Water", controller: :sun_water %>; for weather and precipitation, see <%= link_to "Weather", controller: :weather %>; for degree days and pests, see <%= link_to "Thermal Models", controller: :thermal_models %>.</p>
+  <p>To browse maps or data for weather, precipitation, ET, and insolation, see <%= link_to "Weather", weather_path %>. For degree days and pests, see <%= link_to "Thermal Models", thermal_models_path %>. To view the most recent data for a single location, see <%= link_to "Sites", sites_path %>. To subscribe to daily weather data emails, see <%= link_to "Subscribers", subscribers_path %>.</p>
   <p>We offer these data so that growers and other stakeholders in our agricultural landscape can make informed decisions about management practices.</p>
-  <p>Originally developed by the Department of Soil Science, this site is currently being upgraded and maintained by the Department of Entomology.</p>
   <p><%= mail_to "agweather@cals.wisc.edu", "Contact us" %> with any questions or comments.</p>
   <br>
   <p><%= link_to image_tag("logos/uw-logo-reverse.png", width: "100%"), "https://www.wisc.edu" %></p>
@@ -16,18 +15,7 @@
   </div>
   <div class="text">
     <h2><%= link_to "Weather", controller: :weather %></h2>
-    <p>We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", controller: :awon %>, offer a continuous hourly record at Hancock and Arlington back to 1985. We integrate hourly observations at airports all over the Upper Midwest to provide <%= link_to "gridded daily temperature data", controller: :weather, action: :weather_map %>.</p>
-  </div>
-</div>
-
-<hr>
-
-<div class="row">
-  <div class="left">
-    <%= link_to image_tag("sunwater-150px.png"), controller: :sun_water %>
-  </div>
-  <div>
-    <h2><%= link_to "Sun & Water", controller: :sun_water %></h2>
+    <p>Our <%= link_to "weather", controller: :weather %> page offers maps and data for <%= link_to "weather", controller: :weather, action: :weather %>, <%= link_to "precipitation", controller: :weather, action: :precip %>, <%= link_to "evapotranspiration", controller: :weather, action: :et %>, and <%= link_to "solar insolation", controller: :weather, action: :insol %>, derived from NOAA daily grids and satellite observations. We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", controller: :awon %> archive offers a record of hourly weather observations at Hancock and Arlington from 1985-2017.</p>
     <p>We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions.</p>
   </div>
 </div>
@@ -48,10 +36,37 @@
 
 <div class="row">
   <div class="left">
+    <%= link_to image_tag("vdifn-250px.png"), vdifn_path, target: "_blank" %>
+  </div>
+  <div>
+    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", vdifn_path, target: "_blank" %></h2>
+    <p>Visual map-based interface to view disease risk models, insect developmental models, and degree-day accumulation in Wisconsin and surrounding states. This is the newest and most advanced tool we have available. This link will open in a new tab.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
+    <%= link_to image_tag("pivot-150px.png"), wisp_url, target: "_blank" %>
+  </div>
+  <div>
+    <h2><%= link_to "Irrigation Scheduling Program", wisp_url, target: "_blank" %></h2>
+    <p>An online irrigation scheduling application is available to calculate the allowable-depletion balance. The tool automatically pulls evapotranspiration and degree day data where coverage exists, but rainfall must be entered manually. The program was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science. This link will open in a new tab.</p>
+    <ul>
+      <li><%= link_to "Irrigation Scheduling Program", wisp_url, target: "_blank" %></li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
     <%= link_to image_tag("tree-150px.png"), action: :about %>
   </div>
   <div>
-    <h2><%= link_to "About/Contact", action: :about %></h2>
+    <h2><%= link_to "About", action: :about %></h2>
     <p>This site is currently managed by the Dept. of Entomology and is undergoing some updates. Feel free to contact us with inquiries or bug reports at <%= mail_to "agweather@cals.wisc.edu", "agweather@cals.wisc.edu" %>.</p>
   </div>
 </div>

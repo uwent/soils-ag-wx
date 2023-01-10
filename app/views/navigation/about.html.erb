@@ -5,15 +5,15 @@
   <h2>About Our Group</h2>
   <p>Originally developed by the UW-Madison Department of Soil Science, this site is now maintained by the Department of Entomology.</p>
   <br>
-  <p><strong>Quick links:</strong></p>
+  <p><strong>Quick Links:</strong></p>
   <ul>
-    <li><a href="https://soils.wisc.edu/">Dept. of Soil Science</a></li>
-    <li><a href="https://extension.soils.wisc.edu">Soil Science Extension</a></li>
-    <li><a href="https://entomology.wisc.edu/">Dept. of Entomology</a></li>
+    <% @quick_links.each do |k, v| %>
+      <li><%= link_to k, v, target: "_blank" %></li>
+    <% end %>
   </ul>
 <% end %>
 
-<h2>About Us / Contact</h2>
+<h2>About Us</h2>
 
 <hr>
 

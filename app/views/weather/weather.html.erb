@@ -1,19 +1,19 @@
 <% @title = "Gridded Weather Data"%>
 <% @welcome_image = "mean-temps-250px.png" %>
 <%= javascript_include_tag "map_functions" %>
-<% if @is_post %>
+<% if @request_type == "POST" %>
   <script>
     elementReady("#map").then(() => { document.getElementById("map").scrollIntoView(); });
   </script>
 <% end %>
 
 <% content_for :welcome do %>
-  <h2><%= link_to(@title, action: :weather_map) %></h2>
+  <h2><%= link_to @title, action: :weather %></h2>
   <p>Weather data is collected daily from the National Atmospheric and Oceanic Administration's gridded datasets and provided here for easy access.</p>
-  <p>Click <%= link_to "here", subscribers_path %> to subscribe to our daily automated weather emails or to edit an existing subscription.</p>
+  <%= render partial: "quick_links" %>
 <% end %>
 
-<h2><%= link_to(@title, action: :weather_map) %></h2>
+<h2><%= link_to(@title, action: :weather) %></h2>
 <hr>
 
 <h4>Introduction</h4>
@@ -22,7 +22,7 @@
 
 <h4 id="map">Mean air temperature map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
 
-<%= render_async map_image_weather_index_path,
+<%= render_async url_for(action: :map_image),
   method: "POST",
   data: {
     endpoint: @endpoint,
@@ -39,17 +39,17 @@
 <% end %>
 
 <div class="two-box">
-  <%= render partial: "partials/map_form__browse" %>
+  <%= render partial: "map_form__browse" %>
   <div class="box" style="width: 50%"></div>
 </div>
 
 <h4>Get weather data for a single location</h4>
 <p>Choose a location and date range then click "Get Data Series". Daily min/max/average temperature, dew point, vapor pressure, hours high humidity, and average temperature during periods of high humidity will be shown in either Fahrenheit or Celsius. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
-<%= render partial: "partials/grid_selector", locals: { target: weather_data_weather_index_path } %>
+<%= render partial: "partials/grid_selector", locals: { target: url_for(action: :weather_data) } %>
 <div id="map-data"></div>
 
 <h4>Download weather data grid</h4>
-<p><%= link_to "Download the entire grid of data in CSV format", action: :weather_map, format: :csv, params: { date: @date } %>.</p>
+<p><%= link_to "Download the entire grid of data in CSV format", action: :weather, format: :csv, params: { date: @date } %>.</p>
 
 <br>
 <%= link_to "Back", action: :index %>

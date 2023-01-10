@@ -34,20 +34,21 @@ html, body, h1, h2 {
 	padding: 0px;
 }
 
+* {
+	font-family: 'Lato', sans-serif;
+}
+
 body {
 	background: $page-bg-color;
-	// background: linear-gradient(0deg, #e9e4d0, transparent);
-	font-family: verdana, arial, sans-serif;
-	font-size: smaller;
+	font-size: 15px;
 }
 
 h2 {
-	font-family: Arial, Helvetica, sans-serif;
 	color: $heading-text-color;
+}
 
-	a {
-		text-decoration: none;
-	}
+h2 a {
+	text-decoration: none;
 }
 
 img {
@@ -210,25 +211,19 @@ input, select, button {
 }
 
 .welcome {
-	h2, p, ul {
-		margin: 10px;
-	}
+	padding: 10px;
 
 	a {
 		color: $welcome-text-color;
 	}
 
-	h2 {
-		text-align: center;
-		color: $welcome-title-color;
-
-		a {
-			color: $welcome-title-color;
-		}
-	}
-
 	a:hover {
 		color: $welcome-link-color;
+	}
+
+	h2, h2 a {
+		text-align: center;
+		color: $welcome-title-color;
 	}
 } 
 
@@ -243,7 +238,6 @@ input, select, button {
 
 .content {
 	margin: 10px;
-	color: $content-text-color;
 
 	a {
 		color: $content-link-color;
@@ -302,7 +296,41 @@ input, select, button {
 
 .error {
 	font-weight: bold;
-	color: red;
+	color: #c5050c;
+}
+
+div .error {
+	border: 1px solid #c5050c;
+	border-radius: 5px;
+	background-color: rgb(255, 240, 240);
+	padding: 10px;
+	margin-bottom: 1em;
+	width: fit-content;
+}
+
+.success {
+  font-weight: bold;
+  color: #008000;
+}
+
+div .success {
+	border: 1px solid #008000;
+	border-radius: 5px;
+	background-color: rgb(240, 255, 240);
+	padding: 10px;
+	margin-bottom: 1em;
+	width: fit-content;
+}
+
+.notice {
+  font-weight: bold;
+  color: #008000;
+}
+
+.notice-container {
+  display: flex;
+  padding: 1em 0;
+  min-height: 2em;
 }
 
 .copyright {
@@ -346,6 +374,13 @@ input, select, button {
 
 	tbody tr:nth-child(7n) {
 		border-bottom: 1px solid $table-row-underline-color;
+	}
+
+	tfoot {
+		border-top: 1px solid;
+		border-bottom: 1px solid;
+		font-weight: bold;
+		font-style: italic;
 	}
 }
 
@@ -476,7 +511,7 @@ input, select, button {
 	display: flex;
 	margin-bottom: 1em;
 	width: inherit;
-	aspect-ratio: 1;
+	// aspect-ratio: 1;
 	flex: 1 1 auto;
 
 	div {
@@ -566,4 +601,20 @@ input, select, button {
 	font-style: italic;
 	color: red;
 	margin-top: 0.5em;
+}
+
+
+// --- Sites --- //
+
+.site-row h4 {
+	margin-bottom: 2px;
+}
+
+.site-box {
+	padding: 0.5em;
+	border: 1px solid $form-border-color;
+	border-radius: 5px;
+	background: $table-row-highlight-color;
+	margin-bottom: 1em;
+	width: inherit;
 }

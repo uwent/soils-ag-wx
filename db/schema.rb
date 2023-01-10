@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_05_173340) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_09_060515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -108,6 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_05_173340) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.boolean "enabled", default: true
+    t.index ["subscriber_id", "latitude", "longitude"], name: "index_sites_on_subscriber_id_and_latitude_and_longitude", unique: true
   end
 
   create_table "subscribers", id: :serial, force: :cascade do |t|

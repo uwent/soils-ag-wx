@@ -37,9 +37,13 @@ end
 
 group :development, :test do
   gem "spring"
+  gem "spring-commands-rspec"
   gem "dotenv-rails"
   gem "pry-rails"
   gem "rails-controller-testing"
+  gem "rspec-rails"
+  gem "guard-rspec"
+  gem "factory_bot_rails"
 end
 
 group :test do
