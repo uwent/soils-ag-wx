@@ -24,9 +24,9 @@ class SitesController < ApplicationController
   end
 
   def update
-    return reject if @subscriber.nil? || !@subscriber.admin?
+    return reject("Must be logged in.") if @subscriber.nil? || !@subscriber.admin?
     site = Site.find(params[:id])
-    return reject unless @subscriber.sites.include? site
+    return reject("This site doesn't belong to you.") unless @subscriber.sites.include? site
     site.update!(site_params.compact)
     render json: { message: "success" }
   rescue => e

@@ -15,15 +15,15 @@ class ApplicationController < ActionController::Base
   end
 
   def reject(error = "error")
-    render json: { error: error }, status: 422
+    render json: { message: error }, status: 422
   end
 
   def bad_request
-    render json: { error: "Bad request" }, status: :bad_request
+    render json: { message: "Bad request" }, status: :bad_request
   end
 
   rescue_from ActionController::RoutingError do |e|
-    render json: {error: e.message}, status: :bad_request
+    render json: { message: e.message }, status: :bad_request
   end
 
   def map_image

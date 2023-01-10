@@ -3,13 +3,19 @@
 
 <script>
   $(".best_in_place").best_in_place()
-  $(document).on("best_in_place:error", (event, request, error) => {
-    let msg = JSON.parse(request.responseText).message;
-    $("#bip-notice").css("display", "unset").html(msg).delay(2000).fadeOut()
+
+  $(document).on("best_in_place:error", () => {
+    let msg = "Unable to update site, cannot have duplicate names or locations."
+    let el = `<div id='bip-error' class='error'>${msg}</div>`
+    $("#bip-notice").html(el)
+    $("#bip-error").delay(10000).fadeOut()
   });
 
   $(document).on('best_in_place:success', () => {
-    $("#bip-notice").css("display", "none").html("");
+    let msg = "Successfully updated site"
+    let el = `<div id='bip-success' class='success'>${msg}</div>`
+    $("#bip-notice").html(el)
+    $("#bip-success").delay(10000).fadeOut()
   });
 </script>
 
@@ -28,7 +34,7 @@
   <b>Email:</b> <%= @subscriber.email %>
 </p>
 
-<span id="bip-notice" class="error"></span>
+<span id="bip-notice"></span>
 
 <div class="apple_pagination">
   <%= will_paginate @subscribers, class: :apple_pagination %>

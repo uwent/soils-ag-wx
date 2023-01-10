@@ -37,13 +37,15 @@ Rails.application.routes.draw do
   get "sun_water/(*path)", to: redirect("weather", status: 301)
 
   # Sites controller
+  resources :sites, only: :none do
+    put :update, on: :member
+  end
   get "sites/:lat,:long", to: "sites#show", constraints: {
     lat: /[-+]?\d+\.?\d*/,
     long: /[-+]?\d+\.?\d*/
   }
   get "sites", to: "sites#index"
   get "sites/(*path)", to: redirect("sites")
-  resources :sites, only: :update
 
   # AWON controller
   resources :awon, only: :index do
