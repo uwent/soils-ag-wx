@@ -24,10 +24,10 @@
         <tr>
           <td><%= i + 1 %>
           <td><%= day[:date] %></td>
-          <td><%= sprintf_nilsafe(day[:value], 2) %></td>
-          <td><%= sprintf_nilsafe(day[:cumulative_value], 2) %></td>
-          <td><%= sprintf_nilsafe(day[:value] / 25.4, 2) %></td>
-          <td><%= sprintf_nilsafe(day[:cumulative_value] / 25.4, 2) %></td>
+          <td><%= fmt_num(day[:value], 2) %></td>
+          <td><%= fmt_num(day[:cumulative_value], 2) %></td>
+          <td><%= fmt_num(day[:value] / 25.4, 2) %></td>
+          <td><%= fmt_num(day[:cumulative_value] / 25.4, 2) %></td>
         </tr>
       <% end %>
       </tbody>

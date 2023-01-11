@@ -79,9 +79,7 @@ class WeatherController < ApplicationController
     @data = json[:data]
 
     respond_to do |format|
-      format.html {
-        render partial: @data.length > 0 ? "data_tbl_et" : "no_data"
-      }
+      format.html { render partial: @data.length > 0 ? "data_tbl_et" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -92,17 +90,26 @@ class WeatherController < ApplicationController
     end
   rescue => e
     Rails.logger.warn "WeatherController.et_data :: Error: #{e.message}"
+    render partial: "no_data"
   end
 
   def insol_data
     query = parse_map_params
     json = AgWeather.get(AgWeather::INSOL_URL, query:)
     @data = json[:data]
+    if @data
+      vals = @data.map { |h| h[:value] }.compact
+      sum = vals.sum.to_f
+      @totals = {
+        "Min daily" => vals.min,
+        "Avg daily" => (sum / vals.size),
+        "Max daily" => vals.max,
+        "Total" => sum
+      }
+    end
 
     respond_to do |format|
-      format.html {
-        render partial: @data.length > 0 ? "data_tbl_insol" : "no_data"
-      }
+      format.html { render partial: @data.length > 0 ? "data_tbl_insol" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -113,6 +120,7 @@ class WeatherController < ApplicationController
     end
   rescue => e
     Rails.logger.warn "WeatherController.insol_data :: Error: #{e.message}"
+    render partial: "no_data"
   end
 
   def weather_data
@@ -121,24 +129,18 @@ class WeatherController < ApplicationController
     json = AgWeather.get(AgWeather::WEATHER_URL, query:)
     @data = json[:data]
     @cols = %i[min_temp avg_temp max_temp dew_point pressure hours_rh_over_90 avg_temp_rh_over_90]
-
     if @data
       @totals = {min: {}, avg: {}, max: {}}
-      @data.first.keys.each do |k|
-        vals = @data.map { |h| h[k] }.compact
-        if vals.first.is_a? Numeric
-          @totals[:min][k] = vals.min.round(2)
-          @totals[:avg][k] = (vals.sum.to_f / vals.size).round(2)
-          @totals[:max][k] = vals.max.round(2)
-        end
+      @cols.each do |col|
+        vals = @data.map { |data| data[col] }.compact
+        @totals[:min][col] = vals.min.round(2)
+        @totals[:avg][col] = (vals.sum.to_f / vals.size).round(2)
+        @totals[:max][col] = vals.max.round(2)
       end
-      puts @totals.inspect
     end
 
     respond_to do |format|
-      format.html {
-        render partial: @data.length > 0 ? "data_tbl_weather" : "no_data"
-      }
+      format.html { render partial: @data.length > 0 ? "data_tbl_weather" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -149,6 +151,7 @@ class WeatherController < ApplicationController
     end
   rescue => e
     Rails.logger.warn "WeatherController.weather_data :: Error: #{e.message}"
+    render partial: "no_data"
   end
 
   def precip_data
@@ -157,9 +160,7 @@ class WeatherController < ApplicationController
     @data = json[:data]
 
     respond_to do |format|
-      format.html {
-        render partial: @data.length > 0 ? "data_tbl_precip" : "no_data"
-      }
+      format.html { render partial: @data.length > 0 ? "data_tbl_precip" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -170,6 +171,7 @@ class WeatherController < ApplicationController
     end
   rescue => e
     Rails.logger.warn "WeatherController.precip_data :: Error: #{e.message}"
+    render partial: "no_data"
   end
 
   def doycal

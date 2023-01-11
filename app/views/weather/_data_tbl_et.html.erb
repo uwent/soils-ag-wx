@@ -25,10 +25,10 @@
         <tr>
           <td><%= i + 1 %></td>
           <td><%= day[:date] %></td>
-          <td><%= sprintf_nilsafe(day[:value], 3) %></td>
-          <td><%= sprintf_nilsafe(day[:cumulative_value], 3) %></td>
-          <td><%= sprintf_nilsafe(day[:value] * 2.54, 3) %></td>
-          <td><%= sprintf_nilsafe(day[:cumulative_value] * 2.45, 3) %></td>
+          <td><%= fmt_num(day[:value], 3) %></td>
+          <td><%= fmt_num(day[:cumulative_value], 3) %></td>
+          <td><%= fmt_num(day[:value] * 2.54, 3) %></td>
+          <td><%= fmt_num(day[:cumulative_value] * 2.45, 3) %></td>
         </tr>
       <% end %>
       </tbody>

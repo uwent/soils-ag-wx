@@ -35,8 +35,8 @@
         <tr>
           <td><%= i + 1 %></td>
           <td><%= day[:date] %></td>
-          <td><%= format_temp(day[:min_temp]).html_safe %></td>
-          <td><%= format_temp(day[:max_temp]).html_safe %></td>
+          <td><%= fmt_temp(day[:min_temp]) %></td>
+          <td><%= fmt_temp(day[:max_temp]) %></td>
           <td><%= day[:value] %></td>
           <td><%= day[:cumulative_value] %></td>
         </tr>

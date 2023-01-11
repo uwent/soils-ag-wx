@@ -27,23 +27,24 @@
           <tr>
             <td><%= i + 1 %></td>
             <td><%= day[:date] %></td>
-            <td><%= format_temp(day[:min_temp]) %></td>
-            <td><%= format_temp(day[:avg_temp]) %></td>
-            <td><%= format_temp(day[:max_temp]) %></td>
-            <td><%= format_temp(day[:dew_point]) %></td>
-            <td><%= sprintf_nilsafe(day[:pressure], 3) %></td>
+            <td><%= fmt_temp(day[:min_temp]) %></td>
+            <td><%= fmt_temp(day[:avg_temp]) %></td>
+            <td><%= fmt_temp(day[:max_temp]) %></td>
+            <td><%= fmt_temp(day[:dew_point]) %></td>
+            <td><%= fmt_num(day[:pressure], 3) %></td>
             <td><%= day[:hours_rh_over_90] %></td>
-            <td><%= format_temp(day[:avg_temp_rh_over_90]) %></td>
+            <td><%= fmt_temp(day[:avg_temp_rh_over_90]) %></td>
           </tr>
         <% end %>
       </tbody>
       <% if @totals %>
         <tfoot>
-          <% %i[min avg max].each do |stat| %>
+          <% @totals.each do |stat, totals| %>
             <tr>
-              <td></td><td><%= stat.capitalize %>:</td>
-              <% @cols.each do |col| %>
-                <td><%= col.to_s.include?("temp") ? format_temp(@totals[stat][col]) : sprintf_nilsafe(@totals[stat][col], col == :pressure ? 3 : 1) %></td>
+              <td></td>
+              <td><%= stat.capitalize %>:</td>
+              <% totals.keys.each do |col| %>
+                <td><%= col.to_s.include?("temp") ? fmt_temp(totals[col]) : fmt_num(totals[col], col == :pressure ? 3 : 1) %></td>
               <% end %>
             </tr>
           <% end %>

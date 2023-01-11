@@ -2,7 +2,7 @@ module ApplicationHelper
   FROST_COLOR = "blue"
   FREEZE_COLOR = "#c5050c"
 
-  def sprintf_nilsafe(num, digits)
+  def fmt_num(num, digits = 2)
     return "" unless num.is_a? Numeric
     sprintf("%.#{digits}f", num.round(digits))
   end
@@ -15,9 +15,9 @@ module ApplicationHelper
     (@units == "F") ? 32 : 0
   end
 
-  def format_temp(temp)
+  def fmt_temp(temp)
     return "" if temp.nil?
-    temp_text = sprintf_nilsafe(temp, 1)
+    temp_text = fmt_num(temp, 1)
     if temp <= freeze_temp
       color = FREEZE_COLOR
     elsif temp <= frost_temp
