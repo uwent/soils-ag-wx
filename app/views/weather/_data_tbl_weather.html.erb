@@ -1,0 +1,69 @@
+<% if @data %>
+
+<div id="weather-container">
+  <h4>Weather data series</h4>
+  <p>
+    <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
+    <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
+    <b>Days:</b> <%= @data.size %>
+  </p>
+  <div class="tbl-container">
+    <table class="grid-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Min<br>temp<br>(&deg;<%= @units %>)</th>
+          <th>Avg<br>temp<br>(&deg;<%= @units %>)</th>
+          <th>Max<br>temp<br>(&deg;<%= @units %>)</th>
+          <th>Dew<br>point<br>(&deg;<%= @units %>)</th>
+          <th>Vap.<br>pres.<br>(kPa)</th>
+          <th>Hours<br>high RH<br>(>90%)</th>
+          <th>Mean<br>temp<br>high RH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @data.each_with_index do |day, i| %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= day[:date] %></td>
+            <td><%= format_temp(day[:min_temp]) %></td>
+            <td><%= format_temp(day[:avg_temp]) %></td>
+            <td><%= format_temp(day[:max_temp]) %></td>
+            <td><%= format_temp(day[:dew_point]) %></td>
+            <td><%= sprintf_nilsafe(day[:pressure], 3) %></td>
+            <td><%= day[:hours_rh_over_90] %></td>
+            <td><%= format_temp(day[:avg_temp_rh_over_90]) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <% if @totals %>
+        <tfoot>
+          <% %i[min avg max].each do |stat| %>
+            <tr>
+              <td></td><td><%= stat.capitalize %>:</td>
+              <% @cols.each do |col| %>
+                <td><%= col.to_s.include?("temp") ? format_temp(@totals[stat][col]) : sprintf_nilsafe(@totals[stat][col], col == :pressure ? 3 : 1) %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tfoot>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<p class="note">
+  <%= freeze_note %>
+</p>
+
+<p>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('weather')" %>
+  <span id="weather-confirm" style="display:none;"> Copied!</span>
+</p>
+
+<% else %>
+
+No data!
+
+<% end %>

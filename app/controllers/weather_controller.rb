@@ -6,6 +6,38 @@ class WeatherController < ApplicationController
   def index
   end
 
+  def et
+    @endpoint = AgWeather::ET_URL
+    parse_dates
+    @units = params[:units].presence || "in"
+    @unit_options = ["in", "mm"]
+    @methods = ["classic", "adjusted"]
+    @method = params[:method].presence || "classic"
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        data = AgWeather.get_grid(@endpoint, @date)
+        send_data to_csv(data), filename: "et grid (in) for #{@date}.csv"
+      }
+    end
+  end
+
+  def insol
+    @endpoint = AgWeather::INSOL_URL
+    parse_dates
+    @units = params[:units].presence || "MJ"
+    @unit_options = ["MJ", "KWh"]
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        data = AgWeather.get_grid(@endpoint, @date)
+        send_data to_csv(data), filename: "insol grid (mj-m2-day) for #{@date}.csv"
+      }
+    end
+  end
+
   def weather
     @endpoint = AgWeather::WEATHER_URL
     @date = parse_date
@@ -41,36 +73,46 @@ class WeatherController < ApplicationController
     end
   end
 
-  def et
-    @endpoint = AgWeather::ET_URL
-    parse_dates
-    @units = params[:units].presence || "in"
-    @unit_options = ["in", "mm"]
-    @methods = ["classic", "adjusted"]
-    @method = params[:method].presence || "classic"
+  def et_data
+    query = parse_map_params
+    json = AgWeather.get(AgWeather::ET_URL, query:)
+    @data = json[:data]
 
     respond_to do |format|
-      format.html
+      format.html {
+        render partial: @data.length > 0 ? "data_tbl_et" : "no_data"
+      }
+      format.js
       format.csv {
-        data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "et grid (in) for #{@date}.csv"
+        send_data(
+          to_csv(@data),
+          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
+        )
       }
     end
+  rescue => e
+    Rails.logger.warn "WeatherController.et_data :: Error: #{e.message}"
   end
 
-  def insol
-    @endpoint = AgWeather::INSOL_URL
-    parse_dates
-    @units = params[:units].presence || "MJ"
-    @unit_options = ["MJ", "KWh"]
+  def insol_data
+    query = parse_map_params
+    json = AgWeather.get(AgWeather::INSOL_URL, query:)
+    @data = json[:data]
 
     respond_to do |format|
-      format.html
+      format.html {
+        render partial: @data.length > 0 ? "data_tbl_insol" : "no_data"
+      }
+      format.js
       format.csv {
-        data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "insol grid (mj-m2-day) for #{@date}.csv"
+        send_data(
+          to_csv(@data),
+          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
+        )
       }
     end
+  rescue => e
+    Rails.logger.warn "WeatherController.insol_data :: Error: #{e.message}"
   end
 
   def weather_data
@@ -95,7 +137,7 @@ class WeatherController < ApplicationController
 
     respond_to do |format|
       format.html {
-        render partial: @data.length > 0 ? "weather_data" : "no_data"
+        render partial: @data.length > 0 ? "data_tbl_weather" : "no_data"
       }
       format.js
       format.csv {
@@ -116,7 +158,7 @@ class WeatherController < ApplicationController
 
     respond_to do |format|
       format.html {
-        render partial: @data.length > 0 ? "precip_data" : "no_data"
+        render partial: @data.length > 0 ? "data_tbl_precip" : "no_data"
       }
       format.js
       format.csv {
@@ -128,48 +170,6 @@ class WeatherController < ApplicationController
     end
   rescue => e
     Rails.logger.warn "WeatherController.precip_data :: Error: #{e.message}"
-  end
-
-  def et_data
-    query = parse_map_params
-    json = AgWeather.get(AgWeather::ET_URL, query:)
-    @data = json[:data]
-
-    respond_to do |format|
-      format.html {
-        render partial: @data.length > 0 ? "et_data" : "no_data"
-      }
-      format.js
-      format.csv {
-        send_data(
-          to_csv(@data),
-          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
-        )
-      }
-    end
-  rescue => e
-    Rails.logger.warn "WeatherController.et_data :: Error: #{e.message}"
-  end
-
-  def insol_data
-    query = parse_map_params
-    json = AgWeather.get(AgWeather::INSOL_URL, query:)
-    @data = json[:data]
-
-    respond_to do |format|
-      format.html {
-        render partial: @data.length > 0 ? "insol_data" : "no_data"
-      }
-      format.js
-      format.csv {
-        send_data(
-          to_csv(@data),
-          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
-        )
-      }
-    end
-  rescue => e
-    Rails.logger.warn "WeatherController.insol_data :: Error: #{e.message}"
   end
 
   def doycal

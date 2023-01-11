@@ -1,0 +1,48 @@
+<% if @data %>
+
+<div id="et-container">
+  <h4>Evapotranspiration data series</h4>
+  <p>
+    <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
+    <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
+    <b>Days:</b> <%= @data.size %>
+    <% if @method %><br><b>ET calculation method:</b> <%= @method %><% end %>
+  </p>
+  <div class="tbl-container">
+    <table class="grid-table" id="table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Potential<br>ET (in)</th>
+          <th>Cumul.<br>ET (in)</th>
+          <th>Potential<br>ET (mm)</th>
+          <th>Cumul.<br>ET (mm)</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @data.each_with_index do |day, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= day[:date] %></td>
+          <td><%= sprintf_nilsafe(day[:value], 3) %></td>
+          <td><%= sprintf_nilsafe(day[:cumulative_value], 3) %></td>
+          <td><%= sprintf_nilsafe(day[:value] * 2.54, 3) %></td>
+          <td><%= sprintf_nilsafe(day[:cumulative_value] * 2.45, 3) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('et')" %>
+  <span id="et-confirm" style="display: none;"> Copied!</span>
+</p>
+
+<% else %>
+
+No data!
+
+<% end %>
