@@ -16,7 +16,7 @@ class SitesController < ApplicationController
       end
     end
 
-    @title = @lat && @long && @valid ? "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe : "Site data"
+    @title = (@lat && @long && @valid) ? "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe : "Site data"
     @welcome_image = "awon.png"
     if @valid && @subscriber
       @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first
@@ -28,9 +28,9 @@ class SitesController < ApplicationController
     site = Site.find(params[:id])
     return reject("This site doesn't belong to you.") unless @subscriber.sites.include? site
     site.update!(site_params.compact)
-    render json: { message: "success" }
+    render json: {message: "success"}
   rescue => e
-    render json: { message: e }, status: 422
+    render json: {message: e}, status: 422
   end
 
   private
@@ -42,5 +42,4 @@ class SitesController < ApplicationController
   def site_params
     params.require(:site).permit(:name, :latitude, :longitude)
   end
-
 end

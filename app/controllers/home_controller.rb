@@ -29,7 +29,7 @@ class HomeController < ApplicationController
       "UW Vegetable Pathology" => "https://vegpath.plantpath.wisc.edu",
       "UW Soil Science" => "https://soils.wisc.edu",
       "UW Horticulture" => "https://hort.wisc.edu",
-      "UW Agronomy" => "https://agronomy.wisc.edu",
+      "UW Agronomy" => "https://agronomy.wisc.edu"
     }.freeze
   end
 end

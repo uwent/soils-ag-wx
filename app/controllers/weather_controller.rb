@@ -79,7 +79,7 @@ class WeatherController < ApplicationController
     @data = json[:data]
 
     respond_to do |format|
-      format.html { render partial: @data.length > 0 ? "data_tbl_et" : "no_data" }
+      format.html { render partial: (@data.length > 0) ? "data_tbl_et" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -109,7 +109,7 @@ class WeatherController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render partial: @data.length > 0 ? "data_tbl_insol" : "no_data" }
+      format.html { render partial: (@data.length > 0) ? "data_tbl_insol" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -140,7 +140,7 @@ class WeatherController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render partial: @data.length > 0 ? "data_tbl_weather" : "no_data" }
+      format.html { render partial: (@data.length > 0) ? "data_tbl_weather" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -160,7 +160,7 @@ class WeatherController < ApplicationController
     @data = json[:data]
 
     respond_to do |format|
-      format.html { render partial: @data.length > 0 ? "data_tbl_precip" : "no_data" }
+      format.html { render partial: (@data.length > 0) ? "data_tbl_precip" : "no_data" }
       format.js
       format.csv {
         send_data(
@@ -207,7 +207,7 @@ class WeatherController < ApplicationController
         dew_point: "Dew<br>point<br>(&deg;#{@units})",
         pressure: "Vap.<br>pres.<br>(kPa)",
         hours_rh_over_90: "Hours<br>high RH<br>(>90%)",
-        avg_temp_rh_over_90: "Mean<br>temp<br>high RH",
+        avg_temp_rh_over_90: "Mean<br>temp<br>high RH"
       }.freeze
       summable = %i[precip et insol]
       if @data
@@ -261,7 +261,6 @@ class WeatherController < ApplicationController
     @request_type = request.method
   end
 
-  
   def parse_map_params
     @lat = params[:latitude].to_f
     @long = params[:longitude].to_f

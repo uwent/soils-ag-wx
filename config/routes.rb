@@ -4,7 +4,6 @@ def route(action, verb = :get, *other_verbs)
 end
 
 Rails.application.routes.draw do
-  
   root to: "home#index"
 
   # Navigation controller
@@ -115,10 +114,10 @@ Rails.application.routes.draw do
   get "/subscribers/(*path)", to: redirect("/subscribers")
 
   # Custom URLs
-  direct :vdifn do "/vdifn" end
-  direct :wisp do "https://wisp.cals.wisc.edu" end
-  direct :vegpath do "https://vegpath.plantpath.wisc.edu" end
-  direct :vegento do "https://vegento.russell.wisc.edu" end
+  direct(:vdifn) { "/vdifn" }
+  direct(:wisp) { "https://wisp.cals.wisc.edu" }
+  direct(:vegpath) { "https://vegpath.plantpath.wisc.edu" }
+  direct(:vegento) { "https://vegento.russell.wisc.edu" }
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 

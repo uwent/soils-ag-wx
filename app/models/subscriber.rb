@@ -3,7 +3,7 @@ class Subscriber < ApplicationRecord
   has_many :subscriptions, through: :sites
 
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, presence: true
+  validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, presence: true
   validates_uniqueness_of :email
 
   before_create :set_confirmation_token

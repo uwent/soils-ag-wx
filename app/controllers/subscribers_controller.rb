@@ -111,9 +111,9 @@ class SubscribersController < ApplicationController
     return reject if @subscriber.nil? || !@subscriber.admin?
     subscriber = Subscriber.find(params[:id])
     subscriber.update!(subscriber_params.compact)
-    render json: { message: "success" }
+    render json: {message: "success"}
   rescue => e
-    render json: { message: e }, status: 422
+    render json: {message: e}, status: 422
   end
 
   def destroy

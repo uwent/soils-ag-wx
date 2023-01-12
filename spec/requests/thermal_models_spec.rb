@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Thermal Models", type: :request do
   describe "page tests" do

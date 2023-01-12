@@ -15,15 +15,15 @@ class ApplicationController < ActionController::Base
   end
 
   def reject(error = "error")
-    render json: { message: error }, status: 422
+    render json: {message: error}, status: 422
   end
 
   def bad_request
-    render json: { message: "Bad request" }, status: :bad_request
+    render json: {message: "Bad request"}, status: :bad_request
   end
 
   rescue_from ActionController::RoutingError do |e|
-    render json: { message: e.message }, status: :bad_request
+    render json: {message: e.message}, status: :bad_request
   end
 
   def map_image
@@ -39,27 +39,27 @@ class ApplicationController < ActionController::Base
     @tab_selected = {}
     controller = params[:controller]&.to_sym
     action = params[:action]&.to_sym
-    
+
     @tab_selected = case controller
-      when :home
-        if action == :index
-          { home: "selected" }
-        elsif action == :about
-          { about: "selected" }
-        else
-          {}
-        end
-      when :weather, :awon
-        { weather: "selected" }
-      when :thermal_models
-        { thermal_models: "selected" }
-      when :sites
-        { sites: "selected" }
-      when :subscribers
-        { subscribers: "selected" }
+    when :home
+      if action == :index
+        {home: "selected"}
+      elsif action == :about
+        {about: "selected"}
       else
         {}
       end
+    when :weather, :awon
+      {weather: "selected"}
+    when :thermal_models
+      {thermal_models: "selected"}
+    when :sites
+      {sites: "selected"}
+    when :subscribers
+      {subscribers: "selected"}
+    else
+      {}
+    end
   end
 
   def default_date
