@@ -15,7 +15,7 @@
       <% @data.keys.each_with_index do |date, i| %>
         <tr>
           <td><%= i + 1 %></td>
-          <td><%= date.to_date.strftime(date.to_date.year == Date.current.year ? "%b %-d" : "%b %-d, %y") %></td>
+          <td><%= fmt_date(date.to_date) %></td>
           <% @cols.keys.each do |col| %>
             <td><%= fmt_col(col, @data[date][col]) %></td>
           <% end %>

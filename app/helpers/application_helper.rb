@@ -7,6 +7,11 @@ module ApplicationHelper
     sprintf("%.#{digits}f", num.round(digits))
   end
 
+  def fmt_date(date)
+    fmt = date.year == Date.current.year ? "%b&nbsp;%-d" : "%b&nbsp;%-d, %y"
+    date.strftime(fmt).html_safe
+  end
+
   def freeze_temp
     (@units == "F") ? 28 : -2.22
   end
