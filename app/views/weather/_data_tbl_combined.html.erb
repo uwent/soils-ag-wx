@@ -1,0 +1,52 @@
+<% if @data %>
+
+<div id="tbl-container" class="tbl-container">
+  <table class="grid-table">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <% @cols.values.each do |name| %>
+          <th><%= name.html_safe %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @data.keys.each_with_index do |date, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= date.to_date.strftime(date.to_date.year == Date.current.year ? "%b %-d" : "%b %-d, %y") %></td>
+          <% @cols.keys.each do |col| %>
+            <td><%= fmt_col(col, @data[date][col]) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <% @totals.each do |stat, totals| %>
+        <tr>
+          <td></td>
+          <td><%= stat.capitalize %>:</td>
+          <% totals.each do |col, val| %>
+            <td><%= fmt_col(col, val) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tfoot>
+  </table>
+</div>
+
+<p class="note">
+  <%= freeze_note %>
+</p>
+
+<p>
+  <%= submit_tag "Copy to clipboard", onclick: "copy('tbl')" %>
+  <span id="tbl-confirm" style="display:none;"> Copied!</span>
+</p>
+
+<% else %>
+
+Unable to retrieve any weather data, try again or <%= link_to "go home", controller: :home %>.
+
+<% end %>

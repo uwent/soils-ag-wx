@@ -66,32 +66,6 @@ class ApplicationController < ActionController::Base
     Time.now.in_time_zone("US/Central").yesterday.to_date
   end
 
-  def parse_map_params
-    @lat = params[:latitude].to_f
-    @long = params[:longitude].to_f
-    @units = params[:units]
-    @method = params[:method]
-    @start_date = if params[:start_date_select].present?
-      Date.new(*params[:start_date_select].values.map(&:to_i))
-    else
-      params[:start_date]
-    end
-    @end_date = if params[:end_date_select].present?
-      Date.new(*params[:end_date_select].values.map(&:to_i))
-    else
-      params[:end_date]
-    end
-
-    {
-      lat: @lat,
-      long: @long,
-      start_date: @start_date,
-      end_date: @end_date,
-      units: @units,
-      method: @method
-    }.compact
-  end
-
   def parse_date
     [Date.parse(params[:date]), default_date].min
   rescue

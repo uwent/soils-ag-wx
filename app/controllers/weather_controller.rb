@@ -174,6 +174,60 @@ class WeatherController < ApplicationController
     render partial: "no_data"
   end
 
+  def site_data
+    query = parse_map_params
+    @units = params[:temp_units] || "F"
+    @precip_units = params[:precip_units] || "in"
+    @et_units = "in"
+    @insol_units = "mJ/m<sup>2</sup>/day"
+
+    weather = AgWeather.get_weather(query: query.merge(units: @units))
+    precip = AgWeather.get_precip(query: query.merge(units: @precip_units))
+    et = AgWeather.get_et(query:)
+    insol = AgWeather.get_insol(query:)
+
+    if weather.size + precip.size + et.size + insol.size > 0
+      # merge data sources by day
+      @data = {}
+      (@start_date..@end_date).each do |date|
+        @data[date] = weather.detect { |k| k[:date] == date } || {}
+        @data[date].delete(:date)
+        @data[date][:precip] = precip.detect { |k| k[:date] == date }&.dig(:value)
+        @data[date][:et] = et.detect { |k| k[:date] == date }&.dig(:value)
+        @data[date][:insol] = insol.detect { |k| k[:date] == date }&.dig(:value)
+      end
+
+      @cols = {
+        min_temp: "Min<br>temp<br>(&deg;#{@units})",
+        avg_temp: "Avg<br>temp<br>(&deg;#{@units})",
+        max_temp: "Max<br>temp<br>(&deg;#{@units})",
+        precip: "Daily<br>precip.<br>(#{@precip_units})",
+        et: "Potential<br>ET<br>(#{@et_units})",
+        insol: "Solar<br>insolation<br>(#{@insol_units})",
+        dew_point: "Dew<br>point<br>(&deg;#{@units})",
+        pressure: "Vap.<br>pres.<br>(kPa)",
+        hours_rh_over_90: "Hours<br>high RH<br>(>90%)",
+        avg_temp_rh_over_90: "Mean<br>temp<br>high RH",
+      }.freeze
+      summable = %i[precip et insol]
+      if @data
+        @totals = {min: {}, avg: {}, max: {}, total: {}}
+        @cols.keys.each do |col|
+          vals = @data.values.map { |data| data[col] }.compact
+          @totals[:min][col] = vals.min
+          @totals[:avg][col] = (vals.sum.to_f / vals.size)
+          @totals[:max][col] = vals.max
+          @totals[:total][col] = summable.include?(col) ? vals.sum : nil
+        end
+      end
+    end
+
+    render partial: "data_tbl_combined"
+  rescue => e
+    Rails.logger.warn "WeatherController.site_data :: Error: #{e.message}"
+    render partial: "no_data"
+  end
+
   def doycal
     date = params[:year] ? Date.civil(params[:year].to_i, 1, 1) : Date.today
     @cal_matrix = CalMatrix.new(date)
@@ -205,5 +259,44 @@ class WeatherController < ApplicationController
 
   def get_request_type
     @request_type = request.method
+  end
+
+  
+  def parse_map_params
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @units = params[:units]
+    @method = params[:method]
+    @start_date = if params[:start_date_select].present?
+      Date.new(*params[:start_date_select].values.map(&:to_i))
+    else
+      params[:start_date]
+    end
+    @end_date = if params[:end_date_select].present?
+      Date.new(*params[:end_date_select].values.map(&:to_i))
+    else
+      params[:end_date]
+    end
+    {
+      lat: @lat,
+      long: @long,
+      start_date: @start_date,
+      end_date: @end_date,
+      units: @units,
+      method: @method
+    }.compact
+  end
+
+  def parse_site_params
+    @lat = params[:latitude].to_f
+    @long = params[:longitude].to_f
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    {
+      lat: @lat,
+      long: @long,
+      start_date: @start_date,
+      end_date: @end_date
+    }.compact
   end
 end

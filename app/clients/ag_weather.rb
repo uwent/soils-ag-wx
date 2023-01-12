@@ -18,6 +18,22 @@ module AgWeather
     {}
   end
 
+  def self.get_weather(query:)
+    get(WEATHER_URL, query:)&.dig(:data) || {}
+  end
+
+  def self.get_precip(query:)
+    get(PRECIP_URL, query:)&.dig(:data) || {}
+  end
+
+  def self.get_et(query:)
+    get(ET_URL, query:)&.dig(:data) || {}
+  end
+
+  def self.get_insol(query:)
+    get(INSOL_URL, query:)&.dig(:data) || {}
+  end
+
   def self.get_map(endpoint, id, query)
     url = "#{endpoint}/#{id}"
     json = get(url, query:, timeout: 60)

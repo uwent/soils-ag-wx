@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       route "precip_data"
       route "et_data"
       route "insol_data"
+      route "site_data"
       route "hyd"
       route "hyd_grid"
       route "doycal"

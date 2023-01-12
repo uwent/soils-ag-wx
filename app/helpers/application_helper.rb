@@ -2,8 +2,8 @@ module ApplicationHelper
   FROST_COLOR = "blue"
   FREEZE_COLOR = "#c5050c"
 
-  def fmt_num(num, digits = 2)
-    return "" unless num.is_a? Numeric
+  def fmt_num(num, digits = 0)
+    return num || "" unless num.is_a? Numeric
     sprintf("%.#{digits}f", num.round(digits))
   end
 
@@ -29,6 +29,19 @@ module ApplicationHelper
 
   def freeze_note
     "Note: Frost temperatures (&lt;#{frost_temp}&deg;#{@units}) shown in <span style='color: #{FROST_COLOR}'>blue</span>, freezing temperatures (&lt;#{freeze_temp}&deg;#{@units}) shown in <span style='color: #{FREEZE_COLOR}'>red</span>.".html_safe
+  end
+
+  def fmt_col(col, val)
+    case col
+    when :min_temp, :avg_temp, :max_temp, :dew_point, :avg_temp_rh_over_90
+      fmt_temp(val)
+    when :insol
+      fmt_num(val, 2)
+    when :pressure, :et, :precip
+      fmt_num(val, 3)
+    else
+      fmt_num(val)
+    end
   end
 
   def earliest_date
