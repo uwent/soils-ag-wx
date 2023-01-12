@@ -3,25 +3,27 @@
   <div class="site-box">
     <% if @subscriber %>
       <% if @sites %>
-        <ul>
-          <% @sites.each do |site| %>
-            <li><strong><%= site.name %></strong>: <%= site.latitude %>, <%= site.longitude %>
-            <% if (@lat == site.latitude) && (@long == site.longitude) %>
-              <strong> << Current site</strong>
-            <% else %>
-               - <%= link_to "View site", "#{url_for(controller: :sites)}/#{site.latitude},#{site.longitude}" %></li>
+        <div class="site-list">
+          <ul>
+            <% @sites.each do |site| %>
+              <li><strong><%= site.name %></strong>: <%= site.latitude %>, <%= site.longitude %>
+              <% if (@lat == site.latitude) && (@long == site.longitude) %>
+                <strong> << Current site</strong>
+              <% else %>
+                - <%= link_to "View site", "#{url_for(controller: :sites)}/#{site.latitude},#{site.longitude}" %></li>
+              <% end %>
             <% end %>
-          <% end %>
-        </ul>
-        <p>Manage your saved sites, or subscribe to daily weather data emails <%= link_to "here", { controller: :subscribers, action: :manage } %>.</p>
+          </ul>
+        </div>
+        Manage your saved sites, or subscribe to daily weather data emails <%= link_to "here", { controller: :subscribers, action: :manage } %>.
         <% if @valid && @sites.where(latitude: @lat, longitude: @long).size == 0 %>
-          <p>This location is not part of your saved sites. <%= link_to "Add it?", { controller: :subscribers, action: :manage, lat: @lat, long: @long } %></p>
+          This location is not part of your saved sites. <%= link_to "Add it?", { controller: :subscribers, action: :manage, lat: @lat, long: @long } %>
         <% end %>
       <% else %>
-        <p>You don't have any sites. Go to the <%= link_to "Subscriber page", controller: :subscribers %> to manage your sites.</p>
+        You don't have any sites. Go to the <%= link_to "Subscriber page", controller: :subscribers %> to manage your sites.
       <% end %>
     <% else %>
-      <p>You aren't logged in. To save locations and easily view data or receive email updates, visit the <%= link_to "subscribers page", controller: :subscribers %>.
+      You aren't logged in. To save locations and easily view data or receive email updates, visit the <%= link_to "subscribers page", controller: :subscribers %>.
     <% end %>
   </div>
 </div>

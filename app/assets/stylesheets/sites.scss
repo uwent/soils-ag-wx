@@ -1,0 +1,22 @@
+@import "./colors.scss";
+
+.site-row h4 {
+	margin-bottom: 2px;
+}
+
+.site-box {
+	padding: 10px;
+	border: 1px solid $form-border-color;
+	border-radius: 5px;
+	background: $table-row-highlight-color;
+	margin-bottom: 1em;
+	width: inherit;
+}
+
+.site-list ul {
+  margin-top: 5px;
+}
+
+.site-list li {
+  margin-bottom: 5px;
+}
