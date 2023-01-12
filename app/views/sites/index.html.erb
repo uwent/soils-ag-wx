@@ -1,12 +1,14 @@
+<% @title = "Site data" %>
+<% @welcome_image = "awon.png" %>
+
 <% content_for :welcome do %>
-  <h2><%= link_to "Site data", action: :index %></h2>
+  <h2><%= @title %></h2>
   <p>These pages provide quick access to several kinds of recent weather data for any grid point in our datatabase. These data are updated daily from NOAA grids, who generate these data from advanced weather models that integrate real-world observations from across the country.</p>
+  <%= render partial: "quick_links" %>
 <% end %>
 
 <h2><%= @title %></h2>
-
-<p>Please select a location using the form below or from your list of sites if you are a subscriber. Data is available for latitudes from <%= LAT_RANGE.min %> to <%= LAT_RANGE.max %> and longitudes from <%= LONG_RANGE.min %> to <%= LONG_RANGE.max %>. By default the last week's worth of data will be shown for each site.</p>
+<p>Please select a location using the form below or from your list of sites if you are a subscriber. Data is available for latitudes from <%= LAT_RANGE.min %> to <%= LAT_RANGE.max %>&deg;N and longitudes from <%= LONG_RANGE.min %> to <%= LONG_RANGE.max %>&deg;W. By default the last week's worth of data will be shown for each site in Imperial units.</p>
 
 <%= render partial: "site_selector" %>
-
 <%= render partial: "my_sites" %>

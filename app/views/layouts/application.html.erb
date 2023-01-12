@@ -51,7 +51,7 @@
 			<div class="main">
 				<div class="welcome-box">
 					<div class="welcome-image">
-						<%= image_tag @welcome_image || "potato.png" %>
+						<%= link_to image_tag(@welcome_image || "potato.png") %>
 					</div>
 					<div class="welcome">
 						<%= yield :welcome -%>

@@ -1,12 +1,6 @@
 <% @title = "NWS Co-Op Observer Reports" %>
 <% @welcome_image = "snowy.png" %>
 
-<% content_for :welcome do %>
-  <h2><%= @title %></h2>
-  <p>Access daily weather reports from National Weather Service volunteers across Wisconsin.</p>
-<% end %>
-
-<% content_for :scripts do %>
 <script>
   window.onload = function() {
     updateButtons();
@@ -40,9 +34,13 @@
     updateButtons();
   }
 </script>
+
+<% content_for :welcome do %>
+  <h2><%= @title %></h2>
+  <p>Access daily weather reports from National Weather Service volunteers across Wisconsin.</p>
 <% end %>
 
-<h2><%= link_to(@title, "") %></h2>
+<h2><%= @title %></h2>
 
 <p>These weather data are maximum and minimum air temperature and precipitation, for the previous 24 hours, observed at about 7 am. The observations are made by a group of about 60 volunteers, who immediately transmit them to the National Weather Service Forecast Office in Sullivan, WI. Meteorologists there collect the readings and make them available on the Weather Service's computer system. We retrieve the data from McIDAS, a system created and maintained by the Space Science and Engineering Center of the University of Wisconsin-Madison. Until December 2003, the reports were referred to by the NWS as "OPU", for "Other Public Products"; they are now officially "HYD", for "hydrometeorological data".</p>
 

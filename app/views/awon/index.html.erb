@@ -2,7 +2,7 @@
 <% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-  <h2>Automated Weather Station Data</h2>
+  <h2><%= @title %></h2>
   <p style="font-weight:bold; color:red">Important Notice:</p>
   <p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
   <p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>

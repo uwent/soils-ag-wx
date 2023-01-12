@@ -18,13 +18,13 @@
 </script>
 
 <% content_for :welcome do %>
-  <h2><%= link_to(@title, "") %></h2>
+  <h2><%= @title %></h2>
   <p>Easily convert any calendar date to the Julian date/day of year.</p>
 <% end %>
 
 <% midyear = Date.today.year %>
 
-<h2><%= link_to(@title, "") %></h2>
+<h2><%= @title %></h2>
 
 <hr>
 

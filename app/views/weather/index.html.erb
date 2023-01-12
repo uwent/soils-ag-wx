@@ -1,8 +1,8 @@
-<% @title = "Weather Observations" %>
+<% @title = "Weather Data" %>
 <% @welcome_image = "snowy.png" %>
 
 <% content_for :welcome do %>
-  <h2>Weather Observations</h2>
+  <h2><%= @title %></h2>
   <p>Weather-related pages and data are available here, including temperature, precipitation, evapotranspiration, and insolation. Data are available from 2016-present for gridded data; earlier for AWON station data.</p>
   <%= render partial: "quick_links" %>
 <% end %>

@@ -6,15 +6,6 @@ class ThermalModelsController < ApplicationController
   def index
   end
 
-  def alfalfa_weevil
-  end
-
-  def corn_dev
-  end
-
-  def corn_stalk_borer
-  end
-
   def dd_map
     # @is_post = request.method == "POST"
     @endpoint = AgWeather::PEST_URL
@@ -52,12 +43,6 @@ class ThermalModelsController < ApplicationController
 
   def degree_days
     @dd_methods = %w[Average Modified Sine]
-  end
-
-  def ecb
-  end
-
-  def frost_map
   end
 
   # def get_dds_many_locations
@@ -122,12 +107,6 @@ class ThermalModelsController < ApplicationController
     redirect_to action: :degree_days
   end
 
-  def gypsy
-  end
-
-  def gypsy_info
-  end
-
   # def many_degree_days_for_date
   #   @stations = DegreeDayStation.all
   #   @regions = Region.sort_south_to_north(Region.all)
@@ -150,19 +129,16 @@ class ThermalModelsController < ApplicationController
       units: "F"
     }.compact
 
-    json = AgWeather.get(AgWeather::DD_URL, query: query)
-    @data = json[:data].each do |day|
+    json = AgWeather.get_dd(query:)
+    @data = json.each do |day|
       day[:risk] = oak_wilt_risk(oak_wilt_scenario(day[:cumulative_value], Date.parse(day[:date])))
     end
     if @data.size > 0
       @scenario = oak_wilt_scenario(@data.last[:cumulative_value], @end_date)
       @risk = oak_wilt_risk(@scenario)
     end
-    # rescue
-    #   redirect_to action: :oak_wilt
-  end
-
-  def potato
+  rescue
+    redirect_to action: :oak_wilt
   end
 
   def potato_data
@@ -227,12 +203,6 @@ class ThermalModelsController < ApplicationController
     render partial: "potato_data"
   end
 
-  def scm
-  end
-
-  def western_bean_cutworm
-  end
-
   ## PARTIALS ##
 
   def download_csv
@@ -260,8 +230,6 @@ class ThermalModelsController < ApplicationController
     rescue
       Date.yesterday
     end
-  rescue
-    redirect_to action: :oak_wilt
   end
 
   def parse_dd_map_params

@@ -1,4 +1,4 @@
-<% @title = "Gridded Weather Data"%>
+<% @title = "Weather Data"%>
 <% @welcome_image = "mean-temps-250px.png" %>
 <%= javascript_include_tag "map_functions" %>
 <% if @request_type == "POST" %>
@@ -8,12 +8,13 @@
 <% end %>
 
 <% content_for :welcome do %>
-  <h2><%= link_to @title, action: :weather %></h2>
+  <h2><%= @title %></h2>
   <p>Weather data is collected daily from the National Atmospheric and Oceanic Administration's gridded datasets and provided here for easy access.</p>
   <%= render partial: "quick_links" %>
 <% end %>
 
-<h2><%= link_to(@title, action: :weather) %></h2>
+<h2>Gridded Daily Weather Data</h2>
+
 <hr>
 
 <h4>Introduction</h4>

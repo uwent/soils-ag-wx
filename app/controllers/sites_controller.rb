@@ -2,8 +2,6 @@ class SitesController < ApplicationController
   before_action :get_subscriber_from_session, :get_sites
 
   def index
-    @title = "Site data"
-    @welcome_image = "awon.png"
   end
 
   def show

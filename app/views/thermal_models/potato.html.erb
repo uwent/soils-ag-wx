@@ -6,7 +6,7 @@
   <p>Our potato early blight P-day model and late blight DSV model lets you anticipate disease risk and take preventive action.</p>
 <% end %>
 
-<h2><%= link_to(@title, "") %></h2>
+<h2><%= @title %></h2>
 
 <hr>
 
@@ -20,7 +20,7 @@
 
 <h4>Current DSV and P-Day values for select locations:</h4>
 
-<%= render_async "potato_data", container_id: "data-container" do %>
+<%= render_async url_for(action: :potato_data), container_id: "data-container" do %>
   <p>Loading data...</p>
 <% end %>
 

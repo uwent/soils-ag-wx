@@ -1,4 +1,4 @@
-<% @title = "Solar Insolation Map" %>
+<% @title = "Solar Insolation Data" %>
 <% @welcome_image = "equinox.jpg" %>
 <%= javascript_include_tag "map_functions" %>
 <% if @is_post %>
@@ -13,7 +13,8 @@
   <%= render partial: "quick_links" %>
 <% end %>
 
-<h2><%= link_to(@title, "") %></h2>
+<h2>Gridded Daily Solar Insolation Data</h2>
+
 <hr>
 
 <h4>Introduction</h4>

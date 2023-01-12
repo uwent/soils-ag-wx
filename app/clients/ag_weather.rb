@@ -34,6 +34,10 @@ module AgWeather
     get(INSOL_URL, query:)&.dig(:data) || {}
   end
 
+  def self.get_dd(query:)
+    get(DD_URL, query:)&.dig(:data) || {}
+  end
+
   def self.get_map(endpoint, id, query)
     url = "#{endpoint}/#{id}"
     json = get(url, query:, timeout: 60)

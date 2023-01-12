@@ -32,9 +32,9 @@ Rails.application.routes.draw do
     end
   end
   get "weather", to: "weather#index" # default action
-  get "weather/(*path)", to: redirect("weather")
-  get "sun-water/(*path)", to: redirect("weather", status: 301)
-  get "sun_water/(*path)", to: redirect("weather", status: 301)
+  get "weather/(*path)", to: redirect("weather") if Rails.env.production?
+  get "sun-water/(*path)", to: redirect("weather", status: 301) if Rails.env.production?
+  get "sun_water/(*path)", to: redirect("weather", status: 301) if Rails.env.production?
 
   # Sites controller
   resources :sites, only: :none do
@@ -56,7 +56,7 @@ Rails.application.routes.draw do
     end
   end
   get "awon", to: "awon#index"
-  get "awon/(*path)", to: redirect("/awon")
+  get "awon/(*path)", to: redirect("/awon") if Rails.env.production?
 
   # Thermal models controller
   resources :thermal_models, path: "thermal-models", only: :index do
@@ -81,8 +81,8 @@ Rails.application.routes.draw do
     end
   end
   get "thermal-models", to: "thermal_models#index" # default action
-  get "thermal-models/(*path)", to: redirect("/thermal-models")
-  get "thermal_models/(*path)", to: redirect("/thermal-models", status: 301)
+  get "thermal-models/(*path)", to: redirect("/thermal-models") if Rails.env.production?
+  get "thermal_models/(*path)", to: redirect("/thermal-models", status: 301) if Rails.env.production?
 
   # Subscribers controller
   resources :subscribers do
@@ -111,7 +111,7 @@ Rails.application.routes.draw do
     end
   end
   match "subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/(*path)", to: redirect("/subscribers")
+  get "/subscribers/(*path)", to: redirect("/subscribers") if Rails.env.production?
 
   # Custom URLs
   direct(:vdifn) { "/vdifn" }
@@ -121,7 +121,7 @@ Rails.application.routes.draw do
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  get "*unmatched", to: redirect("/")
-  post "*unmatched", to: "application#bad_request" unless Rails.env.development?
-  post "/", to: "application#bad_request" unless Rails.env.development?
+  get "*unmatched", to: redirect("/") if Rails.env.production?
+  post "*unmatched", to: "application#bad_request" if Rails.env.production?
+  post "/", to: "application#bad_request" if Rails.env.production?
 end
