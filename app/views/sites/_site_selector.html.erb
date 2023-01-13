@@ -14,9 +14,8 @@
       <div>
         <label><%= select_tag :latitude, options_for_select(latitude_labels, @lat&.to_s || default_latitude) %> Latitude</label>&nbsp;
         <label><%= select_tag :longitude, options_for_select(longitude_labels, @long&.to_s || default_longitude) %> Longitude</label>&nbsp;
-        <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;
-        <span id="geo-loc-msg"></span><br>
-        <button type="button" onclick="goToSite()">View selected location</button>
+        <button type="button" onclick="getGeoLocation()">Get my location</button>
+        <button type="button" onclick="goToSite()">View selected location</button>&nbsp;<span id="geo-loc-msg"></span><br>
       </div>
     <% end %>
   </div>

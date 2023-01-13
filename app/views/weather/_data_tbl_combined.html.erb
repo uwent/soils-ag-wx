@@ -17,7 +17,7 @@
           <td><%= i + 1 %></td>
           <td><%= fmt_date(date.to_date) %></td>
           <% @cols.keys.each do |col| %>
-            <td><%= fmt_col(col, @data[date][col]) %></td>
+            <td style="text-align:center"><%= fmt_col(col, @data[date][col]) %></td>
           <% end %>
         </tr>
       <% end %>
@@ -28,7 +28,7 @@
           <td></td>
           <td><%= stat.capitalize %>:</td>
           <% totals.each do |col, val| %>
-            <td><%= fmt_col(col, val) %></td>
+            <td style="text-align:center"><%= fmt_col(col, val) %></td>
           <% end %>
         </tr>
       <% end %>
@@ -42,7 +42,7 @@
 
 <p>
   <%= submit_tag "Copy to clipboard", onclick: "copy('weather)" %>
-  <span id="weather-confirm" style="display:none;"> Copied!</span>
+  <span id="weather-confirm" style="display:none"> Copied!</span>
 </p>
 
 <% else %>

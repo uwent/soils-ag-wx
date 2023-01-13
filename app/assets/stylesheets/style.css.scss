@@ -152,11 +152,12 @@ input, select, button {
 }
 
 .main {
-	display: inline-flex;
+	display: flex;
+	gap: 0 10px;
 	width: inherit;
 	min-height: 750px;
-	overflow: auto;
-	width: 100%;
+	// overflow: auto;
+	// width: 100%;
 }
 
 
@@ -164,9 +165,8 @@ input, select, button {
 
 .welcome-box {
 	background-color: $welcome-bg-color;
-	width: 250px;
-	flex: none;
-	margin-right: 10px;
+	max-width: 250px;
+	flex: 1;
 	border-radius: 5px;
 	color: $welcome-text-color;
 
@@ -213,10 +213,9 @@ input, select, button {
 	background-color: $content-bg-color;
 	border-radius: 5px;
 	width: 100%;
-}
-
-.content {
-	margin: 10px;
+	flex: 1;
+	overflow: auto;
+	padding: 10px;
 
 	a {
 		color: $content-link-color;

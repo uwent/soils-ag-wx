@@ -198,8 +198,8 @@ class WeatherController < ApplicationController
     et = AgWeather.get_et(query:)
     insol = AgWeather.get_insol(query:)
 
-    precip_k = @len_units == "mm" ? 1 : 25.4
-    et_k = @len_units == "in" ? 1 : 1/25.4
+    precip_k = @len_units == "mm" ? 1 : 1/25.4
+    et_k = @len_units == "in" ? 1 : 25.4
     insol_k = @insol_units == "mJ" ? 1 : 1/3.6
 
     if weather.size + precip.size + et.size + insol.size > 0
@@ -222,8 +222,8 @@ class WeatherController < ApplicationController
         insol: "Solar<br>insolation<br>(#{@insol_units}/m<sup>2</sup>/day)",
         dew_point: "Dew<br>point<br>(&deg;#{@units})",
         pressure: "Vap.<br>pres.<br>(kPa)",
-        hours_rh_over_90: "Hours<br>high RH<br>(>90%)",
-        avg_temp_rh_over_90: "Mean<br>temp<br>high RH"
+        hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)",
+        avg_temp_rh_over_90: "Avg<br>temp<br>high&nbsp;RH"
       }.freeze
       summable = %i[precip et insol]
 
