@@ -20,7 +20,7 @@ gem "whenever", "~> 1.0"
 # gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
 # gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
 gem "terser", "~> 1.1" # for JS compression
-gem "mail", "~> 2.8"
+gem "mail", "~> 2.8" # v2.7 => v2.8.0 required a sendmail settings change, see config/production.rb, should be resolved with mail v2.8.1
 
 group :development do
   gem "puma"
