@@ -10,5 +10,5 @@
 <h2><%= @title %></h2>
 <p>Please select a location using the form below or from your list of sites if you are a subscriber. Data is available for latitudes from <%= LAT_RANGE.min %> to <%= LAT_RANGE.max %>&deg;N and longitudes from <%= LONG_RANGE.min %> to <%= LONG_RANGE.max %>&deg;W. By default the last week's worth of data will be shown for each site in Imperial units.</p>
 
-<%= render partial: "site_selector" %>
 <%= render partial: "my_sites" %>
+<%= render partial: "site_selector" %>

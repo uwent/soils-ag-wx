@@ -469,7 +469,7 @@ div .success {
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 0.5em;
-	gap: 1em;
+	gap: 0 20px;
 
 	@media #{$small-only} {
 		flex-direction: column;
@@ -483,6 +483,13 @@ div .success {
 		@media #{$small-only} {
 			width: auto;
 		}
+	}
+}
+
+.col-50 {
+	width: 50%;
+	@media #{$small-only} {
+		width: inherit;
 	}
 }
 

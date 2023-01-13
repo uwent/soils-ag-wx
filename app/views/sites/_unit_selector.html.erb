@@ -1,0 +1,22 @@
+<script>
+  function refreshTable(form) {
+    let url = "<%= url_for(controller: :weather, action: :site_data, lat: @lat, long: @long, start_date: @start_date, end_date: @end_date).html_safe %>" + "&units=" + form.units.value
+
+    $.ajax({
+      url: url,
+      success: (response) => {
+        $("#site-data").html(response);
+      }
+    });
+  }
+</script>
+
+<div class="site-row">
+  <h4>Choose display units:</h4>
+  <div class="site-box">
+    <%= form_tag do %>
+      <label><%= radio_button_tag :units, "imperial", @units == "imperial", onchange: "refreshTable(this.form)" %> Imperial (&deg;F, in, kWh/m<sup>2</sup>/day)</label><br>
+      <label><%= radio_button_tag :units, "metric", @units == "metric", onchange: "refreshTable(this.form)" %> Metric (&deg;C, mm, mJ/m<sup>2</sup>/day)</label>
+    <% end %>
+  </div>
+</div>

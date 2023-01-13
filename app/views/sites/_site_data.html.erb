@@ -1,15 +1,7 @@
-<% params = {
-    controller: :weather,
-    action: :site_data,
-    latitude: @lat,
-    longitude: @long,
-    start_date: Date.current - 7.days,
-    end_date: Date.current - 1.day
-  }
-%>
-
 <h3>Past week's weather data for <%= @lat %>&deg;N, <%= @long %>&deg;W:</h4>
 
-<%= render_async url_for(params) do %>
-  <p><i>Loading weather data...</i></p>
-<% end %>
+<div id="site-data">
+  <%= render_async url_for(@passed_params) do %>
+    <p><i>Loading weather data...</i></p>
+  <% end %>
+</div>

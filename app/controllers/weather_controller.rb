@@ -174,17 +174,33 @@ class WeatherController < ApplicationController
     render partial: "no_data"
   end
 
+  # default units from AgWeather:
+  # Temp: F
+  # Precip: mm, mult by 25.4 => in
+  # ET: in, div by 25.4 => mm
+  # Insol: mJ, div by 3.6 => kWh
   def site_data
-    query = parse_map_params
-    @units = params[:temp_units] || "F"
-    @precip_units = params[:precip_units] || "in"
-    @et_units = "in"
-    @insol_units = "mJ/m<sup>2</sup>/day"
+    query = parse_site_params
+    puts query
+    @units = params[:units]
+    if @units == "metric"
+      @units = "C"
+      @len_units = "mm"
+      @insol_units = "mJ"
+    else
+      @units = "F"
+      @len_units = "in"
+      @insol_units = "kWh"
+    end
 
     weather = AgWeather.get_weather(query: query.merge(units: @units))
-    precip = AgWeather.get_precip(query: query.merge(units: @precip_units))
+    precip = AgWeather.get_precip(query:)
     et = AgWeather.get_et(query:)
     insol = AgWeather.get_insol(query:)
+
+    precip_k = @len_units == "mm" ? 1 : 25.4
+    et_k = @len_units == "in" ? 1 : 1/25.4
+    insol_k = @insol_units == "mJ" ? 1 : 1/3.6
 
     if weather.size + precip.size + et.size + insol.size > 0
       # merge data sources by day
@@ -192,24 +208,25 @@ class WeatherController < ApplicationController
       (@start_date..@end_date).each do |date|
         @data[date] = weather.detect { |k| k[:date] == date } || {}
         @data[date].delete(:date)
-        @data[date][:precip] = precip.detect { |k| k[:date] == date }&.dig(:value)
-        @data[date][:et] = et.detect { |k| k[:date] == date }&.dig(:value)
-        @data[date][:insol] = insol.detect { |k| k[:date] == date }&.dig(:value)
+        @data[date][:precip] = precip.detect { |k| k[:date] == date }&.dig(:value)&.* precip_k
+        @data[date][:et] = et.detect { |k| k[:date] == date }&.dig(:value)&.* et_k
+        @data[date][:insol] = insol.detect { |k| k[:date] == date }&.dig(:value)&.* insol_k
       end
 
       @cols = {
         min_temp: "Min<br>temp<br>(&deg;#{@units})",
         avg_temp: "Avg<br>temp<br>(&deg;#{@units})",
         max_temp: "Max<br>temp<br>(&deg;#{@units})",
-        precip: "Daily<br>precip.<br>(#{@precip_units})",
-        et: "Potential<br>ET<br>(#{@et_units})",
-        insol: "Solar<br>insolation<br>(#{@insol_units})",
+        precip: "Daily<br>precip.<br>(#{@len_units})",
+        et: "Potential<br>ET<br>(#{@len_units})",
+        insol: "Solar<br>insolation<br>(#{@insol_units}/m<sup>2</sup>/day)",
         dew_point: "Dew<br>point<br>(&deg;#{@units})",
         pressure: "Vap.<br>pres.<br>(kPa)",
         hours_rh_over_90: "Hours<br>high RH<br>(>90%)",
         avg_temp_rh_over_90: "Mean<br>temp<br>high RH"
       }.freeze
       summable = %i[precip et insol]
+
       if @data
         @totals = {min: {}, avg: {}, max: {}, total: {}}
         @cols.keys.each do |col|
@@ -287,8 +304,8 @@ class WeatherController < ApplicationController
   end
 
   def parse_site_params
-    @lat = params[:latitude].to_f
-    @long = params[:longitude].to_f
+    @lat = params[:lat].to_f
+    @long = params[:long].to_f
     @start_date = params[:start_date]
     @end_date = params[:end_date]
     {

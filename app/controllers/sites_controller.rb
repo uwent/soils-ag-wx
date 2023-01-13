@@ -5,20 +5,32 @@ class SitesController < ApplicationController
   end
 
   def show
-    if params[:lat] && params[:long]
-      @lat = params[:lat].to_f.round(1)
-      @long = params[:long].to_f.round(1)
-      @valid = validate_lat(@lat) && validate_long(@long)
-      if @valid && params[:etc].present?
-        redirect_to(action: :show, lat: @lat, long: @long)
-      end
+    @lat = params[:lat].to_f.round(1)
+    @long = params[:long].to_f.round(1)
+    @valid = validate_lat(@lat) && validate_long(@long)
+    if @valid && params[:etc].present?
+      redirect_to(action: :show, lat: @lat, long: @long)
     end
 
-    @title = (@lat && @long && @valid) ? "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe : "Site data"
-    @welcome_image = "awon.png"
+    @start_date = Date.current - 7.days
+    @end_date = Date.current - 1.day
+    @units = params[:units] == "metric" ? "metric" : "imperial"
+
     if @valid && @subscriber
       @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first
     end
+
+    @passed_params = {
+      controller: :weather,
+      action: :site_data,
+      lat: @lat,
+      long: @long,
+      start_date: @start_date,
+      end_date: @end_date,
+      units: @units
+    }
+  rescue
+    redirect_to action: :index
   end
 
   def update
