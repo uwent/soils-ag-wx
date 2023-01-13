@@ -33,6 +33,13 @@ Rails.application.configure do
     protocol: "https"
   }
 
+  # fix for gem mail v2.7 => v2.8
+  # https://www.gamecreatures.com/blog/2022/12/19/incompatibility-rails-5-2-and-mail-gem-argumenterror-arguments-expected-to-be-an-array-of-individual-string-args/
+  config.action_mailer.sendmail_settings = {
+    location: "/usr/sbin/sendmail",
+    arguments: ["-i"]
+  }
+
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
