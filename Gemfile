@@ -20,7 +20,7 @@ gem "whenever", "~> 1.0"
 # gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
 # gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
 gem "terser", "~> 1.1" # for JS compression
-gem "mail", "2.7.1" # v2.8 might be causing error
+gem "mail", "2.8.0.1" # v2.8 might be causing error
 
 group :development do
   gem "puma"
