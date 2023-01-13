@@ -9,13 +9,10 @@ html, body, h1, h2 {
 	padding: 0px;
 }
 
-* {
-	font-family: 'Lato', sans-serif;
-}
-
 body {
 	background: $page-bg-color;
 	font-size: 15px;
+	font-family: 'Lato', sans-serif;
 }
 
 h2 {
