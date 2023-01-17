@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_09_060515) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_17_203834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -114,7 +114,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_09_060515) do
   create_table "subscribers", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
-    t.string "confirmation_token"
+    t.string "auth_token"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.datetime "confirmed_at", precision: nil

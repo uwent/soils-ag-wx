@@ -8,4 +8,9 @@ Dear <%= @subscriber.name || "AgWeather subscriber" %>,<br>
   </tr>
 </table>
 
-<p>This code will be valid for one hour.</p>
+<p>This code will be valid for one hour. Alternatively, you can <%= link_to "click this link", confirm_subscriber_url(@subscriber, token: @subscriber.auth_token) %> to be automatically logged in. You will stay logged in for 1 week unless you log out.</p>
+
+<p>
+  Thank you,<br>
+  The AgWeather Team
+</p>

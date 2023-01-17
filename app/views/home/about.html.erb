@@ -4,8 +4,7 @@
 <% content_for :welcome do %>
   <h2>About this site</h2>
   <p>Originally developed by the UW-Madison Department of Soil Science, this site is now maintained by the Department of Entomology.</p>
-  <br>
-  <p><strong>Quick Links:</strong></p>
+  <h4>Quick Links:</h4
   <ul>
     <% @quick_links.each do |k, v| %>
       <li><%= link_to k, v, target: "_blank" %></li>
@@ -19,15 +18,11 @@
 
 <p>This web site is a continuation of the hard work first started in the mid 1980's by Bill Bland, now emeritus faculty member and Rick Wayne, software developer in Department of Soil Science at UW-Madison. The data are provided free of charge to any interested parties. A primary focus of their mission was to help growers maximize their yields, minimize their costs, and assist them wherever possible as responsible stewards of our agricultural landscape. Bill has retired and Rick has accepted a new position so they are no longer involved with the site. John Panuska, Extension Specialist in Biological Systems Engineering, coordinated the site for a time, but retired in 2021.</p>
 
-<p>Some functions of this website may not be working currently or may be permanently retired. Feel free to contact the webmaster if any bugs or broken features are found.</p>
-
 <p>Learn more about <%= link_to "King Hall", action: :king_hall %>, home of the UW Soil Science Department.</p>
-
-<br>
 
 <h4>Webmaster/developer:</h4>
 
-<div style="display: inline-flex; margin-bottom: 1.5em;">
+<div class="row">
   <div class="left">
     <%= image_tag "webmaster.png", title: "hard at work" %>
   </div>
@@ -42,10 +37,7 @@
   </div>
 </div>
 
-<h4>Site info:</h4>
-
-Data sources:
-
+<h4>Data sources:</h4>
 <ul>
   <li>Weather: <%= link_to "NOAA URMA 2.5km-resolution daily grids", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %></li>
   <li>Precipitation: <%= link_to "NOAA estimated precipitation daily grids", "https://nomads.ncep.noaa.gov/pub/data/nccf/com/pcpanl/prod/" %></li>
@@ -53,19 +45,19 @@ Data sources:
   <li>Evapotranspiration: Computed from weather and insolation grids using the method outlined in <%= link_to "Diak et al. 1998", "https://doi.org/10.1175/1520-0477(1998)079%3C1345:AMDADB%3E2.0.CO;2" %>.</li>
 </ul>
 
-<br>
+<p>Our data coverage area is approximately the upper Midwest US, from 38 to 50° North latitude and from -98 to -82° West longitude.</p>
 
-Site structure:
-
-<div style="overflow: auto">
-  <pre>
-    AgWeather backend server - <%= link_to "link to API blueprint", AgWeather::BASE_URL %> - <%= link_to "source code", "https://github.com/uwent/ag-weather" %>
+<div>
+  <h4>Site structure:</h4>
+  <pre style="overflow: auto;">
+    AgWeather backend server - <%= link_to "link to API blueprint", AgWeather::BASE_URL, target: "_blank" %> - <%= link_to "source code", "https://github.com/uwent/ag-weather", target: "_blank" %>
       │
-      ├─ Soils Ag Wx (this site) - <%= link_to "source code", "https://github.com/uwent/soils-ag-wx" %>
+      ├─ AgWeather frontend (this site) - <%= link_to "source code", "https://github.com/uwent/soils-ag-wx", target: "_blank" %>
       │
-      ├─ Vegetable Disease and Insect Forecasting Network (VDIFN) - <%= link_to "link", vdifn_url %> - <%= link_to "source code", "https://github.com/uwent/ag-vdifn" %>
+      ├─ Vegetable Disease and Insect Forecasting Network (VDIFN) - <%= link_to "link", vdifn_url %> - <%= link_to "source code", "https://github.com/uwent/ag-vdifn", target: "_blank" %>
       │
-      └─ Wisconsin Irrigation Scheduling Program (WISP) - <%= link_to "link", wisp_url %> - <%= link_to "source code", "https://github.com/uwent/wisp" %></pre>
+      └─ Wisconsin Irrigation Scheduling Program (WISP) - <%= link_to "link", wisp_url, target: "_blank" %> - <%= link_to "source code", "https://github.com/uwent/wisp", target: "_blank" %>
+  </pre>
 </div>
 
 <p>Last updated: <%= @app_last_updated %></p>
@@ -74,4 +66,4 @@ Site structure:
 
 <br>
 
-<%= link_to "Back", :back %>
+<%= link_to "Back", controller: :home %>

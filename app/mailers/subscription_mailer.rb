@@ -1,13 +1,13 @@
 class SubscriptionMailer < ApplicationMailer
   def confirm(subscriber)
     @subscriber = subscriber
-    @url = confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token)
+    @url = confirm_subscriber_url(@subscriber, token: @subscriber.auth_token)
     mail(to: @subscriber.email, subject: "Please confirm your email address for your UW AgWeather subscription")
   end
 
   def validation(subscriber)
     @subscriber = subscriber
-    @url = confirm_subscriber_url(@subscriber, token: @subscriber.confirmation_token)
+    @url = confirm_subscriber_url(@subscriber, token: @subscriber.auth_token)
     mail(to: @subscriber.email, subject: "UW AgWeather login validation code")
   end
 

@@ -126,7 +126,7 @@ class SubscribersController < ApplicationController
         subscriber.destroy
         redirect_to admin_subscribers_path, notice: "Successfully deleted user #{subscriber.id}: #{subscriber.name} (#{subscriber.email})"
       end
-    elsif params[:token] == @subscriber.confirmation_token
+    elsif params[:token] == @subscriber.auth_token
       @subscriber.destroy
       redirect_to subscribers_path, notice: "You successfully deleted your account."
     # @subscriber.sites.each { |s| s.delete }
@@ -181,7 +181,7 @@ class SubscribersController < ApplicationController
   end
 
   def send_email
-    if params[:token] != @subscriber.confirmation_token
+    if params[:token] != @subscriber.auth_token
       return redirect_to manage_subscribers_path, alert: "Unable to send test email, refresh page and try again."
     end
 
@@ -251,7 +251,7 @@ class SubscribersController < ApplicationController
   # actually just disables all sites
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
-    if params[:token] == @subscriber.confirmation_token
+    if params[:token] == @subscriber.auth_token
       @subscriber.update(emails_enabled: false)
       path = if session[:subscriber] && Subscriber.find(session[:subscriber]).admin?
         manage_subscribers_path(to_edit_id: @subscriber.id)

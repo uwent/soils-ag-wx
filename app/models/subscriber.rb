@@ -6,7 +6,7 @@ class Subscriber < ApplicationRecord
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, presence: true
   validates_uniqueness_of :email
 
-  before_create :set_confirmation_token
+  before_create :set_auth_token
 
   def self.dates_active
     Date.new(Date.current.year, 3, 15)..Date.new(Date.current.year, 11, 1)
@@ -34,7 +34,7 @@ class Subscriber < ApplicationRecord
   end
 
   def confirm!(token)
-    if token == confirmation_token
+    if token == auth_token
       self.confirmed_at = Time.current
       save!
       true
@@ -120,7 +120,7 @@ class Subscriber < ApplicationRecord
 
   private
 
-  def set_confirmation_token
-    self.confirmation_token = SecureRandom.hex(10)
+  def set_auth_token
+    self.auth_token = SecureRandom.hex(10)
   end
 end

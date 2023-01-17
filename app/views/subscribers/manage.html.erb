@@ -339,13 +339,13 @@
 <div class="site-controls">
   <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
   <% if @site_count > 0 %>
-    <div><%= link_to("<button>Disable all sites</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
-    <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.confirmation_token)) %></div>
+    <div><%= link_to("<button>Disable all sites</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.auth_token)) %></div>
+    <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.auth_token)) %></div>
   <% end %>
   <% if @admin %>
     <div><%= link_to("<button>Admin</button>".html_safe, admin_subscribers_path) if @admin %></div>
   <% else %>
-    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.confirmation_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} %></div>
+    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.auth_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} %></div>
   <% end %>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>
