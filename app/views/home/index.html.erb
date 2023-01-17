@@ -14,9 +14,21 @@
     <%= link_to image_tag("weather-150px.png"), controller: :weather %>
   </div>
   <div class="text">
-    <h2><%= link_to "Weather", controller: :weather %></h2>
-    <p>Our <%= link_to "weather", controller: :weather %> page offers maps and data for <%= link_to "weather", controller: :weather, action: :weather %>, <%= link_to "precipitation", controller: :weather, action: :precip %>, <%= link_to "evapotranspiration", controller: :weather, action: :et %>, and <%= link_to "solar insolation", controller: :weather, action: :insol %>, derived from NOAA daily grids and satellite observations. We archive <%= link_to 'NWS HYD reports', controller: :weather, action: :hyd %>, daily weather summaries throughout Wisconsin 1995-present. Our <%= link_to "automated weather stations", controller: :awon %> archive offers a record of hourly weather observations at Hancock and Arlington from 1985-2017.</p>
-    <p>We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions.</p>
+    <h2><%= link_to "Weather Data", controller: :weather %></h2>
+    <p>Our weather page offers maps and data for temperature, precipitation, evapotranspiration, and solar insolation, derived from NOAA daily grids and satellite observations. We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions. In addition, access archived National Weather Service hydrometeorological (HYD) reports, daily weather summaries throughout Wisconsin 1995-present. Our automated weather observation network (AWON) archive offers a record of hourly weather observations at Hancock and Arlington from 1985-2017.</p>
+    <h4>Quick links:</h4>
+    <ul>
+      <li>
+        Maps and data: 
+        <%= link_to "Weather", controller: :weather, action: :weather %> | 
+        <%= link_to "Precipitation", controller: :weather, action: :precip %> | 
+        <%= link_to "Evapotranspiration", controller: :weather, action: :et %> | 
+        <%= link_to "Insolation", controller: :weather, action: :insol %>
+      </li>
+      <li><%= link_to 'National Weather Service HYD reports', controller: :weather, action: :hyd %></li>
+      <li><%= link_to "Automated weather station data archive", controller: :awon %> (Note: stations are no longer active)</li>
+      <li><%= link_to "Day-of-year calendar", controller: :weather, action: :doycal %></li>
+    </ul>
   </div>
 </div>
 
@@ -24,11 +36,26 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("thermal-150px.png"), controller: :thermal_models %>
+    <%= link_to image_tag("dd-map-250px.png"), controller: :thermal_models %>
   </div>
   <div>
     <h2><%= link_to "Thermal Models", controller: :thermal_models %></h2>
-    <p>Using our database of temperatures gridded across the Midwest, we create degree-day style thermal models for a variety of purposes such as predicting pest emergence.</p>
+    <p>The thermal models page contains links to the VDIFN web app, degree-day maps and data, an Oak Wilt risk model for minimizing disease risk when pruning or harvest oak, and several pages on information and degree day models for common insect pests.</p>
+    <h4>Quick Links:</h4>
+    <ul>
+      <li><%= link_to "Degree day and disease risk maps", controller: :thermal_models, action: :dd_map %></li>
+      <li><%= link_to "Degree day calculator", controller: :thermal_models, action: :degree_days %></li>
+      <li><%= link_to "Oak Wilt risk model", controller: :thermal_models, action: :oak_wilt %></li>
+      <li><%= link_to "Potato pests and diseases", controller: :thermal_models, action: :potato %></li>
+      <li><%= link_to "Corn development model", controller: :thermal_models, action: :corn_dev %></li>
+      <li>
+        Pest info pages: 
+        <%= link_to "European Corn Borer", controller: :thermal_models, action: :ecb %> | 
+        <%= link_to "Spongy Moth", controller: :thermal_models, action: :spongy_moth %> | 
+        <%= link_to "Seedcorn Maggot", controller: :thermal_models, action: :scm %> | 
+        <%= link_to "Western Bean Cutworm", controller: :thermal_models, action: :western_bean_cutworm %>
+      </li>
+    </ul>
   </div>
 </div>
 
@@ -39,8 +66,9 @@
     <%= link_to image_tag("vdifn-250px.png"), vdifn_path, target: "_blank" %>
   </div>
   <div>
-    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network", vdifn_path, target: "_blank" %></h2>
-    <p>Visual map-based interface to view disease risk models, insect developmental models, and degree-day accumulation in Wisconsin and surrounding states. This is the newest and most advanced tool we have available. This link will open in a new tab.</p>
+    <h2><%= link_to "Vegetable Disease & Insect Forecasting Network (VDIFN)", vdifn_path, target: "_blank" %></h2>
+    <p>Visual map-based interface to view disease risk models, insect developmental models, and degree-day accumulation in Wisconsin and surrounding states. This is the newest and most advanced tool we have available for tracking degree day accumulations across the Upper Midwest and generating disease risk and insect pest pressure predictions.</p>
+    <ul><li><%= link_to "Launch VDIFN", vdifn_path, target: "_blank" %> (opens in new tab)</li></ul>
   </div>
 </div>
 
@@ -51,11 +79,9 @@
     <%= link_to image_tag("pivot-150px.png"), wisp_url, target: "_blank" %>
   </div>
   <div>
-    <h2><%= link_to "Irrigation Scheduling Program", wisp_url, target: "_blank" %></h2>
-    <p>An online irrigation scheduling application is available to calculate the allowable-depletion balance. The tool automatically pulls evapotranspiration and degree day data where coverage exists, but rainfall must be entered manually. The program was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science. This link will open in a new tab.</p>
-    <ul>
-      <li><%= link_to "Irrigation Scheduling Program", wisp_url, target: "_blank" %></li>
-    </ul>
+    <h2><%= link_to "Irrigation Scheduling Program (WISP)", wisp_url, target: "_blank" %></h2>
+    <p>An online irrigation scheduling application is available to calculate the allowable-depletion balance. The tool automatically pulls weather, precipitation, evapotranspiration, degree day data where coverage exists, but any values can be manually updated if you have an on-site weather station. The program was developed by Dr. John Panuska of UW Extension/UW-Madison Biological Systems Engineering and Dr. John Norman, UW-Madison Soil Science.</p>
+    <ul><li><%= link_to "Launch WISP", wisp_url, target: "_blank" %> (opens in new tab)</li></ul>
   </div>
 </div>
 

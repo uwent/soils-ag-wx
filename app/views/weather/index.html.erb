@@ -9,7 +9,7 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("dd-map-150px.png"), action: :weather %>
+    <%= link_to image_tag("mean-temps-250px.png"), action: :weather %>
   </div>
   <div>
     <h2><%= link_to "Weather Data", action: :weather %></h2>
@@ -35,13 +35,13 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("insol-150px.png"), action: :insol %>
+    <%= link_to image_tag("sunwater-150px.png"), action: :et %>
   </div>
   <div>
-    <h2><%= link_to "Insolation Data", action: :insol %></h2>
-    <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
+    <h2><%= link_to "Evapotranspiration Data", action: :et %></h2>
+    <p>Maps of potential evapotranspiration (ET) are calculated from satellite-derived measurements of solar radiation and average air temperatures. The ET values on the maps are a reasonable estimate of daily crop water use for most crops that have reached at least 80% coverage of the ground. Prior to 80% or greater coverage, ET will be a fraction of the map value in proportion to the amount of coverage. The map values may vary slightly from ET estimates from AWON and other more site-specific models, but these differences are believed to be within the uncertainty of even measurements of actual water use made directly in a given field.</p>
     <ul>
-      <li><%= link_to "View or download solar insolation data", action: :insol %></li>
+      <li><%= link_to "View ET map or download data", action: :et %></li>
     </ul>
   </div>
 </div>
@@ -50,13 +50,13 @@
 
 <div class="row">
   <div class="left">
-    <%= link_to image_tag("sunwater-150px.png"), action: :et %>
+    <%= link_to image_tag("insol-150px.png"), action: :insol %>
   </div>
   <div>
-    <h2><%= link_to "Evapotranspiration Data", action: :et %></h2>
-    <p>Maps of potential evapotranspiration (ET) are calculated from satellite-derived measurements of solar radiation and average air temperatures. The ET values on the maps are a reasonable estimate of daily crop water use for most crops that have reached at least 80% coverage of the ground. Prior to 80% or greater coverage, ET will be a fraction of the map value in proportion to the amount of coverage. The map values may vary slightly from ET estimates from AWON and other more site-specific models, but these differences are believed to be within the uncertainty of even measurements of actual water use made directly in a given field.</p>
+    <h2><%= link_to "Insolation Data", action: :insol %></h2>
+    <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
     <ul>
-      <li><%= link_to "View ET map or download data", action: :et %></li>
+      <li><%= link_to "View or download solar insolation data", action: :insol %></li>
     </ul>
   </div>
 </div>
