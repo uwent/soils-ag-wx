@@ -14,7 +14,7 @@ class SitesController < ApplicationController
 
     @start_date = Date.current - 7.days
     @end_date = Date.current - 1.day
-    @units = params[:units] == "metric" ? "metric" : "imperial"
+    @units = (params[:units] == "metric") ? "metric" : "imperial"
 
     if @valid && @subscriber
       @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first

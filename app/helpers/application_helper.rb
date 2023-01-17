@@ -8,7 +8,7 @@ module ApplicationHelper
   end
 
   def fmt_date(date)
-    fmt = date.year == Date.current.year ? "%b&nbsp;%-d" : "%b&nbsp;%-d, %y"
+    fmt = (date.year == Date.current.year) ? "%b&nbsp;%-d" : "%b&nbsp;%-d, %y"
     date.strftime(fmt).html_safe
   end
 

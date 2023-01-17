@@ -198,9 +198,9 @@ class WeatherController < ApplicationController
     et = AgWeather.get_et(query:)
     insol = AgWeather.get_insol(query:)
 
-    precip_k = @len_units == "mm" ? 1 : 1/25.4
-    et_k = @len_units == "in" ? 1 : 25.4
-    insol_k = @insol_units == "mJ" ? 1 : 1/3.6
+    precip_k = (@len_units == "mm") ? 1 : 1 / 25.4
+    et_k = (@len_units == "in") ? 1 : 25.4
+    insol_k = (@insol_units == "mJ") ? 1 : 1 / 3.6
 
     if weather.size + precip.size + et.size + insol.size > 0
       # merge data sources by day
