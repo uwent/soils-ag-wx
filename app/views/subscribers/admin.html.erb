@@ -4,19 +4,19 @@
 <script>
   $(".best_in_place").best_in_place()
 
-  $(document).on("best_in_place:error", () => {
-    let msg = "Unable to update site, cannot have duplicate names or locations."
-    let el = `<div id='bip-error' class='error'>${msg}</div>`
+  $(document).on("best_in_place:error", (event, request, error) => {
+    let msg = JSON.parse(request.responseText).message
+    let el = `<div id='bip-error' class='error'>Unable to update user. ${msg}</div>`
     $("#bip-notice").html(el)
     $("#bip-error").delay(10000).fadeOut()
-  });
+  })
 
-  $(document).on('best_in_place:success', () => {
-    let msg = "Successfully updated site"
+  $(document).on('best_in_place:success', (event, request, error) => {
+    let msg = "Successfully updated user."
     let el = `<div id='bip-success' class='success'>${msg}</div>`
     $("#bip-notice").html(el)
     $("#bip-success").delay(10000).fadeOut()
-  });
+  })
 </script>
 
 <% content_for :welcome do %>
@@ -34,8 +34,6 @@
   <b>Name:</b> <%= @subscriber.name %><br>
   <b>Email:</b> <%= @subscriber.email %>
 </p>
-
-<span id="bip-notice"></span>
 
 <div class="apple_pagination">
   <%= will_paginate @subscribers, class: :apple_pagination %>
@@ -72,6 +70,8 @@
   <br>
   <%= will_paginate @subscribers, class: :apple_pagination %>
 </div>
+
+<span id="bip-notice"></span>
 
 <br>
 
