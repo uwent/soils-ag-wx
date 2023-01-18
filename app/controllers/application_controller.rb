@@ -107,8 +107,11 @@ class ApplicationController < ActionController::Base
   end
 
   def get_subscriber_from_session
-    id = session[:subscriber]
-    @subscriber = id.nil? ? nil : Subscriber.where(id:).first
+    @subscriber = Subscriber.where(id: session[:subscriber]).first
+    @admin = @subscriber&.admin?
+    if @admin && params[:to_edit_id]
+      @subscriber = Subscriber.where(id: params[:to_edit_id]).first || @subscriber
+    end
   end
 
   def validate_lat(lat)

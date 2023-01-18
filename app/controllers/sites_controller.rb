@@ -33,14 +33,22 @@ class SitesController < ApplicationController
     redirect_to action: :index
   end
 
+  # Responds to site updates from best_in_place on subscribers/manage
   def update
-    return reject("Must be logged in.") if @subscriber.nil? || !@subscriber.admin?
-    site = Site.find(params[:id])
-    return reject("This site doesn't belong to you.") unless @subscriber.sites.include? site
-    site.update!(site_params.compact)
-    render json: {message: "success"}
-  rescue => e
-    render json: {message: e}, status: 422
+    return reject("You must be logged in to perform this action.") if @subscriber.nil?
+    site = Site.where(id: params[:id]).first
+    return reject("This site doesn't belong to you.") unless @subscriber.sites.include?(site) || @admin
+    site.update(site_params.compact)
+    if site.valid?
+      site.save!
+      render json: {message: "success"}
+    else
+      reject(site.errors.full_messages)
+    end
+  rescue ActiveRecord::RecordNotUnique
+    reject("Duplicate site already exists.")
+  rescue
+    reject("An error occurred white updating the site, please try again.")
   end
 
   private

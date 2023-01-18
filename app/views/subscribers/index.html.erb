@@ -6,26 +6,21 @@
   <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
 <% end %>
 
-<h2>Register for automated daily weather data reports</h2>
-
+<h2>Automated daily email service</h2>
 <hr>
 
 <%= render partial: "notices" %>
 
 <h4>How To Register</h4>
-
 <p>The "Register" button below takes you to a form where you can enter your name and email address so that our weather data emails can find you. Once you're known to our database, you can add locations and subscribe them to several different kinds of weather, degree day, and pest risk model outputs. The emails will go out at 7:00 AM Central and will reflect weather data as of the prior day.</p>
-
 <p>After you register, the system will send you an email containing a link which you can click to confirm that you're really you, and that you really want to start receiving automated emails.</p>
-
 <%= link_to url_for(action: :new) do %><button>Click here to register</button><% end %><br><br>
 
 <h4>Already Registered?</h4>
-
 <%= form_tag "/subscribers/manage" do %>
   <%= label_tag :email_address, "Please enter your email address to manage your subscriptions: " %>
   <%= text_field_tag :email, nil, type: "email", required: true, autofocus: true, placeholder: "email@example.com" %>
   <%= submit_tag "Sign in" %>
 <% end %>
 
-<br><%= link_to "Back", :back %>
+<br><%= link_to "Back", controller: :home %>

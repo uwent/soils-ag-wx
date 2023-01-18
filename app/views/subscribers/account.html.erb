@@ -1,0 +1,42 @@
+<% @title = "Email Subscriptions" %>
+<% @welcome_image = "awon.png" %>
+
+<% content_for :welcome do %>
+  <h2><%= @title %></h2>
+  <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
+  <%= render partial: "quick_links" %>
+<% end %>
+
+<h2>Manage your account</h2>
+
+<hr>
+
+<p><i>Coming soon: ability to edit your name or email from this page.</i></p>
+
+<h4>Account details:</h4>
+
+<div style="margin-left: 1em;">
+  <b>Name:</b> <%= @subscriber.name %><br>
+  <b>Email:</b> <%= @subscriber.email %><br>
+  <b>Created:</b> <%= @subscriber.created_at.strftime("%b %d, %Y") %><br><br>
+  <b>Saved sites:</b> <%= @sites.size %>
+  <% if @sites.size > 0 %>
+    <ul>
+      <% @sites.each do |site| %>
+        <li><%= site.latitude %>, <%= site.longitude %>: <%= site.name %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<h4>Account actions:</h4>
+
+<div style="margin-left: 1em;">
+  <%= link_to subscriber_path(@subscriber.id, token: @subscriber.auth_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} do %>
+    <button><span class='warning'>Delete my account</span></button>
+  <% end %>
+</div>
+
+<br><br>
+
+<%= link_to "Back", action: :manage %>

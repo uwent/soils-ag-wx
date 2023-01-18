@@ -4,6 +4,7 @@ class SubscribersController < ApplicationController
     manage
     update
     admin
+    account
     destroy
     send_email
     enable_emails
@@ -131,7 +132,7 @@ class SubscribersController < ApplicationController
       redirect_to subscribers_path, notice: "You successfully deleted your account."
     # @subscriber.sites.each { |s| s.delete }
     else
-      redirect_to manage_subscribers_path, alert: "Invalid token, check URL or try again."
+      redirect_to subscribers_path, alert: "Invalid token, check URL or try again."
     end
   end
 
@@ -139,6 +140,11 @@ class SubscribersController < ApplicationController
     return redirect_to subscribers_path if @subscriber.nil?
     return redirect_to manage_subscribers_path unless @subscriber.admin?
     @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
+  end
+
+  def account
+    return redirect_to subscribers_path if @subscriber.nil?
+    @sites = @subscriber.sites
   end
 
   def manage
@@ -161,13 +167,7 @@ class SubscribersController < ApplicationController
       end
     end
 
-    @admin = @subscriber.admin?
-    if @admin && params[:to_edit_id]
-      @subscriber = Subscriber.find(params[:to_edit_id])
-    end
-
-    @sites = @subscriber.sites.order(latitude: :desc)
-    @site_count = @sites.size
+    @sites = @subscriber.sites
     @weather_subs = Subscription.weather
     @dd_subs = Subscription.degree_days
     @pest_subs = Subscription.pests
@@ -293,7 +293,7 @@ class SubscribersController < ApplicationController
 
   def logout
     remove_from_session
-    redirect_to root_path
+    redirect_to subscribers_path
   end
 
   def export
@@ -309,16 +309,16 @@ class SubscribersController < ApplicationController
 
   def check_editor
     if @subscriber.nil?
-      return redirect_to subscribers_path, alert: "You must be logged in to perform this action."
+      redirect_to subscribers_path, alert: "You must be logged in to perform this action."
     end
 
-    if @subscriber.admin?
-      if params[:to_edit_id]
-        @subscriber = Subscriber.find(params[:to_edit_id])
-      elsif params[:id]
-        @subscriber = Subscriber.find(params[:id])
-      end
-    end
+    # if @subscriber.admin?
+    #   if params[:to_edit_id]
+    #     @subscriber = Subscriber.find(params[:to_edit_id])
+    #   elsif params[:id]
+    #     @subscriber = Subscriber.find(params[:id])
+    #   end
+    # end
   end
 
   def fix_email

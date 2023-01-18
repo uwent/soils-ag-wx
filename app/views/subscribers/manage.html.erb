@@ -3,7 +3,7 @@
 
 <script>
   subscriber_id = <%= @subscriber.id %>
-  site_count = <%= @site_count %>
+  site_count = <%= @sites.size %>
   min_lat = <%= latitudes.min %>
   max_lat = <%= latitudes.max %>
   min_long = <%= longitudes.min %>
@@ -171,24 +171,36 @@
 
   $(".best_in_place").best_in_place()
 
-  $(document).on("best_in_place:error", () => {
-    let msg = "Unable to update site, cannot have duplicate names or locations."
-    let el = `<div id='bip-error' class='error'>${msg}</div>`
+  $(document).on("best_in_place:error", (event, request, error) => {
+    let msg = JSON.parse(request.responseText).message
+    let el = `<div id='bip-error' class='error'>Unable to update site. ${msg}</div>`
     $("#bip-notice").html(el)
     $("#bip-error").delay(10000).fadeOut()
-  });
+  })
 
-  $(document).on('best_in_place:success', () => {
-    let msg = "Successfully updated site"
+  $(document).on('best_in_place:success', (event, request, error) => {
+    let msg = "Successfully updated site."
     let el = `<div id='bip-success' class='success'>${msg}</div>`
     $("#bip-notice").html(el)
     $("#bip-success").delay(10000).fadeOut()
-  });
+
+    let bip_id = event.target.id
+    if (bip_id.includes("_name")) {
+      let site_id = bip_id.match(/\d+/)[0]
+      let site_name = event.target.innerText
+      $(`#site-name-${site_id}`).html(site_name)
+    }
+  })
+
+  $(document).on('ajax:error', (result) => {
+    // console.log(result)
+  })
 </script>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
   <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
+  <%= render partial: "quick_links" %>
 <% end %>
 
 <h2>Automated daily emails</h2>
@@ -242,7 +254,7 @@
             <th>Site Name</th>
             <th>Latitude</th>
             <th>Longitude</th>
-            <th align=center><%= @site_count > 0 ? "Subscribe?" : ""%></th>
+            <th align=center><%= @sites.size > 0 ? "Subscribe?" : ""%></th>
             <th align=center>Actions</th>
           </tr>
         </thead>
@@ -265,8 +277,10 @@
                 </label>
               </td>
               <td align=center>
-                <button class="site-btn" onclick="window.location.href='<%= url_for(controller: :sites, action: :show, lat: site.latitude, long: site.longitude) %>'">View</button>
-                <button class="site-btn" id="delete-site-<%= site.id %>">Delete</button>
+                <span style="white-space: nowrap;">
+                  <button class="site-btn" onclick="window.location.href='<%= url_for(controller: :sites, action: :show, lat: site.latitude, long: site.longitude) %>'">View</button>
+                  <button class="site-btn" id="delete-site-<%= site.id %>">Delete</button>
+                </span>
               </td>
             </tr>
           <% end %>
@@ -292,13 +306,13 @@
   <div id="location-display"></div>
 </div>
 
-<% if @site_count > 0 %>
+<% if @sites.size > 0 %>
   <h4>Select your data subscriptions for each site:</h4>
 
   <div class="sub-container">
     <% @sites.each do |site| %>
       <div class="grey-box" id="site-box-<%= site.id %>" data-site-id=<%= site.id %> style="opacity: <%= site.enabled ? 1 : 0.5 %>">
-        <b><%= site.name %></b>
+        <b><span id="site-name-<%= site.id %>"><%= site.name %></span></b>
         <p>
           <i>Weather data:</i><br>
           <% @weather_subs.each do |s| %>
@@ -338,14 +352,13 @@
 
 <div class="site-controls">
   <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
-  <% if @site_count > 0 %>
-    <div><%= link_to("<button>Disable all sites</button>".html_safe, unsubscribe_subscriber_path(@subscriber.id, token: @subscriber.auth_token)) %></div>
+  <% if @sites.size > 0 %>
     <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.auth_token)) %></div>
   <% end %>
   <% if @admin %>
-    <div><%= link_to("<button>Admin</button>".html_safe, admin_subscribers_path) if @admin %></div>
+    <div><%= link_to admin_subscribers_path do %><button>Admin</button><% end %></div>
   <% else %>
-    <div><%= link_to "<button>Delete my account</button>".html_safe, subscriber_path(@subscriber.id, token: @subscriber.auth_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} %></div>
+    <div><%= link_to account_subscribers_path do %><button>Manage account</button><% end %></div>
   <% end %>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>

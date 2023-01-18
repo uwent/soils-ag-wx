@@ -89,6 +89,7 @@ Rails.application.routes.draw do
     collection do
       route "admin"
       route "manage", :get, :post
+      route "account"
       route "logout"
       route "export"
     end
