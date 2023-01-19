@@ -4,7 +4,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<title><%= @title ? @title : "AgWeather" -%></title>
+	<%= csrf_meta_tags %>
+
+	<title><%= @title ? @title : "AgWeather" %></title>
+
+	<%= javascript_include_tag "application" %>
+	<%= yield :scripts %>
+  <%= stylesheet_link_tag "application" %>
+	<%= yield :head %>
+
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-MEH20NN6K8"></script>
 	<script>
@@ -13,11 +21,6 @@
 		gtag('js', new Date());
 		gtag('config', 'G-MEH20NN6K8'); // AgWeather GA4
 	</script>
-  <%= csrf_meta_tags %>
-	<%= javascript_include_tag "application" %>
-	<%= yield :scripts %>
-  <%= stylesheet_link_tag "application" %>
-	<%= yield :head %>
 </head>
 
 <body>
@@ -51,15 +54,14 @@
 			<div class="main">
 				<div class="welcome-box">
 					<div class="welcome-image">
-						<%= link_to image_tag(@welcome_image || "potato.png") %>
+						<%= link_to image_tag(@welcome_image || "potato.png", title: "Click to reload the page", alt: "#{@title} hero image") %>
 					</div>
 					<div class="welcome">
-						<%= yield :welcome -%>
+						<%= yield :welcome %>
 					</div>
 				</div>
 				<div class="content-box">
-					<span class='bip-flash-error'></span>
-					<%= yield -%>
+					<%= yield %>
 				</div>
 			</div>
 		</div>
@@ -69,4 +71,5 @@
 	</div>
 	<%= content_for :render_async %>
 </body>
+
 </html>

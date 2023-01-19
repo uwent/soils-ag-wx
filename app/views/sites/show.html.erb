@@ -2,12 +2,15 @@
 <% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-  <h2>Site data</h2>
+  <h2>Site Data</h2>
   <p>These pages provide quick access to several kinds of recent weather data for any grid point in our datatabase. These data are updated daily from NOAA grids, who generate these data from advanced weather models that integrate real-world observations from across the country.</p>
   <%= render partial: "quick_links" %>
 <% end %>
 
-<h2><%= link_to @title %><%= ": #{@subscriber_site.name}" if @subscriber_site %></h2>
+<h2><%= @title %><%= ": #{@subscriber_site.name}" if @subscriber_site %></h2>
+
+<hr>
+
 <p>Daily minimum, maximum, and average temperatures are computed from hourly NOAA weather grids downloaded daily at 6AM Central. These grids also supply precipitation, dew point, vapor pressure, and relative humidity readings. Solar insolation (the amount of solar radiation striking the Earth's surface) data is downloaded from the UW Space Science and Engineering Center. Potential evapotranspiration is calculated from solar insolation and temperatue values, and represents the amount of water a typical plant consumes when growing in full sun.</p>
 
 <%= render partial: "my_sites" %>

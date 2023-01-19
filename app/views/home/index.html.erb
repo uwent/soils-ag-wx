@@ -63,6 +63,22 @@
 
 <div class="row">
   <div class="left">
+    <%= link_to image_tag("awon-150px.png"), sites_path %>
+  </div>
+  <div class="text">
+    <h2><%= link_to "Site Data", sites_path %> and <%= link_to "Email Subscriptions", subscribers_path %></h2>
+    <p>While our weather data can be accessed from the individual weather, precipitation, evapotranspiration, and insolation pages in the <%= link_to "weather tab", weather_path %>, these <%= link_to "site pages", sites_path %> provide a convenient dashboard for accessing the past week's weather data for any single point within our data coverage area. You can bookmark these pages for quick access, or add them to your saved sites in the <%= link_to "subscribers page", sites_path %>. Currently only weather data is presented on the site pages, but we have plans to add degree days and other relevant information in the future.</p>
+    <ul>
+      <li><%= link_to "Get data for single locations", sites_path %></li>
+      <li><%= link_to "Manage saved sites or subscribe to daily emails", subscribers_path %></li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
     <%= link_to image_tag("vdifn-250px.png"), vdifn_path, target: "_blank" %>
   </div>
   <div>
@@ -92,7 +108,7 @@
     <%= link_to image_tag("tree-150px.png"), action: :about %>
   </div>
   <div>
-    <h2><%= link_to "About", action: :about %></h2>
-    <p>This site is currently managed by the Dept. of Entomology and is undergoing some updates. Feel free to contact us with inquiries or bug reports at <%= mail_to "agweather@cals.wisc.edu", "agweather@cals.wisc.edu" %>.</p>
+    <h2><%= link_to "About this site", action: :about %></h2>
+    <p>This site is currently managed by the <%= link_to "Vegetable Entomology lab", vegento_url, target: "_blank" %> in the <%= link_to "Department of Entomology", ento_url, target: "_blank" %> at UW-Madison. Feel free to contact us with inquiries, feature requests, or bug reports at <%= mail_to "agweather@cals.wisc.edu", "agweather@cals.wisc.edu" %>.</p>
   </div>
 </div>

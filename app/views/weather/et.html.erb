@@ -17,7 +17,6 @@
 
 <hr>
 
-<h4>Introduction</h4>
 <p>The maps of potential evapotranspiration (ET) shown below are calculated from satellite-derived measurements of <%= link_to "solar radiation", action: :insol %> and <%= link_to "average air temperatures", controller: :weather, action: :weather %>. The ET values on the maps are a reasonable estimate of daily crop water use for most crops that have reached at least 80% coverage of the ground. Prior to 80% or greater coverage, ET will be a fraction of the map value in proportion to the amount of coverage. The map values may vary slightly from ET estimates from AWON and other more site-specific models, but these differences are believed to be within the uncertainty of even measurements of actual water use made directly in a given field.</p>
 <p>For more details on the science behind these products, see Diak et al, "Agricultural Management Decision Aids Driven by Real-Time Satellite Data", <span style="font-style: italic">Bulletin of the American Meteorological Society</span> 79 (1998): 1345-1355. <%= link_to "Link to article", "https://doi.org/10.1175/1520-0477(1998)079%3C1345:AMDADB%3E2.0.CO;2" %>. <%= link_to "Download PDF", "/Diak-et-al-1998.pdf", target: "_blank" %>.</p>
 <p>Daily evapotranspiration maps in the default units are already rendered by our server and can be browsed quickly. Changing the units or using the cumulative map tool below will take around 10 seconds to render the image</p>

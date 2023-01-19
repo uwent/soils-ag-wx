@@ -119,6 +119,7 @@ Rails.application.routes.draw do
   direct(:wisp) { "https://wisp.cals.wisc.edu" }
   direct(:vegpath) { "https://vegpath.plantpath.wisc.edu" }
   direct(:vegento) { "https://vegento.russell.wisc.edu" }
+  direct(:ento) { "https://entomology.wisc.edu" }
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 

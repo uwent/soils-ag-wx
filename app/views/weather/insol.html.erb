@@ -17,7 +17,6 @@
 
 <hr>
 
-<h4>Introduction</h4>
 <p>Daily solar energy amounts are estimated using data in the visible portion of the spectrum which come from the Geostationary Operational Environmental Satellites (GOES). Simple physical models of radiative transfer for the clear and cloudy atmosphere are used with these data to evaluate whether a particular location is cloudy or clear and, if cloudy, to what extent clouds have depleted the solar beam. Usually, about eight to twelve individual GOES images are used during the course of a day to make estimates of the solar energy at the satellite image times. These instantaneous estimates are later summed to produce the daily solar energy totals.</p>
 <p>The gridded insolation estimates shown below are imported daily from <%= link_to "UW Madison's Space Science Engineering Center", "https://ssec.wisc.edu" %> and provided on this page for easy access. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). We use this data, in combination with <%= link_to "gridded daily temperature datasets", action: :weather %>, to generate our <%= link_to "evapotranspiration estimates", action: :et %>.</p>
 <p>Daily insolation maps in the default units are already rendered by our server and can be browsed quickly. Changing the units or using the cumulative map tool below will take around 10 seconds to render the image</p>
