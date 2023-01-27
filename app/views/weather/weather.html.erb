@@ -3,7 +3,10 @@
 <%= javascript_include_tag "map_functions" %>
 <% if @request_type == "POST" %>
   <script>
-    elementReady("#map").then(() => { document.getElementById("map").scrollIntoView(); });
+    elementReady("#map").then(() => {
+      console.log(document.getElementById("map"))
+      document.getElementById("map").scrollIntoView()
+    })
   </script>
 <% end %>
 
