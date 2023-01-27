@@ -134,5 +134,6 @@
   </table>
 </div>
 
-<br>
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

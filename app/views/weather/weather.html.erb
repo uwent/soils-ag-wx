@@ -51,5 +51,6 @@
 <h4>Download weather data grid</h4>
 <p><%= link_to "Download the entire grid of data in CSV format", action: :weather, format: :csv, params: { date: @date } %>.</p>
 
-<br>
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

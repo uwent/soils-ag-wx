@@ -57,4 +57,6 @@
   No data!
 <% end %>
 
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :degree_days %>
+<% end %>

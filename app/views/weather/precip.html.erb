@@ -56,5 +56,6 @@
 <h4>Download weather data grid</h4>
 <p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :precip, format: :csv, params: { date: @date } %>. Currently it is only possible to download a daily grid, not a cumulative precipitation grid.</p>
 
-<br>
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

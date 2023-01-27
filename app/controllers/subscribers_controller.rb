@@ -54,7 +54,7 @@ class SubscribersController < ApplicationController
 
     # pre-fill for new site
     if params[:lat] && params[:long]
-      @new_name = "My Site"
+      @new_name = params[:name] || "My Site"
       @new_lat = params[:lat]
       @new_long = params[:long]
     end
