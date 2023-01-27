@@ -27,4 +27,6 @@
   <%= submit_tag "Sign in" %>
 <% end %>
 
-<br><%= link_to "Back", controller: :home %>
+<%= content_for :footer do %>
+  <%= link_to "Back", controller: :home %>
+<% end %>

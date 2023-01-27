@@ -73,6 +73,10 @@ button {
 	cursor: pointer;
 }
 
+input[type=checkbox] {
+	transform: scale(1.15);
+}
+
 
 // --- LAYOUT --- //
 
@@ -181,7 +185,6 @@ button {
 .welcome-box {
 	background-color: $welcome-bg-color;
 	max-width: 250px;
-	flex: 1;
 	border-radius: 5px;
 	color: $welcome-text-color;
 
@@ -228,9 +231,14 @@ button {
 	background-color: $content-bg-color;
 	border-radius: 5px;
 	width: 100%;
-	flex: 1;
 	overflow: auto;
 	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.main-content {
+	flex: 1;
 }
 
 .row {
@@ -261,9 +269,18 @@ button {
 	}
 }
 
+.content-footer {
+	margin-top: auto;
+	padding-top: 1em;
+}
+
 
 
 // --- STYLES --- //
+
+.indent {
+	margin-left: 1em;
+}
 
 .more {
 	text-align: right;

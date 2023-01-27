@@ -89,15 +89,16 @@ Rails.application.routes.draw do
     collection do
       route "admin"
       route "manage", :get, :post
-      route "account"
+      route "account", :get, :post
       route "logout"
       route "export"
     end
     member do
       route "confirm"
-      route "confirm_notice"
+      route "confirm_account"
       route "unsubscribe"
       route "send_email"
+      route "reset_token", :post
       route "validate", :post
       route "resend_confirmation", :post
       route "add_site", :post

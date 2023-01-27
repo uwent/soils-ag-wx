@@ -15,7 +15,7 @@
       <% @data.keys.each_with_index do |date, i| %>
         <tr>
           <td><%= i + 1 %></td>
-          <td><%= fmt_date(date.to_date) %></td>
+          <td><%= fmt_date(date) %></td>
           <% @cols.keys.each do |col| %>
             <td style="text-align:center"><%= fmt_col(col, @data[date][col]) %></td>
           <% end %>

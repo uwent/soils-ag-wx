@@ -6,7 +6,7 @@
   <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
 <% end %>
 
-<h2>Subscribe to emails</h2>
+<h2>Create an AgWeather account</h2>
 
 <hr>
 
@@ -14,7 +14,7 @@
   <p><b>Subscriber not found. Would you like to enroll?</b></p>
 <% end %>
 
-<p>Please enter your name and email address to enroll as a subscriber. You will receive an automated email asking you to confirm your enrollment; once you've been confirmed, you can subscribe to our products at as many locations as you would like.</p>
+<p>Please enter your name and email address to create an account. You will receive an automated email asking you to confirm your enrollment; once you've been confirmed, you can subscribe to our products at as many locations as you would like. Creating an account also lets you save sites for quick access on the <%= link_to "site data", sites_path %> pages.</p>
 
 <div class="form-box" style="min-width: 33%">
   <b>Register new subscriber</b><br>
@@ -42,4 +42,6 @@
   </div>
 <% end %>
 
-<br><%= link_to "Back", :back %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

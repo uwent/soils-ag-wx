@@ -7,28 +7,20 @@
 <% end %>
 
 <h2>Validate Email Address</h2>
-
 <hr>
 
 <h4>Validate your account</h4>
 
-<p>To ensure you are the owner of this email address, we have sent a six-digit validation code to <b><%= @subscriber.email %></b>. Please enter the validation code you were sent in order manage your subscriptions.</p>
+<p>To ensure you are the owner of this email address, we have sent a six-digit validation code to <b><%= @subscriber.email %></b>. Please enter the validation code you were sent to signing in.</p>
 
-<br>
+<p>
+  <%= form_tag validate_subscriber_path(@subscriber) do %>
+    <%= label_tag :validate_code, "Validation code: " %>
+    <%= text_field_tag :validation_code, nil, required: true, autofocus: true %>
+    <%= submit_tag "Sign in" %>
+  <% end %>
+</p>
 
-<%= form_tag validate_subscriber_path(@subscriber) do %>
-  <%= label_tag :validate_code, "Validation code: " %>
-  <%= text_field_tag :validation_code, nil, required: true, autofocus: true %>
-  <%= submit_tag "Validate" %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
 <% end %>
-
-<% if @subscriber.errors.any? %>
-  <div class="error">
-    <% @subscriber.errors.full_messages.each do |msg| %>
-      <%= msg %>
-    <% end %>
-  </div>
-<% end %>
-
-<br>
-<br><%= link_to "Back", :back %>

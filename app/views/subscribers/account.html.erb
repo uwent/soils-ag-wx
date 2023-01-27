@@ -1,6 +1,30 @@
 <% @title = "Email Subscriptions" %>
 <% @welcome_image = "awon.png" %>
 
+<script>
+  $(".best_in_place").best_in_place()
+
+  function changeEmail() {
+    $("#change-email-btn").css("display", "none")
+    $("#email-errors").css("display", "none")
+    $("#change-email").css("display", "unset")
+  }
+
+  function check(input) {
+    if (input.value == email.value) {
+      input.setCustomValidity('');
+    } else {
+      input.setCustomValidity('Emails must match.');
+    }
+  }
+
+  function submitEmail() {
+    $("#change-email").css("display", "none")
+    $("#new-email").html(email.value)
+    $("#validate-email").css("display", "unset")
+  }
+</script>
+
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
   <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
@@ -11,32 +35,103 @@
 
 <hr>
 
-<p><i>Coming soon: ability to edit your name or email from this page.</i></p>
+<%= render "notices" %>
 
 <h4>Account details:</h4>
+<div class="indent">
+  <ul>
+    <li>
+      <div title="Click to edit name">
+        <p><b>Name:</b> <%= best_in_place @subscriber, :name, html_attrs: { size: 25, pattern: "([A-Za-z\-\ ]+)", title: "Name can contain only alphabetical characters or hyphens." } %></p>
+      </div>
+    </li>
+    <li>
+      <p><b>Email:</b> <%= @subscriber.email %></p>
+      <% if @validation_sent %>
+      <div id="validate-email">
+        <p><i>We sent an email with a validation code to <b><%= @new_email %></b>. Please enter that code here to confirm your email change. The code will be valid for one hour.</i></p>
+        <%= form_tag do %>
+          <%= hidden_field_tag :new_email, @new_email %>
+          Validation code: <%= text_field_tag :validation_code, nil, requird: true %>
+          <%= submit_tag "Confirm code" %>
+        <% end %>
+      </div>
+    <% else %>
+      <% if @subscriber.errors.any? %>
+        <div id="email-errors" class="error">
+          <b>Unable to change email:</b>
+          <% @subscriber.errors.full_messages.each do |msg| %>
+            <%= msg %>
+          <% end %>
+        </div>
+      <% end %>
+      <div id="change-email-btn">
+        <button onclick="changeEmail()">Change my email address</button>
+      </div>
+      <div id="change-email" style="display:none;">
+        <%= form_tag do %>
+          New email: <%= text_field_tag :email, nil, required: true, type: "email" %>
+          <br>
+          Confirm email: <%= text_field_tag :email_confirm, nil, required: true, type: "email", oninput: "check(this)" %>
+          <br>
+          <%= submit_tag "Submit" %>
+        <% end %>
+      </div>
+    <% end %>
+    </li>
+  </ul>
+</div>
 
-<div style="margin-left: 1em;">
-  <b>Name:</b> <%= @subscriber.name %><br>
-  <b>Email:</b> <%= @subscriber.email %><br>
-  <b>Created:</b> <%= @subscriber.created_at.strftime("%b %d, %Y") %><br><br>
-  <b>Saved sites:</b> <%= @sites.size %>
+<h4>Saved sites (<%= @sites.size %>):</h4>
+<div class="indent">
   <% if @sites.size > 0 %>
     <ul>
       <% @sites.each do |site| %>
         <li><%= site.latitude %>, <%= site.longitude %>: <%= site.name %></li>
       <% end %>
     </ul>
+    <p><i>Edit your sites <%= link_to "here", action: :manage %>.</i></p>
+  <% else %>
+    <p>You don't have any saved sites. <%= link_to "Add some", action: :manage %>.</p>
   <% end %>
 </div>
 
 <h4>Account actions:</h4>
 
-<div style="margin-left: 1em;">
-  <%= link_to subscriber_path(@subscriber.id, token: @subscriber.auth_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} do %>
-    <button><span class='warning'>Delete my account</span></button>
-  <% end %>
+<div class="indent">
+  <ul>
+    <li>
+      <p><i>Log out and return to the homepage.</i></p>
+      <p><%= link_to logout_subscribers_path do %><button>Log out</button><% end %></p>
+    </li>
+    <li>
+      <p>
+        <i>Some links in emails sent from AgWeather contain an authentication token and will automatically log you in when clicked. However, if you forwarded these emails to someone else, they would be logged in as you if they clicked the same link. You can reset your authentication token to invalidate any links sent in old emails. If you have AgWeather open in more than one tab you will have to refresh each page for some subscriber functions to work again.</i>
+      </p>
+      <p>
+        <%= link_to reset_token_subscriber_path(@subscriber.id), method: :post, data: {confirm: "Are you sure you want to reset your token? Links in previously-sent emails will no longer automatically log you in."} do %>
+          <button><span class="notice">Reset my account token<span></button>
+        <% end %>
+      </p>
+    </li>
+    <li>
+      <p>
+        <i>If you want to delete your account and all of your saved sites from our server, click the button below. You will be asked to confirm your choice. THIS ACTION IS FINAL.</i>
+      </p>
+      <p>
+        <%= link_to subscriber_path(@subscriber.id, token: @subscriber.auth_token), method: :delete, data: {confirm: "Are you sure you want to delete your account?"} do %>
+          <button><span class='warning'>Delete my account</span></button>
+        <% end %>
+      </p>
+    </li>
 </div>
 
-<br><br>
+<p><i>
+  <b>Subscriber ID:</b> <%= @subscriber.id %>
+  <br>
+  <b>Account created:</b> <%= @subscriber.created_at.strftime("%b %d, %Y") %> (<%= time_ago_in_words(@subscriber.created_at) %> ago)
+</i></p>
 
-<%= link_to "Back", action: :manage %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :manage %>
+<% end %>

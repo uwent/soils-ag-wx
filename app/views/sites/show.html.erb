@@ -16,8 +16,12 @@
 <%= render partial: "my_sites" %>
 
 <div class="two-box">
-  <div class="col-50"><%= render partial: "site_selector" %></div>
-  <div class="col-50"><%= render partial: "unit_selector" %></div>
+  <div class="col-50">
+    <%= render partial: "site_selector" %>
+  </div>
+  <div class="col-50">
+    <%= render partial: "unit_selector" %>
+  </div>
 </div>
 
 <br>
@@ -30,4 +34,6 @@
   <%= render partial: "site_data" %>
 <% end %>
 
-<br><%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>
