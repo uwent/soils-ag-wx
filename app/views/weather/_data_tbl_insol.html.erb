@@ -3,9 +3,8 @@
 <div id="insol-container">
   <h4>Insolation data series</h4>
   <p>
-    <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W<br>
-    <b>Date range:</b> <%= @start_date %> to <%= @end_date %><br>
-    <b>Days:</b> <%= @data.size %>
+    <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W (<%= link_to "view site data page", controller: :sites, action: :show, lat: @lat, long: @long %>)<br>
+    <b>Date range:</b> <%= @start_date %> to <%= @end_date %> (<%= pluralize(@data.size, "days") %>)
   </p>
   <div class="tbl-container">
     <table class="grid-table" id="table">

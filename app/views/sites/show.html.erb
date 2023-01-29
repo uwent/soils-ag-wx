@@ -31,7 +31,12 @@
 <% elsif @valid == false %>
   <div class="error">Invalid site specified, try another one.</div>
 <% elsif @valid %>
-  <%= render partial: "site_data" %>
+  <h3>Past week's weather data for <%= @lat %>&deg;N, <%= @long %>&deg;W:</h4>
+  <div id="site-data">
+    <%= render_async url_for({controller: :weather, action: :site_data}.merge(@weather_params)) do %>
+      <p><i>Loading weather data...</i></p>
+    <% end %>
+  </div>
 <% end %>
 
 <%= content_for :footer do %>

@@ -26,9 +26,7 @@ class SitesController < ApplicationController
       @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first
     end
 
-    @passed_params = {
-      controller: :weather,
-      action: :site_data,
+    @weather_params = {
       lat: @lat,
       long: @long,
       start_date: @start_date,
