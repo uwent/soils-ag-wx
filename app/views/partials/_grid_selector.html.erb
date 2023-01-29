@@ -7,9 +7,23 @@
     <fieldset>
       <legend>Location:</legend>
       <div onChange="moveDot()">
-        <label><%= select_tag :latitude, options_for_select(latitude_labels, default_latitude) %> Latitude</label>&nbsp;
-        <label><%= select_tag :longitude, options_for_select(longitude_labels, default_longitude) %> Longitude</label><br>
-        <button type="button" onclick="getGeoLocation();">Get my location</button>
+        <label>
+          <%= select_tag :lat,
+            options_for_select(latitude_labels, default_latitude),
+            id: "latitude",
+            title: "Select latitude"
+          %> Latitude
+        </label>
+        &nbsp;
+        <label>
+          <%= select_tag :long,
+            options_for_select(longitude_labels, default_longitude),
+            id: "longitude",
+            title: "Select longitude"
+          %> Longitude
+        </label>
+        <br>
+        <button type="button" onclick="getGeoLocation();" title="Use location services to determine your current latitude and longitude">Get my location</button>
         <span id="geo-loc-msg"></span>
       </div>
     </fieldset>
@@ -17,16 +31,24 @@
     <fieldset>
       <legend>Date range:</legend>
       <div id="start-date">
-        <label><%= date_select :start_date_select, :date,
-          start_year: Date.current.year - 4,
-          end_year: Date.current.year,
-          default: @date - 1.month %> Start</label>
+        <label>
+          <%= date_select :start_date_select,
+            :date,
+            start_year: Date.current.year - 4,
+            end_year: Date.current.year,
+            default: @date - 1.month
+          %> Start
+        </label>
       </div>
       <div id="end-date">
-        <label><%= date_select :end_date_select, :date,
-          start_year: Date.current.year - 4,
-          end_year: Date.current.year,
-          default: @date %> End</label>
+        <label>
+          <%= date_select :end_date_select,
+            :date,
+            start_year: Date.current.year - 4,
+            end_year: Date.current.year,
+            default: @date
+          %> End
+        </label>
       </div>
     </fieldset>
 
@@ -38,11 +60,11 @@
       </fieldset>
     <% end %>
 
-    <% if @methods %>
+    <% if @et_methods %>
       <fieldset>
-        <legend>Method:</legend>
-        <% @methods.each do |method| %>
-          <label><%= radio_button_tag :method, method, @method == method %><%= method.titlecase %></label>
+        <legend>Calculation method:</legend>
+        <% @et_methods.each do |method| %>
+          <label><%= radio_button_tag :et_method, method, @et_method == method %><%= method.titlecase %></label>
         <% end %>
       </fieldset>
     <% end %>

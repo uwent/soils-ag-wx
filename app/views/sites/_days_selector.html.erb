@@ -1,0 +1,31 @@
+<script>
+  function submitTimeForm(form) {
+    let url =
+      "<%= url_for(controller: :weather, action: :site_data, lat: @lat, long: @long, start_date: @start_date, end_date: @end_date).html_safe %>" +
+      "&units=" +
+      unit_form.units.value +
+      "&period=" +
+      time_form.period.value
+
+    $.ajax({
+      url: url,
+      success: (response) => {
+        $("#site-data").html(response);
+      }
+    });
+  }
+</script>
+
+<div class="site-row">
+  <h4>Choose time period:</h4>
+  <div class="site-box">
+    <%= form_tag nil, id: "time_form" do %>
+      <% @start_date_opts.each do |name, val| %>
+        <label>
+          <%= radio_button_tag :period, val, val == @period, onchange: "this.form.submit()" %>
+          <%= name %>
+        </label>
+      <% end %>
+    <% end %>
+  </div>
+</div>

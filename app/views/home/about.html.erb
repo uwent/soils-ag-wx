@@ -64,6 +64,6 @@
 
 <p>Ruby v<%= RUBY_VERSION %> / Rails v<%= Rails.version %> running in <%= Rails.env %> environment</p>
 
-<br>
-
-<%= link_to "Back", controller: :home %>
+<%= content_for :footer do %>
+  <%= link_to "Back", home_path %>
+<% end %>

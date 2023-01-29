@@ -3,7 +3,10 @@
 <%= javascript_include_tag "map_functions" %>
 <% if @request_type == "POST" %>
   <script>
-    elementReady("#map").then(() => { document.getElementById("map").scrollIntoView(); });
+    elementReady("#map").then(() => {
+      console.log(document.getElementById("map"))
+      document.getElementById("map").scrollIntoView()
+    })
   </script>
 <% end %>
 
@@ -48,5 +51,6 @@
 <h4>Download weather data grid</h4>
 <p><%= link_to "Download the entire grid of data in CSV format", action: :weather, format: :csv, params: { date: @date } %>.</p>
 
-<br>
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

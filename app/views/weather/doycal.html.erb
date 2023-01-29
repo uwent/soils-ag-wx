@@ -41,6 +41,6 @@
   <%= render partial: "doycal_grid", locals: { cal_matrix: @cal_matrix } %>
 </div>
 
-<br>
-
-<%= link_to "Back", :back %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

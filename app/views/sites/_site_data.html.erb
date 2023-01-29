@@ -1,7 +1,0 @@
-<h3>Past week's weather data for <%= @lat %>&deg;N, <%= @long %>&deg;W:</h4>
-
-<div id="site-data">
-  <%= render_async url_for(@passed_params) do %>
-    <p><i>Loading weather data...</i></p>
-  <% end %>
-</div>

@@ -15,3 +15,7 @@
 
 <%= render partial: "my_sites" %>
 <%= render partial: "site_selector" %>
+
+<%= content_for :footer do %>
+  <%= link_to "Back", home_path %>
+<% end %>

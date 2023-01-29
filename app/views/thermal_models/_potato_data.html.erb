@@ -5,10 +5,9 @@
   }
 </style>
 
-<div id=data-container>
 <% @models.each do |model| %>
   <% cur_data = @data[model[:pest]] %>
-  <div class=center-div>
+  <div class=center-div style="margin-bottom: 1em;">
     <b><i><%= model[:name] %></i></b>
     <table class=normal-table>
       <thead>
@@ -25,11 +24,7 @@
             <td><%= k %></td>
             <% v.each do |val| %>
               <td align=center>
-                <%=
-                  val < 0 ? "-" :
-                    val >= model[:threshold] ?
-                      "<span class=high-risk>#{val}</span>".html_safe : val
-                %>
+                <%= val < 0 ? "-" : val >= model[:threshold] ? "<span class=high-risk>#{val}</span>".html_safe : val %>
               </td>
             <% end %>
           </tr>
@@ -38,14 +33,19 @@
     </table>
     <i>Any cumulative values above the preventive action threshold of <%= model[:threshold] %> <%= model[:units] %> are highlighted in <span class=high-risk>red</span>.</i>
   </div>
-  <br><br>
 <% end %>
-</div>
 
 <h4>Location details:</h4>
 <ul>
   <% @locations.each do |loc| %>
-    <li><%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:long] %>) - <span style="font-size: 0.8em;"><i><%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{loc[:lat]}%2C+#{loc[:long]}", target: "_blank" %></i></span></li>
+    <li>
+      <%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:long] %>) - 
+      <span style="font-size: 0.8em; font-style: italic;">
+        <%= link_to "data page", url_for(controller: :sites, action: :show, lat: loc[:lat], long: loc[:long]) %> - 
+        <%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{loc[:lat]}%2C+#{loc[:long]}", target: "_blank" %> - 
+        <%= link_to "save to my sites", url_for(controller: :subscribers, action: :manage, name: loc[:name], lat: loc[:lat], long: loc[:long]) %>
+      </span>
+    </li>
   <% end %>
 </ul>
 

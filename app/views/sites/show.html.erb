@@ -16,8 +16,12 @@
 <%= render partial: "my_sites" %>
 
 <div class="two-box">
-  <div class="col-50"><%= render partial: "site_selector" %></div>
-  <div class="col-50"><%= render partial: "unit_selector" %></div>
+  <div class="col-50">
+    <%= render partial: "site_selector" %>
+  </div>
+  <div class="col-50">
+    <%= render partial: "unit_selector" %>
+  </div>
 </div>
 
 <br>
@@ -27,7 +31,14 @@
 <% elsif @valid == false %>
   <div class="error">Invalid site specified, try another one.</div>
 <% elsif @valid %>
-  <%= render partial: "site_data" %>
+  <h3>Past week's weather data for <%= @lat %>&deg;N, <%= @long %>&deg;W:</h4>
+  <div id="site-data">
+    <%= render_async url_for({controller: :weather, action: :site_data}.merge(@weather_params)) do %>
+      <p><i>Loading weather data...</i></p>
+    <% end %>
+  </div>
 <% end %>
 
-<br><%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

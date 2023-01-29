@@ -191,10 +191,6 @@
       $(`#site-name-${site_id}`).html(site_name)
     }
   })
-
-  $(document).on('ajax:error', (result) => {
-    // console.log(result)
-  })
 </script>
 
 <% content_for :welcome do %>
@@ -220,9 +216,9 @@
 
 <p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). You can edit a site name or location after creation by clicking on the table.</p>
 
-<p><b>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</b></p>
+<p><i>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</i></p>
 
-<h4>Email subscription settings</h4>
+<h4>Email subscription settings:</h4>
 
 <div style="margin-left: 1em;">
   Subscribe to daily emails?
@@ -243,7 +239,7 @@
   <% end %>
 </div>
 
-<h4>Manage your sites (listed North to South):</h4>
+<h4>Manage your sites (click on existing to edit):</h4>
 
 <div class="site-container">
   <div class="grey-box">
@@ -358,8 +354,7 @@
   <% end %>
   <% if @admin %>
     <div><%= link_to admin_subscribers_path do %><button>Admin</button><% end %></div>
-  <% else %>
-    <div><%= link_to account_subscribers_path do %><button>Manage account</button><% end %></div>
   <% end %>
+  <div><%= link_to account_subscribers_path do %><button>Manage account</button><% end %></div>
   <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
 </div>

@@ -12,17 +12,21 @@ class SitesController < ApplicationController
       redirect_to(action: :show, lat: @lat, long: @long)
     end
 
-    @start_date = Date.current - 7.days
-    @end_date = Date.current - 1.day
+    @start_date_opts = {
+      "7 days" => 7.days.ago.to_date,
+      "2 weeks" => 14.days.ago.to_date,
+      "1 month" => 1.month.ago.to_date,
+      "This year" => Date.current.beginning_of_year
+    }
+    @start_date = 7.days.ago.to_date
+    @end_date = Date.yesterday
     @units = (params[:units] == "metric") ? "metric" : "imperial"
 
     if @valid && @subscriber
       @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first
     end
 
-    @passed_params = {
-      controller: :weather,
-      action: :site_data,
+    @weather_params = {
       lat: @lat,
       long: @long,
       start_date: @start_date,

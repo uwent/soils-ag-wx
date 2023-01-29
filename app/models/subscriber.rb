@@ -5,6 +5,7 @@ class Subscriber < ApplicationRecord
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, presence: true
   validates_uniqueness_of :email
+  validates :name, presence: true, length: {maximum: 50}
 
   before_create :set_auth_token
 

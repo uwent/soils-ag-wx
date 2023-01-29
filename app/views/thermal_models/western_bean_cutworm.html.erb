@@ -30,7 +30,8 @@
 <p>Time field scouting activities using degree days and pheromone trap catches. Examine 20 consecutive corn plants at each of five locations/field. Look for eggs and or larvae on the upper leaves and continue scouting at weekly intervals until after the threat of western bean cutworm has subsided. For field corn, consider treatment when 5% or more of the corn plants have either eggs or larvae present, but before larvae have entered the ear. Once larvae have entered the ear they are not susceptible to insecticide applications.</p>
 
 <h4>Management</h4>
-<p>Consult UW Extension Bulletin “Pest Management if Wisconsin Field Crops” management recommendations. This bulletin maybe purchased from your local county extension office or is available to view, purchase or download from UW Cooperative Extension's The Learning Store at <%= link_to "https://learningstore.extension.wisc.edu/", "https://learningstore.extension.wisc.edu/" %></p>
+<p>Consult UW Extension Bulletin “Pest Management if Wisconsin Field Crops” management recommendations. This bulletin maybe purchased from your local county extension office or is available to view, purchase or download from UW Cooperative Extension's The Learning Store at <%= link_to "https://learningstore.extension.wisc.edu/" %></p>
 
-<br>
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

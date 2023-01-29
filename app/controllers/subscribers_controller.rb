@@ -1,27 +1,7 @@
 class SubscribersController < ApplicationController
-  before_action :get_subscriber_from_session, only: %i[
-    index
-    manage
-    update
-    admin
-    account
-    destroy
-    send_email
-    enable_emails
-    disable_emails
-    add_site
-    remove_site
-    enable_site
-    disable_site
-    enable_subscription
-    disable_subscription
-    export
-    unsubscribe
-  ]
-
+  before_action :get_subscriber_from_session
   before_action :fix_email, if: -> { params[:email].present? }
-
-  before_action :check_editor, only: %i[
+  before_action :require_login, only: %i[
     enable_emails
     disable_emails
     add_site
@@ -35,6 +15,8 @@ class SubscribersController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :index unless Rails.env.development?
 
+  ### MAIN ###
+
   def index
     # remove_from_session
     return redirect_to manage_subscribers_path unless @subscriber.nil?
@@ -44,21 +26,102 @@ class SubscribersController < ApplicationController
     @subscriber = Subscriber.new(email: params[:email])
   end
 
+  def manage
+    # not logged in
+    if @subscriber.nil?
+      email = params[:email]
+      return redirect_to subscribers_path if email.nil?
+
+      @subscriber = Subscriber.email_find(email)
+
+      # no matching subscriber with that email
+      return redirect_to new_subscriber_path(email:) if @subscriber.nil?
+
+      # render validation or confirmation notice
+      if @subscriber.is_confirmed?
+        @subscriber.generate_validation_token
+        render :validate
+      else
+        render :confirm
+      end
+    end
+
+    @sites = @subscriber.sites
+    @weather_subs = Subscription.weather
+    @dd_subs = Subscription.degree_days
+    @pest_subs = Subscription.pests
+
+    # pre-fill for new site
+    if params[:lat] && params[:long]
+      @new_name = params[:name] || "My Site"
+      @new_lat = params[:lat]
+      @new_long = params[:long]
+    end
+  end
+
+  def account
+    return redirect_to subscribers_path if @subscriber.nil?
+    @sites = @subscriber.sites
+
+    if params[:email]
+      @new_email = params[:email]&.strip
+      if Subscriber.email_find(@new_email)
+        @subscriber.errors.add(:email, "is already registered")
+      else
+        @validation_sent = true
+        @subscriber.generate_validation_token
+        @email_notice = "We sent an email with a validation code to #{params[:email]}. Please enter that code here to confirm your email change. The code will be valid for one hour."
+      end
+    end
+
+    if params[:new_email] && params[:validation_code]
+      if @subscriber.validation_token == params[:validation_code]&.strip
+        @subscriber.update!(email: params[:new_email])
+        @email_changed = true
+        @email_notice = "Email successfully changed!"
+      else
+        @subscriber.errors.add(:validation_code, "did not match the code sent to your new email address. Please try again.")
+      end
+    end
+  end
+
+  def logout
+    remove_from_session
+    redirect_to subscribers_path
+  end
+
+  def admin
+    return redirect_to subscribers_path if @subscriber.nil?
+    return redirect_to manage_subscribers_path unless @subscriber.admin?
+    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
+  end
+
+  def export
+    return redirect_to subscribers_path if @subscriber.nil?
+    return redirect_to manage_subscribers_path unless @subscriber.admin?
+
+    respond_to do |format|
+      format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv" }
+    end
+  end
+
+  ### ACCOUNT ###
+
   def create
     @subscriber = Subscriber.new(subscriber_params)
 
     if Subscriber.email_find(params[:subscriber][:email])
       @subscriber.errors.add(:email, "is already registered")
-      render action: "new"
+      render action: :new
     elsif @subscriber.save
       SubscriptionMailer.confirm(@subscriber).deliver
       redirect_to confirm_notice_subscriber_path(@subscriber)
     else
-      render action: "new"
+      render action: :new
     end
   end
 
-  def confirm_notice
+  def confirm
     @subscriber = Subscriber.find(params[:id])
     if @subscriber.nil?
       redirect_to subscribers_path
@@ -79,34 +142,42 @@ class SubscribersController < ApplicationController
     end
   end
 
-  def confirm
+  def confirm_account
     passed_token = params[:token]
     @subscriber = Subscriber.find(params[:id])
     if @subscriber.confirm!(passed_token)
       add_to_session(@subscriber.id)
       redirect_to action: :manage
     else
-      redirect_to subscribers_path
+      redirect_to action: :index
     end
   end
 
   def validate
     @subscriber = Subscriber.find(params[:id])
+
+    # from the email link
+    if params[:token] == @subscriber.auth_token
+      add_to_session(@subscriber.id)
+      return redirect_to manage_subscribers_path
+    end
+
+    # code entered manually
     validation_code = params[:validation_code]&.strip
     # check the validation code....
     if @subscriber.is_validation_token_old?
       @subscriber.generate_validation_token
       @subscriber.errors.add(:validation_code, "is too old. We've sent a new one. Check your email.")
-      render
     elsif !@subscriber.validation_token_valid?(validation_code)
       @subscriber.errors.add(:validation_code, "is incorrect.")
-      render
     else
       # add it to the session
       add_to_session(@subscriber.id)
       redirect_to manage_subscribers_path
     end
   end
+
+  ### SUBSCRIBER ###
 
   def update
     return reject if @subscriber.nil? || !@subscriber.admin?
@@ -130,53 +201,8 @@ class SubscribersController < ApplicationController
     elsif params[:token] == @subscriber.auth_token
       @subscriber.destroy
       redirect_to subscribers_path, notice: "You successfully deleted your account."
-    # @subscriber.sites.each { |s| s.delete }
     else
       redirect_to subscribers_path, alert: "Invalid token, check URL or try again."
-    end
-  end
-
-  def admin
-    return redirect_to subscribers_path if @subscriber.nil?
-    return redirect_to manage_subscribers_path unless @subscriber.admin?
-    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
-  end
-
-  def account
-    return redirect_to subscribers_path if @subscriber.nil?
-    @sites = @subscriber.sites
-  end
-
-  def manage
-    # not logged in
-    if @subscriber.nil?
-      email = params[:email]
-      return redirect_to subscribers_path if email.nil?
-
-      @subscriber = Subscriber.email_find(email)
-
-      # no matching subscriber with that email
-      return redirect_to new_subscriber_path(email:) if @subscriber.nil?
-
-      # render validation or confirmation notice
-      if @subscriber.is_confirmed?
-        @subscriber.generate_validation_token
-        render :validate
-      else
-        render :confirm_notice
-      end
-    end
-
-    @sites = @subscriber.sites
-    @weather_subs = Subscription.weather
-    @dd_subs = Subscription.degree_days
-    @pest_subs = Subscription.pests
-
-    # pre-fill for new site
-    if params[:lat] && params[:long]
-      @new_name = "My Site"
-      @new_lat = params[:lat]
-      @new_long = params[:long]
     end
   end
 
@@ -192,6 +218,16 @@ class SubscribersController < ApplicationController
     Subscriber.send_subscriptions([@subscriber])
     redirect_to manage_subscribers_path, notice: "Test email sent!"
   end
+
+  def reset_token
+    if @subscriber
+      @subscriber.update!(auth_token: SecureRandom.hex(10))
+      return redirect_to account_subscribers_path, notice: "Successfully reset your authentication token. Some links in previously-sent emails will no longer work."
+    end
+    redirect_to account_subscribers_path, alert: "Unable to reset your authentication token."
+  end
+
+  ### SITES ###
 
   def add_site
     site_name = params[:site_name]
@@ -248,11 +284,12 @@ class SubscribersController < ApplicationController
     render json: {message: "disabled"}
   end
 
-  # actually just disables all sites
+  ### SUBSCRIPTIONS ###
+
   def unsubscribe
     @subscriber = Subscriber.find(params[:id])
     if params[:token] == @subscriber.auth_token
-      @subscriber.update(emails_enabled: false)
+      @subscriber.update!(emails_enabled: false)
       path = if session[:subscriber] && Subscriber.find(session[:subscriber]).admin?
         manage_subscribers_path(to_edit_id: @subscriber.id)
       else
@@ -291,34 +328,17 @@ class SubscribersController < ApplicationController
     reject(e)
   end
 
-  def logout
-    remove_from_session
-    redirect_to subscribers_path
-  end
-
-  def export
-    return redirect_to subscribers_path if @subscriber.nil?
-    return redirect_to manage_subscribers_path unless @subscriber.admin?
-
-    respond_to do |format|
-      format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv" }
-    end
-  end
-
   private
 
-  def check_editor
+  def require_login
     if @subscriber.nil?
       redirect_to subscribers_path, alert: "You must be logged in to perform this action."
     end
+  end
 
-    # if @subscriber.admin?
-    #   if params[:to_edit_id]
-    #     @subscriber = Subscriber.find(params[:to_edit_id])
-    #   elsif params[:id]
-    #     @subscriber = Subscriber.find(params[:id])
-    #   end
-    # end
+  def get_subscriber_from_id
+    @subscriber = Subscriber.where(id: params[:id]).first
+    require_login
   end
 
   def fix_email

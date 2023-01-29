@@ -61,7 +61,12 @@
 					</div>
 				</div>
 				<div class="content-box">
-					<%= yield %>
+					<div class="main-content">
+						<%= yield %>
+					</div>
+					<div class="content-footer">
+						<%= yield :footer %>
+					</div>
 				</div>
 			</div>
 		</div>

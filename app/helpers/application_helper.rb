@@ -7,9 +7,12 @@ module ApplicationHelper
     sprintf("%.#{digits}f", num.round(digits))
   end
 
-  def fmt_date(date)
-    fmt = (date.year == Date.current.year) ? "%b&nbsp;%-d" : "%b&nbsp;%-d, %y"
+  def fmt_date(datestring)
+    date = datestring.to_date
+    fmt = (date.year == Date.current.year) ? "%b&nbsp;%-d" : "%b&nbsp;%-d,&nbsp;%Y"
     date.strftime(fmt).html_safe
+  rescue
+    datestring
   end
 
   def freeze_temp

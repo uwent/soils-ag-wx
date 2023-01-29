@@ -23,6 +23,6 @@
   <p><%= image_tag "frost_maps/frost-map-min.png" %></p>
 </div>
 
-<br>
-
-<%= link_to "Back", action: :index %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>

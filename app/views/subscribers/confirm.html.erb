@@ -4,8 +4,8 @@
 <script>
 $(document).ready(() => {
   $("#resend_confirmation").click((event) => {
-    sub_id = $(event.target).data("sub-id")
-    url = "/subscribers/" + sub_id + "/resend_confirmation"
+    // sub_id = $(event.target).data("sub-id")
+    url = "<%= resend_confirmation_subscriber_url(@subscriber) %>"
     $.post(url)
       .done(() => {alert("We have resent the confirmation. Check your email.")})
       .error(() => {alert("ERROR: We were unable to resend your confirmation.")})
@@ -28,6 +28,6 @@ $(document).ready(() => {
 
 <p>If you need the confirmation code resent: <button id='resend_confirmation', data-sub-id="<%= @subscriber.id %>">Resend Confirmation</button></p>
 
-<br>
-
-<%= link_to "Back", :back %>
+<%= content_for :footer do %>
+  <%= link_to "Back", action: :index %>
+<% end %>
