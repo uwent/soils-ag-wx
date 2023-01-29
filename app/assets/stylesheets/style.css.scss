@@ -550,6 +550,11 @@ div .success {
 
 .map-container {
 	margin-bottom: 1em;
+	padding: 0 20px;
+
+	@media #{$small-only} {
+		padding: 0;
+	}
 }
 
 .map-form {
@@ -567,10 +572,6 @@ div .success {
 #map-img {
 	position: relative;
 	border: 1px solid $form-border-color;
-
-	img {
-		max-height: 80vh;
-	}
 }
 
 .map-fail {
