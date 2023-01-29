@@ -33,7 +33,7 @@ class SubscriptionMailer < ApplicationMailer
     @subscriber = subscriber
     mail(
       to: @subscriber.email,
-       subject: "Update: Your UW AgWeather automated product subscription"
+      subject: "Update: Your UW AgWeather automated product subscription"
     )
   end
 end

@@ -15,7 +15,6 @@ class SubscribersController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :index unless Rails.env.development?
 
-
   ### MAIN ###
 
   def index
@@ -84,7 +83,6 @@ class SubscribersController < ApplicationController
         @subscriber.errors.add(:validation_code, "did not match the code sent to your new email address. Please try again.")
       end
     end
-
   end
 
   def logout
@@ -106,7 +104,6 @@ class SubscribersController < ApplicationController
       format.csv { send_data Subscriber.to_csv, filename: "ag-weather-users-#{Date.today}.csv" }
     end
   end
-
 
   ### ACCOUNT ###
 
@@ -176,10 +173,9 @@ class SubscribersController < ApplicationController
     else
       # add it to the session
       add_to_session(@subscriber.id)
-      return redirect_to manage_subscribers_path
+      redirect_to manage_subscribers_path
     end
   end
-
 
   ### SUBSCRIBER ###
 
@@ -228,9 +224,8 @@ class SubscribersController < ApplicationController
       @subscriber.update!(auth_token: SecureRandom.hex(10))
       return redirect_to account_subscribers_path, notice: "Successfully reset your authentication token. Some links in previously-sent emails will no longer work."
     end
-    return redirect_to account_subscribers_path, alert: "Unable to reset your authentication token."
+    redirect_to account_subscribers_path, alert: "Unable to reset your authentication token."
   end
-
 
   ### SITES ###
 
@@ -289,7 +284,6 @@ class SubscribersController < ApplicationController
     render json: {message: "disabled"}
   end
 
-
   ### SUBSCRIPTIONS ###
 
   def unsubscribe
@@ -333,7 +327,6 @@ class SubscribersController < ApplicationController
   rescue => e
     reject(e)
   end
-
 
   private
 

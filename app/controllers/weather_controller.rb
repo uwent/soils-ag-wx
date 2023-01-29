@@ -230,7 +230,7 @@ class WeatherController < ApplicationController
         et: "Potential<br>ET&nbsp;(#{@len_units})",
         insol: "Insolation<br>(#{@insol_units}/m<sup>2</sup> /day)",
         pressure: "Vap.<br>pres.<br>(#{@pres_units})",
-        hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)",
+        hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)"
         # avg_temp_rh_over_90: "Avg<br>temp<br>high&nbsp;RH"
       }.freeze
       summable = %i[precip et insol]
