@@ -574,6 +574,10 @@ div .success {
 	margin-bottom: 1em;
 }
 
+.form-row:last-child {
+	margin-bottom: 0;
+}
+
 .grey {
 	background: $form-bg-color;
 }
