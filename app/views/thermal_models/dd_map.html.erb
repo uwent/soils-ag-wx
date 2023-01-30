@@ -40,49 +40,77 @@
 <div class="two-box">
   <div class="box">
     <b>Choose a degree day model to load:</b>
-    <div class="map-form grey">
+    <div class="map-form grey" onChange="validateDates(this)">
       <%= form_tag action: :dd_map do %>
-        <p><label>Choose models: <%= select_tag :dd_model, options_for_select(dd_labels, @dd_model) %></label></p>
-        <p>
-          Temperature units:
+        <div class="form-row">
+          <label>
+            Choose model: 
+            <%= select_tag :dd_model, options_for_select(dd_labels, @dd_model) %>
+          </label>
+        </div>
+        <div class="form-row">
+          Temperature units: 
           <label><%= radio_button_tag(:units, "F", @units == "F") %>Fahrenheit</label>&nbsp;
           <label><%= radio_button_tag(:units, "C", @units == "C") %>Celsius</label>
-        </p>
-        <p>
+        </div>
+        <div class="form-row">
           Date range:<br>
-          <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Start date</label><br>
-          <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
-        </p>
-        <p>
+          <div id="start-date">
+            <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Start date</label><br>
+          </div>
+          <div id="end-date">
+            <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
+          </div>
+          <div id="date-warning"></div>
+        </div>
+        <div class="form-row">
           Color scale (leave blank to scale automatically):<br>
           <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
-        </p>
-        <p><label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label></p>
+        </div>
+        <div class="form-row">
+          <label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label>
+        </div>
         <%= hidden_field_tag :map_type, "dd" %>
         <%= hidden_field_tag :dsv_model, @dsv_model %>
-        <%= submit_tag @dd_submit_text %>
+        <%= submit_tag @dd_submit_text, id: "submit" %>
       <% end %>
     </div>
   </div>
   <div class="box">
     <b>Choose a disease severity model to load:</b>
-    <div class="map-form grey">
+    <div class="map-form grey" onChange="validateDates(this)">
       <%= form_tag action: :dd_map do %>
-        <p><label>Choose model: <%= select_tag :dsv_model, options_for_select(dsv_labels, @dsv_model) %></label></p>
-        <p>
+        <div class="form-row">
+          Choose model:<br>
+          <%= select_tag :dsv_model, options_for_select(dsv_labels, @dsv_model) %>
+        </div>
+        <div class="form-row">
           Date range:<br>
-          <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Start date</label><br>
-          <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
-        </p>
-        <p>
+          <div id="start-date">
+            <label>
+              <%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>
+              Start date
+            </label>
+          </div>
+          <div id="end-date">
+            <label>
+              <%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>
+              End date
+            </label>
+          </div>
+          <div id="date-warning"></div>
+        </div>
+        <div class="form-row">
           Color scale (leave blank to scale automatically):<br>
           <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
-        </p>
-        <p><label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label></p>
+        </div>
+        <div class="form-row">
+          <label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label>
+        </div>
         <%= hidden_field_tag :map_type, "dsv" %>
         <%= hidden_field_tag :dd_model, @dd_model %>
         <%= hidden_field_tag :units, @units %>
-        <%= submit_tag @dsv_submit_text %>
+        <%= submit_tag @dsv_submit_text, id: "submit" %>
       <% end %>
     </div>
   </div>

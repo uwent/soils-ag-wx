@@ -7,6 +7,26 @@
   flex-direction: column;
   width: 50%;
   margin-bottom: 1rem;
+
+  .form-row {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  
+    label {
+      padding-bottom: 4px;
+    }
+  
+    select {
+      padding: 5px
+    }
+  
+    .helper-link {
+      color: blue !important;
+    }
+  }
+
 }
 
 .link {
@@ -24,24 +44,7 @@
   display: inline;
 }
 
-.form-row {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 
-  label {
-    padding-bottom: 4px;
-  }
-
-  select {
-    padding: 5px
-  }
-
-  .helper-link {
-    color: blue !important;
-  }
-}
 
 .format-row {
   display: flex;
