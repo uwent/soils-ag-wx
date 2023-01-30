@@ -9,9 +9,11 @@
 <h2>Validate Email Address</h2>
 <hr>
 
-<h4>Validate your account</h4>
+<%= render "notices" %>
 
-<p>To ensure you are the owner of this email address, we have sent a six-digit validation code to <b><%= @subscriber.email %></b>. Please enter the validation code you were sent to signing in.</p>
+<h4>Sign in to your account</h4>
+
+<p>To ensure you are the owner of this email address, we have sent a six-digit validation code to <b><%= @subscriber.email %></b>. Please enter the validation code you were sent to finish signing in.</p>
 
 <p>
   <%= form_tag validate_subscriber_path(@subscriber) do %>
@@ -20,6 +22,12 @@
     <%= submit_tag "Sign in" %>
   <% end %>
 </p>
+
+<% if @subscriber.errors.any? %>
+  <p>
+    <span class="error"><%= @subscriber.errors.full_messages.first %></span>
+  </p>
+<% end %>
 
 <%= content_for :footer do %>
   <%= link_to "Back", action: :index %>

@@ -1,6 +1,7 @@
 <% @title = "Subscriber Administration" %>
 <% @welcome_image = "awon.png" %>
 
+<%= content_for :scripts do %>
 <script>
   $(".best_in_place").best_in_place()
 
@@ -18,14 +19,14 @@
     $("#bip-success").delay(10000).fadeOut()
   })
 </script>
+<% end %>
 
 <% content_for :welcome do %>
-  <h2><%= @title %></h2>
-  <p>Subscriber administration page. Reminder: you cannot change your own email from this page, nor can you set or remove admin status on other users. Use the rails terminal for those tasks.</p>
+<h2><%= @title %></h2>
+<p>Subscriber administration page. Reminder: you cannot change your own email from this page, nor can you set or remove admin status on other users. Use the rails terminal for those tasks.</p>
 <% end %>
 
 <h2><%= @title %></h2>
-
 <hr>
 
 <%= render partial: "notices" %>
@@ -75,8 +76,10 @@
 
 <br>
 
+<%= content_for :footer do %>
 <div class="site-controls">
-  <div><%= link_to "<button>Back</button>".html_safe, manage_subscribers_path %></div>
-  <div><%= link_to "<button>Export Email CSV</button>".html_safe, export_subscribers_path(format: :csv) %></div>
-  <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
+  <div><%= link_to button_tag("Back"), manage_subscribers_path %></div>
+  <div><%= link_to button_tag("Export Email CSV"), export_subscribers_path(format: :csv) %></div>
+  <div><%= link_to button_tag("Log out"), logout_subscribers_path %></div>
 </div>
+<% end %>

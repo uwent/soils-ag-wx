@@ -8,6 +8,7 @@ class Subscriber < ApplicationRecord
   validates :name, presence: true, length: {maximum: 50}
 
   before_create :set_auth_token
+  before_save { email.downcase! }
 
   def self.dates_active
     Date.new(Date.current.year, 3, 15)..Date.new(Date.current.year, 11, 1)
@@ -26,7 +27,7 @@ class Subscriber < ApplicationRecord
   #   fractional_part(rand)
   # end
 
-  def self.email_find(email)
+  def self.find_by_email(email)
     where("lower(email) = ?", email.downcase).first
   end
 

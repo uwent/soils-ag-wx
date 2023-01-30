@@ -1,33 +1,51 @@
 <% @title = "Email Subscriptions" %>
 <% @welcome_image = "awon.png" %>
 
+<%= content_for :scripts do %>
 <script>
-$(document).ready(() => {
-  $("#resend_confirmation").click((event) => {
-    // sub_id = $(event.target).data("sub-id")
-    url = "<%= resend_confirmation_subscriber_url(@subscriber) %>"
-    $.post(url)
-      .done(() => {alert("We have resent the confirmation. Check your email.")})
-      .error(() => {alert("ERROR: We were unable to resend your confirmation.")})
+  function cycleButton() {
+    $(() => {
+      $("#resend-btn").prop("disabled", true)
+
+      setTimeout(() => {
+        $("#resend-btn").prop("disabled", false)
+      }, 10000)
+    })
+  }
+
+  $(() => {
+    cycleButton()
+
+    $("#resend-btn").click((event) => {
+      let url = "<%= resend_confirmation_subscriber_url(@subscriber) %>"
+      $.post(url)
+        .done(() => {
+          alert("We have resent the confirmation. Check your email.")
+          cycleButton()
+        })
+        .error(() => {
+          alert("ERROR: We were unable to resend your confirmation.")
+        })
+    })
   })
-})
 </script>
+<% end %>
 
 <% content_for :welcome do %>
-  <h2><%= @title %></h2>
-  <p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
+<h2><%= @title %></h2>
+<p>Add, remove, or manage your saved sites and daily email subscriptions here.</p>
 <% end %>
 
 <h2>Account Confirmation</h2>
-
 <hr>
 
-<h4>Confirm your account</h4>
+<%= render "notices" %>
 
-<p>We have sent you a confirmation email at <b><%= @subscriber.email %></b>. Please click the link in the email to confirm your account.</p>
-
-<p>If you need the confirmation code resent: <button id='resend_confirmation', data-sub-id="<%= @subscriber.id %>">Resend Confirmation</button></p>
+<p>Thank you for creating a new account! We have sent a confirmation email to <b><%= @subscriber.email %></b>.<p>
+<p><b>Please click the link in the email to confirm your account and log in.</b></p>
+<br>
+<p><i>If you did not receive the confirmation code in your email, make sure you entered your email correctly. If you still have not received the code, click this button to re-send it: <button id="resend-btn" disabled>Resend Confirmation</button></i></p>
 
 <%= content_for :footer do %>
-  <%= link_to "Back", action: :index %>
+<%= link_to "Back", action: :index %>
 <% end %>

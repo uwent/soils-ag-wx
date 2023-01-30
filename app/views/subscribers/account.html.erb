@@ -1,6 +1,7 @@
 <% @title = "Email Subscriptions" %>
 <% @welcome_image = "awon.png" %>
 
+<%= content_for :scripts do %>
 <script>
   $(".best_in_place").best_in_place()
 
@@ -24,6 +25,7 @@
     $("#validate-email").css("display", "unset")
   }
 </script>
+<% end %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
@@ -31,8 +33,7 @@
   <%= render partial: "quick_links" %>
 <% end %>
 
-<h2>Manage your account</h2>
-
+<h2>Account Settings</h2>
 <hr>
 
 <%= render "notices" %>
@@ -42,7 +43,7 @@
   <ul>
     <li>
       <div title="Click to edit name">
-        <p><b>Name:</b> <%= best_in_place @subscriber, :name, html_attrs: { size: 25, pattern: "([A-Za-z\-\ ]+)", title: "Name can contain only alphabetical characters or hyphens." } %></p>
+        <p><b>Name (click to edit):</b> <%= best_in_place @subscriber, :name, html_attrs: { size: 25, pattern: "([A-Za-z0-9\-\ ]+)", title: "Name can contain only alphanumeric characters or hyphens." } %></p>
       </div>
     </li>
     <li>

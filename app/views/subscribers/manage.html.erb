@@ -1,6 +1,7 @@
 <% @title = "Email Subscriptions" %>
 <% @welcome_image = "awon.png" %>
 
+<%= content_for :scripts do %>
 <script>
   subscriber_id = <%= @subscriber.id %>
   site_count = <%= @sites.size %>
@@ -58,7 +59,13 @@
     return validations
   }
 
-  $(document).ready(() => {
+  $(() => {
+
+    // Hide notice after 5 seconds
+    setTimeout(() => {
+      $('.notice').fadeOut(500)
+    }, 5000)
+
     // Enable the 'send email' button after 5 seconds
     if (site_count > 0) {
       setTimeout(() => {$("#send-email").prop("disabled", false)}, 5000)
@@ -98,8 +105,8 @@
       let url = "<%= url_for(add_site_subscriber_path(@subscriber.id)) %>"
       $.post(url, {
         site_name: site_name,
-        latitude: parseFloat(lat).toFixed(1),
-        longitude: parseFloat(long).toFixed(1),
+        lat: parseFloat(lat).toFixed(1),
+        long: parseFloat(long).toFixed(1),
         to_edit_id: subscriber_id
       }).success((data) => {
         data.id ? window.location.reload() : alert(data.message)
@@ -169,20 +176,21 @@
     })
   })
 
+  // Best in place
   $(".best_in_place").best_in_place()
 
   $(document).on("best_in_place:error", (event, request, error) => {
     let msg = JSON.parse(request.responseText).message
     let el = `<div id='bip-error' class='error'>Unable to update site. ${msg}</div>`
     $("#bip-notice").html(el)
-    $("#bip-error").delay(10000).fadeOut()
+    $("#bip-error").delay(5000).fadeOut()
   })
 
   $(document).on('best_in_place:success', (event, request, error) => {
     let msg = "Successfully updated site."
     let el = `<div id='bip-success' class='success'>${msg}</div>`
     $("#bip-notice").html(el)
-    $("#bip-success").delay(10000).fadeOut()
+    $("#bip-success").delay(5000).fadeOut()
 
     let bip_id = event.target.id
     if (bip_id.includes("_name")) {
@@ -192,6 +200,7 @@
     }
   })
 </script>
+<% end %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
@@ -199,8 +208,7 @@
   <%= render partial: "quick_links" %>
 <% end %>
 
-<h2>Manage saved sites and email subscriptions</h2>
-
+<h2>Manage Sites and Subscriptions</h2>
 <hr>
 
 <% if @subscriber.id != session[:subscriber] %>
@@ -343,18 +351,26 @@
       </div>
     <% end %>
   </div>
+  <p><i>Sites shown in shaded grey are not currently enabled and you will not receive any emails for those sites. Subscribe to sites in the site list above.</i></p>
 <% end %>
 
-<br>
+<%= content_for :footer do %>
+  <div class="site-controls">
+    <div><%= link_to button_tag("Finish"), root_path %></div>
 
-<div class="site-controls">
-  <div><%= link_to("<button>Finish</button>".html_safe, root_path) %></div>
-  <% if @sites.size > 0 %>
-    <div><%= link_to("<button id='send-email' disabled>Send test email</button>".html_safe, send_email_subscriber_path(@subscriber.id, token: @subscriber.auth_token)) %></div>
-  <% end %>
-  <% if @admin %>
-    <div><%= link_to admin_subscribers_path do %><button>Admin</button><% end %></div>
-  <% end %>
-  <div><%= link_to account_subscribers_path do %><button>Manage account</button><% end %></div>
-  <div><%= link_to "<button>Log out</button>".html_safe, logout_subscribers_path %></div>
-</div>
+    <% if @sites.size > 0 %>
+      <div>
+        <%= link_to send_email_subscriber_path(@subscriber.id) do %>
+          <button id="send-email" disabled>Send test email</button>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @admin %>
+      <div><%= link_to button_tag("Admin"), admin_subscribers_path %></div>
+    <% end %>
+
+    <div><%= link_to button_tag("Manage account"), account_subscribers_path %></div>
+    <div><%= link_to button_tag("Log out"), logout_subscribers_path %></div>
+  </div>
+<% end %>

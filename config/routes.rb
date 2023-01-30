@@ -85,7 +85,7 @@ Rails.application.routes.draw do
   get "thermal_models/(*path)", to: redirect("/thermal-models", status: 301) if Rails.env.production?
 
   # Subscribers controller
-  resources :subscribers do
+  resources :subscribers, only: %i[index new create update destroy] do
     collection do
       route "admin"
       route "manage", :get, :post
@@ -96,10 +96,10 @@ Rails.application.routes.draw do
     member do
       route "confirm"
       route "confirm_account"
+      route "validate", :get, :post
       route "unsubscribe"
       route "send_email"
       route "reset_token", :post
-      route "validate", :post
       route "resend_confirmation", :post
       route "add_site", :post
       route "remove_site", :post
@@ -109,11 +109,10 @@ Rails.application.routes.draw do
       route "disable_subscription", :post
       route "enable_emails", :post
       route "disable_emails", :post
-      route "edit", :post
     end
   end
   match "subscribers", to: "subscribers#index", via: [:get, :post]
-  get "/subscribers/(*path)", to: redirect("/subscribers") if Rails.env.production?
+  get "/subscribers/(*path)", to: redirect("/subscribers")
 
   # Custom URLs
   direct(:vdifn) { "/vdifn" }

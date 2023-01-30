@@ -36,7 +36,7 @@
         <tbody>
           <tr>
             <td bgcolor=<%= bg_lt %>>
-              <p>Your data subscriptions for <%= Date.current.strftime("%A, %B %-d") %> are shown below. To enable, disable, or edit your sites or subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.auth_token) %>.</p>
+              <p>Your data subscriptions for <%= Date.current.strftime("%A, %B %-d") %> are shown below. To enable, disable, or edit your sites or subscriptions, <%= link_to "click here", validate_subscriber_url(@subscriber, token: @subscriber.auth_token) %>.</p>
               <p>&nbsp;</p>
               <% @data.each_with_index do |site, i| %>
                 <% name = site[:name]; lat = site[:lat]; long = site[:long] %>
@@ -51,7 +51,7 @@
                     <%= render partial: subscription[:partial], locals: {lat:, long:, subscription:} %>
                   <% end %>
                 <% else %>
-                  <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", confirm_subscriber_url(@subscriber, token: @subscriber.auth_token) %> to edit your subscriptions.</i></p>
+                  <p style="font-size: smaller;"><i>This site is active, but you don't have any data subscriptions enabled for it. <%= link_to "Click here", validate_subscriber_url(@subscriber, token: @subscriber.auth_token) %> to edit your subscriptions.</i></p>
                 <% end %>
                 <p>&nbsp;</p>
               <% end %>
@@ -79,7 +79,7 @@
               <% if @data.to_s.downcase.include? "no data" %>
                 <p><i>Note: 'No data' in tables indicates there was a problem retrieving weather data this morning from NOAA servers. This is usually resolved by the following day.</i></p>
               <% end %>
-              <p><i>To edit your subscriptions, <%= link_to "click here", confirm_subscriber_url(@subscriber, token: @subscriber.auth_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.auth_token) %> to unsubscribe. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
+              <p><i>To edit your subscriptions, <%= link_to "click here", validate_subscriber_url(@subscriber, token: @subscriber.auth_token) %>. If you no longer wish to receive daily emails, <%= link_to "click this link", unsubscribe_subscriber_url(@subscriber, token: @subscriber.auth_token) %> to unsubscribe. Please do not reply to this email. If you have any questions or comments, get in touch with us at <%= mail_to "agweather@cals.wisc.edu" %>.</i></p>
               <p><i>Developed by the College of Agriculture and Life Sciences at the University of Wisconsin-Madison.</i></p>
             </td>
           </tr>

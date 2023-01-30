@@ -107,10 +107,10 @@ class ApplicationController < ActionController::Base
   end
 
   def get_subscriber_from_session
-    @subscriber = Subscriber.where(id: session[:subscriber]).first
+    @subscriber = Subscriber.find_by(id: session[:subscriber])
     @admin = @subscriber&.admin?
     if @admin && params[:to_edit_id]
-      @subscriber = Subscriber.where(id: params[:to_edit_id]).first || @subscriber
+      @subscriber = Subscriber.find_by(id: params[:to_edit_id]) || @subscriber
     end
   end
 
