@@ -23,13 +23,26 @@ function elementReady(selector) {
   });
 }
 
-function copy(prefix) {
-  data = document.querySelector(`#${prefix}-container`).outerHTML;
-  navigator.clipboard.writeText(data);
-  document.querySelectorAll("[id$='confirm']").forEach((el) => {
-    el.setAttribute("style", "display: none;")
-  })
-  document.querySelector(`#${prefix}-confirm`).style.display = null;
+function copyTable(prefix = "copy") {
+  let elem = document.querySelector(`#${prefix}-container`)
+  if (elem) {
+    let data = elem.outerHTML
+    navigator.clipboard.writeText(data)
+
+    // hide any other copy-confirm notices
+    let confirm_elems = document.querySelectorAll("[id$='confirm']")
+    if (confirm_elems) {
+      confirm_elems.forEach((el) => {
+        el.setAttribute("style", "display: none;")
+      })
+    }
+
+    // show the copy confirm element
+    let confirm_elem = document.querySelector(`#${prefix}-confirm`)
+    if (confirm_elem) {
+      confirm_elem.style.display = null;
+    }
+  }
 }
 
 if (window.history.replaceState) {

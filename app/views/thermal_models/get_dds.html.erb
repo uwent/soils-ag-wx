@@ -11,7 +11,7 @@
 <hr>
 
 <% if @data %>
-  <div id="data-container">
+  <div id="copy-container">
     <h4>Degree days data series</h4>
     <p>
       <b>Location:</b> <%= @latitude %>&deg;N, <%= @longitude %>&deg;W<br>
@@ -19,30 +19,32 @@
       <b>Threshold(s):</b> <%= @base_temp %>&deg;<%= @units%> base<% if @upper_temp %>, <%= @upper_temp %>&deg;<%= @units %> upper<% end %><br>
       <b>Method:</b> <%= @method %>
     </p>
-    <table class="grid-table">
-      <thead>
-        <tr>
-          <th>Day</th>
-          <th>Date</th>
-          <th>Min<br>temp<br>(&deg;<%= @units %>)</th>
-          <th>Max<br>temp<br>(&deg;<%= @units %>)</th>
-          <th><%= @units %>DDs</th>
-          <th>Cumul.<br><%= @units %>DDs</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @data.each_with_index do |day, i| %>
-        <tr>
-          <td><%= i + 1 %></td>
-          <td><%= day[:date] %></td>
-          <td><%= fmt_temp(day[:min_temp]) %></td>
-          <td><%= fmt_temp(day[:max_temp]) %></td>
-          <td><%= day[:value] %></td>
-          <td><%= day[:cumulative_value] %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
+    <div class="tbl-container">
+      <table class="grid-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Date</th>
+            <th>Min<br>temp<br>(&deg;<%= @units %>)</th>
+            <th>Max<br>temp<br>(&deg;<%= @units %>)</th>
+            <th><%= @units %>DDs</th>
+            <th>Cumul.<br><%= @units %>DDs</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @data.each_with_index do |day, i| %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= day[:date] %></td>
+            <td><%= fmt_temp(day[:min_temp]) %></td>
+            <td><%= fmt_temp(day[:max_temp]) %></td>
+            <td><%= day[:value] %></td>
+            <td><%= day[:cumulative_value] %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <p class="note">
@@ -50,7 +52,7 @@
   </p>
 
   <p>
-    <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
+    <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
     <span id="copy-confirm" style="display:none;"> Copied!</span>
   </p>
 <% else %>

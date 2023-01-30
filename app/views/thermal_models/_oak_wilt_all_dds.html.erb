@@ -3,42 +3,42 @@
 <br>
 <hr>
 
-<div id="data-container">
+<div id="copy-container">
   <h4>Degree days and oak wilt risk from January 1, <%= end_date.strftime("%Y") %> to <%= end_date.strftime("%B %d, %Y") %> for (<%= @latitude %>, <%= @longitude %>):</h4>
-  <table class="grid-table">
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>Date</th>
-        <th>Min<br>temp<br>(&deg;F)</th>
-        <th>Max<br>temp<br>(&deg;F)</th>
-        <th>FDDs</th>
-        <th>Cumul.<br>FDDs</th>
-        <th>Oak wilt risk</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @data.each_with_index do |day, i| %>
-      <tr>
-        <td><%= i + 1 %></td>
-        <td><%= day[:date] %></td>
-        <td><%= fmt_temp(day[:min_temp]) %></td>
-        <td><%= fmt_temp(day[:max_temp]) %></td>
-        <td><%= day[:value] %></td>
-        <td><%= day[:cumulative_value] %></td>
-        <td><%= day[:risk] %>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+  <div class="tbl-container">
+    <table class="grid-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Min<br>temp<br>(&deg;F)</th>
+          <th>Max<br>temp<br>(&deg;F)</th>
+          <th>FDDs</th>
+          <th>Cumul.<br>FDDs</th>
+          <th>Oak wilt risk</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @data.each_with_index do |day, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= day[:date] %></td>
+          <td><%= fmt_temp(day[:min_temp]) %></td>
+          <td><%= fmt_temp(day[:max_temp]) %></td>
+          <td><%= day[:value] %></td>
+          <td><%= day[:cumulative_value] %></td>
+          <td><%= day[:risk] %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<p class="note">
-  Note: Frost temperatures (&lt;<%= frost_temp %>&deg;<%= @units %>) shown in <span style="color:blue">blue</span>, freezing temperatures (&lt;<%= freeze_temp %>&deg;<%= @units %>) shown in <span style="color:red">red</span>.
-</p>
+<p class="note"><%= freeze_note %></p>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('data-container')" %>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
   <span id="copy-confirm" style="display:none;"> Copied!</span>
 </p>
 

@@ -1,6 +1,6 @@
 <% if @data %>
 
-<div id="et-container">
+<div id="copy-container">
   <h4>Evapotranspiration data series</h4>
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W (<%= link_to "view site data page", controller: :sites, action: :show, lat: @lat, long: @long %>)<br>
@@ -10,7 +10,7 @@
     <% end %>
   </p>
   <div class="tbl-container">
-    <table class="grid-table" id="table">
+    <table class="grid-table">
       <thead>
         <tr>
           <th>Day</th>
@@ -38,8 +38,8 @@
 </div>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('et')" %>
-  <span id="et-confirm" style="display: none;"> Copied!</span>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
+  <span id="copy-confirm" style="display: none;"> Copied!</span>
 </p>
 
 <% else %>

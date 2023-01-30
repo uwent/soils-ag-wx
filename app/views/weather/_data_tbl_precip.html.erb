@@ -1,6 +1,6 @@
 <% if @data %>
 
-<div id="precip-container">
+<div id="copy-container">
   <h4>Precipitation data series</h4>
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W (<%= link_to "view site data page", controller: :sites, action: :show, lat: @lat, long: @long %>)<br>
@@ -35,8 +35,8 @@
 </div>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('precip')" %>
-  <span id="precip-confirm" style="display: none;"> Copied!</span>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
+  <span id="copy-confirm" style="display: none;"> Copied!</span>
 </p>
 
 <% else %>

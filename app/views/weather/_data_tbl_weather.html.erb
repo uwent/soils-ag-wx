@@ -1,6 +1,6 @@
 <% if @data %>
 
-<div id="weather-container">
+<div id="copy-container">
   <h4>Weather data series</h4>
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W (<%= link_to "view site data page", controller: :sites, action: :show, lat: @lat, long: @long %>)<br>
@@ -53,12 +53,10 @@
   </div>
 </div>
 
-<p class="note">
-  <%= freeze_note %>
-</p>
+<p class="note"><%= freeze_note %></p>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('weather')" %>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
   <span id="weather-confirm" style="display: none;"> Copied!</span>
 </p>
 

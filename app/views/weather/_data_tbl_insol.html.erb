@@ -1,13 +1,13 @@
 <% if @data %>
 
-<div id="insol-container">
+<div id="copy-container">
   <h4>Insolation data series</h4>
   <p>
     <b>Location:</b> <%= @lat %>&deg;N, <%= @long %>&deg;W (<%= link_to "view site data page", controller: :sites, action: :show, lat: @lat, long: @long %>)<br>
     <b>Date range:</b> <%= @start_date %> to <%= @end_date %> (<%= pluralize(@data.size, "days") %>)
   </p>
   <div class="tbl-container">
-    <table class="grid-table" id="table">
+    <table class="grid-table">
       <thead>
         <tr>
           <th>Day</th>
@@ -41,8 +41,8 @@
 </div>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copy('insol')" %>
-  <span id="insol-confirm" style="display: none;"> Copied!</span>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
+  <span id="copy-confirm" style="display: none;"> Copied!</span>
 </p>
 
 <% else %>
