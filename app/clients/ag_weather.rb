@@ -8,11 +8,12 @@ module AgWeather
   INSOL_URL = BASE_URL + "/insolations"
   ET_URL = BASE_URL + "/evapotranspirations"
   DD_URL = BASE_URL + "/degree_days"
+  DD_TABLE_URL = BASE_URL + "/degree_days/dd_table"
   PEST_URL = BASE_URL + "/pest_forecasts"
 
-  def self.get(url, query: nil, timeout: 10)
+  def self.get(url, query: nil, timeout: 10, symbolize_names: true)
     response = HTTParty.get(url, query:, timeout:)
-    JSON.parse(response.body, symbolize_names: true)
+    JSON.parse(response.body, symbolize_names:)
   rescue
     Rails.logger.error "Failed to retrieve endpoint #{url}"
     {}
@@ -36,6 +37,10 @@ module AgWeather
 
   def self.get_dd(query:)
     get(DD_URL, query:)&.dig(:data) || {}
+  end
+
+  def self.get_dd_table(query:)
+    get(DD_TABLE_URL, query:, symbolize_names: false) || {}
   end
 
   def self.get_map(endpoint, id, query)

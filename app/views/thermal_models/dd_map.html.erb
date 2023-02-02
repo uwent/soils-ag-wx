@@ -28,7 +28,7 @@
   <% @wait_time = 30 %>
   <%= render layout: "partials/loading" do %>
     <p>
-      Model: <%= @model %><br>
+      Model: <%= dd_models[@model][:label] %><br>
       Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %>
       <% unless @map_type == "dsv" %><br>Units: <%= "#{@units}" %><% end %>
       <% if @min_value.presence || @max_value.presence %><br>Scale bar: <%= @min_value.presence ? @min_value : "?"  %> - <%= @max_value.presence ? @max_value : "?" %><% end %>

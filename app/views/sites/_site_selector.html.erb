@@ -8,14 +8,20 @@
 </script>
 
 <div class="site-row">
-  <h4>Select a location:</h4>
+  <h4>Select a location manually:</h4>
   <div class="site-box">
     <%= form_tag sites_path do %>
       <div>
-        <label><%= select_tag :latitude, options_for_select(latitude_labels, @lat&.to_s || default_latitude) %> Latitude</label>&nbsp;
-        <label><%= select_tag :longitude, options_for_select(longitude_labels, @long&.to_s || default_longitude) %> Longitude</label>&nbsp;
-        <button type="button" onclick="getGeoLocation()">Get my location</button>
-        <button type="button" onclick="goToSite()">View selected location</button>&nbsp;<span id="geo-loc-msg"></span><br>
+        <%= label_tag :latitude, "Latitude" %>
+        <%= select_tag :latitude, options_for_select(latitude_labels, @lat&.to_s || default_latitude) %>
+        <%= label_tag :longitude, "Longitude" %>
+        <%= select_tag :longitude, options_for_select(longitude_labels, @long&.to_s || default_longitude) %>
+        <br>
+        <p>
+          <button type="button" onclick="getGeoLocation()">Get my location</button>
+          &nbsp;<span id="geo-loc-msg"></span>
+        </p>
+        <button type="button" onclick="goToSite()">View selected location</button>
       </div>
     <% end %>
   </div>

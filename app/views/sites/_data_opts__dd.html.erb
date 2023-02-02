@@ -1,0 +1,81 @@
+<script>
+  function refreshDDTable(form) {
+    let url =
+      "<%= url_for(action: :site_data_dd, lat: @lat, long: @long, end_date: @end_date).html_safe %>" +
+      "&start_date=" +
+      time_form__dd.start_date.value +
+      "&units=" +
+      unit_form__dd.units.value
+
+    let dd_models = []
+    $.each($("input[name='dd_models']:checked"), function() {
+      dd_models.push($(this).val())
+    })
+    dd_models = dd_models.join(",")
+    url += `&dd_models=${dd_models}`
+
+    $.ajax({
+      url: url,
+      success: (response) => {
+        $("#dd-data").html(response);
+      }
+    })
+  }
+
+  // function toggleDDBoxes() {
+  //   let el = $("#dd-checkboxes")
+  //   let display = el.css("display") == "none" ? "inherit" : "none"
+  //   el.css("display", display)
+  // }
+
+  function toggleDDBoxes() {
+    let el = $("#dd-checkboxes")
+    if (el.css("display") == "none") {
+      el.slideDown(250)
+    } else {
+      el.slideUp(250)
+    }
+  }
+</script>
+
+<div class="site-row">
+  <h4>Table display options:</h4>
+  <div class="site-box flex-row">
+    <div class="col-50">
+      <b><i>Units:</i></b>
+      <%= form_tag nil, id: "unit_form__dd" do %>
+        <label><%= radio_button_tag :units, "imperial", @units == "imperial", onchange: "refreshDDTable(this.form)" %> Imperial (&deg;F, FDDs)</label>
+        <label><%= radio_button_tag :units, "metric", @units == "metric", onchange: "refreshDDTable(this.form)" %> Metric (&deg;C, CDDs)</label>
+      <% end %>
+    </div>
+    <div class="col-50">
+      <b><i>Time period</i></b>
+      <%= form_tag nil, id: "time_form__dd" do %>
+        <% @start_date_opts.each do |name, val| %>
+          <label>
+            <%= radio_button_tag :start_date, val, val == @start_date, onchange: "refreshDDTable(this.form)" %>
+            <%= name %>
+          </label>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="site-row">
+  <h4><a onclick="toggleDDBoxes()">Select additional degree day models (click to show list)</a></h4>
+  <div class="site-box" id="dd-checkboxes" style="display:none;">
+    <%= form_tag nil, id: "model_form__dd" do %>
+      <div class="flex gap-10">
+        <% dd_labels.each do |name, val| %>
+          <div>
+            <label>
+              <%= check_box_tag :dd_models, val, @dd_models.include?(val), onchange: "refreshDDTable(this.form)" %>
+              <%= name %>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -24,7 +24,6 @@ Rails.application.routes.draw do
       route "precip_data"
       route "et_data"
       route "insol_data"
-      route "site_data"
       route "hyd"
       route "hyd_grid"
       route "doycal"
@@ -38,7 +37,13 @@ Rails.application.routes.draw do
 
   # Sites controller
   resources :sites, only: :none do
-    put :update, on: :member
+    collection do
+      route "site_data_weather"
+      route "site_data_dd"
+    end
+    member do
+      put :update
+    end
   end
   get "sites/:lat,:long", to: "sites#show", constraints: {
     lat: /[-+]?\d+\.?\d*/,

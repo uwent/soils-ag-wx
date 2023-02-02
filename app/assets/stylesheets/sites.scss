@@ -11,6 +11,7 @@
 	background: $table-row-highlight-color;
 	width: inherit;
 	flex: 1;
+	margin-bottom: 1em;
 }
 
 .site-list ul {
@@ -19,4 +20,9 @@
 
 .site-list li {
   margin-bottom: 5px;
+}
+
+.site-data-title {
+	font-style: italic;
+	border-bottom: 2px solid $form-border-color;
 }

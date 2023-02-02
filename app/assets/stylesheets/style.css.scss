@@ -82,6 +82,27 @@ input[type=checkbox] {
 	transform: scale(1.15);
 }
 
+.flex {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.gap-10 {
+	gap: 10px;
+}
+
+.flex-col {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
 
 // --- LAYOUT --- //
 

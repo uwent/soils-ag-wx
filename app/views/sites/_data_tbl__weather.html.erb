@@ -1,6 +1,6 @@
 <% if @data %>
 
-<div id="copy-container" class="tbl-container">
+<div id="weather-container" class="tbl-container">
   <table class="grid-table">
     <thead>
       <tr>
@@ -39,12 +39,12 @@
 <p class="note"><%= freeze_note %></p>
 
 <p>
-  <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
-  <span id="copy-confirm" style="display: none;"> Copied!</span>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable('weather')" %>
+  <span id="weather-confirm" style="display: none;"> Copied!</span>
 </p>
 
 <% else %>
 
-Unable to retrieve any weather data, try again or <%= link_to "go home", controller: :home %>.
+Unable to retrieve any weather data, please try again.
 
 <% end %>

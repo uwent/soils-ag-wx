@@ -72,6 +72,25 @@ class ApplicationController < ActionController::Base
     default_date
   end
 
+  def get_request_type
+    @request_type = request.method
+  end
+
+  def try_parse_date(type, default)
+    begin
+      # three component date from datepicker
+      datesplat = params["#{type}_date_select"]
+      return Date.new(*datesplat.values.map(&:to_i)) if datesplat
+
+      # single formatted date
+      date = params["#{type}_date"]
+      return date.to_date if date
+    rescue => e
+      Rails.logger.warn "Failed to parse date: #{e.message}"
+    end
+    default
+  end
+
   def parse_dates
     if params[:cumulative]
       @cumulative = true
