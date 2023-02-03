@@ -33,7 +33,6 @@
     <br>
     <h3>Degree day accumulations</h3>
     <%= render partial: "data_opts__dd" %>
-    <br>
     <div id="dd-data">
       <%= render_async url_for(@dd_params) do %>
         <p><i>Loading degree day data...</i></p>
