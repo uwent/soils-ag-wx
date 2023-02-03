@@ -1,13 +1,20 @@
-<% @title = (@lat && @long && @valid) ? "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe : "Site data" %>
+<% @title = "Site Data" %>
 <% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-  <h2>Site Data</h2>
+  <h2><%= @title %></h2>
   <p>These pages provide quick access to several kinds of recent weather data for any grid point in our datatabase. These data are updated daily from NOAA grids, who generate these data from advanced weather models that integrate real-world observations from across the country.</p>
   <%= render partial: "quick_links" %>
 <% end %>
 
-<h2><%= @title %><%= ": #{@subscriber_site.name}" if @subscriber_site %></h2>
+<h2>
+  <% if @valid %>
+    <%= "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe %>
+    <%= ": #{@subscriber_site.name}" if @subscriber_site %>
+  <% else %>
+    <%= @title %>
+  <% end %>
+</h2>
 
 <hr>
 

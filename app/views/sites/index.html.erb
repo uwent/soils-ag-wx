@@ -1,8 +1,8 @@
-<% @title = "Site data dashboard" %>
+<% @title = "Site Data" %>
 <% @welcome_image = "awon.png" %>
 
 <% content_for :welcome do %>
-  <h2>Site Data</h2>
+  <h2><%= @title %></h2>
   <p>These pages provide quick access to several kinds of recent weather data for any grid point in our datatabase. These data are updated daily from NOAA grids, who generate these data from advanced weather models that integrate real-world observations from across the country.</p>
   <%= render partial: "quick_links" %>
 <% end %>
