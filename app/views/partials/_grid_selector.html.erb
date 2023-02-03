@@ -34,7 +34,7 @@
         <label>
           <%= date_select :start_date_select,
             :date,
-            start_year: Date.current.year - 4,
+            start_year: 2016,
             end_year: Date.current.year,
             default: @date - 1.month
           %> Start
@@ -44,7 +44,7 @@
         <label>
           <%= date_select :end_date_select,
             :date,
-            start_year: Date.current.year - 4,
+            start_year: 2016,
             end_year: Date.current.year,
             default: @date
           %> End
