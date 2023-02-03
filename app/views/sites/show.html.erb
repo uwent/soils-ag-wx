@@ -13,14 +13,12 @@
 
 <p>Daily minimum, maximum, and average temperatures are computed from hourly NOAA weather grids downloaded daily at 6AM Central. These grids also supply precipitation, dew point, vapor pressure, and relative humidity readings. Solar insolation (the amount of solar radiation striking the Earth's surface) data is downloaded from the UW Space Science and Engineering Center. Potential evapotranspiration is calculated from solar insolation and temperatue values, and represents the amount of water a typical plant consumes when growing in full sun.</p>
 
-<%= render partial: "my_sites" %>
-
 <div class="two-box">
   <div class="col-50">
-    <%= render partial: "site_selector" %>
+    <%= render partial: "my_sites" %>
   </div>
   <div class="col-50">
-    <%= render partial: "unit_selector" %>
+    <%= render partial: "site_selector" %>
   </div>
 </div>
 
@@ -31,11 +29,23 @@
 <% elsif @valid == false %>
   <div class="error">Invalid site specified, try another one.</div>
 <% elsif @valid %>
-  <h3>Past week's weather data for <%= @lat %>&deg;N, <%= @long %>&deg;W:</h4>
-  <div id="site-data">
-    <%= render_async url_for({controller: :weather, action: :site_data}.merge(@weather_params)) do %>
-      <p><i>Loading weather data...</i></p>
-    <% end %>
+  <div class="site-data">
+    <h3>Weather data</h3>
+    <%= render partial: "data_opts__weather" %>
+    <div id="weather-data">
+      <%= render_async url_for(@weather_params) do %>
+        <p><i>Loading weather data...</i></p>
+      <% end %>
+    </div>
+    <br>
+    <h3>Degree day accumulations</h3>
+    <%= render partial: "data_opts__dd" %>
+    <br>
+    <div id="dd-data">
+      <%= render_async url_for(@dd_params) do %>
+        <p><i>Loading degree day data...</i></p>
+      <% end %>
+    </div>
   </div>
 <% end %>
 

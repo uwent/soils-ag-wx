@@ -1,12 +1,8 @@
-//= require map_functions
-
-$(document).ready(function () {
-  // console.log("Loaded map functions");
+$(document).ready(() => {
   elementReady("#map-img").then(() => {
-    // console.log("Map found!")
-    img = document.querySelector("#map-img");
-    img.onmousedown = getCoordinates;
-  });
+    img = document.querySelector("#map-img")
+    img.onmousedown = getCoordinates
+  })
 })
 
 function getCoordinates(e) {

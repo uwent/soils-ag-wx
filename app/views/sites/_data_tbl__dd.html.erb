@@ -1,0 +1,45 @@
+<% if @data %>
+
+<div id="dd-container" class="tbl-container">
+  <table class="grid-table">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Low (&deg;<%= @units %>)</th>
+        <th>High (&deg;<%= @units %>)</th>
+        <% @models.each do |model| %>
+          <th><%= dd_models[model]&.dig(:colname)&.dig(@units) %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @data.keys.each_with_index do |date, i| %>
+        <% data = @data[date] %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= fmt_date(date&.to_date) %></td>
+          <td><%= fmt_temp(data["min_temp"]) %></td>
+          <td><%= fmt_temp(data["max_temp"]) %></td>
+          <% @models.each do |model| %>
+            <% dd = data[model] || {} %>
+            <td style="text-align: center;"><%= trim_num(dd["total"]) %>&nbsp;(+<%= trim_num(dd["value"]) %>)</td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<p><i>Note: Degree days shown are calculated using a single sine method and a biofix of Jan 1 of the present year, regardless of the time period shown on the table. For more specific degree day needs, visit the <%= link_to "degree day calculator page", controller: :thermal_models, action: :degree_days %>.</i></p>
+
+<p>
+  <%= submit_tag "Copy to clipboard", onclick: "copyTable('dd')" %>
+  <span id="dd-confirm" style="display: none;"> Copied!</span>
+</p>
+
+<% else %>
+
+Unable to retrieve any degree day data, try again or <%= link_to "go home", controller: :home %>.
+
+<% end %>

@@ -10,7 +10,7 @@
 <% end %>
 
 <% content_for :scripts do %>
-<script lang="js">
+<script>
   function report_changed(id) {
     $.ajax({
       url: "<%= url_for(controller: :awon, action: :awon_check_boxes) %>?report_type=" + id,
@@ -21,31 +21,30 @@
   $(document).ready(function() {
     report_changed(411); // This should show up, no?
   });
+
+  var checked;
+  var checkedButtonPrompt = "Clear all parameter checkboxes";
+  var uncheckedButtonPrompt = "All parameters (check every box)";
+  $( document ).ready(function() {
+    checked = false;
+    checkAll(false); // set 'em all on to start
+    $('#toggle_button').html(uncheckedButtonPrompt);
+  });
+
+  function checkAll(on_or_off) {
+    $('input:checkbox').prop('checked', on_or_off);
+  }
+
+  function toggle() {
+    checked = !checked;
+    checkAll(checked);
+    prompt = uncheckedButtonPrompt;
+    if (checked) {
+      prompt = checkedButtonPrompt;
+    }
+    $('#toggle_button').html(prompt);
+  }
 </script>
-<script lang="js">
-    var checked;
-    var checkedButtonPrompt = "Clear all parameter checkboxes";
-    var uncheckedButtonPrompt = "All parameters (check every box)";
-    $( document ).ready(function() {
-      checked = false;
-      checkAll(false); // set 'em all on to start
-      $('#toggle_button').html(uncheckedButtonPrompt);
-    });
-
-    function checkAll(on_or_off) {
-      $('input:checkbox').prop('checked', on_or_off);
-    }
-
-    function toggle() {
-      checked = !checked;
-      checkAll(checked);
-      prompt = uncheckedButtonPrompt;
-      if (checked) {
-        prompt = checkedButtonPrompt;
-      }
-      $('#toggle_button').html(prompt);
-    }
-  </script>
 <% end %>
 
 <h2>Weather Station Status and Data</h2>

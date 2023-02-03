@@ -82,6 +82,29 @@ input[type=checkbox] {
 	transform: scale(1.15);
 }
 
+.flex {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.gap-sm {
+	row-gap: 5px;
+	column-gap: 10px
+}
+
+.flex-col {
+	display: flex;
+	flex-direction: row;
+	row-gap: 5px;
+	column-gap: 10px;
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
 
 // --- LAYOUT --- //
 
@@ -224,7 +247,11 @@ input[type=checkbox] {
 		color: $welcome-title-color;
 	}
 
-	ul li {
+	ul {
+		margin: 5px 0;
+	}
+
+	h4 {
 		margin-bottom: 5px;
 	}
 } 
@@ -511,6 +538,16 @@ div .success {
 		@media #{$small-only} {
 			width: auto;
 		}
+	}
+}
+
+.col-container {
+	display: flex;
+	flex-direction: row;
+	gap: 1em;
+
+	@media #{$small-only} {
+		flex-direction: column;
 	}
 }
 

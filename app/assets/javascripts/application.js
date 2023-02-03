@@ -23,6 +23,8 @@ function elementReady(selector) {
   });
 }
 
+
+
 function copyTable(prefix = "copy") {
   let elem = document.querySelector(`#${prefix}-container`)
   if (elem) {
