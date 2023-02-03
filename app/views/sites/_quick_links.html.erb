@@ -2,8 +2,18 @@
 <ul>
   <li><%= link_to "Sites home", sites_path %></li>
   <li><%= link_to "Manage saved sites", subscribers_path %></li>
-  <li><%= link_to "Weather data", controller: :weather, action: :weather %></li>
-  <li><%= link_to "Precipitation data", controller: :weather, action: :precip %></li>
-  <li><%= link_to "Evapotranspiration data", controller: :weather, action: :et %></li>
-  <li><%= link_to "Insolation data", controller: :weather, action: :insol %></li>
+</ul>
+
+<h4>Weather data</h4>
+<ul>
+  <li><%= link_to "Weather", controller: :weather, action: :weather %></li>
+  <li><%= link_to "Precipitation", controller: :weather, action: :precip %></li>
+  <li><%= link_to "Evapotranspiration", controller: :weather, action: :et %></li>
+  <li><%= link_to "Insolation", controller: :weather, action: :insol %></li>
+</ul>
+
+<h4>Thermal models</h4>
+<ul>
+  <li><%= link_to "Degree day maps", controller: :thermal_models, action: :dd_map %></li>
+  <li><%= link_to "Degree day calculator", controller: :thermal_models, action: :degree_days %></li>
 </ul>

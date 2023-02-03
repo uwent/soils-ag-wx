@@ -190,7 +190,7 @@ class SitesController < ApplicationController
   def default_dd_models
     [
       "dd_32_none",
-      "dd_38_75",
+      "dd_39p2_86",
       "dd_41_none",
       "dd_42p8_86",
       "dd_48_none",

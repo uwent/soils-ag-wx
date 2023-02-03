@@ -1,7 +1,6 @@
 <% @title = "Email Subscriptions" %>
 <% @welcome_image = "awon.png" %>
 
-<%= content_for :scripts do %>
 <script>
   subscriber_id = <%= @subscriber.id %>
   site_count = <%= @sites.size %>
@@ -200,7 +199,6 @@
     }
   })
 </script>
-<% end %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
@@ -247,7 +245,7 @@
   <% end %>
 </div>
 
-<h4>Manage your sites (click on existing to edit):</h4>
+<h4>Manage your sites (click on existing to edit name or location):</h4>
 
 <div class="site-container">
   <div class="grey-box">
@@ -351,7 +349,7 @@
       </div>
     <% end %>
   </div>
-  <p><i>Sites shown in shaded grey are not currently enabled and you will not receive any emails for those sites. Subscribe to sites in the site list above.</i></p>
+  <p><i>Use the 'Subscribe' checkbox in the site list above to enable or disable emails for a particular site.</i></p>
 <% end %>
 
 <%= content_for :footer do %>

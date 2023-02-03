@@ -29,21 +29,23 @@
 <% elsif @valid == false %>
   <div class="error">Invalid site specified, try another one.</div>
 <% elsif @valid %>
-  <h3 class="site-data-title">Weather data</h3>
-  <%= render partial: "data_opts__weather" %>
-  <div id="weather-data">
-    <%= render_async url_for(@weather_params) do %>
-      <p><i>Loading weather data...</i></p>
-    <% end %>
-  </div>
-  <br>
-  <h3 class="site-data-title">Degree day accumulations</h3>
-  <%= render partial: "data_opts__dd" %>
-  <br>
-  <div id="dd-data">
-    <%= render_async url_for(@dd_params) do %>
-      <p><i>Loading degree day data...</i></p>
-    <% end %>
+  <div class="site-data">
+    <h3>Weather data</h3>
+    <%= render partial: "data_opts__weather" %>
+    <div id="weather-data">
+      <%= render_async url_for(@weather_params) do %>
+        <p><i>Loading weather data...</i></p>
+      <% end %>
+    </div>
+    <br>
+    <h3>Degree day accumulations</h3>
+    <%= render partial: "data_opts__dd" %>
+    <br>
+    <div id="dd-data">
+      <%= render_async url_for(@dd_params) do %>
+        <p><i>Loading degree day data...</i></p>
+      <% end %>
+    </div>
   </div>
 <% end %>
 

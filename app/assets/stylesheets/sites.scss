@@ -1,7 +1,25 @@
 @import "./colors.scss";
 
-.site-row h4 {
-	margin-bottom: 2px;
+.site-data {
+	h3 {
+		font-size: 14pt;
+		border-bottom: 2px solid $form-border-color;
+	}
+}
+.site-row {
+	margin-bottom: 1em;
+
+	h4 {
+		margin-top: 1em;
+		margin-bottom: 2px;
+	}
+
+	h5 {
+		margin-top: 0;
+		margin-bottom: 2px;
+		font-style: italic;
+		font-size: 11pt;
+	}
 }
 
 .site-box {
@@ -14,15 +32,16 @@
 	margin-bottom: 1em;
 }
 
-.site-list ul {
-  margin-top: 5px;
+.site-list {
+	ul {
+		margin-top: 5px;
+	}
+
+	li {
+		margin-bottom: 5px;
+	}
 }
 
-.site-list li {
-  margin-bottom: 5px;
-}
 
-.site-data-title {
-	font-style: italic;
-	border-bottom: 2px solid $form-border-color;
-}
+
+

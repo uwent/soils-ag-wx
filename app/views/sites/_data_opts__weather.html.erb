@@ -17,25 +17,27 @@
 </script>
 
 <div class="site-row">
-  <h4>Table display options:</h4>
-  <div class="site-box flex-row">
-    <div class="col-50">
-      <b><i>Units:</i></b>
-      <%= form_tag nil, id: "unit_form__weather" do %>
-        <label><%= radio_button_tag :units, "imperial", @units == "imperial", onchange: "refreshTable(this.form)" %> Imperial (&deg;F, in, kWh/m<sup>2</sup>/day)</label>
-        <label><%= radio_button_tag :units, "metric", @units == "metric", onchange: "refreshTable(this.form)" %> Metric (&deg;C, mm, mJ/m<sup>2</sup>/day)</label>
-      <% end %>
-    </div>
-    <div class="col-50">
-      <b><i>Time period</i></b>
-      <%= form_tag nil, id: "time_form__weather" do %>
-        <% @start_date_opts.each do |name, val| %>
-          <label>
-            <%= radio_button_tag :start_date, val, val == @start_date, onchange: "refreshTable(this.form)" %>
-            <%= name %>
-          </label>
+  <a onclick="slideElem('#weather-opts')"><h4>Table display options (click to show)</h4></a>
+  <div class="site-box" id="weather-opts" style="display: none;">
+    <div class="col-container">
+      <div class="col-50">
+        <h5>Units:</h5>
+        <%= form_tag nil, id: "unit_form__weather" do %>
+          <label><%= radio_button_tag :units, "imperial", @units == "imperial", onchange: "refreshTable(this.form)" %> Imperial (&deg;F, in, kWh/m<sup>2</sup>/day)</label>
+          <label><%= radio_button_tag :units, "metric", @units == "metric", onchange: "refreshTable(this.form)" %> Metric (&deg;C, mm, mJ/m<sup>2</sup>/day)</label>
         <% end %>
-      <% end %>
+      </div>
+      <div class="col-50">
+        <h5>Time period:</h5>
+        <%= form_tag nil, id: "time_form__weather" do %>
+          <% @start_date_opts.each do |name, val| %>
+            <label>
+              <%= radio_button_tag :start_date, val, val == @start_date, onchange: "refreshTable(this.form)" %>
+              <%= name %>
+            </label>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
