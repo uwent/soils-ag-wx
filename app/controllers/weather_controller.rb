@@ -75,11 +75,16 @@ class WeatherController < ApplicationController
 
   def et_data
     @et_method = params[:et_method]
-    query = parse_data_params.merge(
-      method: @et_method
-    )
+    query = parse_data_params.merge(method: @et_method)
     json = AgWeather.get(AgWeather::ET_URL, query:)
-    @data = json[:data]
+    response = json[:data]
+    @data = []
+
+    # make sure each date has a data value
+    (@start_date..@end_date).each do |date|
+      val = response.detect { |k| k[:date] == date.to_s } || {date: date.to_s}
+      @data.push(val)
+    end
 
     respond_to do |format|
       format.html { render partial: (@data.length > 0) ? "data_tbl_et" : "no_data" }
@@ -99,9 +104,18 @@ class WeatherController < ApplicationController
   def insol_data
     query = parse_data_params
     json = AgWeather.get(AgWeather::INSOL_URL, query:)
-    @data = json[:data]
-    if @data
-      vals = @data.map { |h| h[:value] }.compact
+    response = json[:data]
+    @data = []
+
+    # make sure each date has a data value
+    (@start_date..@end_date).each do |date|
+      val = response.detect { |k| k[:date] == date.to_s } || {date: date.to_s}
+      @data.push(val)
+    end
+
+    # calculate totals
+    vals = @data.map { |h| h[:value] }.compact
+    if vals.size > 0
       sum = vals.sum.to_f
       @totals = {
         "Min daily" => vals.min,
@@ -130,16 +144,24 @@ class WeatherController < ApplicationController
     @units = params[:units]
     query = parse_data_params.merge(units: @units)
     json = AgWeather.get(AgWeather::WEATHER_URL, query:)
-    @data = json[:data]
+    response = json[:data]
     @cols = %i[min_temp avg_temp max_temp dew_point pressure hours_rh_over_90 avg_temp_rh_over_90]
-    if @data
-      @totals = {min: {}, avg: {}, max: {}}
-      @cols.each do |col|
-        vals = @data.map { |data| data[col] }.compact
-        @totals[:min][col] = vals.min.round(2)
-        @totals[:avg][col] = (vals.sum.to_f / vals.size).round(2)
-        @totals[:max][col] = vals.max.round(2)
-      end
+    @data = []
+
+    # make sure each date has a data value
+    (@start_date..@end_date).each do |date|
+      val = response.detect { |k| k[:date] == date.to_s } || {date: date.to_s}
+      @data.push(val)
+    end
+
+    # calculate totals
+    @totals = {min: {}, avg: {}, max: {}}
+    @cols.each do |col|
+      vals = @data.map { |data| data[col] }.compact || []
+      next if vals.size == 0
+      @totals[:min][col] = vals.min.round(2)
+      @totals[:avg][col] = (vals.sum.to_f / vals.size).round(2)
+      @totals[:max][col] = vals.max.round(2)
     end
 
     respond_to do |format|
@@ -160,7 +182,14 @@ class WeatherController < ApplicationController
   def precip_data
     query = parse_data_params
     json = AgWeather.get(AgWeather::PRECIP_URL, query:)
-    @data = json[:data]
+    response = json[:data]
+    @data = []
+
+    # make sure each date has a data value
+    (@start_date..@end_date).each do |date|
+      val = response.detect { |k| k[:date] == date.to_s } || {date: date.to_s}
+      @data.push(val)
+    end
 
     respond_to do |format|
       format.html { render partial: (@data.length > 0) ? "data_tbl_precip" : "no_data" }

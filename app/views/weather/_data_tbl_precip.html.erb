@@ -25,8 +25,8 @@
           <td><%= day[:date] %></td>
           <td><%= fmt_num(day[:value], 2) %></td>
           <td><%= fmt_num(day[:cumulative_value], 2) %></td>
-          <td><%= fmt_num(day[:value] / 25.4, 2) %></td>
-          <td><%= fmt_num(day[:cumulative_value] / 25.4, 2) %></td>
+          <td><%= fmt_num(day[:value] / 25.4, 2) unless day[:value].nil? %></td>
+          <td><%= fmt_num(day[:cumulative_value] / 25.4, 2) unless day[:cumulative_value].nil? %></td>
         </tr>
       <% end %>
       </tbody>

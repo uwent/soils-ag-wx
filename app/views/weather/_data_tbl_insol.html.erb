@@ -22,7 +22,7 @@
             <td><%= i + 1 %></td>
             <td><%= day[:date] %></td>
             <td><%= fmt_num(day[:value], 2) %></td>
-            <td><%= fmt_num(day[:value] / 3.6, 2) %></td>
+            <td><%= fmt_num(day[:value] / 3.6, 2) unless day[:value].nil? %></td>
           </tr>
         <% end %>
       </tbody>
@@ -32,7 +32,7 @@
             <td></td>
             <td><%= k %>:</td>
             <td><%= fmt_num(v, 2) %></td>
-            <td><%= fmt_num(v / 3.6, 2) %></td>
+            <td><%= fmt_num(v / 3.6, 2) unless v.nil? %></td>
           </tr>
         <% end %>
       </tfoot>
