@@ -534,6 +534,9 @@ div .success {
 		display: flex;
 		flex-direction: column;
 		flex: 1 1 auto;
+		// flex-grow: 1;
+		// flex-basis: 0;
+		// min-width: 0;
 
 		@media #{$small-only} {
 			width: auto;

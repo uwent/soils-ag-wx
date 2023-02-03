@@ -13,14 +13,7 @@
 
 <p>Daily minimum, maximum, and average temperatures are computed from hourly NOAA weather grids downloaded daily at 6AM Central. These grids also supply precipitation, dew point, vapor pressure, and relative humidity readings. Solar insolation (the amount of solar radiation striking the Earth's surface) data is downloaded from the UW Space Science and Engineering Center. Potential evapotranspiration is calculated from solar insolation and temperatue values, and represents the amount of water a typical plant consumes when growing in full sun.</p>
 
-<div class="two-box">
-  <div class="col-50">
-    <%= render partial: "my_sites" %>
-  </div>
-  <div class="col-50">
-    <%= render partial: "site_selector" %>
-  </div>
-</div>
+<%= render partial: "site_selector" %>
 
 <br>
 
