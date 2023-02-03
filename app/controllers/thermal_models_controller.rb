@@ -88,9 +88,17 @@ class ThermalModelsController < ApplicationController
     url = AgWeather::DD_URL
     query = parse_dd_params
     json = AgWeather.get(url, query:)
+    response = json[:data]
+    @data = []
 
-    @data = json[:data]
     @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
+
+    # make sure each date has a data value
+    (@start_date..@end_date).each do |date|
+      val = response.detect { |k| k[:date] == date.to_s } || {date: date.to_s}
+      @data.push(val)
+    end
+
     @data = @data.last(7) if params[:seven_day]
 
     respond_to do |format|

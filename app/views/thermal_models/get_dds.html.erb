@@ -47,9 +47,7 @@
     </div>
   </div>
 
-  <p class="note">
-    Note: Frost temperatures (&lt;<%= frost_temp %>&deg;<%= @units %>) shown in <span style="color:blue">blue</span>, freezing temperatures (&lt;<%= freeze_temp %>&deg;<%= @units %>) shown in <span style="color:red">red</span>.
-  </p>
+  <p class="note"><%= freeze_note %></p>
 
   <p>
     <%= submit_tag "Copy to clipboard", onclick: "copyTable()" %>
