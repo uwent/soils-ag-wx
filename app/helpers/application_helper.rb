@@ -142,7 +142,7 @@ module ApplicationHelper
           "C" => "Base #{min_c}°C"
         }
       end
-      models[m] = { label:, colname: }
+      models[m] = {label:, colname:}
     end
     models.freeze
   end

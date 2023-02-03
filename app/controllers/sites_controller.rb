@@ -149,7 +149,7 @@ class SitesController < ApplicationController
     @start_date = [try_parse_date("start", 7.days.ago.to_date), @end_date.beginning_of_year].max
     @dates = @start_date..@end_date
 
-    query = { lat: @lat, long: @long, units: @units, models: @models }
+    query = {lat: @lat, long: @long, units: @units, models: @models}
 
     response = AgWeather.get_dd_table(query:) # JSON is not symbolized
     info = response["info"] || {}
@@ -198,5 +198,4 @@ class SitesController < ApplicationController
       "dd_52_none"
     ].freeze
   end
-
 end
