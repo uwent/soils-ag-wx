@@ -7,7 +7,6 @@ class ThermalModelsController < ApplicationController
   end
 
   def dd_map
-    # @is_post = request.method == "POST"
     @endpoint = AgWeather::PEST_URL
     @dd_submit_text = "Show degree day map"
     @dsv_submit_text = "Show disease risk map"
@@ -15,17 +14,16 @@ class ThermalModelsController < ApplicationController
     @dsv_model = params[:dsv_model].presence || "potato_blight_dsv"
     @map_type = params[:map_type].presence || "dd"
     @model = (@map_type == "dsv") ? @dsv_model : @dd_model
-    @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
-    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
-    @start = @end if @start > @end
+    @start_date = try_parse_date("start", default_date.beginning_of_year)
+    @end_date = try_parse_date("end")
     @units = params[:units].presence || "F"
     @min_value = params[:min_value]
     @max_value = params[:max_value]
     @wi_only = params[:wi_only] == "true"
 
     @opts = {
-      start_date: @start.to_s,
-      end_date: @end.to_s,
+      start_date: @start_date.to_s,
+      end_date: @end_date.to_s,
       units: @units,
       min_value: @min_value,
       max_value: @max_value,
@@ -43,6 +41,7 @@ class ThermalModelsController < ApplicationController
 
   def degree_days
     @dd_methods = %w[Average Modified Sine]
+    @start_date = default_date.beginning_of_year
   end
 
   # def get_dds_many_locations
@@ -111,7 +110,8 @@ class ThermalModelsController < ApplicationController
         }
       end
     end
-  rescue
+  rescue => e
+    Rails.logger.error "ERROR >> ThermalModel#get_dds: #{e.message}"
     redirect_to action: :degree_days
   end
 
@@ -226,36 +226,25 @@ class ThermalModelsController < ApplicationController
     if params[:lat].present? && params[:long].present?
       @latitude = params[:lat].to_f
       @longitude = params[:long].to_f
-    elsif params[:latitude].present? && params[:longitude].present?
-      @latitude = params[:latitude].to_f
-      @longitude = params[:longitude].to_f
     else
       raise ArgumentError.new
     end
 
-    @end_date = begin
-      Date.new(*params[:end_date].values.map(&:to_i))
-    rescue
-      Date.yesterday
-    end
+    @end_date = try_parse_date("end")
   end
 
   def parse_dd_map_params
     @model = params[:model].present? ? params[:model] : "dd_50_86"
-    @start = params[:start_date].present? ? Date.new(*params[:start_date].values.map(&:to_i)) : Date.yesterday.beginning_of_year
-    @end = params[:end_date].present? ? Date.new(*params[:end_date].values.map(&:to_i)) : Date.yesterday
+    @start = try_parse_date(params[:start_date])
+    @end = try_parse_date(params[:end_date])
     @units = params[:units] || "F"
   end
 
   def parse_dd_params
-    @latitude = params[:latitude].to_f
-    @longitude = params[:longitude].to_f
-    @end_date = Date.new(*params[:end_date].values.map(&:to_i))
-    begin
-      @start_date = Date.new(*params[:start_date].values.map(&:to_i))
-    rescue
-      @start_date = @end_date.beginning_of_year
-    end
+    @latitude = params[:lat].to_f
+    @longitude = params[:long].to_f
+    @start_date = try_parse_date("start", default_date.beginning_of_year)
+    @end_date = try_parse_date("end")
     @base_temp = params[:base_temp].to_f
     @upper_temp = ["None", "none", ""].include?(params[:upper_temp]) ? nil : params[:upper_temp].to_f
     @units = params[:units]

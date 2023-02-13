@@ -1,0 +1,28 @@
+<fieldset>
+  <legend>Location:</legend>
+  <div onchange="moveDot()">
+    <label>
+      <%= select_tag :lat,
+        options_for_select(latitude_labels, default_latitude),
+        id: "latitude",
+        title: "Select latitude"
+      %> Latitude
+    </label>
+    &nbsp;
+    <label>
+      <%= select_tag :long,
+        options_for_select(longitude_labels, default_longitude),
+        id: "longitude",
+        title: "Select longitude"
+      %> Longitude
+    </label>
+    <br>
+    <button
+      type="button"
+      onclick="getGeoLocation()"
+      title="Use location services to determine your current latitude and longitude">
+      Get my location
+    </button>
+    <span id="geo-loc-msg"></span>
+  </div>
+</fieldset>

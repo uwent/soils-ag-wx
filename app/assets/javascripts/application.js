@@ -23,8 +23,6 @@ function elementReady(selector) {
   });
 }
 
-
-
 function copyTable(prefix = "copy") {
   let elem = document.querySelector(`#${prefix}-container`)
   if (elem) {
@@ -51,63 +49,20 @@ if (window.history.replaceState) {
   window.history.replaceState(null, null, window.location.href);
 }
 
-function parseDate(el) {
-  let year = el.querySelector("[id$='date_1i']").value
-  let month = el.querySelector("[id$='date_2i']").value
-  let day = el.querySelector("[id$='date_3i']").value
-  let date = new Date(`${month}-${day}-${year}`)
-  return (date.getDate() == day) ? date : false
-}
+function validateDates(changed = "end", id_prefix = "datepicker") {
+  let startPicker = document.querySelector(`#${id_prefix}-start`)
+  let endPicker = document.querySelector(`#${id_prefix}-end`)
 
-function validateDates(el) {
-  let startDate = el.querySelector("#start-date")
-  let endDate = el.querySelector("#end-date")
-  let startDateValue = parseDate(startDate)
-  let endDateValue = parseDate(endDate)
-  let today = new Date().setHours(0, 0, 0, 0)
-  let errors = ""
+  if (!startPicker || !endPicker) return
 
-  if (startDateValue) {
-    startDateValue = startDateValue.setHours(0, 0, 0, 0)
-  } else {
-    errors += "Invalid start date. "
-  }
-  if (endDateValue) {
-    endDateValue = endDateValue.setHours(0, 0, 0, 0)
-    if (endDateValue >= today) errors += "End date must be prior to today's date."
-  } else {
-    errors += "Invalid end date. "
-  }
-  if (startDateValue && endDateValue) {
-    if (startDateValue > endDateValue) errors += "Start date must be before end date. "
-  }
+  let startPickerValue = startPicker.valueAsDate
+  let endPickerValue = endPicker.valueAsDate
 
-  if (errors.length > 0) {
-    el.querySelector("#date-warning").innerHTML = errors
-    el.querySelector("#submit").disabled = true
-  } else {
-    el.querySelector("#date-warning").innerHTML = ""
-    el.querySelector("#submit").disabled = false
-  }
-}
-
-function validateDate(el) {
-  let date = parseDate(el)
-  let today = new Date().setHours(0, 0, 0, 0)
-  let error = ""
-
-  if (date) {
-    date = date.setHours(0, 0, 0, 0)
-    if (date >= today) error = "Date must be prior to the current date."
-  } else {
-    error = "Invalid date."
-  }
-
-  if (error.length > 0) {
-    document.querySelector("#date-warning").innerHTML = error
-    document.querySelector("#submit").disabled = true
-  } else {
-    document.querySelector("#date-warning").innerHTML = ""
-    document.querySelector("#submit").disabled = false
+  if (endPickerValue < startPickerValue) {
+    if (changed == "start") {
+      endPicker.valueAsDate = startPickerValue
+    } else {
+      startPicker.valueAsDate = endPickerValue
+    }
   }
 }

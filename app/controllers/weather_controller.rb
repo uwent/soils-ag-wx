@@ -8,7 +8,7 @@ class WeatherController < ApplicationController
 
   def et
     @endpoint = AgWeather::ET_URL
-    parse_dates
+    parse_cumulative_params
     @units = params[:units].presence || "in"
     @unit_options = ["in", "mm"]
     @et_methods = ["classic", "adjusted"]
@@ -25,7 +25,7 @@ class WeatherController < ApplicationController
 
   def insol
     @endpoint = AgWeather::INSOL_URL
-    parse_dates
+    parse_cumulative_params
     @units = params[:units].presence || "MJ"
     @unit_options = ["MJ", "KWh"]
 
@@ -60,7 +60,7 @@ class WeatherController < ApplicationController
 
   def precip
     @endpoint = AgWeather::PRECIP_URL
-    parse_dates
+    parse_cumulative_params
     @units = params[:units].presence || "in"
     @unit_options = ["mm", "in"]
 
@@ -181,6 +181,7 @@ class WeatherController < ApplicationController
 
   def precip_data
     query = parse_data_params
+    query[:units] = "mm"
     json = AgWeather.get(AgWeather::PRECIP_URL, query:)
     response = json[:data]
     @data = []
@@ -239,12 +240,23 @@ class WeatherController < ApplicationController
     @lat = params[:lat].to_f
     @long = params[:long].to_f
     @start_date = try_parse_date("start", 7.days.ago.to_date)
-    @end_date = try_parse_date("end", Date.yesterday)
+    @end_date = try_parse_date("end")
     {
       lat: @lat,
       long: @long,
       start_date: @start_date,
       end_date: @end_date
     }.compact
+  end
+
+  def parse_cumulative_params
+    if params[:cumulative]
+      @cumulative = true
+      @start_date = try_parse_date("start", default_date.beginning_of_year)
+      @end_date = try_parse_date("end")
+      @date = @end_date
+    else
+      @date = parse_date
+    end
   end
 end

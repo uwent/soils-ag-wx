@@ -1,44 +1,37 @@
 <div class="form-box">
   <%= form_tag action: :get_dds do %>
-    <b>Enter parameters:</b><br>
+    <h4 class="title">Enter parameters:</h4>
 
-    <p>
-      <div onChange="moveDot()">
-        Location:<br>
-        <label><%= select_tag :latitude, options_for_select(latitude_labels, default_latitude) %> Latitude</label>&nbsp;
-        <label><%= select_tag :longitude, options_for_select(longitude_labels, default_longitude) %> Longitude</label><br>
-        <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;<span id="geo-loc-msg"></span>
-      </div>
-    </p>
+    <%= render partial: "partials/location_picker" %>
+    <%= render partial: "partials/date_range_picker" %>
 
-    <p>
-      Date range:<br>
-      <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: Date.civil(Date.today.year, 1, 1) %>Biofix (start) date</label><br>
-      <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: 1.day.ago %>End date</label>
-    </p>
+    <fieldset>
+      <legend>Model options:</legend>
 
-    <p>
-      Temperature thresholds:<br>
+      Temperature units:<br>
+      <label><%= radio_button_tag :units, "F", true %>&deg;F (FDD)</label>&nbsp;
+      <label><%= radio_button_tag :units, "C" %>&deg;C (CDD)</label>
+
+      <br><br>
+
+      Thresholds:<br>
       <label><%= text_field_tag :base_temp, 50, { size: 3 } %> Base<br></label>
       <label><%= text_field_tag :upper_temp, "None", { size: 3 } %> Upper</label>
-    </p>
 
-    <p>
-      Temperature units:
-      <label><%= radio_button_tag :units, "F", true %>Fahrenheit</label>&nbsp;
-      <label><%= radio_button_tag :units, "C" %>Celsius</label>
-    </p>
+      <br><br>
 
-    <p>
-      Method:
+      Method:<br>
       <label><%= radio_button_tag :method, "sine", true %>Sine</label>&nbsp;
       <label><%= radio_button_tag :method, "modified" %>Modified</label>&nbsp;
       <label><%= radio_button_tag :method, "average" %>Average</label>
-    </p>
 
-    <p>
-      <%= check_box_tag :seven_day %> Report only last 7 days of accumulated values<br/>
-    </p>
+      <br><br>
+
+      <label>
+        <%= check_box_tag :seven_day %>
+        Report only last 7 days of accumulated values
+      </label>
+    </fieldset>
 
     <%= button_tag "View in Browser", name: "format", value: "html" %>
     <%= button_tag "Download as CSV", name: "format", value: "csv" %>

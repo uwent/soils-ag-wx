@@ -14,7 +14,7 @@ class SitesController < ApplicationController
 
     @start_date_opts = start_date_opts
     @start_date = 7.days.ago.to_date
-    @end_date = Date.yesterday
+    @end_date = default_date
     @units = (params[:units] == "metric") ? "metric" : "imperial"
     @dd_models = default_dd_models
 
@@ -62,7 +62,7 @@ class SitesController < ApplicationController
     @lat = params[:lat].to_f
     @long = params[:long].to_f
     @start_date = try_parse_date("start", 7.days.ago.to_date)
-    @end_date = try_parse_date("end", Date.yesterday)
+    @end_date = try_parse_date("end")
     @units = params[:units]
     if @units == "metric"
       @units = "C"
@@ -145,7 +145,7 @@ class SitesController < ApplicationController
     @long = params[:long].to_f
     @units = (params[:units] == "metric") ? "C" : "F"
     @models = params[:dd_models] || default_dd_models.join(",")
-    @end_date = Date.yesterday
+    @end_date = default_date
     @start_date = [try_parse_date("start", 7.days.ago.to_date), @end_date.beginning_of_year].max
     @dates = @start_date..@end_date
 

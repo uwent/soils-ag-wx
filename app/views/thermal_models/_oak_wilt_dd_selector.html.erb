@@ -1,25 +1,20 @@
 <div class="form-box">
-  <%= form_tag(action: :oak_wilt_dd) do %>
-    <b>Select location and date of interest for Oak Wilt recommendation:</b><br>
-    <p>
-      <div onChange="moveDot()">
-        Location:<br>
-        <label><%= select_tag(:latitude, options_for_select(latitude_labels, default_latitude)) %> Latitude</label>&nbsp;
-        <label><%= select_tag(:longitude, options_for_select(longitude_labels, default_longitude)) %> Longitude</label><br>
-        <button type="button" onclick="getGeoLocation()">Get my location</button>&nbsp;<span id="geo-loc-msg"></span>
-      </div>
-    </p>
-    <p>
-      <div onChange="validateDate(this)">
-        Date of Interest:<br>
-        <%= date_select(:end_date, "date", start_year: 2017, default: 1.day.ago, end_year: Time.now.year) %>
-      </div>
-    </p>
-    <p>
-      <div id="date-warning" class="disclaimer"></div>
-      <p class="disclaimer">Note: Date of interest must be prior to the current date. The degree day data in this system is available only up to the day before the current date for computation.</p>
-    </p>
-    <%= submit_tag("Compute Estimated Oak Wilt Risk Status", class: "button", id: "submit") %>
-    <p><i>Please note: The oak harvesting recommendations from this model are only approved for use in Wisconsin, Minnesota, and Iowa. Always confirm with your local regulatory authority when harvesting in a commercial context.</i></p>
+  <%= form_tag action: :oak_wilt_dd do %>
+    <h4 class="title">Select location and date of interest for Oak Wilt recommendation:</h4>
+    <%= render partial: "partials/location_picker" %>
+
+    <fieldset>
+      <legend>Date of interest</legend>
+      <%= date_field_tag :end_date,
+        @end_date || Date.yesterday,
+        title: "Date of interest",
+        id: "datepicker-start",
+        max: Date.today,
+        min: Date.new(2016, 1, 1) %>
+    </fieldset>
+
+    <div class="note">Please note: The oak harvesting recommendations from this model are only approved for use in Wisconsin, Minnesota, and Iowa. Always confirm with your local regulatory authority when harvesting in a commercial context.</div>
+
+    <%= submit_tag "Compute Estimated Oak Wilt Risk Status", id: "submit", class: "submit" %>
   <% end %>
 </div>

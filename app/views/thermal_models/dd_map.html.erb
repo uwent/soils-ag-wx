@@ -28,7 +28,7 @@
   <% @wait_time = 30 %>
   <%= render layout: "partials/loading" do %>
     <p>
-      Model: <%= dd_models[@model][:label] %><br>
+      Model: <%= @map_type == "dd" ? dd_models[@model].dig(:label) : dsv_models[@model] %><br>
       Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %>
       <% unless @map_type == "dsv" %><br>Units: <%= "#{@units}" %><% end %>
       <% if @min_value.presence || @max_value.presence %><br>Scale bar: <%= @min_value.presence ? @min_value : "?"  %> - <%= @max_value.presence ? @max_value : "?" %><% end %>
@@ -40,77 +40,64 @@
 <div class="two-box">
   <div class="box">
     <b>Choose a degree day model to load:</b>
-    <div class="map-form grey" onChange="validateDates(this)">
+    <div class="form-box">
       <%= form_tag action: :dd_map do %>
-        <div class="form-row">
+        <fieldset style="margin-top: 0;">
+          <legend>Model options</legend>
           <label>
-            Choose model: 
+            Model:
             <%= select_tag :dd_model, options_for_select(dd_labels, @dd_model) %>
           </label>
-        </div>
-        <div class="form-row">
-          Temperature units: 
-          <label><%= radio_button_tag(:units, "F", @units == "F") %>Fahrenheit</label>&nbsp;
-          <label><%= radio_button_tag(:units, "C", @units == "C") %>Celsius</label>
-        </div>
-        <div class="form-row">
-          Date range:<br>
-          <div id="start-date">
-            <label><%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>Start date</label><br>
-          </div>
-          <div id="end-date">
-            <label><%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>End date</label>
-          </div>
-          <div id="date-warning"></div>
-        </div>
-        <div class="form-row">
+
+          <br><br>
+
+          Temperature units:<br>
+          <label><%= radio_button_tag :units, "F", @units == "F" %>&deg;F (FDD)</label>
+          <label><%= radio_button_tag :units, "C", @units == "C" %>&deg;C (CDD)</label>
+        </fieldset>
+
+        <%= render partial: "partials/date_range_picker", locals: {id_prefix: "dd-datepicker"} %>
+
+        <fieldset>
+          <legend>Map options:</legend>
           Color scale (leave blank to scale automatically):<br>
-          <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
-        </div>
-        <div class="form-row">
-          <label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label>
-        </div>
+          <label>Min <%= number_field_tag :min_value, nil, style: "width: 4em;" %></label> - <label><%= number_field_tag :max_value, nil, style: "width: 4em;" %> Max</label>
+          <br><br>
+          <label><%= check_box_tag :wi_only, true, @wi_only %> Wisconsin only?</label>
+        </fieldset>
+
         <%= hidden_field_tag :map_type, "dd" %>
         <%= hidden_field_tag :dsv_model, @dsv_model %>
-        <%= submit_tag @dd_submit_text, id: "submit" %>
+        <%= submit_tag @dd_submit_text, id: "submit", class: "submit" %>
       <% end %>
     </div>
   </div>
   <div class="box">
     <b>Choose a disease severity model to load:</b>
-    <div class="map-form grey" onChange="validateDates(this)">
+    <div class="form-box">
       <%= form_tag action: :dd_map do %>
-        <div class="form-row">
-          Choose model:<br>
-          <%= select_tag :dsv_model, options_for_select(dsv_labels, @dsv_model) %>
-        </div>
-        <div class="form-row">
-          Date range:<br>
-          <div id="start-date">
-            <label>
-              <%= date_select :start_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @start %>
-              Start date
-            </label>
-          </div>
-          <div id="end-date">
-            <label>
-              <%= date_select :end_date, "date", start_year: Time.now.year - 4, end_year: Time.now.year, default: @end %>
-              End date
-            </label>
-          </div>
-          <div id="date-warning"></div>
-        </div>
-        <div class="form-row">
+        <fieldset style="margin-top: 0;">
+          <legend>Model options</legend>
+          <label>
+            Model:
+            <%= select_tag :dsv_model, options_for_select(dsv_labels, @dsv_model) %>
+          </label>
+        </fieldset>
+
+        <%= render partial: "partials/date_range_picker", locals: {id_prefix: "dsv-datepicker"} %>
+
+        <fieldset>
+          <legend>Map options:</legend>
           Color scale (leave blank to scale automatically):<br>
-          <label>Min <%= number_field_tag(:min_value, nil, style: "width: 4em;") %></label> - <label><%= number_field_tag(:max_value, nil, style: "width: 4em;") %> Max</label>
-        </div>
-        <div class="form-row">
-          <label>Wisconsin only? <%= check_box_tag(:wi_only, true, @wi_only) %></label>
-        </div>
+          <label>Min <%= number_field_tag :min_value, nil, style: "width: 4em;" %></label> - <label><%= number_field_tag :max_value, nil, style: "width: 4em;" %> Max</label>
+          <br><br>
+          <label><%= check_box_tag :wi_only, true, @wi_only %> Wisconsin only?</label>
+        </fieldset>
+        
         <%= hidden_field_tag :map_type, "dsv" %>
         <%= hidden_field_tag :dd_model, @dd_model %>
         <%= hidden_field_tag :units, @units %>
-        <%= submit_tag @dsv_submit_text, id: "submit" %>
+        <%= submit_tag @dsv_submit_text, id: "submit", class: "submit" %>
       <% end %>
     </div>
   </div>

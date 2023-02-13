@@ -4,7 +4,7 @@ class DegreeDaySub < Subscription
   end
 
   def dates
-    Date.current.beginning_of_year..Date.yesterday
+    Date.yesterday.beginning_of_year..Date.yesterday
   end
 
   def report_dates

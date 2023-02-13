@@ -271,6 +271,11 @@ input[type=checkbox] {
 
 .main-content {
 	flex: 1;
+
+	h3 {
+		margin-top: 2em;
+		margin-bottom: 1em;
+	}
 }
 
 .row {
@@ -492,7 +497,7 @@ div .success {
 
 	.title {
 		font-weight: bold;
-		text-decoration: underline;
+		margin-top: 0;
 		margin-bottom: 1em;
 	}
 
@@ -500,24 +505,30 @@ div .success {
 		margin-top: 1em;
 		margin-bottom: 1em;
 		border: 2px solid lightgrey;
+		border-radius: 5px;
 	}
 
 	button {
 		margin-top: 0.5em;
 	}
-	
-	.submit {
-		width: 100%;
-		background: lightgrey;
-		border: 1px solid grey;
-		border-radius: 3px;
-		padding: 0.5em;
+}
 
-		&:hover {
-			background: $frame-bg-color;
-			border-color: $welcome-bg-color;
-		}
+.submit {
+	width: 100%;
+	border: 1px solid grey;
+	border-radius: 3px;
+	padding: 0.5em;
+	cursor: pointer;
+	font-weight: bold;
+
+	&:hover {
+		background: lightgrey;
+		border-color: $welcome-bg-color;
 	}
+}
+
+.no-top-margin {
+	margin-top: 0;
 }
 
 .two-box {

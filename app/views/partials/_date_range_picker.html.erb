@@ -1,0 +1,67 @@
+<script>
+  function setDateRange(range, id_prefix = "datepicker") {
+    let valid = ["week", "month", "year", "cur_year"]
+    if (!(valid.includes(range))) return
+
+    let end_date = "<%= Date.yesterday %>"
+    let start_date
+    if (range == "week") start_date = "<%= Date.yesterday - 1.week %>"
+    if (range == "month") start_date = "<%= Date.yesterday - 1.month %>"
+    if (range == "year") start_date = "<%= Date.yesterday - 1.year%>"
+    if (range == "cur_year") start_date = "<%= Date.yesterday.beginning_of_year%>"
+
+    try {
+      document.querySelector(`#${id_prefix}-start`).value = start_date
+      document.querySelector(`#${id_prefix}-end`).value = end_date
+    } catch {}
+  }
+</script>
+
+<% id_prefix ||= "datepicker" %>
+
+<fieldset>
+  <legend>Date range:</legend>
+  
+  <div id="start-date">
+    <label>
+      Start:
+      <%= date_field_tag :start_date,
+        @start_date || Date.yesterday.beginning_of_year,
+        title: "Start date",
+        id: "#{id_prefix}-start",
+        max: Date.today,
+        min: Date.new(2016, 1, 1),
+        onchange: "validateDates('start', '#{id_prefix}')" %>
+    </label>
+  </div>
+  <div id="end-date">
+    <label>
+      End:
+      <%= date_field_tag :end_date,
+        @date || @end_date || Date.yesterday,
+        title: "End date",
+        id: "#{id_prefix}-end",
+        max: Date.today,
+        min: Date.new(2016, 1, 1),
+        onchange: "validateDates('end', '#{id_prefix}')" %>
+    </label>
+  </div>
+  <div class="preset-buttons">
+    <button
+      type="button"
+      title="Set date range to past week"
+      onclick="setDateRange('week', '<%= id_prefix %>')">Past week</button>
+    <button
+      type="button"
+      title="Set date range to past month"
+      onclick="setDateRange('month', '<%= id_prefix %>')">Past month</button>
+    <button
+      type="button"
+      title="Set date range to past year"
+      onclick="setDateRange('year', '<%= id_prefix %>')">Past year</button>
+    <button
+      type="button"
+      title="Set date range to Jan 1 -> today"
+      onclick="setDateRange('cur_year', '<%= id_prefix %>')">This year</button>
+  <div id="date-warning"></div>
+</fieldset>

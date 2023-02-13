@@ -1,22 +1,28 @@
 <div class="box">
   <b>Generate cumulative map:</b>
-  <div class="map-form" onChange="validateDates(this)">
+  <div class="map-form">
     <%= form_tag do %>
       <div class="form-row">
-        Date range:<br>
-        <div id="start-date">
-          <label><%= date_select :start_date_select, :date,
-            start_year: earliest_date.year,
-            end_year: Date.current.year,
-            default: @start_date || @date - 1.week %> Start</label>
-        </div>
-        <div id="end-date">
-          <label><%= date_select :end_date_select, :date,
-            start_year: earliest_date.year,
-            end_year: Date.current.year,
-            default: @date %> End</label>
-        </div>
-        <div id="date-warning"></div>
+        <label>
+          Start:
+          <%= date_field_tag :start_date,
+            @date - 1.week,
+            title: "Start date",
+            id: "map-date-start",
+            max: Date.today,
+            min: Date.new(2016, 1, 1),
+            onchange: "validateDates('start', 'map-date')" %>
+        </label>
+        <label>
+          End:
+          <%= date_field_tag :end_date,
+            @date,
+            title: "End date",
+            id: "map-date-end",
+            max: Date.today,
+            min: Date.new(2016, 1, 1),
+            onchange: "validateDates('end', 'map-date')" %>
+        </label>
       </div>
 
       <% if @unit_options %>
@@ -30,7 +36,7 @@
 
       <%= hidden_field_tag :cumulative, true %>
       
-      <%= submit_tag "Get cumulative map", id: "submit" %>
+      <%= submit_tag "Get cumulative map", id: "submit", class: "submit" %>
     <% end %>
   </div>
 </div>

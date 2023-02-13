@@ -6,7 +6,7 @@ class OakWiltSub < PestSub
   end
 
   def dates
-    Date.current.beginning_of_year..Date.yesterday
+    Date.yesterday.beginning_of_year..Date.yesterday
   end
 
   def fetch(sites = self.sites.enabled)

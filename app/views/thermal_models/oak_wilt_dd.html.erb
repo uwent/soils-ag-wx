@@ -35,12 +35,12 @@
 
   <br>
 
-  <h3>Recommendation:</h3>
+  <h3>Recommendation for <%= @end_date.strftime("%b %d, %Y") %>:</h3>
   
   <div style="margin-left: 2em; margin-right: 2em;">
     <%# GDD is lower than 128.3, and the end date is on or before 7/15. %>
     <% if @scenario == "a" %>
-      <p class="larger-font" style="color: darkgreen;">Currently it is low risk for oak wilt above-ground transmission.</p>
+      <p class="larger-font" style="color: darkgreen;">The risk of above-ground transmission of oak wilt is low.</p>
 
       <p><b>Note:</b> Growing degree days can accumulate quickly and subsequent recommendations can change quickly in March, April, and May. Please check back daily.</p>
 

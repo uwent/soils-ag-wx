@@ -155,15 +155,16 @@ module ApplicationHelper
   end
 
   def dsv_models
-    [
-      {value: "potato_blight_dsv", label: "Late blight DSVs"},
-      {value: "potato_p_days", label: "Early blight P-Days"},
-      {value: "carrot_foliar_dsv", label: "Carrot foliar disease DSVs"},
-      {value: "cercospora_div", label: "Cercospora leaf spot DSVs"}
-    ]
+    {
+      "potato_blight_dsv" => "Late blight DSVs",
+      "potato_p_days" => "Early blight P-Days",
+      "carrot_foliar_dsv" => "Carrot foliar disease DSVs",
+      "cercospora_div" => "Cercospora leaf spot DSVs",
+      "botcast_dsi" => "Botrytis botcast DSIs"
+    }
   end
 
   def dsv_labels
-    dsv_models.collect { |m| [m[:label], m[:value]] }
+    dsv_models.collect { |k, v| [v, k] }
   end
 end

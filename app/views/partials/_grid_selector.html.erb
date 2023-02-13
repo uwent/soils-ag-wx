@@ -1,56 +1,11 @@
 <%= javascript_include_tag "get_location" %>
 
-<div class="form-box" onChange="validateDates(this)">
+<div class="form-box">
   <%= form_tag target, method: "get", remote: true do %>
-    <div class="title">Enter parameters:</div>
+    <h4 class="title">Select parameters:</h4>
 
-    <fieldset>
-      <legend>Location:</legend>
-      <div onChange="moveDot()">
-        <label>
-          <%= select_tag :lat,
-            options_for_select(latitude_labels, default_latitude),
-            id: "latitude",
-            title: "Select latitude"
-          %> Latitude
-        </label>
-        &nbsp;
-        <label>
-          <%= select_tag :long,
-            options_for_select(longitude_labels, default_longitude),
-            id: "longitude",
-            title: "Select longitude"
-          %> Longitude
-        </label>
-        <br>
-        <button type="button" onclick="getGeoLocation();" title="Use location services to determine your current latitude and longitude">Get my location</button>
-        <span id="geo-loc-msg"></span>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Date range:</legend>
-      <div id="start-date">
-        <label>
-          <%= date_select :start_date_select,
-            :date,
-            start_year: 2016,
-            end_year: Date.current.year,
-            default: @date - 1.month
-          %> Start
-        </label>
-      </div>
-      <div id="end-date">
-        <label>
-          <%= date_select :end_date_select,
-            :date,
-            start_year: 2016,
-            end_year: Date.current.year,
-            default: @date
-          %> End
-        </label>
-      </div>
-    </fieldset>
+    <%= render partial: "partials/location_picker" %>
+    <%= render partial: "partials/date_range_picker" %>
 
     <% if @temp_selector %>
       <fieldset>
@@ -70,7 +25,5 @@
     <% end %>
 
     <%= button_tag "Get Data Series", name: "format", value: "js", class: "submit", id: "submit" %>
-
-    <div id="date-warning"></div>
   <% end %>
 </div>

@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
     @request_type = request.method
   end
 
-  def try_parse_date(type, default)
+  def try_parse_date(type, default = default_date)
     begin
       # three component date from datepicker
       datesplat = params["#{type}_date_select"]
@@ -89,20 +89,6 @@ class ApplicationController < ActionController::Base
       Rails.logger.warn "Failed to parse date: #{e.message}"
     end
     default
-  end
-
-  def parse_dates
-    if params[:cumulative]
-      @cumulative = true
-      start_date = Date.new(*params[:start_date_select].values.map(&:to_i)) || default_date.beginning_of_year
-      date = Date.new(*params[:end_date_select].values.map(&:to_i)) || default_date
-      @date = [date, default_date].min
-      @start_date = [start_date, @date].min
-    else
-      @date = parse_date
-    end
-  rescue
-    @date = parse_date
   end
 
   def to_csv(data, headers: nil)
