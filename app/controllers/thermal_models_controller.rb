@@ -224,8 +224,8 @@ class ThermalModelsController < ApplicationController
 
   def parse_oak_wilt_dd_params
     if params[:lat].present? && params[:long].present?
-      @latitude = params[:lat].to_f
-      @longitude = params[:long].to_f
+      @latitude = lat
+      @longitude = long
     else
       raise ArgumentError.new
     end
@@ -241,8 +241,8 @@ class ThermalModelsController < ApplicationController
   end
 
   def parse_dd_params
-    @latitude = params[:lat].to_f
-    @longitude = params[:long].to_f
+    @latitude = lat
+    @longitude = long
     @start_date = try_parse_date("start", default_date.beginning_of_year)
     @end_date = try_parse_date("end")
     @base_temp = params[:base_temp].to_f

@@ -60,9 +60,9 @@ class SubscribersController < ApplicationController
 
     # pre-fill for new site
     if params[:lat] && params[:long]
-      @new_name = params[:name] || "My Site"
-      @new_lat = params[:lat]
-      @new_long = params[:long]
+      @new_name = params[:name].to_s || "My Site"
+      @new_lat = params[:lat].to_s
+      @new_long = params[:long].to_s
     end
   end
 
@@ -255,8 +255,6 @@ class SubscribersController < ApplicationController
 
   def add_site
     site_name = params[:site_name]
-    lat = params[:lat].to_f.round(1)
-    long = params[:long].to_f.round(1)
 
     return if site_name.nil?
     site_name = site_name.gsub(/\r\n/m, "").strip

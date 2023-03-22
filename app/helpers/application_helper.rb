@@ -61,7 +61,7 @@ module ApplicationHelper
       fmt_temp(val)
     when :insol
       fmt_num(val, 2)
-    when :pressure, :et, :precip
+    when :vapor_pressure, :pressure, :et, :precip
       fmt_num(val, 3)
     else
       fmt_num(val)
@@ -98,22 +98,19 @@ module ApplicationHelper
 
   def dd_model_list
     %w[
-      dd_32_none
+      dd_32
       dd_38_75
       dd_39p2_86
-      dd_41_none
+      dd_41
       dd_41_86
-      dd_41_88
       dd_42p8_86
-      dd_45_none
+      dd_45
       dd_45_86
-      dd_48_none
-      dd_50_none
+      dd_48
+      dd_50
       dd_50_86
-      dd_50_88
       dd_50_90
-      dd_52_none
-      dd_54_92
+      dd_52
       dd_55_92
     ].freeze
   end
@@ -126,7 +123,7 @@ module ApplicationHelper
       min_f = min.tr("p", ".").to_f
       min_c = trim_num(f_to_c(min_f))
       min_f = trim_num(min_f)
-      if max != "none"
+      if max
         max_f = max.tr("p", ".").to_f
         max_c = trim_num(f_to_c(max_f))
         max_f = trim_num(max_f)

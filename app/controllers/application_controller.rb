@@ -119,11 +119,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def validate_lat(lat)
-    LAT_RANGE === lat
+  def parse_float(str, digits: nil)
+    if /^-?\d*\.?\d+$/.match?(str)
+      digits ? str.to_f.round(digits) : str.to_f
+    end
   end
 
-  def validate_long(long)
-    LONG_RANGE === long
+  def lat
+    check_lat(parse_float(params[:lat], digits: 1))
+  end
+
+  def long
+    check_long(parse_float(params[:long], digits: 1))
+  end
+
+  def check_lat(val)
+    val.in?(LAT_RANGE) ? val : nil
+  end
+
+  def check_long(val)
+    val.in?(LONG_RANGE) ? val : nil
   end
 end

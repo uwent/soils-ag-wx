@@ -43,10 +43,10 @@ module AgWeather
     get(DD_TABLE_URL, query:, symbolize_names: false) || {}
   end
 
-  def self.get_map(endpoint, id, query)
-    url = "#{endpoint}/#{id}"
+  def self.get_map(endpoint, date, query)
+    url = "#{endpoint}/map?date=#{date}"
     json = get(url, query:, timeout: 60)
-    map = json[:map]
+    map = json[:url]
     map ? "#{HOST}#{map}" : "/no_data.png"
   rescue
     Rails.logger.error "Failed to retrieve map image at #{url}"
@@ -54,7 +54,7 @@ module AgWeather
   end
 
   def self.get_grid(endpoint, date)
-    url = endpoint + "/all_for_date"
+    url = endpoint + "/grid"
     json = get(url, query: {date:})
     json[:data]
   rescue

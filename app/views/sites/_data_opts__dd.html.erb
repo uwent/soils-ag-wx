@@ -37,8 +37,15 @@
     }
   }
 
+  function checkDDBoxes() {
+    $.each($("input[name='dd_models']"), function() {
+      $(this).prop("checked", true)
+    })
+    refreshDDTable()
+  }
+
   function uncheckDDBoxes() {
-    $.each($("input[name='dd_models']:checked"), function() {
+    $.each($("input[name='dd_models']"), function() {
       $(this).prop("checked", false)
     })
     refreshDDTable()
@@ -54,7 +61,6 @@
 </script>
 
 <div class="site-row">
-  <a style="cursor: pointer;" onclick="slideElem('#dd-opts')"><h4>Table display options (click to show)</h4></a>
   <div class="site-box flex-row" id="dd-opts" style="display: none;">
     <div class="col-container">
       <div class="col-50">
@@ -90,6 +96,7 @@
           <% end %>
         </div>
       <% end %>
+      <%= button_tag "Check all boxes", onclick: "checkDDBoxes()" %>
       <%= button_tag "Uncheck all boxes", onclick: "uncheckDDBoxes()" %>
       <%= button_tag "Reset to defaults", onclick: "resetDDBoxes()" %>
     </div>

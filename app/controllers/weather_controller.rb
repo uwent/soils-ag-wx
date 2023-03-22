@@ -76,8 +76,7 @@ class WeatherController < ApplicationController
   def et_data
     @et_method = params[:et_method]
     query = parse_data_params.merge(method: @et_method)
-    json = AgWeather.get(AgWeather::ET_URL, query:)
-    response = json[:data]
+    response = AgWeather.get_et(query:)
     @data = []
 
     # make sure each date has a data value
@@ -103,8 +102,7 @@ class WeatherController < ApplicationController
 
   def insol_data
     query = parse_data_params
-    json = AgWeather.get(AgWeather::INSOL_URL, query:)
-    response = json[:data]
+    response = AgWeather.get_insol(query:)
     @data = []
 
     # make sure each date has a data value
@@ -143,9 +141,8 @@ class WeatherController < ApplicationController
   def weather_data
     @units = params[:units]
     query = parse_data_params.merge(units: @units)
-    json = AgWeather.get(AgWeather::WEATHER_URL, query:)
-    response = json[:data]
-    @cols = %i[min_temp avg_temp max_temp dew_point pressure hours_rh_over_90 avg_temp_rh_over_90]
+    response = AgWeather.get_weather(query:)
+    @cols = %i[min_temp avg_temp max_temp dew_point vapor_pressure hours_rh_over_90 avg_temp_rh_over_90]
     @data = []
 
     # make sure each date has a data value
@@ -182,8 +179,7 @@ class WeatherController < ApplicationController
   def precip_data
     query = parse_data_params
     query[:units] = "mm"
-    json = AgWeather.get(AgWeather::PRECIP_URL, query:)
-    response = json[:data]
+    response = AgWeather.get_precip(query:)
     @data = []
 
     # make sure each date has a data value
@@ -237,8 +233,8 @@ class WeatherController < ApplicationController
   private
 
   def parse_data_params
-    @lat = params[:lat].to_f
-    @long = params[:long].to_f
+    @lat = lat
+    @long = long
     @start_date = try_parse_date("start", 7.days.ago.to_date)
     @end_date = try_parse_date("end")
     {

@@ -30,7 +30,7 @@
             <td><%= fmt_temp(day[:avg_temp]) %></td>
             <td><%= fmt_temp(day[:max_temp]) %></td>
             <td><%= fmt_temp(day[:dew_point]) %></td>
-            <td><%= fmt_num(day[:pressure], 3) %></td>
+            <td><%= fmt_num(day[:vapor_pressure], 3) %></td>
             <td><%= day[:hours_rh_over_90] %></td>
             <td><%= fmt_temp(day[:avg_temp_rh_over_90]) %></td>
           </tr>
@@ -43,7 +43,7 @@
               <td></td>
               <td><%= stat.capitalize %>:</td>
               <% totals.keys.each do |col| %>
-                <td><%= col.to_s.include?("temp") ? fmt_temp(totals[col]) : fmt_num(totals[col], col == :pressure ? 3 : 1) %></td>
+                <td><%= col.to_s.include?("temp") ? fmt_temp(totals[col]) : fmt_num(totals[col], col == :vapor_pressure ? 3 : 1) %></td>
               <% end %>
             </tr>
           <% end %>

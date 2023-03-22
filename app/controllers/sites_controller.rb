@@ -5,12 +5,12 @@ class SitesController < ApplicationController
   end
 
   def show
-    @lat = params[:lat].to_f.round(1)
-    @long = params[:long].to_f.round(1)
-    @valid = validate_lat(@lat) && validate_long(@long)
-    if @valid && params[:etc].present?
-      redirect_to(action: :show, lat: @lat, long: @long)
-    end
+    @lat = lat
+    @long = long
+    @valid = @lat && @long
+
+    redirect_to(sites_path, alert: "Invalid latitude or longitude provided. Please try again.") if !@valid
+    redirect_to(action: :show, lat: @lat, long: @long) if params[:etc].present?
 
     @start_date_opts = start_date_opts
     @start_date = 7.days.ago.to_date
@@ -31,8 +31,8 @@ class SitesController < ApplicationController
     }
     @weather_params = common_params.merge({action: :site_data_weather})
     @dd_params = common_params.merge({action: :site_data_dd}).merge({dd_models: @dd_models.join(",")})
-  rescue
-    redirect_to action: :index
+  rescue => e
+    redirect_to sites_path, alert: "Something went wrong: #{e}"
   end
 
   # Responds to site updates from best_in_place on subscribers/manage
@@ -59,8 +59,8 @@ class SitesController < ApplicationController
   # ET: in, div by 25.4 => mm
   # Insol: mJ, div by 3.6 => kWh
   def site_data_weather
-    @lat = params[:lat].to_f
-    @long = params[:long].to_f
+    @lat = lat
+    @long = long
     @start_date = try_parse_date("start", 7.days.ago.to_date)
     @end_date = try_parse_date("end")
     @units = params[:units]
@@ -88,10 +88,10 @@ class SitesController < ApplicationController
     et = AgWeather.get_et(query:)
     insol = AgWeather.get_insol(query:)
 
-    precip_k = (@len_units == "mm") ? 1 : 1 / 25.4
-    et_k = (@len_units == "in") ? 1 : 25.4
-    insol_k = (@insol_units == "mJ") ? 1 : 1 / 3.6
-    pres_k = (@pres_units == "kPa") ? 1 : 7.50062
+    precip_k = (@len_units == "mm") ? 1.0 : 1 / 25.4
+    et_k = (@len_units == "in") ? 1.0 : 25.4
+    insol_k = (@insol_units == "mJ") ? 1.0 : 1 / 3.6
+    pres_k = (@pres_units == "kPa") ? 1.0 : 7.50062
 
     if weather.size + precip.size + et.size + insol.size > 0
       # merge data sources by day
@@ -100,7 +100,7 @@ class SitesController < ApplicationController
         date = date.to_s
         @data[date] = weather.detect { |k| k[:date] == date } || {}
         @data[date].delete(:date)
-        @data[date][:pressure] = @data[date][:pressure]&.* pres_k
+        @data[date][:vapor_pressure] = @data[date][:vapor_pressure]&.* pres_k
         @data[date][:precip] = precip.detect { |k| k[:date] == date }&.dig(:value)&.* precip_k
         @data[date][:et] = et.detect { |k| k[:date] == date }&.dig(:value)&.* et_k
         @data[date][:insol] = insol.detect { |k| k[:date] == date }&.dig(:value)&.* insol_k
@@ -114,7 +114,7 @@ class SitesController < ApplicationController
         precip: "Daily<br>precip.<br>(#{@len_units})",
         et: "Potential<br>ET&nbsp;(#{@len_units})",
         insol: "Insolation<br>(#{@insol_units}/m<sup>2</sup> /day)",
-        pressure: "Vap.<br>pres.<br>(#{@pres_units})",
+        vapor_pressure: "Vap.<br>pres.<br>(#{@pres_units})",
         hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)"
         # avg_temp_rh_over_90: "Avg<br>temp<br>high&nbsp;RH"
       }.freeze
@@ -141,8 +141,8 @@ class SitesController < ApplicationController
 
   # degree day table
   def site_data_dd
-    @lat = params[:lat].to_f
-    @long = params[:long].to_f
+    @lat = lat
+    @long = long
     @units = (params[:units] == "metric") ? "C" : "F"
     @models = params[:dd_models] || default_dd_models.join(",")
     @end_date = default_date
@@ -189,13 +189,11 @@ class SitesController < ApplicationController
 
   def default_dd_models
     [
-      "dd_32_none",
-      "dd_39p2_86",
-      "dd_41_none",
+      "dd_32",
+      "dd_41",
       "dd_42p8_86",
-      "dd_48_none",
-      "dd_50_none",
-      "dd_52_none"
+      "dd_50",
+      "dd_52"
     ].freeze
   end
 end

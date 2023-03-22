@@ -27,7 +27,7 @@
           </div>
           Manage your saved sites, or subscribe to daily weather data emails <%= link_to "here", { controller: :subscribers, action: :manage } %>.
           <% if @valid && @sites.where(latitude: @lat, longitude: @long).size == 0 %>
-            This location is not part of your saved sites. <%= link_to "Add it?", { controller: :subscribers, action: :manage, lat: @lat, long: @long } %>
+            This location is not part of your saved sites. <%= link_to "Add it?", { controller: :subscribers, action: :manage, lat: @lat, long: @long, name: "My location" } %>
           <% end %>
         <% else %>
           You don't have any sites. Go to the <%= link_to "Subscriber page", controller: :subscribers %> to manage your sites.

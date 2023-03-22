@@ -3,24 +3,21 @@ source "https://rubygems.org"
 gem "rails", "~> 7.0"
 gem "railties", "~> 7.0"
 gem "activesupport", "~> 7.0"
-gem "pg", "~> 1.3"
-gem "sassc-rails", "~> 2.1"
-gem "coffee-rails", "~> 5.0"
-gem "jquery-rails", "~> 4.4"
-gem "jquery-ui-rails", "~> 6.0"
-gem "rails-ujs", "~> 0.1"
-gem "uglifier", "~> 4.2"
-gem "turbolinks", "~> 5.2"
-# gem "jbuilder", "~> 2.11"
-gem "httparty", "~> 0.20"
-gem "render_async", "~> 2.1" # for asynchronous loading of page elements
-gem "will_paginate", "~> 3.3"
+gem "pg"
+gem "sassc-rails"
+gem "coffee-rails"
+gem "jquery-rails"
+gem "jquery-ui-rails"
+gem "rails-ujs"
+gem "uglifier"
+gem "turbolinks"
+gem "httparty"
+gem "render_async" # for asynchronous loading of page elements
+gem "will_paginate"
 gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
-gem "whenever", "~> 1.0"
-# gem "agwx_grids", "0.0.6" # Use agwx_grids for uploading data from text grids to database
-# gem "agwx_biophys", "0.0.4" # Use agwx_biophys for degree days and the like
-gem "terser", "~> 1.1" # for JS compression
-gem "mail", "~> 2.8" # v2.7 => v2.8.0 required a sendmail settings change, see config/production.rb, should be resolved with mail v2.8.1
+gem "whenever"
+gem "terser" # for JS compression
+gem "mail" # v2.7 => v2.8.0 required a sendmail settings change, see config/production.rb, should be resolved with mail v2.8.1
 
 group :development do
   gem "puma"
@@ -32,7 +29,9 @@ group :development do
   gem "letter_opener"
   gem "letter_opener_web"
   gem "listen"
-  gem "standard"
+  gem "standard" # linter
+  gem "brakeman" # security analysis https://brakemanscanner.org/
+  gem "bundler-audit" # patch-level verification
 end
 
 group :development, :test do

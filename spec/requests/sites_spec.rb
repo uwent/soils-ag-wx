@@ -8,7 +8,7 @@ RSpec.describe "Sites", type: :request do
     end
 
     it "gets a site" do
-      get "/sites/1.5,2.5"
+      get "/sites/45.0,-89.5"
       expect(response).to have_http_status(:success)
     end
 
