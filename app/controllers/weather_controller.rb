@@ -142,23 +142,35 @@ class WeatherController < ApplicationController
     @units = params[:units]
     query = parse_data_params.merge(units: @units)
     response = AgWeather.get_weather(query:)
-    @cols = %i[min_temp avg_temp max_temp dew_point vapor_pressure hours_rh_over_90 avg_temp_rh_over_90]
-    @data = []
-
+    
     # make sure each date has a data value
+    @data = []
     (@start_date..@end_date).each do |date|
       val = response.detect { |k| k[:date] == date.to_s } || {date: date.to_s}
       @data.push(val)
     end
 
+    @cols = {
+      min_temp: "Min<br>temp<br>(&deg;#{@units})",
+      max_temp: "Max<br>temp<br>(&deg;#{@units})",
+      avg_temp: "Avg<br>temp<br>(&deg;#{@units})",
+      dew_point: "Dew<br>point<br>(&deg;#{@units})",
+      min_rh: "Min<br>RH<br>(%)",
+      max_rh: "Max<br>RH<br>(%)",
+      avg_rh: "Avg<br>RH<br>(%)",
+      hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)"
+    }
+
     # calculate totals
-    @totals = {min: {}, avg: {}, max: {}}
-    @cols.each do |col|
-      vals = @data.map { |data| data[col] }.compact || []
-      next if vals.size == 0
-      @totals[:min][col] = vals.min.round(2)
-      @totals[:avg][col] = (vals.sum.to_f / vals.size).round(2)
-      @totals[:max][col] = vals.max.round(2)
+    if @data.present?
+      @totals = {min: {}, avg: {}, max: {}}
+      @cols.keys.each do |col|
+        vals = @data.map { |data| data[col] }.compact || []
+        next if vals.size == 0
+        @totals[:min][col] = vals.min.round(2)
+        @totals[:avg][col] = (vals.sum.to_f / vals.size).round(2)
+        @totals[:max][col] = vals.max.round(2)
+      end
     end
 
     respond_to do |format|

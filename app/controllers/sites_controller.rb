@@ -120,7 +120,7 @@ class SitesController < ApplicationController
       }.freeze
       summable = %i[precip et insol]
 
-      if @data
+      if @data.present?
         @totals = {min: {}, avg: {}, max: {}, total: {}}
         @cols.keys.each do |col|
           vals = @data.values.map { |data| data[col] }.compact
