@@ -84,13 +84,13 @@ class SitesController < ApplicationController
     }.compact
 
     weather = AgWeather.get_weather(query: query.merge(units: @units))
-    precip = AgWeather.get_precip(query:)
-    et = AgWeather.get_et(query:)
-    insol = AgWeather.get_insol(query:)
+    precip = AgWeather.get_precip(query: query.merge(units: @len_units))
+    et = AgWeather.get_et(query: query.merge(units: @len_units))
+    insol = AgWeather.get_insol(query: query.merge(units: @insol_units))
 
-    precip_k = (@len_units == "mm") ? 1.0 : 1 / 25.4
-    et_k = (@len_units == "in") ? 1.0 : 25.4
-    insol_k = (@insol_units == "mJ") ? 1.0 : 1 / 3.6
+    # precip_k = (@len_units == "mm") ? 1.0 : 1 / 25.4
+    # et_k = (@len_units == "in") ? 1.0 : 25.4
+    # insol_k = (@insol_units == "mJ") ? 1.0 : 1 / 3.6
     pres_k = (@pres_units == "kPa") ? 1.0 : 7.50062
 
     if weather.size + precip.size + et.size + insol.size > 0
@@ -101,9 +101,9 @@ class SitesController < ApplicationController
         @data[date] = weather.detect { |k| k[:date] == date } || {}
         @data[date].delete(:date)
         @data[date][:vapor_pressure] = @data[date][:vapor_pressure]&.* pres_k
-        @data[date][:precip] = precip.detect { |k| k[:date] == date }&.dig(:value)&.* precip_k
-        @data[date][:et] = et.detect { |k| k[:date] == date }&.dig(:value)&.* et_k
-        @data[date][:insol] = insol.detect { |k| k[:date] == date }&.dig(:value)&.* insol_k
+        @data[date][:precip] = precip.detect { |k| k[:date] == date }&.dig(:value)
+        @data[date][:et] = et.detect { |k| k[:date] == date }&.dig(:value)
+        @data[date][:insol] = insol.detect { |k| k[:date] == date }&.dig(:value)
       end
 
       @cols = {

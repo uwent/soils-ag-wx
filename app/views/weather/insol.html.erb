@@ -49,13 +49,13 @@
   <%= render partial: "map_form__cumulative" %>
 </div>
 
+<h4>Download insolation data grid</h4>
+<p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :insol, format: :csv, params: { date: @date } %>.</p>
+
 <h4>Get insolation data for a single location</h4>
 <p>Choose a location and date range then click "Get Data Series". Daily insolation data will be displayed in units of Mj and kWh. Note: You can click on the map to set the latitude and longitude to within half a degree.</p>
 <%= render partial: "partials/grid_selector", locals: { target: url_for(action: :insol_data) } %>
 <div id="map-data"></div>
-
-<h4>Download insolation data grid</h4>
-<p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :insol, format: :csv, params: { date: @date } %>. Currently it is only possible to download a daily grid, not a cumulative insolation grid.</p>
 
 <%= content_for :footer do %>
   <%= link_to "Back", action: :index %>

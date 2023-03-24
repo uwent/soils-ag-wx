@@ -91,7 +91,7 @@ class ApplicationController < ActionController::Base
     default
   end
 
-  def to_csv(data, headers: nil)
+  def to_csv(data, headers = nil)
     require "csv"
     Rails.logger.debug "ApplicationController :: Generating csv..."
     CSV.generate(headers: true) do |csv|

@@ -53,32 +53,8 @@ module AgWeather
     "/no_data.png"
   end
 
-  def self.get_grid(endpoint, date)
+  def self.get_grid(endpoint, query: nil)
     url = endpoint + "/grid"
-    json = get(url, query: {date:})
-    json[:data]
-  rescue
-    Rails.logger.error "Failed to retrieve data grid at #{url}"
-    []
+    get(url, query:)
   end
-
-  # def self.get_dd_grid(model, opts = {})
-  #   json = get(PEST_URL, {pest: model})
-  #   json[:data]
-  # rescue
-  #   Rails.logger.error "Failed to retrieve pest/dd data grid at #{url}"
-  #   []
-  # end
-
-  # def self.get_et_values(lat, long, date, start_date = nil)
-  #   url = ET_URL
-  #   opts = {
-  #     lat: lat,
-  #     long: long,
-  #     start_date: start_date,
-  #     end_date: date
-  #   }.compact
-  #   json = get(url, query: opts)
-  #   data = json[:data]
-  # end
 end

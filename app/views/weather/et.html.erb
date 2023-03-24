@@ -49,15 +49,15 @@
   <%= render partial: "map_form__cumulative" %>
 </div>
 
+<h4>Download evapotranspiration data grid</h4>
+<p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :et, format: :csv, params: {date: @date} %>.</p>
+
 <h4>Get evapotranspiration data for a single location</h4>
 <div class="note">
   Note: You can click on the map to set the latitude and longitude. The 'adjusted' ET calculation method uses new coefficients under investigation by Ankur Desai and Ammara Talib at the UW Atmospheric and Oceanic Sciences department. The adjusted method will result in slightly lower ET values that may reflect real-world conditions in Wisconsin better than the old method.
 </div>
 <%= render partial: "partials/grid_selector", locals: { target: url_for(action: :et_data) } %>
 <div id="map-data"></div>
-
-<h4>Download evapotranspiration data grid</h4>
-<p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :et, format: :csv, params: {date: @date} %>. Currently it is only possible to download a daily grid, not a cumulative evapotranspiration grid.</p>
 
 <%= content_for :footer do %>
   <%= link_to "Back", action: :index %>

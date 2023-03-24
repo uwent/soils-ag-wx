@@ -17,8 +17,14 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "et grid (in) for #{@date}.csv"
+        response = AgWeather.get_grid(@endpoint, query: { date: @date, units: "mm" })
+        headers = response[:info]
+        data = response[:data].collect do |key, value|
+          key = JSON.parse(key.to_s)
+          value ||= 0.0
+          {latitude: key[0], longitude: key[1], et_mm: value, et_in: value * 25.4}
+        end
+        send_data to_csv(data, headers), filename: "evapotranspiration grid for #{@date}.csv"
       }
     end
   end
@@ -32,8 +38,14 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "insol grid (mj-m2-day) for #{@date}.csv"
+        response = AgWeather.get_grid(@endpoint, query: { date: @date, units: "MJ" })
+        headers = response[:info]
+        data = response[:data].collect do |key, value|
+          key = JSON.parse(key.to_s)
+          value ||= 0.0
+          {latitude: key[0], longitude: key[1], insol_mj: value, insol_kwh: value / 3.6}
+        end
+        send_data to_csv(data, headers), filename: "insolation grid for #{@date}.csv"
       }
     end
   end
@@ -48,12 +60,13 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        data = AgWeather.get_grid(@endpoint, @date)
-        headers = {
-          "Temperature units: #{@units}": nil,
-          "Vapor pressure units: kPa": nil
-        }
-        send_data to_csv(data, headers:), filename: "weather grid for #{@date}.csv"
+        response = AgWeather.get_grid(@endpoint, query: { date: @date })
+        headers = response[:info]
+        data = response[:data].collect do |key, values|
+          key = JSON.parse(key.to_s)
+          {latitude: key[0], longitude: key[1]}.merge(values)
+        end
+        send_data to_csv(data, headers), filename: "weather for #{@date}.csv"
       }
     end
   end
@@ -67,8 +80,14 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        data = AgWeather.get_grid(@endpoint, @date)
-        send_data to_csv(data), filename: "precip grid for #{@date}.csv"
+        response = AgWeather.get_grid(@endpoint, query: { date: @date, units: "mm" })
+        headers = response[:info]
+        data = response[:data].collect do |key, value|
+          key = JSON.parse(key.to_s)
+          value ||= 0.0
+          {latitude: key[0], longitude: key[1], precip_mm: value, precip_in: value * 25.4}
+        end
+        send_data to_csv(data, headers), filename: "precip grid for #{@date}.csv"
       }
     end
   end
@@ -88,12 +107,6 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html { render partial: (@data.length > 0) ? "data_tbl_et" : "no_data" }
       format.js
-      format.csv {
-        send_data(
-          to_csv(@data),
-          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
-        )
-      }
     end
   rescue => e
     Rails.logger.warn "WeatherController.et_data :: Error: #{e.message}"
@@ -126,12 +139,6 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html { render partial: (@data.length > 0) ? "data_tbl_insol" : "no_data" }
       format.js
-      format.csv {
-        send_data(
-          to_csv(@data),
-          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
-        )
-      }
     end
   rescue => e
     Rails.logger.warn "WeatherController.insol_data :: Error: #{e.message}"
@@ -155,10 +162,12 @@ class WeatherController < ApplicationController
       max_temp: "Max<br>temp<br>(&deg;#{@units})",
       avg_temp: "Avg<br>temp<br>(&deg;#{@units})",
       dew_point: "Dew<br>point<br>(&deg;#{@units})",
+      vapor_pressure: "Vapor<br>pressure<br>(kPa)",
       min_rh: "Min<br>RH<br>(%)",
       max_rh: "Max<br>RH<br>(%)",
       avg_rh: "Avg<br>RH<br>(%)",
-      hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)"
+      hours_rh_over_90: "Hours<br>high&nbsp;RH<br>(>90%)",
+      avg_temp_rh_over_90: "Avg&nbsp;temp<br>RH>90%<br>(&deg;#{@units})"
     }
 
     # calculate totals
@@ -176,12 +185,6 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html { render partial: (@data.length > 0) ? "data_tbl_weather" : "no_data" }
       format.js
-      format.csv {
-        send_data(
-          to_csv(@data),
-          filename: "Weather data for (#{@lat}, #{@long}) for dates #{@start_date} to #{@end_date}.csv"
-        )
-      }
     end
   rescue => e
     Rails.logger.warn "WeatherController.weather_data :: Error: #{e.message}"
@@ -203,12 +206,6 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html { render partial: (@data.length > 0) ? "data_tbl_precip" : "no_data" }
       format.js
-      format.csv {
-        send_data(
-          to_csv(@data),
-          filename: "Precip data for #{@lat}, #{@long} for dates #{@start_date} to #{@end_date}.csv"
-        )
-      }
     end
   rescue => e
     Rails.logger.warn "WeatherController.precip_data :: Error: #{e.message}"
