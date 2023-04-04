@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :weather, only: :index do
     collection do
       route "awon"
-      route "weather", :get, :post
+      match "data", to: "weather#weather", via: [:get, :post]
       route "precip", :get, :post
       route "et", :get, :post
       route "insol", :get, :post

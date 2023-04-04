@@ -27,8 +27,7 @@
   data: {
     endpoint: @endpoint,
     id: @date,
-    query: { units: @units }.compact,
-    caption: "Note: Map color scale is based on min/max temp across region."
+    query: { units: @units }.compact
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p>
