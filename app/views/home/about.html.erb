@@ -18,6 +18,8 @@
 
 <p>This web site is a continuation of the hard work first started in the mid 1980's by Bill Bland, now emeritus faculty member and Rick Wayne, software developer in Department of Soil Science at UW-Madison. The data are provided free of charge to any interested parties. A primary focus of their mission was to help growers maximize their yields, minimize their costs, and assist them wherever possible as responsible stewards of our agricultural landscape. Bill has retired and Rick has accepted a new position so they are no longer involved with the site. John Panuska, Extension Specialist in Biological Systems Engineering, coordinated the site for a time, but retired in 2021.</p>
 
+<p>This site, the associated <%= link_to "VDIFN", vdifn_path, target: "_blank" %> and <%= link_to "WISP", wisp_path, target: "_blank" %> sites, and the backend weather data server are currently under the stewardship of the <%= link_to "Entomology Department", @ento_url, target: "_blank" %> at UW-Madison. <%= link_to "Ben Bradford", @ben_url, target: "_blank" %>, researcher, is responsible for ongoing development and expansion of the capabilities of the AgWeather sites. <%= link_to "Russell Groves", @russ_url, target: "_blank" %>, professor of Vegetable Entomology, and <%= link_to "Amanda Gevens", @amanda_url, target: "_blank" %>, professor of Plant Pathology, are consulting members. Thanks also to Jason Pursian at UW CALS who manages the site hosting infrastructure.</p>
+
 <p>Learn more about <%= link_to "King Hall", action: :king_hall %>, home of the UW Soil Science Department.</p>
 
 <h4>Webmaster/developer:</h4>
@@ -30,8 +32,8 @@
     Ben Bradford<br>
     Department of Entomology
     <ul>
-      <li><%= link_to "staff profile", "https://entomology.wisc.edu/directory/ben-bradford/" %></li>
-      <li><%= link_to "entomology department", "https://entomology.wisc.edu/" %></li>
+      <li><%= link_to "staff profile", @ben_url, target: "_blank" %></li>
+      <li><%= link_to "entomology department", @ento_url, target: "_blank" %></li>
       <li><%= mail_to "agweather@cals.wisc.edu", "contact me" %></li>
     <ul>
   </div>
@@ -39,10 +41,10 @@
 
 <h4>Data sources:</h4>
 <ul>
-  <li>Weather: <%= link_to "NOAA URMA 2.5km-resolution daily grids", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %></li>
-  <li>Precipitation: <%= link_to "NOAA estimated precipitation daily grids", "https://nomads.ncep.noaa.gov/pub/data/nccf/com/pcpanl/prod/" %></li>
-  <li>Solar insolation: <%= link_to "UW Space Science and Engineering Center", "https://www.ssec.wisc.edu/data/" %></li>
-  <li>Evapotranspiration: Computed from weather and insolation grids using the method outlined in <%= link_to "Diak et al. 1998", "https://doi.org/10.1175/1520-0477(1998)079%3C1345:AMDADB%3E2.0.CO;2" %>.</li>
+  <li>Weather: <%= link_to "NOAA URMA 2.5km-resolution daily grids", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/", target: "_blank" %></li>
+  <li>Precipitation: <%= link_to "NOAA estimated precipitation daily grids", "https://nomads.ncep.noaa.gov/pub/data/nccf/com/pcpanl/prod/", target: "_blank" %></li>
+  <li>Solar insolation: <%= link_to "UW Space Science and Engineering Center", "https://www.ssec.wisc.edu/data/", target: "_blank" %></li>
+  <li>Evapotranspiration: Computed from weather and insolation grids using the method outlined in <%= link_to "Diak et al. 1998", "https://doi.org/10.1175/1520-0477(1998)079%3C1345:AMDADB%3E2.0.CO;2", target: "_blank" %>.</li>
 </ul>
 
 <p>Our data coverage area is approximately the upper Midwest US, from 38 to 50° North latitude and from -98 to -82° West longitude.</p>
