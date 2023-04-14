@@ -17,8 +17,9 @@ class ThermalModelsController < ApplicationController
     @start_date = try_parse_date("start", default_date.beginning_of_year)
     @end_date = try_parse_date("end")
     @units = params[:units].presence || "F"
-    @min_value = params[:min_value]
-    @max_value = params[:max_value]
+    @min_value = params[:min_value].presence
+    @max_value = params[:max_value].presence
+    @scale = "#{@min_value},#{@max_value}" if @max_value
     @extent = (params[:wi_only] == "true") ? "wi" : nil
 
     @opts = {
@@ -27,8 +28,7 @@ class ThermalModelsController < ApplicationController
       model: @model,
       pest: @model,
       units: @units,
-      min_value: @min_value,
-      max_value: @max_value,
+      scale: @scale,
       extent: @extent
     }.compact
 
