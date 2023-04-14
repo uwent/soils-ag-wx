@@ -189,10 +189,10 @@ class SitesController < ApplicationController
 
   def default_dd_models
     [
-      "dd_32",
+      "dd_39p2_86",
       "dd_41",
       "dd_42p8_86",
-      "dd_50",
+      "dd_50_86",
       "dd_52"
     ].freeze
   end
