@@ -26,8 +26,7 @@
   method: "POST",
   data: {
     endpoint: @endpoint,
-    id: @date,
-    query: { units: @units }.compact
+    query: @map_opts
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p>

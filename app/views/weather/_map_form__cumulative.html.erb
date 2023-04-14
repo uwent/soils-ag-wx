@@ -25,14 +25,17 @@
         </label>
       </div>
 
-      <% if @unit_options %>
-        <div class="form-row">
-          Units:
-          <% @unit_options.each do |unit| %>
-            <label><%= radio_button_tag :units, unit, @units == unit %><%= unit %></label>&nbsp;
-          <% end %>
-        </div>
-      <% end %>
+      <div class="form-row">
+        <% if @unit_options %>
+          <span style="margin-right: 2em;">
+            Units: 
+            <% @unit_options.each do |unit| %>
+              <label><%= radio_button_tag :units, unit, @units == unit %><%= unit %></label>&nbsp;
+            <% end %>
+          </span>
+        <% end %>
+        <label>Wisconsin only? <%= check_box_tag :wi_only, true, @wi_only %></label>
+      </div>
 
       <%= hidden_field_tag :cumulative, true %>
       

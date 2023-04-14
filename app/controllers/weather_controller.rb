@@ -13,6 +13,13 @@ class WeatherController < ApplicationController
     @unit_options = ["in", "mm"]
     @et_methods = ["classic", "adjusted"]
     @et_method = params[:et_method].presence || "classic"
+    @wi_only = params[:wi_only] == "true"
+    @map_opts = {
+      date: @date,
+      start_date: @start_date,
+      units: @units,
+      extent: @wi_only ? "wi" : nil
+    }.compact
 
     respond_to do |format|
       format.html
@@ -34,6 +41,13 @@ class WeatherController < ApplicationController
     parse_cumulative_params
     @units = params[:units].presence || "MJ"
     @unit_options = ["MJ", "KWh"]
+    @wi_only = params[:wi_only] == "true"
+    @map_opts = {
+      date: @date,
+      start_date: @start_date,
+      units: @units,
+      extent: @wi_only ? "wi" : nil
+    }.compact
 
     respond_to do |format|
       format.html
@@ -56,6 +70,12 @@ class WeatherController < ApplicationController
     @units = params[:units].presence || "F"
     @unit_options = ["F", "C"]
     @temp_selector = true
+    @wi_only = params[:wi_only] == "true"
+    @map_opts = {
+      date: @date,
+      units: @units,
+      extent: @wi_only ? "wi" : nil
+    }.compact
 
     respond_to do |format|
       format.html
@@ -76,6 +96,13 @@ class WeatherController < ApplicationController
     parse_cumulative_params
     @units = params[:units].presence || "in"
     @unit_options = ["mm", "in"]
+    @wi_only = params[:wi_only] == "true"
+    @map_opts = {
+      date: @date,
+      start_date: @start_date,
+      units: @units,
+      extent: @wi_only ? "wi" : nil
+    }.compact
 
     respond_to do |format|
       format.html

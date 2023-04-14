@@ -31,8 +31,7 @@
   method: "POST",
   data: {
     endpoint: @endpoint,
-    id: @date,
-    query: { units: @units, start_date: @start_date }.compact,
+    query: @map_opts,
     caption: "Note: Single-day map color scale is based on min/max values for the entire year.",
   }.to_json do %>
   <%= render layout: "partials/loading" do %>

@@ -23,16 +23,19 @@
       <% end %>
     </div>
 
-    <% if @unit_options %>
-      <div class="form-row">
-        <%= form_tag do %>
-          <%= hidden_field_tag :date, @date %>
-          Toggle map units: 
-          <% @unit_options.each do |unit| %>
-            <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %><%= unit %></label>&nbsp;
-          <% end %>
+    <div class="form-row">
+      <%= form_tag do %>
+        <%= hidden_field_tag :date, @date %>
+        <% if @unit_options %>
+          <span style="margin-right: 2em;">
+            Units: 
+            <% @unit_options.each do |unit| %>
+              <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %><%= unit %></label>&nbsp;
+            <% end %>
+          </span>
         <% end %>
-      </div>
-    <% end %>
+        <label>Wisconsin only? <%= check_box_tag :wi_only, true, @wi_only, onchange: "this.form.submit()" %></label>
+      <% end %>
+    </div>
   </div>
 </div>

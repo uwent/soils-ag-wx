@@ -30,8 +30,7 @@
   method: "POST",
   data: {
     endpoint: @endpoint,
-    id: @date,
-    query: { units: @units, start_date: @start_date }.compact,
+    query: @map_opts,
     caption: "Note: Map color scale is based on min/max daily precipitation across region. Precipitation data is not available for Canada from our data source (NOAA)."
   }.to_json do %>
   <%= render layout: "partials/loading" do %>

@@ -5,6 +5,10 @@ class HomeController < ApplicationController
   def about
     @app_last_updated = last_updated
     @quick_links = quick_links
+    @ento_url = "https://entomology.wisc.edu/"
+    @ben_url = "https://entomology.wisc.edu/directory/ben-bradford/"
+    @russ_url = "https://entomology.wisc.edu/directory/russell-groves/"
+    @amanda_url = "https://vegpath.plantpath.wisc.edu/people/gevens-amanda/"
   end
 
   def king_hall

@@ -16,23 +16,22 @@
 
 <h4>Degree Day and Disease Severity Maps</h4>
 
-<%= render_async map_image_thermal_models_path,
+<%= render_async url_for(action: :map_image),
   method: "POST",
   data: {
     endpoint: @endpoint,
-    id: @model,
     query: @opts,
     caption: "Note: Map data unavailable outside of Wisconsin prior to around October 2021."
   }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
-  <% @wait_time = 30 %>
+  <% @wait_time = 10 %>
   <%= render layout: "partials/loading" do %>
     <p>
       Model: <%= @map_type == "dd" ? dd_models[@model].dig(:label) : dsv_models[@model] %><br>
       Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %>
       <% unless @map_type == "dsv" %><br>Units: <%= "#{@units}" %><% end %>
       <% if @min_value.presence || @max_value.presence %><br>Scale bar: <%= @min_value.presence ? @min_value : "?"  %> - <%= @max_value.presence ? @max_value : "?" %><% end %>
-      <br>Map extent: <%= @wi_only ? "Wisconsin only" : "Upper Midwest" %>
+      <br>Map extent: <%= (@extent == "wi") ? "Wisconsin only" : "Upper Midwest" %>
     </p>
   <% end %>
 <% end %>

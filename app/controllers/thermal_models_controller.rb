@@ -7,27 +7,29 @@ class ThermalModelsController < ApplicationController
   end
 
   def dd_map
-    @endpoint = AgWeather::PEST_URL
     @dd_submit_text = "Show degree day map"
     @dsv_submit_text = "Show disease risk map"
     @dd_model = params[:dd_model].presence || "dd_50_86"
     @dsv_model = params[:dsv_model].presence || "potato_blight_dsv"
     @map_type = params[:map_type].presence || "dd"
+    @endpoint = (@map_type == "dsv") ? AgWeather::PEST_URL : AgWeather::DD_URL
     @model = (@map_type == "dsv") ? @dsv_model : @dd_model
     @start_date = try_parse_date("start", default_date.beginning_of_year)
     @end_date = try_parse_date("end")
     @units = params[:units].presence || "F"
     @min_value = params[:min_value]
     @max_value = params[:max_value]
-    @wi_only = params[:wi_only] == "true"
+    @extent = (params[:wi_only] == "true") ? "wi" : nil
 
     @opts = {
       start_date: @start_date.to_s,
       end_date: @end_date.to_s,
+      model: @model,
+      pest: @model,
       units: @units,
       min_value: @min_value,
       max_value: @max_value,
-      wi_only: @wi_only
+      extent: @extent
     }.compact
 
     respond_to do |format|
