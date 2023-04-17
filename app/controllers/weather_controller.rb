@@ -24,7 +24,7 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        response = AgWeather.get_grid(@endpoint, query: { date: @date, units: "mm" })
+        response = AgWeather.get_grid(@endpoint, query: {date: @date, units: "mm"})
         headers = response[:info]
         data = response[:data].collect do |key, value|
           key = JSON.parse(key.to_s)
@@ -52,7 +52,7 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        response = AgWeather.get_grid(@endpoint, query: { date: @date, units: "MJ" })
+        response = AgWeather.get_grid(@endpoint, query: {date: @date, units: "MJ"})
         headers = response[:info]
         data = response[:data].collect do |key, value|
           key = JSON.parse(key.to_s)
@@ -80,7 +80,7 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        response = AgWeather.get_grid(@endpoint, query: { date: @date })
+        response = AgWeather.get_grid(@endpoint, query: {date: @date})
         headers = response[:info]
         data = response[:data].collect do |key, values|
           key = JSON.parse(key.to_s)
@@ -107,7 +107,7 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        response = AgWeather.get_grid(@endpoint, query: { date: @date, units: "mm" })
+        response = AgWeather.get_grid(@endpoint, query: {date: @date, units: "mm"})
         headers = response[:info]
         data = response[:data].collect do |key, value|
           key = JSON.parse(key.to_s)
@@ -176,7 +176,7 @@ class WeatherController < ApplicationController
     @units = params[:units]
     query = parse_data_params.merge(units: @units)
     response = AgWeather.get_weather(query:)
-    
+
     # make sure each date has a data value
     @data = []
     (@start_date..@end_date).each do |date|
