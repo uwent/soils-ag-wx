@@ -24,14 +24,21 @@ class WeatherController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        response = AgWeather.get_grid(@endpoint, query: {date: @date, units: "mm"})
+        query = {date: @date, units: "mm"}
+        if params[:et_method] == "adjusted"
+          query[:et_method] = "adjusted"
+          filename = "evapotranspiration grid for #{@date} (adjusted method).csv"
+        else
+          filename = "evapotranspiration grid for #{@date}.csv"
+        end
+        response = AgWeather.get_grid(@endpoint, query:)
         headers = response[:info]
         data = response[:data].collect do |key, value|
           key = JSON.parse(key.to_s)
           value ||= 0.0
           {latitude: key[0], longitude: key[1], et_mm: value, et_in: value * 25.4}
         end
-        send_data to_csv(data, headers), filename: "evapotranspiration grid for #{@date}.csv"
+        send_data(to_csv(data, headers), filename:)
       }
     end
   end

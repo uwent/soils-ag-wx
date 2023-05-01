@@ -48,8 +48,11 @@
   <%= render partial: "map_form__cumulative" %>
 </div>
 
-<h4>Download evapotranspiration data grid</h4>
-<p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :et, format: :csv, params: {date: @date} %>.</p>
+<h4>Download evapotranspiration data grid for <%= @date.strftime("%b %-d, %Y") %></h4>
+<ul>
+  <li><%= link_to "Download entire grid (standard calculation method)", action: :et, format: :csv, params: {date: @date} %></li>
+  <li><%= link_to "Download entire grid (new adjusted calculation method)", action: :et, format: :csv, params: {date: @date, et_method: "adjusted"} %></li>
+</ul>
 
 <h4>Get evapotranspiration data for a single location</h4>
 <div class="note">
