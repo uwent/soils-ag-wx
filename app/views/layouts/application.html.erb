@@ -12,14 +12,13 @@
 	<%= yield :scripts %>
   <%= stylesheet_link_tag "application" %>
 	<%= yield :head %>
-
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-MEH20NN6K8"></script>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV["SOILS_AG_WX_GTAG"] %>"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
-		gtag('config', 'G-MEH20NN6K8'); // AgWeather GA4
+		gtag('config', '<%= ENV["SOILS_AG_WX_GTAG"] %>');
 	</script>
 </head>
 
