@@ -11,7 +11,7 @@
             id: "map-date-start",
             max: Date.today,
             min: Date.new(2016, 1, 1),
-            onchange: "validateDates('start', 'map-date')" %>
+            onfocusout: "validateDates('start', 'map-date')" %>
         </label>
         <label>
           End:
@@ -21,7 +21,7 @@
             id: "map-date-end",
             max: Date.today,
             min: Date.new(2016, 1, 1),
-            onchange: "validateDates('end', 'map-date')" %>
+            onfocusout: "validateDates('end', 'map-date')" %>
         </label>
       </div>
 

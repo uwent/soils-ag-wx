@@ -42,6 +42,10 @@
 
 .form__download_csv {
   display: inline;
+  
+  input {
+    font-size: inherit;
+  }
 }
 
 .format-row {

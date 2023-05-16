@@ -31,7 +31,7 @@
         id: "#{id_prefix}-start",
         max: Date.today,
         min: Date.new(2016, 1, 1),
-        onchange: "validateDates('start', '#{id_prefix}')" %>
+        onfocusout: "validateDates('start', '#{id_prefix}')" %>
     </label>
   </div>
   <div id="end-date">
@@ -43,7 +43,7 @@
         id: "#{id_prefix}-end",
         max: Date.today,
         min: Date.new(2016, 1, 1),
-        onchange: "validateDates('end', '#{id_prefix}')" %>
+        onfocusout: "validateDates('end', '#{id_prefix}')" %>
     </label>
   </div>
   <div class="preset-buttons">
