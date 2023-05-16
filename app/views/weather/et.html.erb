@@ -1,11 +1,8 @@
 <% @title = "Evapotranspiration Data" %>
 <% @welcome_image = "degree-flower.png" %>
 <%= javascript_include_tag "map_functions" %>
-<% if @request_type == "POST" %>
-  <script>
-    $(document).ready(() => { document.getElementById("map").scrollIntoView() })
-  </script>
-<% end %>
+<%= render partial: "partials/map__set_extents" %>
+<%= render partial: "partials/map__scroll_to_view" %>
 
 <% content_for :welcome do %>
   <h2><%= @title %></h2>
