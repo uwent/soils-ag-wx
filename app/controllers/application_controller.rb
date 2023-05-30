@@ -1,18 +1,6 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
-  before_action :set_tab_selected
 
-  def authenticate
-    request.remote_ip == "127.0.0.1"
-    # For now, pretty lame: We only check that it comes from localhost, redbird, andi, or my static VPN address
-    # request.remote_ip == "::1" ||
-    #   request.remote_ip == "127.0.0.1" ||
-    #   request.remote_ip == "128.104.33.225" ||
-    #   request.remote_ip == "128.104.33.224" ||
-    #   request.remote_ip == "146.151.214.80"
-  end
+  before_action :set_tab_selected
 
   def reject(error = "error")
     render json: {message: error}, status: 422
@@ -119,7 +107,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # parse a numeric param from a string (truncated at 10 characters)
+  # resultant number is rounded to n digits
   def parse_float(str, digits: nil)
+    str = str.to_s[0..9]
     if /^-?\d*\.?\d+$/.match?(str)
       digits ? str.to_f.round(digits) : str.to_f
     end
