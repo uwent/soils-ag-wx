@@ -10,7 +10,7 @@ class WeatherController < ApplicationController
     @endpoint = AgWeather::ET_URL
     parse_cumulative_params
     @units = params[:units].presence || "in"
-    @unit_options = ["in", "mm"]
+    @unit_opts = ["in", "mm"]
     @et_methods = ["classic", "adjusted"]
     @et_method = params[:et_method].presence || "classic"
     @wi_only = params[:wi_only] == "true"
@@ -47,7 +47,7 @@ class WeatherController < ApplicationController
     @endpoint = AgWeather::INSOL_URL
     parse_cumulative_params
     @units = params[:units].presence || "MJ"
-    @unit_options = ["MJ", "KWh"]
+    @unit_opts = ["MJ", "KWh"]
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
       date: @date,
@@ -73,14 +73,19 @@ class WeatherController < ApplicationController
 
   def weather
     @endpoint = AgWeather::WEATHER_URL
-    @date = parse_date
-    @units = params[:units].presence || "F"
-    @unit_options = ["F", "C"]
+    parse_cumulative_params
+    @unit_opts = ["F", "C"]
+    @units = params[:units].presence || @unit_opts[0]
+    @stat_opts = ["avg", "min", "max"]
+    @stat = params[:stat].presence || @stat_opts[0]
     @temp_selector = true
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
       date: @date,
+      start_date: @start_date,
       units: @units,
+      col: "#{@stat}_temp",
+      stat: @stat,
       extent: @wi_only ? "wi" : nil
     }.compact
 
@@ -102,7 +107,7 @@ class WeatherController < ApplicationController
     @endpoint = AgWeather::PRECIP_URL
     parse_cumulative_params
     @units = params[:units].presence || "in"
-    @unit_options = ["mm", "in"]
+    @unit_opts = ["mm", "in"]
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
       date: @date,

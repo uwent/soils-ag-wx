@@ -164,4 +164,13 @@ module ApplicationHelper
   def dsv_labels
     dsv_models.collect { |k, v| [v, k] }
   end
+
+  def hash_to_text(h)
+    str = ""
+    h.each do |k, v|
+      str << "#{k.to_s.humanize}: #{v.to_s}"
+      str << "<br>" unless k == h.keys.last
+    end
+    str
+  end
 end

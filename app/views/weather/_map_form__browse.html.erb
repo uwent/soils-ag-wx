@@ -26,15 +26,24 @@
     <div class="form-row">
       <%= form_tag do %>
         <%= hidden_field_tag :date, @date %>
-        <% if @unit_options %>
+        <% if @unit_opts %>
           <span style="margin-right: 2em;">
             Units: 
-            <% @unit_options.each do |unit| %>
+            <% @unit_opts.each do |unit| %>
               <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %><%= unit %></label>&nbsp;
             <% end %>
           </span>
         <% end %>
         <label>Wisconsin only? <%= check_box_tag :wi_only, true, @wi_only, onchange: "this.form.submit()" %></label>
+        <% if @stat_opts %>
+        <p>
+          Summary statistic:
+          <% @stat_opts.each do |stat| %>
+            <label><%= radio_button_tag :stat, stat, @stat == stat, onchange: "this.form.submit()" %><%= stat %></label>&nbsp;
+          <% end %>
+        </p>
+      <% end %>
+
       <% end %>
     </div>
   </div>

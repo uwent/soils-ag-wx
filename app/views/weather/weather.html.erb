@@ -27,14 +27,14 @@
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p style="margin-top: 10px;"><b>Please wait, loading map may take up to 10 seconds...</b></p>
-    <p>
-      Date: <%= @date %><br>
-      Units: <%= @units %>
-    </p>
+    <p><%= hash_to_text(@map_opts).html_safe %></p>
   <% end %>
 <% end %>
 
-<%= render partial: "map_form__browse" %>
+<div class="two-box">
+  <%= render partial: "map_form__browse" %>
+  <%= render partial: "map_form__cumulative" %>
+</div>
 
 <h3>Download weather data grid</h4>
 <p><%= link_to "Click here", action: :weather, format: :csv, params: { date: @date } %> to download the entire gridded weather dataset for <%= @date.strftime("%b %-d, %Y") %> in csv format.</p>
