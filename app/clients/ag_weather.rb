@@ -43,6 +43,10 @@ module AgWeather
     get(DD_TABLE_URL, query:, symbolize_names: false) || {}
   end
 
+  def self.get_pest(query:)
+    get(PEST_URL, query:) || {}
+  end
+
   def self.get_map(endpoint:, query:)
     url = "#{endpoint}/map"
     json = get(url, query:, timeout: 30)

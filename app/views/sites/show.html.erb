@@ -36,7 +36,9 @@
     <%= render partial: "data_opts__weather" %>
     <div id="weather-data">
       <%= render_async url_for(@weather_params) do %>
-        <p><i>Loading weather data...</i></p>
+        <%= render layout: "partials/loading" do %>
+          <p>Loading weather data...</p>
+        <% end %>
       <% end %>
     </div>
     <br>
@@ -44,7 +46,9 @@
     <%= render partial: "data_opts__dd" %>
     <div id="dd-data">
       <%= render_async url_for(@dd_params) do %>
-        <p><i>Loading degree day data...</i></p>
+        <%= render layout: "partials/loading" do %>
+          <p>Loading degree day data...</p>
+        <% end %>
       <% end %>
     </div>
   </div>

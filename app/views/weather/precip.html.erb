@@ -31,6 +31,7 @@
     caption: "Note: Map color scale is based on min/max daily precipitation across region. Precipitation data is not available for Canada from our data source (NOAA)."
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
+    <p style="margin-top: 10px;"><b>Please wait, loading map may take up to 10 seconds...</b></p>
     <p>
       Date: <%= @date %><br>
       <% if @start_date %>Start date: <%= @start_date || "Not specified" %><br><% end %>

@@ -24,8 +24,8 @@
     caption: "Note: Map data unavailable outside of Wisconsin prior to around October 2021."
   }.to_json,
   error_message: "Sorry, unable to load map. Please try again." do %>
-  <% @wait_time = 10 %>
   <%= render layout: "partials/loading" do %>
+    <p style="margin-top: 10px;"><b>Please wait, loading map may take up to 10 seconds...</b></p>
     <p>
       Model: <%= @map_type == "dd" ? dd_models[@model].dig(:label) : dsv_models[@model] %><br>
       Date range: <%= "#{@opts[:start_date]} - #{@opts[:end_date]}" %>

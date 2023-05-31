@@ -164,13 +164,13 @@ class ThermalModelsController < ApplicationController
 
     @models = [
       {
-        name: "Cumulative disease severity values (DSV) since date:",
+        name: "Cumulative late blight disease severity values (DSV) since date:",
         pest: "potato_blight_dsv",
         threshold: 18,
         units: "DSV"
       },
       {
-        name: "Cumulative potato physiological days (P-days) since date:",
+        name: "Cumulative early blight potato physiological days (P-days) since date:",
         pest: "potato_p_days",
         threshold: 300,
         units: "P-days"
@@ -196,7 +196,7 @@ class ThermalModelsController < ApplicationController
           long: loc[:long],
           start_date: dates.min
         }
-        json = AgWeather.get(AgWeather::PEST_URL + "/point_details", query:)
+        json = AgWeather.get_pest(query:)
         data = json[:data]
 
         @data[mod][loc_name] = dates.collect do |date|

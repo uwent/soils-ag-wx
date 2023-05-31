@@ -6,7 +6,7 @@
         <label>
           Start:
           <%= date_field_tag :start_date,
-            @date - 1.week,
+            @start_date || @date - 1.week,
             title: "Start date",
             id: "map-date-start",
             max: Date.today,

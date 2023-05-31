@@ -26,6 +26,7 @@
     query: @map_opts
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
+    <p style="margin-top: 10px;"><b>Please wait, loading map may take up to 10 seconds...</b></p>
     <p>
       Date: <%= @date %><br>
       Units: <%= @units %>

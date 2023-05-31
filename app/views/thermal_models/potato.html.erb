@@ -21,7 +21,9 @@
 <h4>Current DSV and P-Day values for select locations:</h4>
 
 <%= render_async url_for(action: :potato_data), container_id: "data-container" do %>
-  <p>Loading data...</p>
+  <%= render layout: "partials/loading" do %>
+    <p>Please wait, loading late blight DSV and potato P-Day values for select locations...</p>
+  <% end %>
 <% end %>
 
 <h4>Potato insect pests</h4>
