@@ -159,7 +159,7 @@ class ThermalModelsController < ApplicationController
       {name: "Hancock", lat: 44.1, long: -89.5},
       {name: "Grand Marsh", lat: 43.9, long: -89.7},
       {name: "Arlington", lat: 43.3, long: -89.3},
-      {name: "Spring Green", lat: 43.2, long: -90.2}
+      {name: "Spring Green", lat: 43.2, long: -90.1}
     ]
 
     @models = [
