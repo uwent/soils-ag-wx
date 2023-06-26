@@ -1,5 +1,7 @@
 # AgWeather/Soils website
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/uwent/soils-ag-wx/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/uwent/soils-ag-wx/tree/main)
+
 This codebase generates the agweather website which serves in part as a frontend for the agweather backend API.
 
 ## Dependencies
@@ -21,7 +23,7 @@ git -C "$(rbenv root)"/plugins/ruby-build pull
 git config --global url."https://github.com/".insteadOf git://github.com/
 
 # install ruby with rbenv
-rbenv install 3.2.1 # or latest version
+rbenv install 3.2.2 # or latest version
 
 # update bundler to latest
 gem install bundler
