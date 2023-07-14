@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-
   before_action :set_tab_selected
 
   def reject(error = "error")

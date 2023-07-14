@@ -168,7 +168,7 @@ module ApplicationHelper
   def hash_to_text(h)
     str = ""
     h.each do |k, v|
-      str << "#{k.to_s.humanize}: #{v.to_s}"
+      str << "#{k.to_s.humanize}: #{v}"
       str << "<br>" unless k == h.keys.last
     end
     str
