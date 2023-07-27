@@ -80,7 +80,13 @@ class AwonController < ApplicationController
       end
       format.csv do
         filename = begin
-          "#{stn.name} #{@db_class.description} - #{start_date} to #{end_date}.csv"
+          str = "#{stn.name} #{@db_class.description}"
+          if @results.exists?
+            earliest = @results.minimum(:date)
+            latest = @results.maximum(:date)
+            str += " #{earliest} to #{latest}"
+          end
+          str + ".csv"
         rescue
           "awon data.csv"
         end
