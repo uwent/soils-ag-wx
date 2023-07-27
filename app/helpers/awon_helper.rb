@@ -1,7 +1,7 @@
 module AwonHelper
   def station_selector_section
     <<-END
-    <select name="stnid" SIZE=4 id="station_selector">
+    <select name="stnid" SIZE=6 id="station_selector">
       <option value="4781" SELECTED>4781 1985-01-01 to 2017-09-30 Arlington</option>
       <option value="4751">4751 1985-01-01 to 2017-06-27 Hancock&nbsp;</option>
       <option value="4773">4773 1989-1998, 2001-10-17 to 2013-03-13 Spring Green&nbsp;</option>
