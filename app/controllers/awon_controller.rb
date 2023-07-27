@@ -79,10 +79,14 @@ class AwonController < ApplicationController
         render plain: text
       end
       format.csv do
+        filename = begin
+          "#{stn.name} #{@db_class.description} - #{start_date} to #{end_date}.csv"
+        rescue
+          "awon data.csv"
+        end
         text = @db_class.csv_header(use_abbrevs, @ahrs)
         text += @results.collect { |rec| rec.to_csv(@ahrs) }.join("")
-        # render plain: text
-        send_data text, filename: "awon_data.csv"
+        send_data(text, filename:)
       end
     end
   end

@@ -3,6 +3,10 @@ class T403 < ApplicationRecord
 
   belongs_to :awon_station
 
+  def self.description
+    "Pre-2000 Half-Hourly Weather and Soil"
+  end
+  
   def self.attr_human_readables
     [
       ["date", "Date"],

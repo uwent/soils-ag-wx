@@ -3,6 +3,10 @@ class T401 < ApplicationRecord
 
   belongs_to :awon_station
 
+  def self.description
+    "Five-Minute Precip and Wind"
+  end
+
   def self.attr_human_readables
     [
       ["date", "Date"],

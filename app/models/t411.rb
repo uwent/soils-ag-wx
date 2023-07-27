@@ -4,6 +4,10 @@ class T411 < ApplicationRecord
 
   belongs_to :awon_station
 
+  def self.description
+    "Daily Weather"
+  end
+
   def self.attr_human_readables
     [
       ["date", "Date"],

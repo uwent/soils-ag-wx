@@ -4,6 +4,10 @@ class T412 < ApplicationRecord
 
   belongs_to :awon_station
 
+  def self.description
+    "Daily Soil"
+  end
+
   def self.attr_human_readables
     [
       ["date", "Date"],

@@ -4,6 +4,10 @@ class T406 < ApplicationRecord
 
   belongs_to :awon_station
 
+  def self.description
+    "Hourly Weather and Soil"
+  end
+
   def self.attr_human_readables
     [
       ["date", "Date"],
