@@ -132,5 +132,5 @@ function updateSelector(lat, lng) {
   lng = lng.toFixed(1)
   $('#latitude').val(lat)
   $('#longitude').val(lng)
-  console.log("Clicked on " + lat + "," + lng)
+  console.log(`Clicked on ${lat}, ${lng}`)
 }

@@ -20,7 +20,7 @@
 <% if @start_date %>
   <h4 id="map">Cumulative precipitation map for <%= @start_date.strftime("%b %-d") %> to <%= @date.strftime("%b %-d") %> (<%= pluralize((@start_date..@date).count, "day") %>)</h4>
 <% else %>
-  <h4 id="map">Precipiation map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
+  <h4 id="map">Precipitation map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
 <% end %>
 
 <%= render_async url_for(action: :map_image),

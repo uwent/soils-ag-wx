@@ -2,18 +2,36 @@ module ApplicationHelper
   FROST_COLOR = "blue"
   FREEZE_COLOR = "#c5050c"
 
+  # unit conversions
   def c_to_f(c)
-    return if c.nil? || !(f.is_a? Numeric)
-    c * (9.0 / 5) + 32
+    c * 1.8 + 32.0
+  rescue
   end
 
   def f_to_c(f)
-    return if f.nil? || !(f.is_a? Numeric)
-    (f - 32) * (5.0 / 9)
+    (f - 32.0) * (5.0 / 9.0)
+  rescue
   end
 
+  def in_to_mm(inches)
+    inches * 25.4
+  rescue
+  end
+
+  def mm_to_in(mm)
+    mm / 25.4
+  rescue
+  end
+
+  def mj_to_kwh(mj)
+    mj / 3.6
+  rescue
+  end
+
+  # formatters
   def fmt_num(num, digits = 0)
     return num || "" unless num.is_a? Numeric
+    return 0 if num.zero?
     sprintf("%.#{digits}f", num.round(digits))
   end
 

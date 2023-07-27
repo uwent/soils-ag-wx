@@ -36,7 +36,12 @@ class WeatherController < ApplicationController
         data = response[:data].collect do |key, value|
           key = JSON.parse(key.to_s)
           value ||= 0.0
-          {latitude: key[0], longitude: key[1], et_mm: value, et_in: value * 25.4}
+          {
+            latitude: key[0],
+            longitude: key[1],
+            et_mm: value,
+            et_in: helpers.mm_to_in(value)
+          }
         end
         send_data(to_csv(data, headers), filename:)
       }
