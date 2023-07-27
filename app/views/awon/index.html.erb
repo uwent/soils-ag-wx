@@ -1,14 +1,3 @@
-<% @title = "Automated Weather Observation Network" %>
-<% @welcome_image = "awon.png" %>
-
-<% content_for :welcome do %>
-  <h2><%= @title %></h2>
-  <p style="font-weight:bold; color:red">Important Notice:</p>
-  <p>After the most recent date shown in the selector, data from Arlington and Hancock will be available via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
-  <p>Hover over the yellow dot and left click to see the station page. Left click link under photo, select <i>Custom Reports</i> -- select <i>Data Type</i> for data table.</p>
-  <p>Data collected and recovered prior to the end date above are archived and available here.</p>
-<% end %>
-
 <% content_for :scripts do %>
 <script>
   function report_changed(id) {
@@ -47,10 +36,24 @@
 </script>
 <% end %>
 
-<h2>Weather Station Status and Data</h2>
-<p><%= link_to "List of stations", action: :station_info %>, their geographic locations, and the operational dates.</p>
 
-<h3>Download Weather or Soil Data</h3>
+<% @title = "Automated Weather Observation Network (AWON) Archive" %>
+<% @welcome_image = "awon.png" %>
+
+<% content_for :welcome do %>
+<h2><%= @title %></h2>
+<p style="font-weight:bold; color:red">Important Notice:</p>
+<p>The Hancock and Arlington stations were operated by <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu", target: "_blank" %> between 2017 and 2023 and data for that period can be downloaded from their website.</p>
+<p>From 2023-present, data from the Hancock and Arlington stations, as well as some additional stations in Wisconsin, are available from the <%= link_to "Wisconsin Environmental Mesonet (WiscoNet)", "https://wisconet.wisc.edu/", target: "_blank" %> website.</p>
+<% end %>
+
+<h2><%= @title %></h2>
+<hr>
+
+<p><strong>Please note:</strong> The Automated Weather Observation Network (AWON) is no longer active. This page serves to archive weather data collected in Wisconsin prior to 2017. For current weather data from on-the-ground weather stations, please visit the <%= link_to "Wisconsin Environmental Mesonet (WiscoNet)", "https://wisconet.wisc.edu/", target: "_blank" %> website.</p>
+
+<h3>Download Historical Weather or Soil Data</h3>
+<p><%= link_to "List of stations", action: :station_info %>, their geographic locations, and the operational dates.</p>
 <%= form_tag(controller: :awon, action: :download_data) do %>
   <table>
     <tr>
@@ -58,7 +61,7 @@
         <%= station_selector_section.html_safe %>
       </td>
       <td rowspan="2">
-        Arlington and Hancock stations have a continuous record in the daily and the "hourly and half-hourly" tables; hourly prior to 1999, half-hourly subsequently. Some of the other stations used "half-hourly", others "hourly".
+        Arlington and Hancock stations have a continuous record in the daily and the "hourly and half-hourly" tables; hourly prior to 1999, half-hourly subsequently. Some of the other stations used "half-hourly", others "hourly". Not all stations collected each type of data.
       </td>
     </tr>
     <tr>
