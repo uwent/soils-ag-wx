@@ -8,7 +8,7 @@ Dear <%= @subscriber.name || "AgWeather subscriber" %>,<br>
   </tr>
 </table>
 
-<p>This code will be valid for one hour. If you did not initiate this request, you can ignore this email.</p>
+<p>This code will be valid for one hour. Alternatively, you can <%= link_to "click this link", validate_subscriber_url(@subscriber, token: @subscriber.auth_token) %> to be automatically logged in. If you did not initiate this request, you can ignore this email.</p>
 
 <p>
   Thank you,<br>
