@@ -11,12 +11,15 @@ class WeatherController < ApplicationController
     parse_cumulative_params
     @units = params[:units].presence || "in"
     @unit_opts = ["in", "mm"]
+    @cum_stat_opts = ["sum", "avg", "min", "max"]
+    @stat = params[:stat].presence || @cum_stat_opts[0]
     @et_methods = ["classic", "adjusted"]
     @et_method = params[:et_method].presence || "classic"
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
       date: @date,
       start_date: @start_date,
+      stat: @start_date ? @stat : nil,
       units: @units,
       extent: @wi_only ? "wi" : nil
     }.compact
@@ -53,10 +56,13 @@ class WeatherController < ApplicationController
     parse_cumulative_params
     @units = params[:units].presence || "MJ"
     @unit_opts = ["MJ", "KWh"]
+    @cum_stat_opts = ["sum", "avg", "min", "max"]
+    @stat = params[:stat].presence || @cum_stat_opts[0]
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
       date: @date,
       start_date: @start_date,
+      stat: @start_date ? @stat : nil,
       units: @units,
       extent: @wi_only ? "wi" : nil
     }.compact
@@ -82,7 +88,8 @@ class WeatherController < ApplicationController
     @unit_opts = ["F", "C"]
     @units = params[:units].presence || @unit_opts[0]
     @stat_opts = ["avg", "min", "max"]
-    @stat = params[:stat].presence || @stat_opts[0]
+    @cum_stat_opts = @stat_opts
+    @stat = params[:stat].presence || (@start_date ? @cum_stat_opts[0] : @stat_opts[0])
     @temp_selector = true
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
@@ -113,10 +120,13 @@ class WeatherController < ApplicationController
     parse_cumulative_params
     @units = params[:units].presence || "in"
     @unit_opts = ["mm", "in"]
+    @cum_stat_opts = ["sum", "avg", "max"]
+    @stat = params[:stat].presence || @cum_stat_opts[0]
     @wi_only = params[:wi_only] == "true"
     @map_opts = {
       date: @date,
       start_date: @start_date,
+      stat: @start_date ? @stat : nil,
       units: @units,
       extent: @wi_only ? "wi" : nil
     }.compact

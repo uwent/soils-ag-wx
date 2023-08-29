@@ -18,18 +18,13 @@
 <p>The gridded insolation estimates shown below are imported daily from <%= link_to "UW Madison's Space Science Engineering Center", "https://ssec.wisc.edu" %> and provided on this page for easy access. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). We use this data, in combination with <%= link_to "gridded daily temperature datasets", action: :weather %>, to generate our <%= link_to "evapotranspiration estimates", action: :et %>.</p>
 <p>Daily insolation maps in the default units are already rendered by our server and can be browsed quickly. Changing the units or using the cumulative map tool below will take around 10 seconds to render the image</p>
 
-<% if @start_date %>
-  <h4 id="map">Cumulative solar insolation map for <%= @start_date.strftime("%b %-d") %> to <%= @date.strftime("%b %-d") %> (<%= pluralize((@start_date..@date).count, "day") %>)</h4>
-<% else %>
-  <h4 id="map">Solar insolation map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
-<% end %>
-
+<%= render partial: "map_heading" %>
+<%= render partial: "map_form__browse" %>
 <%= render_async url_for(action: :map_image),
   method: "POST",
   data: {
     endpoint: @endpoint,
     query: @map_opts,
-    caption: "Note: Single-day map color scale is based on min/max values for the entire year.",
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p style="margin-top: 10px;"><b>Please wait, loading map may take up to 10 seconds...</b></p>
@@ -41,15 +36,12 @@
   <% end %>
 <% end %>
 
-<div class="two-box">
-  <%= render partial: "map_form__browse" %>
-  <%= render partial: "map_form__cumulative" %>
-</div>
+<%= render partial: "map_form__cumulative" %>
 
-<h4>Download insolation data grid</h4>
+<h3>Download insolation data grid</h3>
 <p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :insol, format: :csv, params: { date: @date } %>.</p>
 
-<h4>Get insolation data for a single location</h4>
+<h3>Get insolation data for a single location</h3>
 <p>Choose a location and date range then click "Get Data Series". Daily insolation data will be displayed in units of Mj and kWh. Note: You can click on the map to set the latitude and longitude to within half a degree.</p>
 <%= render partial: "partials/grid_selector", locals: { target: url_for(action: :insol_data) } %>
 <div id="map-data"></div>

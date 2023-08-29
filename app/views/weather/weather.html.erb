@@ -17,8 +17,8 @@
 <p>This gridded weather data is imported daily from the <%= link_to "National Oceanic and Atmospheric Administration", "https://www.nco.ncep.noaa.gov/pmb/products/rtma/" %> and includes air temperatures and dew points. From these data we compute vapor pressure and relative humidity. The map below shows mean daily air temperature, but all weather parameters may be viewed by clicking on the map or selecting a specific Latitude/Longitude and clicking 'Get Data Series' in the box below. Use the buttons above the map to view a different date.</p>
 <p>Daily maps in the default units are already rendered by our server and can be browsed quickly. Changing units or using the cumulative map tool below will take around 10 seconds to render the image.</p>
 
-<h3 id="map">Mean air temperature map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
-
+<%= render partial: "map_heading" %>
+<%= render partial: "map_form__browse" %>
 <%= render_async url_for(action: :map_image),
   method: "POST",
   data: {
@@ -32,7 +32,6 @@
 <% end %>
 
 <div class="two-box">
-  <%= render partial: "map_form__browse" %>
   <%= render partial: "map_form__cumulative" %>
 </div>
 
