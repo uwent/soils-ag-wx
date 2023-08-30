@@ -1,0 +1,9 @@
+<% if @start_date %>
+  <h3 id="map">
+    Cumulative map for <%= @start_date.strftime("%b %-d, %Y") %> to <%= @date.strftime("%b %-d, %Y") %> (<%= pluralize((@start_date..@date).count, "day") %>)
+  </h3>
+<% else %>
+  <h3 id="map">
+    Daily map for <%= @date.strftime("%b %-d, %Y") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)
+  </h3>
+<% end %>

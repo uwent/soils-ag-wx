@@ -21,7 +21,7 @@ class SubscribersController < ApplicationController
 
   def index
     # only show the index page when logged out
-    return redirect_to(action: :manage) unless @subscriber.nil?
+    redirect_to(action: :manage) unless @subscriber.nil?
   end
 
   def new
@@ -151,7 +151,7 @@ class SubscribersController < ApplicationController
   # confirm email
   def confirm
     @subscriber = Subscriber.find(params[:id])
-    return redirect_to action: :manage if @subscriber.is_confirmed?
+    redirect_to action: :manage if @subscriber.is_confirmed?
   end
 
   # handle link from confirmation email
@@ -353,7 +353,7 @@ class SubscribersController < ApplicationController
   private
 
   def require_session
-    return reject("You must be logged in to perform this action.") if session[:subscriber].nil?
+    reject("You must be logged in to perform this action.") if session[:subscriber].nil?
   end
 
   def fix_email

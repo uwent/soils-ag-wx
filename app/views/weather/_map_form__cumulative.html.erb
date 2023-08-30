@@ -2,53 +2,60 @@
   <b>Generate cumulative map:</b>
   <div class="map-form">
     <%= form_tag do %>
-      <div class="form-row">
-        <label>
-          Start:
-          <%= date_field_tag :start_date,
-            @start_date || @date - 1.week,
-            title: "Start date",
-            id: "map-date-start",
-            max: Date.today,
-            min: Date.new(2016, 1, 1),
-            onfocusout: "validateDates('start', 'map-date')" %>
-        </label>
-        <label>
-          End:
-          <%= date_field_tag :end_date,
-            @date,
-            title: "End date",
-            id: "map-date-end",
-            max: Date.today,
-            min: Date.new(2016, 1, 1),
-            onfocusout: "validateDates('end', 'map-date')" %>
-        </label>
-      </div>
+      <%= hidden_field_tag :cumulative, true %>
 
-      <div class="form-row">
+      <div class="map-form-row">
+        <div>
+          <label>
+            Start:
+            <%= date_field_tag :start_date,
+              @start_date || @date - 1.week,
+              title: "Start date",
+              id: "map-date-start",
+              max: Date.today,
+              min: Date.new(2016, 1, 1),
+              onfocusout: "validateDates('start', 'map-date')" %>
+          </label>
+          <label>
+            End:
+            <%= date_field_tag :end_date,
+              @date,
+              title: "End date",
+              id: "map-date-end",
+              max: Date.today,
+              min: Date.new(2016, 1, 1),
+              onfocusout: "validateDates('end', 'map-date')" %>
+          </label>
+        </div>
+
         <% if @unit_opts %>
-          <span style="margin-right: 2em;">
+          <div>
             Units: 
             <% @unit_opts.each do |unit| %>
               <label><%= radio_button_tag :units, unit, @units == unit %><%= unit %></label>&nbsp;
             <% end %>
-          </span>
+          </div>
         <% end %>
-        <label>Wisconsin only? <%= check_box_tag :wi_only, true, @wi_only %></label>
+        
+        <div>
+          <label>Wisconsin only? <%= check_box_tag :wi_only, true, @wi_only %></label>
+        </div>
+
+        <% if @cum_stat_opts %>
+          <div>
+            Summary statistic:
+            <% @cum_stat_opts.each do |stat| %>
+              <label><%= radio_button_tag :stat, stat, @stat == stat %><%= stat %></label>&nbsp;
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
-      <% if @stat_opts %>
-        <div class="form-row">
-          Summary statistic:
-          <% @stat_opts.each do |stat| %>
-            <label><%= radio_button_tag :stat, stat, @stat == stat %><%= stat %></label>&nbsp;
-          <% end %>
+      <div class="map-form-row">
+        <div style="min-width:200px; max-width: 100%; margin-left:auto; margin-right:auto;">
+          <%= submit_tag "Get cumulative map", id: "submit", class: "submit" %>
         </div>
-      <% end %>
-
-      <%= hidden_field_tag :cumulative, true %>
-      
-      <%= submit_tag "Get cumulative map", id: "submit", class: "submit" %>
+      </div>
     <% end %>
   </div>
 </div>

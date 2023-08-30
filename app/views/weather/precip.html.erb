@@ -17,18 +17,13 @@
 <p>Use this page to access gridded precipitation data for the upper Midwest. This data is collected daily from NOAA datasets, which are generated from a combination of real-world observations and computer modeling. Data is aggregated to a 0.1 decimal degree scale (roughly 8km E/W by 11km N/S in Wisconsin). Precpitation can be highly localized, so these data may not completely match observations from rain gauges or weather stations, but should be relatively close. Consider checking <%= link_to "weather.gov", "https://www.weather.gov", target: "_blank" %> or <%= link_to "wunderground.com", "https://www.wunderground.com", target: "_blank" %> for weather/precipitation history or forecasts from an individual weather station.</p>
 <p>Daily maps in the default units are already rendered by our server and can be browsed quickly. Changing units or using the cumulative map tool below will take around 10 seconds to render the image.</p>
 
-<% if @start_date %>
-  <h4 id="map">Cumulative precipitation map for <%= @start_date.strftime("%b %-d") %> to <%= @date.strftime("%b %-d") %> (<%= pluralize((@start_date..@date).count, "day") %>)</h4>
-<% else %>
-  <h4 id="map">Precipitation map for <%= @date.strftime("%b %-d") %> (<%= pluralize((Date.current - @date).to_i, "day") %> ago)</h4>
-<% end %>
-
+<%= render partial: "map_heading" %>
+<%= render partial: "map_form__browse" %>
 <%= render_async url_for(action: :map_image),
   method: "POST",
   data: {
     endpoint: @endpoint,
     query: @map_opts,
-    caption: "Note: Map color scale is based on min/max daily precipitation across region. Precipitation data is not available for Canada from our data source (NOAA)."
   }.to_json do %>
   <%= render layout: "partials/loading" do %>
     <p style="margin-top: 10px;"><b>Please wait, loading map may take up to 10 seconds...</b></p>
@@ -40,15 +35,12 @@
   <% end %>
 <% end %>
 
-<div class="two-box">
-  <%= render partial: "map_form__browse" %>
-  <%= render partial: "map_form__cumulative" %>
-</div>
+<%= render partial: "map_form__cumulative" %>
 
-<h4>Download data grid as csv</h4>
+<h3>Download data grid as csv</h3>
 <p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :precip, format: :csv, params: { date: @date } %>.</p>
 
-<h4>Get data for a single location</h4>
+<h3>Get data for a single location</h3>
 <p>Choose a location and date range then click "Get Data Series". Daily and cumulative precipitation will be displayed in mm and inches. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
 <%= render partial: "partials/grid_selector", locals: { target: url_for(action: :precip_data) } %>
 <div id="map-data"></div>

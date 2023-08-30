@@ -1,50 +1,49 @@
-<div class="box">
-  <b>Browse single-day maps:</b>
-  <div class="map-form">
-    <div class="form-row">
+<div class="map-form">
+  <div class="map-form-row">
+    <div>
       <%= form_tag do %>
-        Change date: 
-        <label><%= submit_tag "Prev: #{@date - 1}", name: :date %></label>&nbsp;
-        <% if @date < Date.current - 2.days %>
-          <label><%= submit_tag "Next: #{@date + 1}", name: :date %></label>&nbsp;
-        <% end %>
-        <% if @date < Date.yesterday %>
-          <label><%= submit_tag "Latest: #{Date.yesterday}", name: :date %></label>
-        <% end %>
-
+        Browse daily maps:
+        <button type=submit name=date value=<%= @date - 1 %>>&lt;== Prev</button>
+        <button type=submit name=date value=<%= @date + 1 %> <%= @date < Date.yesterday ? "" : "disabled" %>>Next ==&gt;</button>
+        <button type=submit name=date value=<%= Date.yesterday %>>Latest</button>
         <%= hidden_field_tag :units, @units %>
       <% end %>
     </div>
-    <div class="form-row">
+
+    <div>
       <%= form_tag do %>
         <%= hidden_field_tag :units, @units %>
         Or enter a specific date: 
         <%= text_field_tag :date %>&nbsp;<%= submit_tag "Go" %>
       <% end %>
     </div>
+  </div>
 
-    <div class="form-row">
-      <%= form_tag do %>
-        <%= hidden_field_tag :date, @date %>
-        <% if @unit_opts %>
-          <span style="margin-right: 2em;">
-            Units: 
-            <% @unit_opts.each do |unit| %>
-              <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %><%= unit %></label>&nbsp;
-            <% end %>
-          </span>
-        <% end %>
+  <%= form_tag do %>
+    <div class="map-form-row">
+      <%= hidden_field_tag :date, @date %>
+
+      <div>
         <label>Wisconsin only? <%= check_box_tag :wi_only, true, @wi_only, onchange: "this.form.submit()" %></label>
-        <% if @stat_opts %>
-        <p>
+      </div>
+
+      <% if @unit_opts %>
+        <div>
+          Units: 
+          <% @unit_opts.each do |unit| %>
+            <label><%= radio_button_tag :units, unit, @units == unit, onchange: "this.form.submit()" %><%= unit %></label>&nbsp;
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @stat_opts %>
+        <div>
           Summary statistic:
           <% @stat_opts.each do |stat| %>
             <label><%= radio_button_tag :stat, stat, @stat == stat, onchange: "this.form.submit()" %><%= stat %></label>&nbsp;
           <% end %>
-        </p>
-      <% end %>
-
+        </div>
       <% end %>
     </div>
-  </div>
+  <% end %>
 </div>
