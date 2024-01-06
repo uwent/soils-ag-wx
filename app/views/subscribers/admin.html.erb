@@ -36,6 +36,8 @@
   <b>Email:</b> <%= @subscriber.email %>
 </p>
 
+<p>Name and email can be changed for subscribers in the list below. You cannot change your own email from this page, nor can you set or remove admin status on other users. Use the rails terminal for those tasks.</p>
+
 <div class="apple_pagination">
   <%= will_paginate @subscribers, class: :apple_pagination %>
   <br>
@@ -46,7 +48,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Locations</th>
-        <th>Admin?</th>
+        <th>Subscribed?</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -54,10 +56,14 @@
       <% @subscribers.each do |subscriber| %>
         <tr style="<%= @subscriber.id == subscriber.id ? 'font-weight:bold;' : '' %>">
           <td><%= subscriber.id %></td>
-          <td><%= best_in_place subscriber, :name, as: :input %></td>
+          <td>
+            <%= @subscriber.id == subscriber.id ? "[YOU] " : "" %>
+            <%= subscriber.admin? ? "[ADMIN] " : ""%>
+            <%= best_in_place subscriber, :name, as: :input %>
+          </td>
           <td><%= best_in_place_if @subscriber.id != subscriber.id, subscriber, :email, as: :input %></td>
           <td align="center"><%= subscriber.sites.size %></td>
-          <td align="center"><%= subscriber.admin? ? "Yes" : "" %></td>
+          <td align="center"><%= subscriber.emails_enabled ? "Yes" : "No" %></td>
           <td>
             <%= link_to "<button>Manage</button>".html_safe, url_for(action: :manage, to_edit_id: subscriber.id) %>
             <% unless @subscriber.id == subscriber.id || subscriber.admin? %>

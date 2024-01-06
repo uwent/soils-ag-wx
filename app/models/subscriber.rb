@@ -18,15 +18,6 @@ class Subscriber < ApplicationRecord
     dates_active === Date.current
   end
 
-  # def self.fractional_part(float)
-  #   float.to_s =~ /0\.(.+)$/
-  #   $1
-  # end
-
-  # def self.confirmation_number
-  #   fractional_part(rand)
-  # end
-
   def self.find_by_email(email)
     where("lower(email) = ?", email.downcase).first
   end
