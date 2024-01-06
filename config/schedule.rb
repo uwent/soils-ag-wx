@@ -27,6 +27,10 @@ every :day, at: "7:00am" do
   runner "Subscriber.send_daily_mail"
 end
 
+every :month do
+  runner "Tasks.purge_subs(delete:true)"
+end
+
 every "00,15,30,45 9,10,11 * * *" do
   runner "Hyd.load_file"
 end
