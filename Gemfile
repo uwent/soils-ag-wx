@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 7.1"
-gem "railties", "~> 7.1"
-gem "activesupport", "~> 7.1"
+gem "rails", "7.1.2"
+gem "railties", "7.1.2"
+gem "activesupport", "7.1.2"
 gem "pg"
 gem "sassc-rails"
 gem "coffee-rails"
@@ -18,6 +18,7 @@ gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem "whenever"
 gem "terser" # for JS compression
 gem "mail" # v2.7 => v2.8.0 required a sendmail settings change, see config/production.rb, should be resolved with mail v2.8.1
+gem "csv"
 
 group :development do
   gem "puma"
