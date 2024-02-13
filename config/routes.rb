@@ -120,6 +120,7 @@ Rails.application.routes.draw do
   get "/subscribers/(*path)", to: redirect("/subscribers")
 
   # Custom URLs
+  direct(:api) { "/api" }
   direct(:vdifn) { "/vdifn" }
   direct(:wisp) { "https://wisp.cals.wisc.edu" }
   direct(:vegpath) { "https://vegpath.plantpath.wisc.edu" }
@@ -128,6 +129,7 @@ Rails.application.routes.draw do
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
+  get "/ag_weather", to: redirect("/api/")
   get "*unmatched", to: redirect("/") if Rails.env.production?
   post "*unmatched", to: "application#bad_request" if Rails.env.production?
   post "/", to: "application#bad_request" if Rails.env.production?

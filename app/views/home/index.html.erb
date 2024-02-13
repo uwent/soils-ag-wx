@@ -106,6 +106,18 @@
 
 <div class="row">
   <div class="left">
+    <%= link_to image_tag("hal-250px.png"), api_path %>
+  </div>
+  <div>
+    <h2><%= link_to "Weather Data API", api_path %></h2>
+    <p>All of the weather data accessible on this site can also be accessed via our API for free. A description of the API endpoints can be found at the link above. These endpoints are subject to change so if you are using this data in an application please <%= link_to "contact us", action: :about %> to let us know and we will keep you in the loop about any API changes.</p>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="left">
     <%= link_to image_tag("tree-150px.png"), action: :about %>
   </div>
   <div>
