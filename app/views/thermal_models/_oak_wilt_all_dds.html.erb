@@ -9,8 +9,9 @@
     <table class="grid-table">
       <thead>
         <tr>
-          <th>Day</th>
+          <th></th>
           <th>Date</th>
+          <th>Day</th>
           <th>Min<br>temp<br>(&deg;F)</th>
           <th>Max<br>temp<br>(&deg;F)</th>
           <th>FDDs</th>
@@ -23,10 +24,11 @@
         <tr>
           <td><%= i + 1 %></td>
           <td><%= day[:date] %></td>
+          <td><%= Date.parse(day[:date])&.strftime("%b %-d") %></td>
           <td><%= fmt_temp(day[:min_temp]) %></td>
           <td><%= fmt_temp(day[:max_temp]) %></td>
-          <td><%= day[:value] %></td>
-          <td><%= day[:cumulative_value] %></td>
+          <td><%= sprintf("%.1f", day[:value]) %></td>
+          <td><%= sprintf("%.1f", day[:cumulative_value]) %></td>
           <td><%= day[:risk] %>
         </tr>
       <% end %>
