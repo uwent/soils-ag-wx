@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-gem "rails", "7.1.2"
-gem "railties", "7.1.2"
-gem "activesupport", "7.1.2"
+gem "rails"
+gem "railties"
+gem "activesupport"
 gem "pg"
 gem "sassc-rails"
 gem "coffee-rails"

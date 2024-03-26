@@ -1,21 +1,22 @@
 # Helper for easy routing and dasherizing. Default verb is :get.
 def route(action, verb = :get, *other_verbs)
-  match action.dasherize, to: action, via: [verb] + other_verbs
+  match action.dasherize => "#{@controller}##{action}", via: [verb] + other_verbs
 end
 
 Rails.application.routes.draw do
   root to: "home#index"
 
   # Navigation controller
-  get "about", to: "home#about"
-  get "king-hall", to: "home#king_hall"
-  get "home", to: redirect("")
+  get "about" => "home#about"
+  get "king-hall" => "home#king_hall"
+  get "home" => redirect("")
 
   # Weather controller
+  @controller = :weather
   resources :weather, only: :index do
     collection do
       route "awon"
-      match "data", to: "weather#weather", via: [:get, :post]
+      match "data" => "weather#weather", via: [:get, :post]
       route "precip", :get, :post
       route "et", :get, :post
       route "insol", :get, :post
@@ -30,12 +31,11 @@ Rails.application.routes.draw do
       route "doycal_grid"
     end
   end
-  get "weather", to: "weather#index" # default action
-  get "weather/(*path)", to: redirect("weather") if Rails.env.production?
-  get "sun-water/(*path)", to: redirect("weather", status: 301) if Rails.env.production?
-  get "sun_water/(*path)", to: redirect("weather", status: 301) if Rails.env.production?
+  get "weather" => "weather#index" # default action
+  get "weather/(*path)" => redirect("weather") if Rails.env.production?
 
   # Sites controller
+  @controller = :sites
   resources :sites, only: :none do
     collection do
       route "site_data_weather"
@@ -45,14 +45,15 @@ Rails.application.routes.draw do
       put :update
     end
   end
-  get "sites/:lat,:long", to: "sites#show", constraints: {
+  get "sites/:lat,:long" => "sites#show", constraints: {
     lat: /[-+]?\d+\.?\d*/,
     long: /[-+]?\d+\.?\d*/
   }
-  get "sites", to: "sites#index"
-  get "sites/(*path)", to: redirect("sites")
+  get "sites" => "sites#index"
+  get "sites/(*path)" => redirect("sites")
 
   # AWON controller
+  @controller = :awon
   resources :awon, only: :index do
     collection do
       route "awon_check_boxes"
@@ -64,6 +65,7 @@ Rails.application.routes.draw do
   get "awon/(*path)", to: redirect("/awon") if Rails.env.production?
 
   # Thermal models controller
+  @controller = :thermal_models
   resources :thermal_models, path: "thermal-models", only: :index do
     collection do
       route "alfalfa_weevil"
@@ -85,11 +87,11 @@ Rails.application.routes.draw do
       route "download_csv", :post
     end
   end
-  get "thermal-models", to: "thermal_models#index" # default action
-  get "thermal-models/(*path)", to: redirect("/thermal-models") if Rails.env.production?
-  get "thermal_models/(*path)", to: redirect("/thermal-models", status: 301) if Rails.env.production?
+  get "thermal-models" => "thermal_models#index" # default action
+  get "thermal-models/(*path)" => redirect("/thermal-models") if Rails.env.production?
 
   # Subscribers controller
+  @controller = :subscribers
   resources :subscribers, only: %i[index new create update destroy] do
     collection do
       route "admin"
@@ -129,8 +131,8 @@ Rails.application.routes.draw do
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  get "/ag_weather", to: redirect("/api/")
-  get "*unmatched", to: redirect("/") if Rails.env.production?
-  post "*unmatched", to: "application#bad_request" if Rails.env.production?
-  post "/", to: "application#bad_request" if Rails.env.production?
+  get "/ag_weather" => redirect("/api/")
+  get "*unmatched" => redirect("/") if Rails.env.production?
+  post "*unmatched" => "application#bad_request" if Rails.env.production?
+  post "/" => "application#bad_request" if Rails.env.production?
 end
