@@ -7,5 +7,4 @@ Rails.application.configure do
     host: ENV["AG_WEATHER_HOST"] || "dev.agweather.cals.wisc.edu",
     protocol: "https"
   }
-  config.log_level = :debug
 end
