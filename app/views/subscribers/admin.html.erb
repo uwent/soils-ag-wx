@@ -27,10 +27,12 @@
 </p>
 
 <div class="apple_pagination">
-  <%= form_tag do %>
-    <%= select_tag :selection, options_for_select(@selection_opts, @selection), { onchange: "this.form.submit()" } %>
-  <% end %>
-  <%= will_paginate @subscribers, class: :apple_pagination %>
+  <div style="margin-bottom: 1em;">
+    <%= form_tag do %>
+      <%= select_tag :selection, options_for_select(@selection_opts, @selection), { onchange: "this.form.submit()" } %>
+    <% end %>
+  </div>
+  <%= will_paginate(@subscribers, params: { selection: @selection }) %>
   <div style="overflow: auto; margin: 1em 0; padding: 5px 0;">
     <table class="simple-table" style="width: 100%">
       <thead>
