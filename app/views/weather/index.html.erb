@@ -7,8 +7,8 @@
   <%= render partial: "quick_links" %>
 <% end %>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("mean-temps-250px.png"), action: :weather %>
   </div>
   <div>
@@ -20,8 +20,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("precip-map-250px.png"), action: :precip %>
   </div>
   <div>
@@ -33,8 +33,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("sunwater-150px.png"), action: :et %>
   </div>
   <div>
@@ -48,8 +48,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("insol-150px.png"), action: :insol %>
   </div>
   <div>
@@ -63,8 +63,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("hyd-150px.png"), action: :hyd %>
   </div>
   <div>
@@ -79,20 +79,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
-    <%= link_to image_tag("awon-150px.png"), controller: :awon %>
-  </div>
-  <div>
-    <h2><%= link_to "Automated Weather Observation Network", controller: :awon %></h2>
-    <p>From 1985-2017, we maintained automated weather stations at the Hancock and Arlington Ag Research stations. (Others were also operated in the 1980s-1990s.) They made hourly observations and daily averages for temperature, humidity, wind speed and direction, solar radiation, and soil temperature. Stations were discontinued in 2017. Since then data from Arlington and Hancock can be accessed via the <%= link_to "Michigan State University Enviroweather Service", "https://enviroweather.msu.edu" %>.</p>
-  </div>
-</div>
-
-<hr>
-
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("doy-cal-150px.png"), action: :doycal %>
   </div>
   <div>

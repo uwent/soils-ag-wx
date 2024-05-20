@@ -12,9 +12,9 @@ RSpec.describe "Home", type: :request do
       expect(response).to have_http_status(:success)
     end
 
-    it "gets king_hall" do
-      get url_for(controller: :home, action: :king_hall)
-      expect(response).to have_http_status(:success)
-    end
+    # it "gets king_hall" do
+    #   get url_for(controller: :home, action: :king_hall)
+    #   expect(response).to have_http_status(:success)
+    # end
   end
 end

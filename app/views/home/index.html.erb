@@ -9,13 +9,13 @@
   <p><%= link_to image_tag("logos/uw-logo-reverse.png", width: "100%"), "https://www.wisc.edu" %></p>
 <% end %>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("weather-150px.png"), controller: :weather %>
   </div>
-  <div class="text">
+  <div>
     <h2><%= link_to "Weather Data", controller: :weather %></h2>
-    <p>Our weather page offers maps and data for temperature, precipitation, evapotranspiration, and solar insolation, derived from NOAA daily grids and satellite observations. We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions. In addition, access archived National Weather Service hydrometeorological (HYD) reports, daily weather summaries throughout Wisconsin 1995-present. Our automated weather observation network (AWON) archive offers a record of hourly weather observations at Hancock and Arlington from 1985-2017.</p>
+    <p>Our weather page offers maps and data for temperature, precipitation, evapotranspiration, and solar insolation, derived from NOAA daily grids and satellite observations. We use Space Science's insolation model to derive estimates of solar radiation from satellite imagery. Combined with atmospheric data from Unidata's Internet Data Distribution project, this allows us to calculate reference evapotranspiration via the Priestley-Taylor equation to derive soil moisture and inform irrigation decisions.</p>
     <h4>Quick links:</h4>
     <ul>
       <li>
@@ -26,17 +26,16 @@
         <%= link_to "Insolation", controller: :weather, action: :insol %>
       </li>
       <li><%= link_to 'National Weather Service HYD reports', controller: :weather, action: :hyd %></li>
-      <li><%= link_to "Automated Weather Observation Network (AWON) data archive", controller: :awon %> (Note: stations are no longer active)</li>
       <li><%= link_to "Day-of-year calendar", controller: :weather, action: :doycal %></li>
-      <li><%= link_to "Wisconsin Environmental Mesonet (WiscoNet)", "https://wisconet.wisc.edu/", target: "_blank" %> - opens in new tab</li>
+      <li><%= link_to "Wisconsin's Environmental Mesonet (WiscoNet)", "https://wisconet.wisc.edu/", target: "_blank" %> - opens in new tab</li>
     </ul>
   </div>
 </div>
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("dd-map-250px.png"), controller: :thermal_models %>
   </div>
   <div>
@@ -62,11 +61,11 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("awon-150px.png"), sites_path %>
   </div>
-  <div class="text">
+  <div>
     <h2><%= link_to "Site Data", sites_path %> and <%= link_to "Email Subscriptions", subscribers_path %></h2>
     <p>While our weather data can be accessed from the individual weather, precipitation, evapotranspiration, and insolation pages in the <%= link_to "weather tab", weather_path %>, these <%= link_to "site pages", sites_path %> provide a convenient dashboard for accessing the past week's weather data for any single point within our data coverage area. You can bookmark these pages for quick access, or add them to your saved sites in the <%= link_to "subscribers page", sites_path %>. Currently only weather data is presented on the site pages, but we have plans to add degree days and other relevant information in the future.</p>
     <ul>
@@ -78,8 +77,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("vdifn-250px.png"), vdifn_path, target: "_blank" %>
   </div>
   <div>
@@ -91,8 +90,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("pivot-150px.png"), wisp_url, target: "_blank" %>
   </div>
   <div>
@@ -104,8 +103,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("hal-250px.png"), api_path %>
   </div>
   <div>
@@ -116,8 +115,8 @@
 
 <hr>
 
-<div class="row">
-  <div class="left">
+<div class="content-row">
+  <div class="content-img">
     <%= link_to image_tag("tree-150px.png"), action: :about %>
   </div>
   <div>
