@@ -53,16 +53,16 @@ Rails.application.routes.draw do
   get "sites/(*path)" => redirect("sites")
 
   # AWON controller
-  @controller = :awon
-  resources :awon, only: :index do
-    collection do
-      route "awon_check_boxes"
-      route "station_info"
-      route "download_data", :post
-    end
-  end
-  get "awon", to: "awon#index"
-  get "awon/(*path)", to: redirect("/awon") if Rails.env.production?
+  # @controller = :awon
+  # resources :awon, only: :index do
+  #   collection do
+  #     route "awon_check_boxes"
+  #     route "station_info"
+  #     route "download_data", :post
+  #   end
+  # end
+  # get "awon", to: "awon#index"
+  # get "awon/(*path)", to: redirect("/awon") if Rails.env.production?
 
   # Thermal models controller
   @controller = :thermal_models
@@ -94,7 +94,7 @@ Rails.application.routes.draw do
   @controller = :subscribers
   resources :subscribers, only: %i[index new create update destroy] do
     collection do
-      route "admin"
+      route "admin", :get, :post
       route "manage", :get, :post
       route "account", :get, :post
       route "logout"

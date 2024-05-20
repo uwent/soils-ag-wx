@@ -120,7 +120,27 @@ class SubscribersController < ApplicationController
       return redirect_to manage_subscribers_path, alert: "You must be an admin to view that page."
     end
 
-    @subscribers = Subscriber.order(:id).paginate(page: params[:page], per_page: 20)
+    @selection_opts = ["all", "unconfirmed", "no_sites", "stale"].collect do |opt|
+      [opt.humanize, opt]
+    end
+    @selection = params[:selection].presence || "all"
+
+    @all = Subscriber.all.pluck(:id)
+    @unconfirmed = Subscriber.all.collect { |s| !s.is_confirmed? ? s.id : nil }.compact
+    @no_sites = Subscriber.all.collect { |s| s.sites.size == 0 ? s.id : nil }.compact
+    @stale = Subscriber.all.collect { |s| !s.is_confirmed? && (s.created_at < 1.month.ago) ? s.id : nil }.compact
+
+    ids = case @selection
+    when "unconfirmed"
+      @unconfirmed
+    when "no_sites"
+      @no_sites
+    when "stale"
+      @stale
+    else
+      @all
+    end
+    @subscribers = Subscriber.order(:id).where(id: ids).paginate(page: params[:page], per_page: 50)
   end
 
   def export
