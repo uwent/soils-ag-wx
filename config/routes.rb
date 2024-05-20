@@ -1,6 +1,6 @@
 # Helper for easy routing and dasherizing. Default verb is :get.
 def route(action, verb = :get, *other_verbs)
-  match action.dasherize => "#{@controller}##{action}", via: [verb] + other_verbs
+  match action.dasherize => "#{@controller}##{action}", :via => [verb] + other_verbs
 end
 
 Rails.application.routes.draw do
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resources :weather, only: :index do
     collection do
       route "awon"
-      match "data" => "weather#weather", via: [:get, :post]
+      match "data" => "weather#weather", :via => [:get, :post]
       route "precip", :get, :post
       route "et", :get, :post
       route "insol", :get, :post
@@ -45,7 +45,7 @@ Rails.application.routes.draw do
       put :update
     end
   end
-  get "sites/:lat,:long" => "sites#show", constraints: {
+  get "sites/:lat,:long" => "sites#show", :constraints => {
     lat: /[-+]?\d+\.?\d*/,
     long: /[-+]?\d+\.?\d*/
   }
