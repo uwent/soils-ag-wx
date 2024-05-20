@@ -49,6 +49,12 @@ module ApplicationHelper
     datestring
   end
 
+  def fmt_x_of_y(x, y)
+    "#{x} / #{y} (#{sprintf("%.1f", 100 * x / y)}%)"
+  rescue
+    "#{x} / #{y}"
+  end
+
   def freeze_temp
     (@units == "F") ? 28 : -2.22
   end

@@ -18,13 +18,12 @@
 
 <h3>Subscriber list</h3>
 <% n_subs = @all.size %>
-<% n_unconfirmed = @unconfirmed.size %>
-<% n_empty = @no_sites.size %>
-<p>
-  Total: <%= @subscribers.size %><br>
-  Unconfirmed: <%= n_unconfirmed %> / <%= n_subs %> (<%= sprintf("%.1f%%", 100 * n_unconfirmed / n_subs) %>)<br>
-  No sites: <%= n_empty %> / <%= n_subs %> (<%= sprintf("%.1f%%", 100 * n_empty / n_subs) %>)<br>
-  Stale (unconfirmed & created > 1 month ago): <%= @stale.size %>
+<ul>
+  <li><b>Total:</b> <%= @subscribers.size %></li>
+  <li><b>Active:</b> <%= fmt_x_of_y(@active.size, n_subs) %></li>
+  <li><b>Unconfirmed:</b> <%= fmt_x_of_y(@unconfirmed.size, n_subs) %></li>
+  <li><b>No sites:</b> <%= fmt_x_of_y(@no_sites.size, n_subs) %></li>
+  <li><b>Stale:</b> <%= fmt_x_of_y(@stale.size, n_subs) %></li>
 </p>
 
 <div class="apple_pagination">
@@ -38,7 +37,7 @@
         <tr style="border-bottom: 1px solid grey">
           <th>ID</th>
           <th>Name</th>
-          <th>Email</th>
+          <th width=20%>Email</th>
           <th>Created</th>
           <th>Conf?</th>
           <th>Last login</th>

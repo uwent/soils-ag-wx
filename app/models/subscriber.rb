@@ -2,6 +2,8 @@ class Subscriber < ApplicationRecord
   has_many :sites, dependent: :destroy
   has_many :subscriptions, through: :sites
 
+  default_scope { order(:id) }
+
   # per http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address
   validates :email, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, presence: true
   validates_uniqueness_of :email
@@ -24,6 +26,28 @@ class Subscriber < ApplicationRecord
 
   def is_confirmed?
     !confirmed_at.nil?
+  end
+
+  def self.unconfirmed
+    where(confirmed_at: nil)
+  end
+
+  def self.has_no_sites
+    ids = all.collect { |s| (s.sites.size == 0) ? s.id : nil }.compact
+    where(id: ids)
+  end
+
+  def self.active
+    ids = all.collect { |s| (s.sites.size > 0 && s.emails_enabled) ? s.id : nil }.compact
+    where(id: ids)
+  end
+
+  def self.stale
+    unconfirmed.where("created_at < ?", 1.month.ago)
+  end
+
+  def self.purge_stale
+    stale.destroy_all
   end
 
   def confirm!(token)
