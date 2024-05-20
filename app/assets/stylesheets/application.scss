@@ -476,6 +476,22 @@ div .success {
   }
 }
 
+.subscriber-table {
+  font-size: small;
+
+  tbody {
+    border: 1px solid $nav-bg-color;
+  }
+
+  th {
+    border-bottom: 1px solid $nav-bg-color;
+  }
+
+  tbody tr:nth-child(even) {
+    background: $table-row-highlight-color;
+  }
+}
+
 .plain-table {
   td,
   th {

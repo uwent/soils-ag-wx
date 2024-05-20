@@ -34,7 +34,7 @@
   </div>
   <%= will_paginate(@subscribers, params: { selection: @selection }) %>
   <div style="overflow: auto; margin: 1em 0; padding: 5px 0;">
-    <table class="simple-table" style="width: 100%">
+    <table class="subscriber-table" style="width: 100%">
       <thead>
         <tr style="border-bottom: 1px solid grey">
           <th>ID</th>
@@ -63,12 +63,10 @@
             <td align="center"><%= subscriber.sites.size %></td>
             <td align="center"><%= subscriber.emails_enabled ? "Yes" : "No" %></td>
             <td>
-              <span style="white-space:nowrap">
-                <%= link_to "<button>Manage</button>".html_safe, url_for(action: :manage, to_edit_id: subscriber.id) %>
-                <% unless @subscriber.id == subscriber.id || subscriber.admin? %>
-                  <%= link_to "<button>Delete</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure you want to delete this user?"} %>
-                <% end %>
-              </span>
+              <%= link_to "<button>Manage</button>".html_safe, url_for(action: :manage, to_edit_id: subscriber.id) %>
+              <% unless @subscriber.id == subscriber.id || subscriber.admin? %>
+                <%= link_to "<button>Delete</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure you want to delete this user?"} %>
+              <% end %>
             </td>
         </tr>
         <% end %>
