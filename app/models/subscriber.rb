@@ -29,25 +29,19 @@ class Subscriber < ApplicationRecord
   end
 
   def self.unconfirmed
-    where(confirmed_at: nil)
+    where(id: all.collect { |s| (!s.is_confirmed? && (s.updated_at < 1.week.ago)) ? s.id : nil }.compact)
   end
 
   def self.has_no_sites
-    ids = all.collect { |s| (s.sites.size == 0) ? s.id : nil }.compact
-    where(id: ids)
+    where(id: all.collect { |s| (s.sites.size == 0) ? s.id : nil }.compact)
   end
 
   def self.active
-    ids = all.collect { |s| (s.sites.size > 0 && s.emails_enabled) ? s.id : nil }.compact
-    where(id: ids)
+    where(id: all.collect { |s| (s.sites.size > 0 && s.emails_enabled) ? s.id : nil }.compact)
   end
 
   def self.stale
-    unconfirmed.where("created_at < ?", 1.month.ago)
-  end
-
-  def self.purge_stale
-    stale.destroy_all
+    where(id: all.collect { |s| (!s.admin? && s.is_confirmed? && (s.updated_at < 1.month.ago) && (s.sites.size == 0)) ? s.id : nil }.compact)
   end
 
   def confirm!(token)

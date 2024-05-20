@@ -56,12 +56,12 @@ module Tasks
   end
 
   def self.purge_subs(delete: false)
-    unconfirmed = Subscriber.select { |s| !s.is_confirmed? && (s.updated_at < 1.week.ago) }
-    stale = Subscriber.select { |s| !s.admin? && s.is_confirmed? && (s.updated_at < 1.month.ago) && (s.sites.size == 0) }
+    unconfirmed = Subscriber.unconfirmed
+    stale = Subscriber.stale
     puts "Total subscribers: #{Subscriber.all.size}. Unconfirmed: #{unconfirmed.size}. Stale: #{stale.size}."
     if delete
-      unconfirmed.each(&:destroy)
-      stale.each(&:destroy)
+      unconfirmed.destroy_all
+      stale.destroy_all
     else
       puts "Run with delete:true to delete unconfirmed/stale subscriber records."
       {unconfirmed:, stale:}
