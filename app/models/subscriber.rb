@@ -122,9 +122,21 @@ class Subscriber < ApplicationRecord
 
   def self.to_csv
     CSV.generate(headers: true) do |csv|
-      csv << %w[ID Name Email DateCreated Admin? Sites SitesEnabled Subscriptions]
+      csv << %w[ID Name Email Created Updated Confirmed Subscribed Sites SitesEnabled Subscriptions Admin]
       Subscriber.all.order(:id).each do |s|
-        csv << [s.id, s.name, s.email, s.created_at, s.admin, s.sites.size, s.sites.enabled.size, s.subscriptions.size]
+        csv << [
+          s.id,
+          s.name,
+          s.email,
+          s.created_at,
+          s.updated_at,
+          s.confirmed_at.present?,
+          s.emails_enabled,
+          s.sites.size,
+          s.sites.enabled.size,
+          s.subscriptions.size,
+          s.admin
+        ]
       end
     end
   end
