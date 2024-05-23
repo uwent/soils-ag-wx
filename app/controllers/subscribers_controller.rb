@@ -49,6 +49,7 @@ class SubscribersController < ApplicationController
         @subscriber.generate_validation_token
         return render :validate
       else
+        @unconfirmed_login_attempt = true
         return render :confirm
       end
     end
@@ -182,7 +183,6 @@ class SubscribersController < ApplicationController
   # confirm email
   def confirm
     @subscriber = Subscriber.find(params[:id])
-    @resend_email = @subscriber
     redirect_to action: :manage if @subscriber.is_confirmed?
   end
 
