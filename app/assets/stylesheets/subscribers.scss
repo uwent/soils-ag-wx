@@ -42,16 +42,18 @@ h4 {
   thead tr {
     padding: 5px x;
   }
-  
+
   tbody tr {
     margin: 0;
   }
-  
-  th, td {
+
+  th,
+  td {
     padding: 0 5px;
   }
 
-  th, td:first-child {
+  th,
+  td:first-child {
     padding: 5px 5px;
   }
 }
@@ -110,14 +112,15 @@ h4 {
 
 .apple_pagination {
   text-align: center;
-  padding: 1em;
+  margin: 1em 0;
   cursor: default;
 
   button {
     padding: 2px 4px;
   }
 
-  a, span {
+  a,
+  span {
     padding: 0.2em 0.3em;
   }
 
@@ -126,7 +129,8 @@ h4 {
     color: black;
   }
 
-  a:hover, a:focus {
+  a:hover,
+  a:focus {
     text-decoration: underline;
   }
 

@@ -24,7 +24,7 @@
             <td><%= k %></td>
             <% v.each do |val| %>
               <td align=center>
-                <%= val < 0 ? "-" : val >= model[:threshold] ? "<span class=high-risk>#{val}</span>".html_safe : val %>
+                <%= val < 0 ? "-" : val >= model[:threshold] ? "<span class='high-risk'>#{val}</span>".html_safe : val %>
               </td>
             <% end %>
           </tr>

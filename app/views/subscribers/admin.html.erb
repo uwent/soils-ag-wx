@@ -1,26 +1,6 @@
 <% @title = "Subscriber Administration" %>
 <% @welcome_image = "awon.png" %>
 
-<%= content_for :scripts do %>
-<script>
-  $(".best_in_place").best_in_place()
-
-  $(document).on("best_in_place:error", (event, request, error) => {
-    let msg = JSON.parse(request.responseText).message
-    let el = `<div id='bip-error' class='error'>Unable to update user. ${msg}</div>`
-    $("#bip-notice").html(el)
-    $("#bip-error").delay(10000).fadeOut()
-  })
-
-  $(document).on('best_in_place:success', (event, request, error) => {
-    let msg = "Successfully updated user."
-    let el = `<div id='bip-success' class='success'>${msg}</div>`
-    $("#bip-notice").html(el)
-    $("#bip-success").delay(10000).fadeOut()
-  })
-</script>
-<% end %>
-
 <% content_for :welcome do %>
 <h2><%= @title %></h2>
 <p>Subscriber administration page. Reminder: you cannot change your own email from this page, nor can you set or remove admin status on other users. Use the rails terminal for those tasks.</p>
@@ -36,53 +16,65 @@
   <b>Email:</b> <%= @subscriber.email %>
 </p>
 
-<p>Name and email can be changed for subscribers in the list below. You cannot change your own email from this page, nor can you set or remove admin status on other users. Use the rails terminal for those tasks.</p>
+<h3>Subscriber list</h3>
+<% n_subs = @all.size %>
+<ul>
+  <li><b>Total:</b> <%= @subscribers.size %></li>
+  <li><b>Active:</b> <%= fmt_x_of_y(@active.size, n_subs) %></li>
+  <li><b>Unconfirmed:</b> <%= fmt_x_of_y(@unconfirmed.size, n_subs) %></li>
+  <li><b>No sites:</b> <%= fmt_x_of_y(@no_sites.size, n_subs) %></li>
+  <li><b>Stale:</b> <%= fmt_x_of_y(@stale.size, n_subs) %></li>
+</ul>
 
 <div class="apple_pagination">
-  <%= will_paginate @subscribers, class: :apple_pagination %>
-  <br>
-  <table class="simple-table" style="width: 100%">
-    <thead>
-      <tr style="border-bottom: 1px solid grey">
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Locations</th>
-        <th>Subscribed?</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @subscribers.each do |subscriber| %>
-        <tr style="<%= @subscriber.id == subscriber.id ? 'font-weight:bold;' : '' %>">
-          <td><%= subscriber.id %></td>
-          <td>
-            <%= @subscriber.id == subscriber.id ? "[YOU] " : "" %>
-            <%= subscriber.admin? ? "[ADMIN] " : ""%>
-            <%= best_in_place subscriber, :name, as: :input %>
-          </td>
-          <td><%= best_in_place_if @subscriber.id != subscriber.id, subscriber, :email, as: :input %></td>
-          <td align="center"><%= subscriber.sites.size %></td>
-          <td align="center"><%= subscriber.emails_enabled ? "Yes" : "No" %></td>
-          <td>
-            <span style="white-space:nowrap">
+  <div style="margin-bottom: 1em;">
+    <%= form_tag do %>
+      <%= select_tag :selection, options_for_select(@selection_opts, @selection), { onchange: "this.form.submit()" } %>
+    <% end %>
+  </div>
+  <%= will_paginate(@subscribers, params: { selection: @selection }) %>
+  <div style="overflow: auto; margin: 1em 0; padding: 5px 0;">
+    <table class="subscriber-table" style="width: 100%">
+      <thead>
+        <tr style="border-bottom: 1px solid grey">
+          <th>ID</th>
+          <th>Name</th>
+          <th width=20%>Email</th>
+          <th>Created</th>
+          <th>Conf?</th>
+          <th>Last login</th>
+          <th>Sites</th>
+          <th>Sub?</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @subscribers.each do |subscriber| %>
+          <tr style="<%= @subscriber.id == subscriber.id ? 'font-weight:bold;' : '' %>">
+            <td><%= subscriber.id %></td>
+            <td>
+              <%= subscriber.admin? ? "[ADMIN] " : ""%>
+              <%= subscriber.name %>
+            </td>
+            <td><%= subscriber.email %></td>
+            <td><%= subscriber.created_at.to_date %></td>
+            <td><%= subscriber.is_confirmed? %></td>
+            <td><%= subscriber.validation_created_at ? subscriber.validation_created_at.to_date : (subscriber.confirmed_at ? subscriber.confirmed_at.to_date : "never") %></td>
+            <td align="center"><%= subscriber.sites.size %></td>
+            <td align="center"><%= subscriber.emails_enabled ? "Yes" : "No" %></td>
+            <td>
               <%= link_to "<button>Manage</button>".html_safe, url_for(action: :manage, to_edit_id: subscriber.id) %>
               <% unless @subscriber.id == subscriber.id || subscriber.admin? %>
                 <%= link_to "<button>Delete</button>".html_safe, subscriber_path(subscriber.id), method: :delete, data: {confirm: "Are you sure you want to delete this user?"} %>
               <% end %>
-            </span>
-          </td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <br>
+            </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
   <%= will_paginate @subscribers, class: :apple_pagination %>
 </div>
-
-<span id="bip-notice"></span>
-
-<br>
 
 <%= content_for :footer do %>
 <div class="site-controls">
