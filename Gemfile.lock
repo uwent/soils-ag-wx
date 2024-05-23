@@ -312,6 +312,7 @@ GEM
       ffi (~> 1.0)
     rdoc (6.7.0)
       psych (>= 4.0.0)
+    recaptcha (5.16.0)
     regexp_parser (2.9.2)
     reline (0.5.7)
       io-console (~> 0.5)
@@ -464,6 +465,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-ujs
   railties
+  recaptcha
   render_async
   rspec-rails
   sassc-rails
