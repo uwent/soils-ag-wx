@@ -144,7 +144,7 @@ class SubscribersController < ApplicationController
       @stale
     else
       @all
-    end.paginate(page: params[:page], per_page: 50)
+    end.paginate(page: params[:page], per_page: 500)
   end
 
   def export
