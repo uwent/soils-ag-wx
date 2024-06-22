@@ -7,6 +7,7 @@ This codebase generates the agweather website which serves in part as a frontend
 ## Dependencies
 
 `Ruby`
+
 ```bash
 # install rbenv
 sudo apt -y install rbenv
@@ -23,13 +24,14 @@ git -C "$(rbenv root)"/plugins/ruby-build pull
 git config --global url."https://github.com/".insteadOf git://github.com/
 
 # install ruby with rbenv
-rbenv install 3.3.0 # or latest version
+rbenv install 3.3.3 # or latest version
 
 # update bundler to latest
 gem install bundler
 ```
 
 `Postgres` and `gem pg`
+
 ```bash
 # install postgres
 sudo apt -y install postgresql-14 postgresql-client-14 libpq-dev
@@ -76,15 +78,15 @@ bundle exec rake test TESTOPTS = "-v"
 Work with db admin to authorize your ssh key for the deploy user.
 Confirm you can access the dev and production servers:
 
-* `ssh deploy@dev.agweather.cals.wisc.edu -p 216`
-* `ssh deploy@agweather.cals.wisc.edu -p 216`
+- `ssh deploy@dev.agweather.cals.wisc.edu -p 216`
+- `ssh deploy@agweather.cals.wisc.edu -p 216`
 
 Then run the following commands from the main branch to deploy:
 
-* Staging: `cap staging deploy`
-* Production: `cap production deploy`
+- Staging: `cap staging deploy`
+- Production: `cap production deploy`
 
 Deployment targets:
 
-* Staging: [https://dev.agweather.cals.wisc.edu/](https://dev.agweather.cals.wisc.edu/)
-* Production: [https://agweather.cals.wisc.edu/](https://agweather.cals.wisc.edu/)
+- Staging: [https://dev.agweather.cals.wisc.edu/](https://dev.agweather.cals.wisc.edu/)
+- Production: [https://agweather.cals.wisc.edu/](https://agweather.cals.wisc.edu/)
