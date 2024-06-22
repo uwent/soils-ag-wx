@@ -9,7 +9,7 @@
 
       setTimeout(() => {
         $("#resend-btn").prop("disabled", false)
-      }, 10000)
+      }, 5000)
     })
   }
 
@@ -20,11 +20,10 @@
       let url = "<%= resend_confirmation_subscriber_url(@subscriber) %>"
       $.post(url)
         .done(() => {
-          alert("We have resent the confirmation. Check your email.")
-          cycleButton()
+          $("#resend").html("We have resent the confirmation. Please check your email.")
         })
         .error(() => {
-          alert("ERROR: We were unable to resend your confirmation.")
+          $("#resend").html("ERROR: We were unable to resend your confirmation. Please try logging in again.")
         })
     })
   })
@@ -41,10 +40,17 @@
 
 <%= render "notices" %>
 
-<p>Thank you for creating a new account! We have sent a confirmation email to <b><%= @subscriber.email %></b>.<p>
-<p><b>Please click the link in the email to confirm your account and log in.</b></p>
-<br>
-<p><i>If you did not receive the confirmation code in your email, make sure you entered your email correctly. If you still have not received the code, click this button to re-send it: <button id="resend-btn" disabled>Resend Confirmation</button></i></p>
+<% if @unconfirmed_login_attempt %>
+  <p>This account has not yet been confirmed. Please click the link sent to <b><%= @subscriber.email %></b>. If you did not receive any confirmation email, click the button below to re-send it.</p>
+  <div id="resend">
+    <button id="resend-btn" disabled>Resend Confirmation</button>
+  </div>
+<% else %>
+  <p>Thank you for creating a new account!</p>
+  <p>We have sent a confirmation email to <b><%= @subscriber.email %></b>.</p>
+  <p>Please click the link in the email to confirm your account and log in.</p>
+</p>
+<% end %>
 
 <%= content_for :footer do %>
 <%= link_to "Back", action: :index %>

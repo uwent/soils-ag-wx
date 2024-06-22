@@ -23,12 +23,11 @@ set :output, "/tmp/mailer_whenever.log"
 set :env_path, '"$HOME/.rbenv/shims":"$HOME/.rbenv/bin"'
 job_type :runner, %q( cd :path && PATH=:env_path:"$PATH" bundle exec rails runner -e :environment ':task' :output )
 
-every :day, at: "7:00am" do
-  runner "Subscriber.send_daily_mail"
-end
-
-every :day do
+# delete unconfirmed and stale accounts
+# send daily email to subscribers
+every :day, at: "6:30am" do
   runner "Tasks.purge_subs(delete:true)"
+  runner "Subscriber.send_daily_mail"
 end
 
 every "00,15,30,45 9,10,11 * * *" do

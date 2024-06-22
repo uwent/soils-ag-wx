@@ -49,6 +49,7 @@ class SubscribersController < ApplicationController
         @subscriber.generate_validation_token
         return render :validate
       else
+        @unconfirmed_login_attempt = true
         return render :confirm
       end
     end
@@ -163,12 +164,19 @@ class SubscribersController < ApplicationController
 
     if Subscriber.find_by_email(params[:subscriber][:email])
       @subscriber.errors.add(:email, "is already registered")
-      render action: :new
-    elsif @subscriber.save
-      SubscriptionMailer.confirm(@subscriber).deliver
-      redirect_to confirm_subscriber_path(@subscriber)
+      return render 'new'
+    end
+
+    recaptcha_valid = verify_recaptcha(model: @subscriber, action: 'registration')
+    if recaptcha_valid
+      if @subscriber.save
+        SubscriptionMailer.confirm(@subscriber).deliver
+        redirect_to confirm_subscriber_path(@subscriber)
+      else
+        render 'new'
+      end
     else
-      render action: :new
+      render 'new'
     end
   end
 

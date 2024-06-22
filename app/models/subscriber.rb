@@ -29,7 +29,7 @@ class Subscriber < ApplicationRecord
   end
 
   def self.unconfirmed
-    where(id: all.collect { |s| (!s.is_confirmed? && (s.updated_at < 1.week.ago)) ? s.id : nil }.compact)
+    where(confirmed_at: nil)
   end
 
   def self.has_no_sites
@@ -40,8 +40,9 @@ class Subscriber < ApplicationRecord
     where(id: all.collect { |s| (s.sites.size > 0 && s.emails_enabled) ? s.id : nil }.compact)
   end
 
+  # confirmed subscribers that are not an admin, no changes for a month, no sites saved
   def self.stale
-    where(id: all.collect { |s| (!s.admin? && s.is_confirmed? && (s.updated_at < 1.month.ago) && (s.sites.size == 0)) ? s.id : nil }.compact)
+    where(id: all.collect { |s| (!s.admin? && s.confirmed_at && (s.updated_at < 1.month.ago) && (s.sites.size == 0)) ? s.id : nil }.compact)
   end
 
   def confirm!(token)
