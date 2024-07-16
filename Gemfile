@@ -19,6 +19,7 @@ gem "whenever"
 gem "terser" # for JS compression
 gem "mail" # v2.7 => v2.8.0 required a sendmail settings change, see config/production.rb, should be resolved with mail v2.8.1
 gem "csv"
+gem "recaptcha"
 
 group :development do
   gem "puma"

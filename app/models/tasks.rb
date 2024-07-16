@@ -56,7 +56,7 @@ module Tasks
   end
 
   def self.purge_subs(delete: false)
-    unconfirmed = Subscriber.unconfirmed
+    unconfirmed = Subscriber.unconfirmed.where("updated_at < ?", 1.week.ago)
     stale = Subscriber.stale
     puts "Total subscribers: #{Subscriber.all.size}. Unconfirmed: #{unconfirmed.size}. Stale: #{stale.size}."
     if delete
