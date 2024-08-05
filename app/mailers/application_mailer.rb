@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   default(
-    from: "AgWeather <agweather@cals.wisc.edu>",
-    reply_to: "No Reply <noreply@cals.wisc.edu>"
+    from: "AgWeather <noreply@cals.wisc.edu>",
+    reply_to: "AgWeather <noreply@cals.wisc.edu>"
   )
 end
