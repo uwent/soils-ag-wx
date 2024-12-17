@@ -475,6 +475,7 @@ DEPENDENCIES
   letter_opener_web
   listen
   mail
+  ostruct
   pg
   pry-rails
   puma
