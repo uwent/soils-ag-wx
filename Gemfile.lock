@@ -454,7 +454,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  activesupport
+  activesupport (~> 8.0)
   best_in_place!
   brakeman
   bundler-audit
@@ -478,10 +478,10 @@ DEPENDENCIES
   pg
   pry-rails
   puma
-  rails
+  rails (~> 8.0)
   rails-controller-testing
   rails-ujs
-  railties
+  railties (~> 8.0)
   recaptcha
   render_async
   rspec-rails
@@ -498,4 +498,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.5.22
+   2.6.0
