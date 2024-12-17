@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
   # Sites controller
   @controller = :sites
-  resources :sites, only: :none do
+  resources :sites, only: :show do
     collection do
       route "site_data_weather"
       route "site_data_dd"

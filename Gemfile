@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-gem "rails"
-gem "railties"
-gem "activesupport"
+gem "rails", "~> 8.0"
+gem "railties", "~> 8.0"
+gem "activesupport", "~> 8.0"
 gem "pg"
 gem "sassc-rails"
 gem "coffee-rails"
@@ -20,6 +20,7 @@ gem "terser" # for JS compression
 gem "mail" # v2.7 => v2.8.0 required a sendmail settings change, see config/production.rb, should be resolved with mail v2.8.1
 gem "csv"
 gem "recaptcha"
+gem "ostruct" # no longer part of default gem library as of 3.3.6
 
 group :development do
   gem "puma"
