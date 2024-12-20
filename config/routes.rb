@@ -132,7 +132,7 @@ Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   get "/ag_weather" => redirect("/api/")
-  # get "*unmatched" => redirect("/") if Rails.env.production?
   post "*unmatched" => "application#bad_request" if Rails.env.production?
   post "/" => "application#bad_request" if Rails.env.production?
+  
 end
