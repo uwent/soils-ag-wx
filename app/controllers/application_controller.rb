@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_date
-    Time.now.in_time_zone("US/Central").yesterday.to_date
+    Time.now.in_time_zone("America/Chicago").yesterday.to_date
   end
 
   def parse_date
