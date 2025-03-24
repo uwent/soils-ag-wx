@@ -1,7 +1,7 @@
 <script>
   function refreshTable(form) {
     let url =
-      "<%= url_for(action: :site_data_weather, lat: @lat, long: @long, end_date: @end_date).html_safe %>" +
+      "<%= url_for(action: :site_data_weather, lat: @lat, lng: @lng, end_date: @end_date).html_safe %>" +
       "&start_date=" +
       time_form__weather.start_date.value +
       "&units=" +

@@ -41,7 +41,7 @@
 <p><%= link_to "Download the entire grid of data for #{@date.strftime("%b %-d")} in CSV format", action: :precip, format: :csv, params: { date: @date } %>.</p>
 
 <h3>Get data for a single location</h3>
-<p>Choose a location and date range then click "Get Data Series". Daily and cumulative precipitation will be displayed in mm and inches. Note: you can click on the map or click the "Get my location" button to set the lat/long.</p>
+<p>Choose a location and date range then click "Get Data Series". Daily and cumulative precipitation will be displayed in mm and inches. Note: you can click on the map or click the "Get my location" button to set the lat/lng.</p>
 <%= render partial: "partials/grid_selector", locals: { target: url_for(action: :precip_data) } %>
 <div id="map-data"></div>
 

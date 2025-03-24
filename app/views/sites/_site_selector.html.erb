@@ -17,7 +17,7 @@
             <ul>
               <% @sites.each do |site| %>
                 <li><strong><%= site.name %></strong>: <%= site.latitude %>, <%= site.longitude %>
-                <% if (@lat == site.latitude) && (@long == site.longitude) %>
+                <% if (@lat == site.latitude) && (@lng == site.longitude) %>
                   <strong> << Current site</strong>
                 <% else %>
                   - <%= link_to "View site", "#{url_for(controller: :sites)}/#{site.latitude},#{site.longitude}" %></li>
@@ -26,8 +26,8 @@
             </ul>
           </div>
           Manage your saved sites, or subscribe to daily weather data emails <%= link_to "here", { controller: :subscribers, action: :manage } %>.
-          <% if @valid && @sites.where(latitude: @lat, longitude: @long).size == 0 %>
-            This location is not part of your saved sites. <%= link_to "Add it?", { controller: :subscribers, action: :manage, lat: @lat, long: @long, name: "My location" } %>
+          <% if @valid && @sites.where(latitude: @lat, longitude: @lng).size == 0 %>
+            This location is not part of your saved sites. <%= link_to "Add it?", { controller: :subscribers, action: :manage, lat: @lat, lng: @lng, name: "My location" } %>
           <% end %>
         <% else %>
           You don't have any sites. Go to the <%= link_to "Subscriber page", controller: :subscribers %> to manage your sites.
@@ -46,7 +46,7 @@
             <%= label_tag :latitude, "Latitude" %>
             <%= select_tag :latitude, options_for_select(latitude_labels, @lat&.to_s || default_latitude) %>
             <%= label_tag :longitude, "Longitude" %>
-            <%= select_tag :longitude, options_for_select(longitude_labels, @long&.to_s || default_longitude) %>
+            <%= select_tag :longitude, options_for_select(longitude_labels, @lng&.to_s || default_longitude) %>
           </div>
           <div>
             <button type="button" onclick="getGeoLocation()">Get my location</button>

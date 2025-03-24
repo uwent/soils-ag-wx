@@ -45,9 +45,9 @@ Rails.application.routes.draw do
       put :update
     end
   end
-  get "sites/:lat,:long" => "sites#show", :constraints => {
+  get "sites/:lat,:lng" => "sites#show", :constraints => {
     lat: /[-+]?\d+\.?\d*/,
-    long: /[-+]?\d+\.?\d*/
+    lng: /[-+]?\d+\.?\d*/
   }
   get "sites" => "sites#index"
   get "sites/(*path)" => redirect("sites")

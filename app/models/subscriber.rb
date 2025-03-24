@@ -112,7 +112,7 @@ class Subscriber < ApplicationRecord
         {
           name: site.name,
           lat: site.latitude,
-          long: site.longitude,
+          lng: site.longitude,
           data: site_data
         }
       end

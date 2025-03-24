@@ -12,7 +12,7 @@
     el = document.getElementById("oak-wilt-list");
     el.style.display = el.style.display == "none" ? "block" : "none";
   }
-  let url = window.location.pathname + "?lat=" + <%= @latitude %> + "&long=" + <%= @longitude %>;
+  let url = window.location.pathname + "?lat=" + <%= @latitude %> + "&lng=" + <%= @longitude %>;
   $(document).ready(() => { window.history.replaceState({}, "", url) })
 </script>
 <% end %>

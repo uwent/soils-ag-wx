@@ -39,11 +39,11 @@
 <ul>
   <% @locations.each do |loc| %>
     <li>
-      <%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:long] %>) - 
+      <%= loc[:name]%> (<%= loc[:lat] %>, <%= loc[:lng] %>) - 
       <span style="font-size: 0.8em; font-style: italic;">
-        <%= link_to "data page", url_for(controller: :sites, action: :show, lat: loc[:lat], long: loc[:long]) %> - 
-        <%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{loc[:lat]}%2C+#{loc[:long]}", target: "_blank" %> - 
-        <%= link_to "save to my sites", url_for(controller: :subscribers, action: :manage, name: loc[:name], lat: loc[:lat], long: loc[:long]) %>
+        <%= link_to "data page", url_for(controller: :sites, action: :show, lat: loc[:lat], lng: loc[:lng]) %> - 
+        <%= link_to "maps link", "https://www.google.com/maps/search/?api=1&query=#{loc[:lat]}%2C+#{loc[:lng]}", target: "_blank" %> - 
+        <%= link_to "save to my sites", url_for(controller: :subscribers, action: :manage, name: loc[:name], lat: loc[:lat], lng: loc[:lng]) %>
       </span>
     </li>
   <% end %>

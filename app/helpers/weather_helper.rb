@@ -94,7 +94,7 @@ module WeatherHelper
   #     longs.each do |long|
   #       array << {
   #         lat: lat,
-  #         long: long,
+  #         lng: lng,
   #         x1: (x_start + x_inc * col).round(0),
   #         x2: (x_start + x_inc * (col + 1)).round(0),
   #         y1: (y_start + y_inc * row).round(0),

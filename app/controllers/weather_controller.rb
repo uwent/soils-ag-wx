@@ -297,12 +297,12 @@ class WeatherController < ApplicationController
 
   def parse_data_params
     @lat = lat
-    @long = long
+    @lng = lng
     @start_date = try_parse_date("start", 7.days.ago.to_date)
     @end_date = try_parse_date("end")
     {
       lat: @lat,
-      long: @long,
+      lng: @lng,
       start_date: @start_date,
       end_date: @end_date
     }.compact

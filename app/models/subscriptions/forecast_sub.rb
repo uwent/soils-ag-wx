@@ -14,11 +14,11 @@ class ForecastSub < WeatherSub
     all_data = {}
 
     sites.each do |site|
-      lat, long = site
+      lat, lng = site
       url = "https://api.weatherapi.com/v1/forecast.json"
       query = {
         key: API_KEY,
-        q: "#{lat},#{long}",
+        q: "#{lat},#{lng}",
         days: 3,
         aqi: "no",
         alerts: "no"
@@ -101,7 +101,7 @@ class ForecastSub < WeatherSub
           max_wind:
         }
       end
-      all_data[[lat, long].to_s] = site_data
+      all_data[[lat, lng].to_s] = site_data
     end
     all_data
   rescue

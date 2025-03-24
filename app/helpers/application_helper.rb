@@ -101,7 +101,7 @@ module ApplicationHelper
   end
 
   def longitudes
-    LONG_RANGE.step(0.1)
+    LNG_RANGE.step(0.1)
   end
 
   def latitude_labels
@@ -109,7 +109,7 @@ module ApplicationHelper
   end
 
   def longitude_labels
-    longitudes.collect { |long| [long.round(1), long.round(1)] }
+    longitudes.collect { |lng| [lng.round(1), lng.round(1)] }
   end
 
   def default_latitude

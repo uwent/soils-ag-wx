@@ -9,7 +9,7 @@
 
 <h2>
   <% if @valid %>
-    <%= "Recent data for #{@lat}&deg;N, #{@long}&deg;W".html_safe %>
+    <%= "Recent data for #{@lat}&deg;N, #{@lng}&deg;W".html_safe %>
     <%= ": #{@subscriber_site.name}" if @subscriber_site %>
   <% else %>
     <%= @title %>
