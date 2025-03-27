@@ -9,7 +9,7 @@ class Site < ApplicationRecord
   validates_uniqueness_of :name, scope: :subscriber
   validates :name, presence: true, length: {maximum: 30}
   validates :latitude, presence: true, numericality: {in: LAT_RANGE}
-  validates :longitude, presence: true, numericality: {in: LONG_RANGE}
+  validates :longitude, presence: true, numericality: {in: LNG_RANGE}
 
   def full_name
     "#{name} (#{latitude}, #{longitude})"

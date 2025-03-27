@@ -60,10 +60,10 @@ class SubscribersController < ApplicationController
     @pest_subs = Subscription.pests
 
     # pre-fill for new site
-    if params[:lat] && params[:long]
+    if params[:lat] && params[:lng]
       @new_name = params[:name].to_s || "My Site"
       @new_lat = params[:lat].to_s
-      @new_long = params[:long].to_s
+      @new_lng = params[:lng].to_s
     end
   end
 
@@ -296,12 +296,12 @@ class SubscribersController < ApplicationController
     if @subscriber.sites.where(name: site_name).size > 0
       errors << "You already have a site named #{site_name}."
     end
-    if @subscriber.sites.where(latitude: lat, longitude: long).size > 0
-      errors << "You already have a site at #{lat}, #{long}."
+    if @subscriber.sites.where(latitude: lat, longitude: lng).size > 0
+      errors << "You already have a site at #{lat}, #{lng}."
     end
     return render json: {message: errors.join("\n"), status: 500} if errors.size > 0
 
-    site = Site.new(name: site_name, latitude: lat, longitude: long)
+    site = Site.new(name: site_name, latitude: lat, longitude: lng)
     @subscriber.sites << site
     site.subscriptions << Subscription.select { |s| s.is_a? WeatherSub }
 

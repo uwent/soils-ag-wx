@@ -12,8 +12,8 @@ class ForecastOpenweatherSub < WeatherSub
     all_data = {}
 
     sites.each do |site|
-      lat, long = site
-      response = AgWeather.get(AgWeather::FORECAST_URL, query: {lat:, long:})
+      lat, lng = site
+      response = AgWeather.get(AgWeather::FORECAST_URL, query: {lat:, lng:})
       forecasts = response[:forecasts]
 
       total_min_temp = num_fmt(forecasts.map { |day| day[:temp][:min] }.compact.min) + "°F" || "unknown"
@@ -45,7 +45,7 @@ class ForecastOpenweatherSub < WeatherSub
         }
       end
 
-      all_data[[lat, long].to_s] = site_data
+      all_data[[lat, lng].to_s] = site_data
     end
     all_data
   rescue

@@ -18,10 +18,10 @@ class OakWiltSub < PestSub
     all_data = {}
 
     sites.each do |site|
-      lat, long = site
+      lat, lng = site
       opts = {
         lat:,
-        long:,
+        lng:,
         start_date: dates.first,
         end_date: dates.last,
         base: 41,
@@ -50,7 +50,7 @@ class OakWiltSub < PestSub
         }
         i += 1
       end
-      all_data[[lat, long].to_s] = site_data
+      all_data[[lat, lng].to_s] = site_data
     end
     all_data
   rescue

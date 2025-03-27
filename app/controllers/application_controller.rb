@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_date
-    Time.now.in_time_zone("US/Central").yesterday.to_date
+    Time.now.in_time_zone("America/Chicago").yesterday.to_date
   end
 
   def parse_date
@@ -118,8 +118,8 @@ class ApplicationController < ActionController::Base
     check_lat(parse_float(params[:lat], digits: 1))
   end
 
-  def long
-    check_long(parse_float(params[:long], digits: 1))
+  def lng
+    check_long(parse_float(params[:lng], digits: 1))
   end
 
   def check_lat(val)
@@ -127,6 +127,6 @@ class ApplicationController < ActionController::Base
   end
 
   def check_long(val)
-    val.in?(LONG_RANGE) ? val : nil
+    val.in?(LNG_RANGE) ? val : nil
   end
 end

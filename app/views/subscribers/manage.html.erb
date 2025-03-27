@@ -6,8 +6,8 @@
   site_count = <%= @sites.size %>
   min_lat = <%= latitudes.min %>
   max_lat = <%= latitudes.max %>
-  min_long = <%= longitudes.min %>
-  max_long = <%= longitudes.max %>
+  min_lng = <%= longitudes.min %>
+  max_lng = <%= longitudes.max %>
 
   function clearSite() {
     $("#site-name").val("")
@@ -18,14 +18,14 @@
   function getGeoLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
       let lat = position.coords.latitude.toFixed(1)
-      let long = position.coords.longitude.toFixed(1)
-      let msg = "Your closest lat/long coordinates are: <b>" + lat + ", " + long + "</b>"
-      if (!validateLat(lat) || !validateLong(long)) {
+      let lng = position.coords.longitude.toFixed(1)
+      let msg = "Your closest lat/lng coordinates are: <b>" + lat + ", " + lng + "</b>"
+      if (!validateLat(lat) || !validateLng(lng)) {
         msg += ". Unfortunately this is outside of our data range."
       } else {
         if ($("#site-name").val() == "") $("#site-name").val("Home")
         latitude.value = lat
-        longitude.value = long
+        longitude.value = lng
       }
       $("#location-display").html(msg)
     })
@@ -41,20 +41,20 @@
     return (lat_num >= min_lat && lat_num <= max_lat)
   }
 
-  function validateLong(long) {
-    if (!$.isNumeric(long)) return false
-    let long_num = parseFloat(long)
-    return (long_num >= min_long && long_num <= max_long)
+  function validateLng(lng) {
+    if (!$.isNumeric(lng)) return false
+    let lng_num = parseFloat(lng)
+    return (lng_num >= min_lng && lng_num <= max_lng)
   }
 
-  function validate(site_name, lat, long) {
+  function validate(site_name, lat, lng) {
     let validations = []
     if (!validateName(site_name))
       validations.push("Invalid site name, try something different.")
     if (!validateLat(lat))
       validations.push("Latitude must be a number between " + min_lat + " and " + max_lat)
-    if (!validateLong(long))
-      validations.push("Longitude must be a number between " + min_long + " and " + max_long)
+    if (!validateLng(lng))
+      validations.push("Longitude must be a number between " + min_lng + " and " + max_lng)
     return validations
   }
 
@@ -93,8 +93,8 @@
     $("#submit-site").submit(() => {
       let site_name = $("#site-name").val()
       let lat = $("#latitude").val()
-      let long = $("#longitude").val()
-      let valid = validate(site_name, lat, long)
+      let lng = $("#longitude").val()
+      let valid = validate(site_name, lat, lng)
 
       if (valid.length > 0) {
         alert(valid.join("\n"))
@@ -105,7 +105,7 @@
       $.post(url, {
         site_name: site_name,
         lat: parseFloat(lat).toFixed(1),
-        long: parseFloat(long).toFixed(1),
+        lng: parseFloat(lng).toFixed(1),
         to_edit_id: subscriber_id
       }).success((data) => {
         data.id ? window.location.reload() : alert(data.message)
@@ -220,7 +220,7 @@
 
 <p>Each morning you can receive email updates for sites of your choosing within our data coverage area. For each site you can choose which data subscriptions your want, including the 7-day weather report, 3-day forecast, several degree-day models, and pest risk models. The weather report includes daily high/low temperatures, precipitation, and potential evapotranspiration.</p>
 
-<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/long of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). You can edit a site name or location after creation by clicking on the table.</p>
+<p>To add a site, enter a name, latitude, and longitude below, and press the 'Add' button. If you don't know the lat/lng of a site, click the 'Get my location' button to get your current GPS coordinates, or look up the coordinates of a site of interest on Google maps. Site coordinates will be rounded to the nearest 0.1 decimal degree (approximately 5 miles or 8 km). You can edit a site name or location after creation by clicking on the table.</p>
 
 <p><i>Data is available for the upper Midwest US, from 38 to 50&deg; North latitude and from -98 to -82&deg; West longitude.</i></p>
 
@@ -282,7 +282,7 @@
               </td>
               <td align=center>
                 <span style="white-space: nowrap;">
-                  <button class="site-btn" onclick="window.location.href='<%= url_for(controller: :sites, action: :show, lat: site.latitude, long: site.longitude) %>'">View</button>
+                  <button class="site-btn" onclick="window.location.href='<%= url_for(controller: :sites, action: :show, lat: site.latitude, lng: site.longitude) %>'">View</button>
                   <button class="site-btn" id="delete-site-<%= site.id %>">Delete</button>
                 </span>
               </td>
@@ -292,7 +292,7 @@
             <%= form_tag add_site_subscriber_path(@subscriber.id), id: "submit-site" do %>
               <td><%= text_field_tag "site-name", @new_name, maxlength: 25, size: 25, required: true %></td>
               <td><%= text_field_tag "latitude", @new_lat, maxlength: 6, size: 6, required: true %></td>
-              <td><%= text_field_tag "longitude", @new_long, maxlength: 6, size: 6, required: true %></td>
+              <td><%= text_field_tag "longitude", @new_lng, maxlength: 6, size: 6, required: true %></td>
               <td><%= button_tag "Add" %></td>
             <% end %>
             <td><button onclick="clearSite()">Clear</button></td>

@@ -16,10 +16,10 @@ class WeatherSub < Subscription
     all_data = {}
 
     sites.each do |site|
-      lat, long = site
+      lat, lng = site
       opts = {
         lat: lat,
-        long: long,
+        lng: lng,
         start_date: dates.first,
         end_date: dates.last
       }
@@ -58,7 +58,7 @@ class WeatherSub < Subscription
         }
       end
 
-      all_data[[lat, long].to_s] = site_data
+      all_data[[lat, lng].to_s] = site_data
     end
     all_data
   rescue

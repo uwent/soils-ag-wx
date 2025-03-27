@@ -1,7 +1,7 @@
 <script>
   function refreshDDTable(form) {
     let url =
-      "<%= url_for(action: :site_data_dd, lat: @lat, long: @long, end_date: @end_date).html_safe %>" +
+      "<%= url_for(action: :site_data_dd, lat: @lat, lng: @lng, end_date: @end_date).html_safe %>" +
       `&start_date=${time_form__dd.start_date.value}` +
       `&units=${unit_form__dd.units.value}`
 

@@ -132,7 +132,7 @@ class ThermalModelsController < ApplicationController
     parse_oak_wilt_dd_params
     query = {
       lat: @latitude,
-      long: @longitude,
+      lng: @longitude,
       end_date: @end_date,
       start_date: @end_date.beginning_of_year,
       base: 41,
@@ -153,13 +153,13 @@ class ThermalModelsController < ApplicationController
 
   def potato_data
     @locations = [
-      {name: "Rhinelander", lat: 45.7, long: -89.2},
-      {name: "Antigo", lat: 45.2, long: -89.1},
-      {name: "Plover", lat: 44.4, long: -89.6},
-      {name: "Hancock", lat: 44.1, long: -89.5},
-      {name: "Grand Marsh", lat: 43.9, long: -89.7},
-      {name: "Arlington", lat: 43.3, long: -89.3},
-      {name: "Spring Green", lat: 43.2, long: -90.1}
+      {name: "Rhinelander", lat: 45.7, lng: -89.2},
+      {name: "Antigo", lat: 45.2, lng: -89.1},
+      {name: "Plover", lat: 44.4, lng: -89.6},
+      {name: "Hancock", lat: 44.1, lng: -89.5},
+      {name: "Grand Marsh", lat: 43.9, lng: -89.7},
+      {name: "Arlington", lat: 43.3, lng: -89.3},
+      {name: "Spring Green", lat: 43.2, lng: -90.1}
     ]
 
     @models = [
@@ -193,7 +193,7 @@ class ThermalModelsController < ApplicationController
         query = {
           pest: model[:pest],
           lat: loc[:lat],
-          long: loc[:long],
+          lng: loc[:lng],
           start_date: dates.min
         }
         json = AgWeather.get_pest(query:)
@@ -225,9 +225,9 @@ class ThermalModelsController < ApplicationController
   private
 
   def parse_oak_wilt_dd_params
-    if params[:lat].present? && params[:long].present?
+    if params[:lat].present? && params[:lng].present?
       @latitude = lat
-      @longitude = long
+      @longitude = lng
     else
       raise ArgumentError.new
     end
@@ -244,7 +244,7 @@ class ThermalModelsController < ApplicationController
 
   def parse_dd_params
     @latitude = lat
-    @longitude = long
+    @longitude = lng
     @start_date = try_parse_date("start", default_date.beginning_of_year)
     @end_date = try_parse_date("end")
     @base_temp = params[:base_temp].to_f
@@ -253,7 +253,7 @@ class ThermalModelsController < ApplicationController
     @method = params[:method]
     {
       lat: @latitude,
-      long: @longitude,
+      lng: @longitude,
       end_date: @end_date,
       start_date: @start_date,
       base: @base_temp,

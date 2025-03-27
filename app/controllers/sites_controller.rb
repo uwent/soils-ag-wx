@@ -6,11 +6,11 @@ class SitesController < ApplicationController
 
   def show
     @lat = lat
-    @long = long
-    @valid = @lat && @long
+    @lng = lng
+    @valid = @lat && @lng
 
     redirect_to(sites_path, alert: "Invalid latitude or longitude provided. Please try again.") if !@valid
-    redirect_to(action: :show, lat: @lat, long: @long) if params[:etc].present?
+    redirect_to(action: :show, lat: @lat, lng: @lng) if params[:etc].present?
 
     @start_date_opts = start_date_opts
     @start_date = 7.days.ago.to_date
@@ -19,12 +19,12 @@ class SitesController < ApplicationController
     @dd_models = default_dd_models
 
     if @valid && @subscriber
-      @subscriber_site = @sites.where(latitude: @lat, longitude: @long).first
+      @subscriber_site = @sites.where(latitude: @lat, longitude: @lng).first
     end
 
     common_params = {
       lat: @lat,
-      long: @long,
+      lng: @lng,
       start_date: @start_date,
       end_date: @end_date,
       units: @units
@@ -60,7 +60,7 @@ class SitesController < ApplicationController
   # Insol: mJ, div by 3.6 => kWh
   def site_data_weather
     @lat = lat
-    @long = long
+    @lng = lng
     @start_date = try_parse_date("start", 7.days.ago.to_date)
     @end_date = try_parse_date("end")
     @units = params[:units]
@@ -78,7 +78,7 @@ class SitesController < ApplicationController
 
     query = {
       lat: @lat,
-      long: @long,
+      lng: @lng,
       start_date: @start_date,
       end_date: @end_date
     }.compact
@@ -142,14 +142,14 @@ class SitesController < ApplicationController
   # degree day table
   def site_data_dd
     @lat = lat
-    @long = long
+    @lng = lng
     @units = (params[:units] == "metric") ? "C" : "F"
     @models = params[:dd_models] || default_dd_models.join(",")
     @end_date = default_date
     @start_date = [try_parse_date("start", 7.days.ago.to_date), @end_date.beginning_of_year].max
     @dates = @start_date..@end_date
 
-    query = {lat: @lat, long: @long, units: @units, models: @models}
+    query = {lat: @lat, lng: @lng, units: @units, models: @models}
 
     response = AgWeather.get_dd_table(query:) # JSON is not symbolized
     info = response["info"] || {}
