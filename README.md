@@ -1,8 +1,8 @@
 # AgWeather/Soils website
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/uwent/soils-ag-wx/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/uwent/soils-ag-wx/tree/main)
+[![Tests](https://github.com/uwent/soils-ag-wx/actions/workflows/test.yml/badge.svg)](https://github.com/uwent/soils-ag-wx/actions/workflows/test.yml)
 
-This codebase generates the agweather website which serves in part as a frontend for the agweather backend API.
+This codebase generates the agweather website which serves in part as a frontend for the AgWeather backend API.
 
 ## Dependencies
 
