@@ -30,8 +30,9 @@ module ApplicationHelper
 
   # formatters
   def fmt_num(num, digits = 0)
-    return num || "" unless num.is_a? Numeric
-    return 0 if num.zero?
+    return "-" if num.nil?
+    return num unless num.is_a? Numeric
+    return 0 if num.zero? # avoid printing eg 0.000
     sprintf("%.#{digits}f", num.round(digits))
   end
 
@@ -64,7 +65,7 @@ module ApplicationHelper
   end
 
   def fmt_temp(temp)
-    return "" if temp.nil?
+    return "-" if temp.nil?
     temp_text = fmt_num(temp, 1)
     if temp <= freeze_temp
       color = FREEZE_COLOR
