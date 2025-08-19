@@ -23,7 +23,9 @@
           <td><%= fmt_temp(data["max_temp"]) %></td>
           <% @models.each do |model| %>
             <% dd = data[model] || {} %>
-            <td style="text-align: center;"><%= trim_num(dd["total"]) %>&nbsp;(+<%= trim_num(dd["value"]) %>)</td>
+            <td style="text-align: center;">
+            <%= dd["total"].nil? ? "-" : "#{trim_num(dd["total"])}&nbsp;(+#{trim_num(dd["value"])})".html_safe %>
+            </td>
           <% end %>
         </tr>
       <% end %>

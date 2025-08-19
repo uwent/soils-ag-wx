@@ -21,6 +21,7 @@ gem "mail" # v2.7 => v2.8.0 required a sendmail settings change, see config/prod
 gem "csv"
 gem "recaptcha"
 gem "ostruct" # no longer part of default gem library as of 3.3.6
+gem "rack-attack" # rate limiting
 
 group :development do
   gem "puma"
