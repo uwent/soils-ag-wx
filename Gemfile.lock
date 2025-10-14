@@ -93,6 +93,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.3)
     base64 (0.3.0)
+    bcrypt_pbkdf (1.1.1)
     benchmark (0.4.1)
     bigdecimal (3.3.1)
     brakeman (7.1.0)
@@ -142,6 +143,7 @@ GEM
       dotenv (= 3.1.8)
       railties (>= 6.1)
     drb (2.2.3)
+    ed25519 (1.4.0)
     erb (5.1.1)
     erubi (1.13.1)
     execjs (2.10.0)
@@ -482,6 +484,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 8.0)
+  bcrypt_pbkdf
   best_in_place!
   brakeman
   bundler-audit
@@ -493,6 +496,7 @@ DEPENDENCIES
   coffee-rails
   csv
   dotenv-rails
+  ed25519
   factory_bot_rails
   guard-rspec
   httparty
