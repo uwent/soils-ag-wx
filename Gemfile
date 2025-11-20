@@ -36,6 +36,8 @@ group :development do
   gem "standard" # linter
   gem "brakeman" # security analysis https://brakemanscanner.org/
   gem "bundler-audit" # patch-level verification
+  gem "ed25519" # for ssh keys
+  gem "bcrypt_pbkdf" # for ssh keys
 end
 
 group :development, :test do
