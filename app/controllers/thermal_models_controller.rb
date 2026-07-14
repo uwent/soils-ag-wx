@@ -92,7 +92,7 @@ class ThermalModelsController < ApplicationController
     response = json[:data]
     @data = []
 
-    @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
+    @param = "#{@method} method DDs#{" Base temp " + sprintf("%0.1f", @base_temp) if @base_temp}#{" Upper temp " + sprintf("%0.1f", @upper_temp) if @upper_temp}"
 
     # make sure each date has a data value
     (@start_date..@end_date).each do |date|
