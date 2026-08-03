@@ -177,8 +177,7 @@ class ThermalModelsController < ApplicationController
       }
     ]
 
-    year = Date.current.year
-    emerg_dates = [10, 15, 20, 25].collect { |day| Date.new(year, 5, day) }
+    emerg_dates = (130..175).step(5).map { |doy| Date.ordinal(Date.current.year, doy) } # 130 = May 9, 175 = June 24
     recent_dates = [Date.current - 14.days, Date.current - 7.days]
     dates = emerg_dates + recent_dates
     @dates = emerg_dates.map { |d| d.strftime("%b %-d") } + ["Last 14 days", "Last 7 days"]
