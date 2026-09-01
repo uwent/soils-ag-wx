@@ -134,5 +134,4 @@ Rails.application.routes.draw do
   get "/ag_weather" => redirect("/api/")
   post "*unmatched" => "application#bad_request" if Rails.env.production?
   post "/" => "application#bad_request" if Rails.env.production?
-  
 end

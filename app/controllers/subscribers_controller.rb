@@ -164,19 +164,19 @@ class SubscribersController < ApplicationController
 
     if Subscriber.find_by_email(params[:subscriber][:email])
       @subscriber.errors.add(:email, "is already registered")
-      return render 'new'
+      return render "new"
     end
 
-    recaptcha_valid = verify_recaptcha(model: @subscriber, action: 'registration')
+    recaptcha_valid = verify_recaptcha(model: @subscriber, action: "registration")
     if recaptcha_valid
       if @subscriber.save
         SubscriptionMailer.confirm(@subscriber).deliver
         redirect_to confirm_subscriber_path(@subscriber)
       else
-        render 'new'
+        render "new"
       end
     else
-      render 'new'
+      render "new"
     end
   end
 

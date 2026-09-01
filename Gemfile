@@ -22,6 +22,7 @@ gem "csv"
 gem "recaptcha"
 gem "ostruct" # no longer part of default gem library as of 3.3.6
 gem "rack-attack" # rate limiting
+gem "redis", "~> 5.0" # caching
 
 group :development do
   gem "puma"
@@ -38,6 +39,7 @@ group :development do
   gem "bundler-audit" # patch-level verification
   gem "ed25519" # for ssh keys
   gem "bcrypt_pbkdf" # for ssh keys
+  gem "solargraph" # Ruby language server for code completion and static analysis
 end
 
 group :development, :test do
