@@ -22,7 +22,6 @@ gem "csv"
 gem "recaptcha"
 gem "ostruct" # no longer part of default gem library as of 3.3.6
 gem "rack-attack" # rate limiting
-gem "redis", "~> 5.0" # caching
 
 group :development do
   gem "puma"
