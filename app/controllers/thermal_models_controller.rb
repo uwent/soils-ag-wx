@@ -92,7 +92,7 @@ class ThermalModelsController < ApplicationController
     response = json[:data]
     @data = []
 
-    @param = "#{@method} method DDs#{@base_temp ? " Base temp " + sprintf("%0.1f", @base_temp) : ""}#{@upper_temp ? " Upper temp " + sprintf("%0.1f", @upper_temp) : ""}"
+    @param = "#{@method} method DDs#{" Base temp " + sprintf("%0.1f", @base_temp) if @base_temp}#{" Upper temp " + sprintf("%0.1f", @upper_temp) if @upper_temp}"
 
     # make sure each date has a data value
     (@start_date..@end_date).each do |date|
@@ -177,8 +177,7 @@ class ThermalModelsController < ApplicationController
       }
     ]
 
-    year = Date.current.year
-    emerg_dates = [10, 15, 20, 25].collect { |day| Date.new(year, 5, day) }
+    emerg_dates = (130..175).step(5).map { |doy| Date.ordinal(Date.current.year, doy) } # 130 = May 9, 175 = June 24
     recent_dates = [Date.current - 14.days, Date.current - 7.days]
     dates = emerg_dates + recent_dates
     @dates = emerg_dates.map { |d| d.strftime("%b %-d") } + ["Last 14 days", "Last 7 days"]
